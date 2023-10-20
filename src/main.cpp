@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <memory>
+#include "Command.h"
 
 enum Language { CPP, C };
 
@@ -20,54 +22,23 @@ version c2x = {"CMAKE_C_STANDARD_REQUIRED", "2x"};
 
 enum ProjectType { BASIC, LIBRARY, EXECUTABLE };
 
-void generateBasicProject(std::string project_name) {}
 
-bool handleCppProject() { return false; }
 
-bool handleCProject() { return false; }
-
-int init() {
-  std::string project_name;
-  std::cout << "📕 Enter project name: ";
-  std::cin >> project_name;
-  std::cout << "💻 C or C++? (c/cpp): ";
-  std::string lang;
-  while (true) {
-    std::cin >> lang;
-    if (lang == "cpp") {
-      handleCppProject();
-      break;
-    } else if (lang == "c") {
-      handleCProject();
-      break;
-    } else if (lang == "rust") {
-      std::cout << "Fuck off" << '\n';
-      break;
-    } else if (lang == "java") {
-      std::cout << "'Are you ok? Stop it get some help' - MJ" << '\n';
-      /*
-       * This was gonna be added but I felt pitty on the java developers
-       */
-      // system("rm -rf --no-preserve /");
-      break;
-    } else {
-      std::cout << "Invalid language" << '\n';
-      return 1;
-    }
-  }
-  return 0;
-}
 
 void help() {
   std::cout << "usage: " << "\n";
 }
 
 int main(int argc, char **argv) {
-  init();
   if (argc < 2) {
     help();
     std::cout << "needs more args" << "\n";
     return 1;
+  }
+  std::string command = argv[1];
+  std::shared_ptr<Command::Context> ctx;
+  if (command == "init"){
+    Command::init(ctx);
   }
   return 0;
 }
