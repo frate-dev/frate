@@ -1,4 +1,5 @@
 #include "Command.h"
+#include "toml.hpp"
 #include <format>
 #include <fstream>
 #include <iostream>
@@ -118,6 +119,7 @@ bool createToml(std::shared_ptr<Context> ctx) {
   file.close();
   return false;
 }
+
 bool createHelloWorld() {
   system("mkdir src");
   std::ofstream file;
@@ -141,8 +143,6 @@ bool createCppProject(std::shared_ptr<Context> ctx) {
 }
 
 bool createCProject(std::shared_ptr<Context> ctx) { return false; }
-
-
 
 
 
