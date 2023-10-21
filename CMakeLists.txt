@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.20.0)
+cmake_minimum_required(VERSION 3.10)
 project ( 
-    test-project 
+    cmake-generator 
     VERSION 0.0.1
     LANGUAGES CXX
 )
@@ -12,7 +12,8 @@ file(GLOB all_SRCS
     "${PROJECT_SOURCE_DIR}/src/*.cpp"
     "${PROJECT_SOURCE_DIR}/src/*.c"
 )
-include_directories(./include)
-add_executable(test-project ${all_SRCS})
-set(SOURCE_DIR ./src)
-set(BUILD_DIR ./build)
+include_directories(include)
+add_executable(cmake-generator ${all_SRCS})
+set(SOURCE_DIR src)
+set(BUILD_DIR build)
+set_target_properties(cmake-generator PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
