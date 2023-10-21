@@ -3,9 +3,11 @@
 #include <format>
 #include <iostream>
 #include <string>
+#include <fstream>
 
 namespace Command {
-  const std::string projectTemplate =
+const std::string projectTemplate =
+    "cmake_minimum_required(VERSION 3.0)\n"
     "set(PROJECT_NAME {})\n"
     "project(${PROJECT_NAME})\n"
     "set(%<CXX_VERSION>)\n"
@@ -15,81 +17,104 @@ namespace Command {
     "set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "
     "${BUILD_DIR})\n";
 
-  bool createCppProject(std::shared_ptr<Context> ctx) {
-    std::string project_name = std::format("project ({})", ctx->project_name);
-    std::string cxx_version =
-    std::format("set(CMAKE_CXX_STANDARD {})", ctx->langversion);
-    std::string source_dir = std::format("set(SOURCE_DIR {})", ctx->src_dir);
-    std::string build_dir =
-    std::format("set(BUILD_DIR {})", ctx->build_dir);
+bool createCppProject(std::shared_ptr<Context> ctx) {
+  std::string cmake_minimum_required =
+      std::format("cmake_minimum_required(VERSION {})", ctx->cmake_version);
+  std::string project_name = std::format("project ( \n\
+    {} \n\
+    VERSION {}\n\
+    LANGUAGES CXX\n\
+)",  ctx->project_name, ctx->semver);
+  std::string cxx_version =
+      std::format("set(CMAKE_CXX_STANDARD {})", ctx->langversion);
+  std::string compiler = std::format("set(CMAKE_CXX_COMPILER {})", ctx->compiler);
+  std::string source_dir = std::format("set(SOURCE_DIR {})", ctx->src_dir);
+  std::string build_dir = std::format("set(BUILD_DIR {})", ctx->build_dir);
+  std::string files = "file(GLOB all_SRCS\n\
+    \"${PROJECT_SOURCE_DIR}/include/*.h\"\n\
+    \"${PROJECT_SOURCE_DIR}/include/*.hpp\"\n\
+    \"${PROJECT_SOURCE_DIR}/src/*.cpp\"\n\
+    \"${PROJECT_SOURCE_DIR}/src/*.c\"\n\
+)";
+  std::string include_dir = std::format("include_directories({})", ctx->include_dir);
+  std::string add_executable = std::format("add_executable({} ", ctx->project_name) + "${all_SRCS})";
 
-    std::cout << project_name << ENDL;
-    std::cout << cxx_version  << ENDL;
-    std::cout << source_dir   << ENDL;
-    std::cout << build_dir    << ENDL;
-    return false;
+
+  std::ofstream file;
+  remove("./CMakeLists.txt");
+  file.open("./CMakeLists.txt");
+  file << cmake_minimum_required << '\n';
+  file << project_name << '\n';
+  file << cxx_version << '\n';
+  file << compiler << '\n';
+  file << files << '\n';
+  file << include_dir << '\n';
+  file << add_executable << '\n';
+  file << source_dir << '\n';
+  file << build_dir << '\n';
+  return false;
+}
+bool createCProject() { return false; }
+void loadPackageToml(std::shared_ptr<Context> ctx) {
+  auto data = toml::parse_file("./build/test.toml");
+  ctx->project_name = data["project"]["name"].value_or("no name");
+  for (auto &author : *data["project"]["authors"].as_array()) {
+    ctx->authors.push_back(author.value_or("no author"));
   }
+  ctx->src_dir = data["project"]["src_dir"].value_or("no src_dir");
+  ctx->build_dir = data["project"]["build_dir"].value_or("no build_dir");
+  ctx->compiler = data["project"]["compiler"].value_or("no compiler");
+  ctx->cmake_version = data["project"]["cmake_version"].value_or("");
+  ctx->git = data["project"]["git"].value_or("no git");
+  ctx->lang = data["project"]["lang"].value_or("no lang");
+  ctx->include_dir = data["project"]["include_dir"].value_or("no include_dir");
+  ctx->langversion = data["project"]["langversion"].value_or("no langversion");
+  ctx->semver = data["project"]["semver"].value_or("0.0.1");
+};
 
-  bool createCProject() { return false; }
-
-  void loadPackageToml(std::shared_ptr<Context> ctx) {
-    auto data = toml::parse_file("./build/test.toml");
-    ctx->project_name = data["project"]["name"].value_or("no name");
-    for (auto &author : *data["project"]["authors"].as_array()) {
-      ctx->authors.push_back(author.value_or("no author"));
-    }
-    ctx->src_dir = data["project"]["src_dir"].value_or("no src_dir");
-    ctx->build_dir = data["project"]["build_dir"].value_or("no build_dir");
-    ctx->git = data["project"]["git"].value_or("no git");
-    ctx->lang = data["project"]["lang"].value_or("no lang");
-    ctx->langversion = data["project"]["langversion"].value_or("no langversion");
-  };
-
-  void savePackageToml(std::shared_ptr<Context> ctx) {
-    toml::array authors = toml::array{};
-    for (auto &author : ctx->authors) {
-      authors.push_back(author);
-    }
-    toml::table table = toml::table{
+void savePackageToml(std::shared_ptr<Context> ctx) {
+  toml::array authors = toml::array{};
+  for (auto &author : ctx->authors) {
+    authors.push_back(author);
+  }
+  toml::table table = toml::table{
       {"project",
        toml::table{
-         {"name", ctx->project_name},
-         {"authors", authors},
-         {"src_dir", ctx->src_dir},
-         {"build_dir", ctx->build_dir},
-         {"git", ctx->git},
-         {"lang", ctx->lang},
-         {"langversion", ctx->langversion},
+           {"name", ctx->project_name},
+           {"authors", authors},
+           {"src_dir", ctx->src_dir},
+           {"build_dir", ctx->build_dir},
+           {"git", ctx->git},
+           {"lang", ctx->lang},
+           {"langversion", ctx->langversion},
        }},
-    };
+  };
 
-    std::ofstream file("./build/test.toml");
-    file << table;
+  std::ofstream file("./build/test.toml");
+  file << table;
+}
 
-  }
-
-  int init(std::shared_ptr<Context> ctx) {
-    std::cout << "creating " << ctx->project_name << '\n';
-    while (true) {
-      if (ctx->lang == "cpp") {
-        createCppProject(ctx);
-        savePackageToml(ctx);
-        break;
-      } else if (ctx->lang == "c") {
-        createCProject();
-        break;
-      } else if (ctx->lang == "rust") {
-        std::cout << "Fuck off" << ENDL;
-        break;
-      } else if (ctx->lang == "java") {
-        std::cout << "'Are you ok? Stop it get some help' - MJ" << ENDL;
-        break;
-      } else {
-        std::cout << "Invalid language" << ENDL;
-        return 1;
-      }
+int init(std::shared_ptr<Context> ctx) {
+  while (true) {
+    if (ctx->lang == "cpp") {
+      createCppProject(ctx);
+      savePackageToml(ctx);
+      break;
+    } else if (ctx->lang == "c") {
+      createCProject();
+      break;
+    } else if (ctx->lang == "rust") {
+      std::cout << "Fuck off" << ENDL;
+      break;
+    } else if (ctx->lang == "java") {
+      std::cout << "'Are you ok? Stop it get some help' - MJ" << ENDL;
+      break;
+    } else {
+      std::cout << "Invalid language" << ENDL;
+      return 1;
     }
-    return 0;
   }
+  return 0;
+}
 
 } // namespace Command

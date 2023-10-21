@@ -13,13 +13,17 @@ bool handleCProject();
 
 
 typedef struct Context {
-  std::string project_name{"project"};
-  std::string git{"https://github.com"};
-  std::string lang{"cpp"};
-  std::string langversion{"c++17"};
-  std::vector<std::string> authors{"author"};
-  std::string src_dir{"src"};
-  std::string build_dir{"build"};
+  std::string project_name;
+  std::string git;
+  std::string lang;
+  std::string cmake_version;
+  std::string langversion;
+  std::string compiler;
+  std::vector<std::string> authors;
+  std::string src_dir;
+  std::string include_dir;
+  std::string build_dir;
+  std::string semver;
 } Context;
 
 void loadPackageToml(std::shared_ptr<Context> ctx);
