@@ -25,6 +25,9 @@ namespace Command {
   void loadPackageToml(std::shared_ptr<Context> ctx){
     auto data = toml::parse_file("./build/test.toml");
     ctx->project_name = data["project"]["name"].value_or("no name");
+    for (auto &author : *data["project"]["authors"].as_array()) {
+      ctx->authors.push_back(author.value_or("no author"));
+    }
     ctx->git =  data["project"]["git"].value_or("no git");
     ctx->lang = data["project"]["lang"].value_or("no lang");
     ctx->langversion= data["project"]["langversion"].value_or("no langversion");
