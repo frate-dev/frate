@@ -45,6 +45,10 @@ int main(int argc, char **argv) {
     Command::loadPackageToml(ctx);
     Command::run(ctx);
   }
+  if (command == "flags"){
+    Command::loadPackageToml(ctx);
+    Command::addFlag(ctx, argv[2]);
+  }
   if (command == "help"){
     Command::help();
   }
