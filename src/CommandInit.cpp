@@ -24,12 +24,13 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
     {} \n\
     VERSION {}\n\
     LANGUAGES CXX\n\
-)",
-                                         ctx->project_name, ctx->semver);
+)",ctx->project_name, ctx->semver);
+
+
   std::string cxx_version =
-      std::format("set(CMAKE_CXX_STANDARD {})", ctx->langversion);
+    std::format("set(CMAKE_CXX_STANDARD {})", ctx->langversion);
   std::string compiler =
-      std::format("set(CMAKE_CXX_COMPILER {})", ctx->compiler);
+    std::format("set(CMAKE_CXX_COMPILER {})", ctx->compiler);
   std::string source_dir = std::format("set(SOURCE_DIR {})", ctx->src_dir);
   std::string build_dir = std::format("set(BUILD_DIR {})", ctx->build_dir);
   std::string files = "file(GLOB all_SRCS\n\
@@ -39,9 +40,12 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
     \"${PROJECT_SOURCE_DIR}/src/*.c\"\n\
 )";
   std::string include_dir =
-      std::format("include_directories({})", ctx->include_dir);
+    std::format("include_directories({})", ctx->include_dir);
   std::string add_executable =
-      std::format("add_executable({} ", ctx->project_name) + "${all_SRCS})";
+    std::format("add_executable({} ", ctx->project_name) + "${all_SRCS})";
+
+  std::string set_build_dir =
+    std::format("set_target_properties({} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {})", ctx->project_name, ctx->build_dir);
 
   std::ofstream file;
   remove("./CMakeLists.txt");
@@ -56,6 +60,7 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
   file << add_executable << '\n';
   file << source_dir << '\n';
   file << build_dir << '\n';
+  file << set_build_dir << '\n';
   return false;
 }
 

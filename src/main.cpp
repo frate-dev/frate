@@ -27,14 +27,10 @@ enum ProjectType {
 
 void generateBasicProject(std::string project_name) {}
 
-void help() {
-  std::cout << "usage: "
-            << "\n";
-}
 
 int main(int argc, char **argv) {
   if (argc < 2) {
-    help();
+    Command::help();
     std::cout << "needs more args"
               << "\n";
     return 1;

@@ -12,6 +12,7 @@ bool handleCppProject();
 bool handleCProject();
 
 
+
 typedef struct Context {
   std::string config;
   std::string project_name;
@@ -30,5 +31,6 @@ typedef struct Context {
 void loadPackageToml(std::shared_ptr<Context> ctx);
 int init(std::shared_ptr<Context>);
 int run(std::shared_ptr<Context>);
+int help();
 int addLib(std::shared_ptr<Context>, std::string);
 }; // namespace Command
