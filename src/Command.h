@@ -13,6 +13,7 @@ bool handleCProject();
 
 
 typedef struct Context {
+  std::string config;
   std::string project_name;
   std::string git;
   std::string lang;

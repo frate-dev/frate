@@ -1,33 +1,25 @@
 #include "Command.h"
 #include "toml.hpp"
 #include <format>
+#include <fstream>
 #include <iostream>
 #include <string>
-#include <fstream>
 
 namespace Command {
-const std::string projectTemplate =
-    "cmake_minimum_required(VERSION 3.0)\n"
-    "set(PROJECT_NAME {})\n"
-    "project(${PROJECT_NAME})\n"
-    "set(%<CXX_VERSION>)\n"
-    "set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/src)\n"
-    "set(BUILD_DIR ${CMAKE_SOURCE_DIR}/build)\n"
-    "add_executable(${PROJECT_NAME} ${SOURCE_DIR}/main.cpp)\n"
-    "set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "
-    "${BUILD_DIR})\n";
 
-bool createCppProject(std::shared_ptr<Context> ctx) {
+bool createCMakelists(std::shared_ptr<Context> ctx) {
   std::string cmake_minimum_required =
       std::format("cmake_minimum_required(VERSION {})", ctx->cmake_version);
   std::string project_name = std::format("project ( \n\
     {} \n\
     VERSION {}\n\
     LANGUAGES CXX\n\
-)",  ctx->project_name, ctx->semver);
+)",
+                                         ctx->project_name, ctx->semver);
   std::string cxx_version =
       std::format("set(CMAKE_CXX_STANDARD {})", ctx->langversion);
-  std::string compiler = std::format("set(CMAKE_CXX_COMPILER {})", ctx->compiler);
+  std::string compiler =
+      std::format("set(CMAKE_CXX_COMPILER {})", ctx->compiler);
   std::string source_dir = std::format("set(SOURCE_DIR {})", ctx->src_dir);
   std::string build_dir = std::format("set(BUILD_DIR {})", ctx->build_dir);
   std::string files = "file(GLOB all_SRCS\n\
@@ -36,12 +28,14 @@ bool createCppProject(std::shared_ptr<Context> ctx) {
     \"${PROJECT_SOURCE_DIR}/src/*.cpp\"\n\
     \"${PROJECT_SOURCE_DIR}/src/*.c\"\n\
 )";
-  std::string include_dir = std::format("include_directories({})", ctx->include_dir);
-  std::string add_executable = std::format("add_executable({} ", ctx->project_name) + "${all_SRCS})";
-
+  std::string include_dir =
+      std::format("include_directories({})", ctx->include_dir);
+  std::string add_executable =
+      std::format("add_executable({} ", ctx->project_name) + "${all_SRCS})";
 
   std::ofstream file;
   remove("./CMakeLists.txt");
+
   file.open("./CMakeLists.txt");
   file << cmake_minimum_required << '\n';
   file << project_name << '\n';
@@ -54,9 +48,54 @@ bool createCppProject(std::shared_ptr<Context> ctx) {
   file << build_dir << '\n';
   return false;
 }
+
+bool createToml(std::shared_ptr<Context> ctx) {
+  std::cout << "Project name: ";
+  std::cin >> ctx->project_name;
+  std::cout << "src_dir: ";
+  std::cin >> ctx->src_dir;
+  std::cout << "build_dir: ";
+  std::cin >> ctx->build_dir;
+
+  toml::array authors = toml::array{};
+  toml::table table = toml::table{
+      {"project",
+       toml::table{
+           {"name", ctx->project_name},
+           {"authors", authors},
+           {"src_dir", ctx->src_dir},
+           {"build_dir", ctx->build_dir},
+           {"git", ctx->git},
+           {"lang", ctx->lang},
+           {"langversion", ctx->langversion},
+       }},
+  };
+
+  return false;
+}
+bool createHelloWorld() {
+  std::ofstream file;
+  file.open("./src/main.cpp");
+  file << "#include <iostream>\n\
+int main(){\n\
+  std::cout << \"Hello World\" << std::endl;\n\
+  return 0;\n\
+}";
+  return false;
+}
+
+bool createCppProject(std::shared_ptr<Context> ctx) {
+
+  createToml(ctx);
+  loadPackageToml(ctx);
+  createCMakelists(ctx);
+  return true;
+}
+
 bool createCProject() { return false; }
+
 void loadPackageToml(std::shared_ptr<Context> ctx) {
-  auto data = toml::parse_file("./build/test.toml");
+  auto data = toml::parse_file("./config.toml");
   ctx->project_name = data["project"]["name"].value_or("no name");
   for (auto &author : *data["project"]["authors"].as_array()) {
     ctx->authors.push_back(author.value_or("no author"));
@@ -117,4 +156,4 @@ int init(std::shared_ptr<Context> ctx) {
   return 0;
 }
 
-} // namespace Command
+} 

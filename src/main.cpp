@@ -42,9 +42,11 @@ int main(int argc, char **argv) {
   std::string command = argv[1];
   //LUCAS MAKE SURE YOU INITIALIZE YOUR FUCKING STRUCT YOU TWAT
   std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-  Command::loadPackageToml(ctx);
   if (command == "init") {
     Command::init(ctx);
+  }
+  if (command == "run") {
+    Command::loadPackageToml(ctx);
   }
   return 0;
 }
