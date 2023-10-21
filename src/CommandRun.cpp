@@ -7,7 +7,7 @@ namespace Command {
     system("mkdir -p build");
     system("cmake  . ");
     system("make");
-    std::string command = "./" + ctx->project_name;
+    std::string command = "./build/" + ctx->project_name;
     system(command.c_str());
     return 0;
   }
