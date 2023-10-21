@@ -177,7 +177,7 @@ int init(std::shared_ptr<Context> ctx) {
   while (true) {
     std::cout << "Language: ";
     std::cin >> ctx->lang;
-    if (ctx->lang == "cpp") {
+    if (ctx->lang == "cpp" || ctx->lang ==  "c++") {
       createCppProject(ctx);
       break;
     } else if (ctx->lang == "c") {
