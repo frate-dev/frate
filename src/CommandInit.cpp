@@ -175,7 +175,7 @@ void loadPackageToml(std::shared_ptr<Context> ctx) {
 
 int init(std::shared_ptr<Context> ctx) {
   while (true) {
-    std::cout << "Language: ";
+    std::cout << "Language: " << ENDL;
     std::cin >> ctx->lang;
     if (ctx->lang == "cpp" || ctx->lang ==  "c++") {
       createCppProject(ctx);
