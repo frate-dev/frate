@@ -9,7 +9,7 @@ RESOURCES := ./resources/*
 SRCS := $(shell find $(SRC) -name *.cpp)
 OBJS := $(subst $(SRC)/,$(BUILD)/,$(addsuffix .o,$(basename $(SRCS))))
 
-.PHONY: all 
+.PHONY: all run
 all: main 
 
 
@@ -19,6 +19,8 @@ main: $(OBJS)
 
 $(BUILD)/%.o: $(SRC)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
+
+
 
 .PHONY: clean
 clean:

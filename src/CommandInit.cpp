@@ -22,39 +22,31 @@ namespace Command {
     return false;
   }
 
-  void loadPackageToml(){
+  void loadPackageToml(std::shared_ptr<Context> ctx){
     auto data = toml::parse_file("./build/test.toml");
-
-    std::string_view name = data["project"]["name"].value_or("no name");
-    std::cout << name << '\n';
-    auto authors = data["project"]["authors"];
-    std::cout << authors << '\n';
-    std::string_view git = data["project"]["git"].value_or("no git");
-    std::cout << git << '\n';
-    std::string_view lang = data["project"]["lang"].value_or("no lang");
-    std::cout << lang << '\n';
-    std::string_view langversion = data["project"]["langversion"].value_or("no langversion");
-    std::cout << langversion << '\n';
-
+    ctx->project_name = data["project"]["name"].value_or("no name");
+    for (auto &author : *data["project"]["authors"].as_array()) {
+      ctx->authors.push_back(author.value_or("no author"));
+    }
+    ctx->git =  data["project"]["git"].value_or("no git");
+    ctx->lang = data["project"]["lang"].value_or("no lang");
+    ctx->langversion= data["project"]["langversion"].value_or("no langversion");
   };
 
   int init(std::shared_ptr<Context> ctx) {
-    std::cout << "📕 Enter project name: ";
-    std::cin >> ctx->name;
-    std::cout << "💻 C or C++? (c/cpp): ";
-    std::string lang;
+
+    std::cout << "creating " << ctx->project_name << '\n';
     while (true) {
-      std::cin >> lang;
-      if (lang == "cpp") {
+      if (ctx->lang == "cpp") {
         createCppProject();
         break;
-      } else if (lang == "c") {
+      } else if (ctx->lang == "c") {
         createCProject();
         break;
-      } else if (lang == "rust") {
+      } else if (ctx->lang == "rust") {
         std::cout << "Fuck off" << '\n';
         break;
-      } else if (lang == "java") {
+      } else if (ctx->lang == "java") {
         std::cout << "'Are you ok? Stop it get some help' - MJ" << '\n';
         /*
          * This was gonna be added but I felt pitty on the java developers

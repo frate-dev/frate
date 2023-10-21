@@ -1,7 +1,7 @@
-#include <iostream>
-#include <string>
-#include <memory>
 #include "Command.h"
+#include <iostream>
+#include <memory>
+#include <string>
 
 enum Language { CPP, C };
 
@@ -22,24 +22,24 @@ version c2x = {"CMAKE_C_STANDARD_REQUIRED", "2x"};
 
 enum ProjectType { BASIC, LIBRARY, EXECUTABLE };
 
-
-
+void generateBasicProject(std::string project_name) {}
 
 void help() {
-  std::cout << "usage: " << "\n";
+  std::cout << "usage: "
+            << "\n";
 }
 
 int main(int argc, char **argv) {
   if (argc < 2) {
     help();
-    std::cout << "needs more args" << "\n";
+    std::cout << "needs more args"
+              << "\n";
     return 1;
   }
   std::string command = argv[1];
   std::shared_ptr<Command::Context> ctx;
-
-  Command::loadPackageToml();
-  if (command == "init"){
+  Command::loadPackageToml(ctx);
+  if (command == "init") {
     Command::init(ctx);
   }
   return 0;
