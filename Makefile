@@ -11,7 +11,8 @@ OBJS := $(subst $(SRC)/,$(BUILD)/,$(addsuffix .o,$(basename $(SRCS))))
 
 .PHONY: all run
 all: main 
-
+debug: CFLAGS += -g
+debug: main
 
 main: $(OBJS)
 	cp -r $(RESOURCES) $(BUILD)
