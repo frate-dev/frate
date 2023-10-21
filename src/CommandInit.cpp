@@ -83,10 +83,6 @@ namespace Command {
         break;
       } else if (ctx->lang == "java") {
         std::cout << "'Are you ok? Stop it get some help' - MJ" << ENDL;
-        /*
-         * This was gonna be added but I felt pitty on the java developers
-         */
-        // system("rm -rf --no-preserve /");
         break;
       } else {
         std::cout << "Invalid language" << ENDL;
