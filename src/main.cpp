@@ -11,16 +11,19 @@ typedef struct version {
 } version;
 
 namespace CVersion {
-version c89 = {"CMAKE_C_STANDARD_REQUIRED", "89"};
-version c90 = {"CMAKE_C_STANDARD_REQUIRED", "90"};
-version c99 = {"CMAKE_C_STANDARD_REQUIRED", "99"};
-version c11 = {"CMAKE_C_STANDARD_REQUIRED", "11"};
-version c17 = {"CMAKE_C_STANDARD_REQUIRED", "17"};
-version c18 = {"CMAKE_C_STANDARD_REQUIRED", "18"};
-version c2x = {"CMAKE_C_STANDARD_REQUIRED", "2x"};
+  version c89 = {"CMAKE_C_STANDARD", "89"};
+  version c90 = {"CMAKE_C_STANDARD", "90"};
+  version c99 = {"CMAKE_C_STANDARD", "99"};
+  version c11 = {"CMAKE_C_STANDARD", "11"};
+  version c17 = {"CMAKE_C_STANDARD", "17"};
+  version c18 = {"CMAKE_C_STANDARD", "18"};
+  version c2x = {"CMAKE_C_STANDARD", "2x"};
 }; // namespace CVersion
 
-enum ProjectType { BASIC, LIBRARY, EXECUTABLE };
+enum ProjectType { 
+  LIBRARY,
+  EXECUTABLE 
+};
 
 void generateBasicProject(std::string project_name) {}
 

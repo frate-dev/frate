@@ -3,6 +3,8 @@
 #include <vector>
 #include <filesystem>
 
+#define ENDL "\n"
+
 namespace Command {
 
 bool handleCppProject();
@@ -11,13 +13,13 @@ bool handleCProject();
 
 
 typedef struct Context {
-  std::string project_name;
-  std::string git;
-  std::string lang;
-  std::string langversion;
-  std::vector<std::string> authors;
-  std::string src_dir;
-  std::string build_dir;
+  std::string project_name{"project"};
+  std::string git{"https://github.com"};
+  std::string lang{"cpp"};
+  std::string langversion{"c++17"};
+  std::vector<std::string> authors{"author"};
+  std::string src_dir{"src"};
+  std::string build_dir{"build"};
 } Context;
 
 void loadPackageToml(std::shared_ptr<Context> ctx);
