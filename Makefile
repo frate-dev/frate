@@ -1,4 +1,4 @@
-CC = g++ 
+CC = clang++ 
 CFLAGS = -Wall -Wextra -Wpedantic -Wold-style-cast -std=c++20 -I./include
 MAKEFLAGS += -j5
 

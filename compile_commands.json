@@ -10,11 +10,47 @@
       "-I./include",
       "-c",
       "-o",
+      "build/CommandGeneral.o",
+      "src/CommandGeneral.cpp"
+    ],
+    "directory": "/home/lucas/wrk/learning/cpp/cmake-generator",
+    "file": "/home/lucas/wrk/learning/cpp/cmake-generator/src/CommandGeneral.cpp",
+    "output": "/home/lucas/wrk/learning/cpp/cmake-generator/build/CommandGeneral.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wold-style-cast",
+      "-std=c++20",
+      "-I./include",
+      "-c",
+      "-o",
       "build/CommandInit.o",
       "src/CommandInit.cpp"
     ],
-    "directory": "/home/deastl/repos/cmake-generator",
-    "file": "/home/deastl/repos/cmake-generator/src/CommandInit.cpp",
-    "output": "/home/deastl/repos/cmake-generator/build/CommandInit.o"
+    "directory": "/home/lucas/wrk/learning/cpp/cmake-generator",
+    "file": "/home/lucas/wrk/learning/cpp/cmake-generator/src/CommandInit.cpp",
+    "output": "/home/lucas/wrk/learning/cpp/cmake-generator/build/CommandInit.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wold-style-cast",
+      "-std=c++20",
+      "-I./include",
+      "-c",
+      "-o",
+      "build/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/lucas/wrk/learning/cpp/cmake-generator",
+    "file": "/home/lucas/wrk/learning/cpp/cmake-generator/src/main.cpp",
+    "output": "/home/lucas/wrk/learning/cpp/cmake-generator/build/main.o"
   }
 ]

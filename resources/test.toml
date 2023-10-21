@@ -2,5 +2,7 @@
 name = "test-project"
 authors = ["Cee Deez Nuts","Cock and ball torture"]
 git = "https://github.com/cedeeznuts/test-project"
+src_dir = "./src"
+build_dir = "./build"
 lang = "cpp"
 langversion = "17"

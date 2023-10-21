@@ -1,6 +1,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <filesystem>
 
 namespace Command {
 
@@ -15,6 +16,8 @@ typedef struct Context {
   std::string lang;
   std::string langversion;
   std::vector<std::string> authors;
+  std::string src_dir;
+  std::string build_dir;
 } Context;
 
 void loadPackageToml(std::shared_ptr<Context> ctx);
