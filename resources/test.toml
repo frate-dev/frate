@@ -1,0 +1,6 @@
+[project]
+name = "test-project"
+authors = ["Cee Deez Nuts","Cock and ball torture"]
+git = "https://github.com/cedeeznuts/test-project"
+lang = "cpp"
+langversion = "17"

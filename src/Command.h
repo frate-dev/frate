@@ -2,6 +2,15 @@
 #include <string>
 
 namespace Command {
+
+  bool handleCppProject();
+
+  bool handleCProject();
+
+   
+  void loadPackageToml();
+
+
   typedef struct Context {
      std::string name;
   } Context;

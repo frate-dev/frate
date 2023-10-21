@@ -37,6 +37,8 @@ int main(int argc, char **argv) {
   }
   std::string command = argv[1];
   std::shared_ptr<Command::Context> ctx;
+
+  Command::loadPackageToml();
   if (command == "init"){
     Command::init(ctx);
   }
