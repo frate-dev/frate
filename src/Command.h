@@ -29,5 +29,6 @@ typedef struct Context {
 
 void loadPackageToml(std::shared_ptr<Context> ctx);
 int init(std::shared_ptr<Context>);
+int run(std::shared_ptr<Context>);
 int addLib(std::shared_ptr<Context>, std::string);
 }; // namespace Command

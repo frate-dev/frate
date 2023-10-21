@@ -47,6 +47,7 @@ int main(int argc, char **argv) {
   }
   if (command == "run") {
     Command::loadPackageToml(ctx);
+    Command::run(ctx);
   }
   return 0;
 }

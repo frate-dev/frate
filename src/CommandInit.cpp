@@ -7,6 +7,16 @@
 
 namespace Command {
 
+// cmake_minimum_required(VERSION 3.16)
+// project (
+//  test
+//  VERSION 0.0.1 LANGUAGES cxx
+//  )
+//  set(CMAKE_CXX_STANDARD 20)
+//
+//  set(CMAKE_CXX_COMPILER clang++)
+//
+
 bool createCMakelists(std::shared_ptr<Context> ctx) {
   std::string cmake_minimum_required =
       std::format("cmake_minimum_required(VERSION {})", ctx->cmake_version);
@@ -50,30 +60,48 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
 }
 
 bool createToml(std::shared_ptr<Context> ctx) {
+  std::cout << "Cmake version: ";
+  std::cin >> ctx->cmake_version;
   std::cout << "Project name: ";
   std::cin >> ctx->project_name;
+  std::cout << "version: ";
+  std::cin >> ctx->semver;
+  std::cout << "Language Standard: ";
+  std::cin >> ctx->langversion;
+  std::cout << "compiler: ";
+  std::cin >> ctx->compiler;
   std::cout << "src_dir: ";
   std::cin >> ctx->src_dir;
   std::cout << "build_dir: ";
   std::cin >> ctx->build_dir;
+  std::cout << "include_dir: ";
+  std::cin >> ctx->include_dir;
 
   toml::array authors = toml::array{};
   toml::table table = toml::table{
       {"project",
        toml::table{
+           {"cmake_version", ctx->cmake_version},
+           {"include_dir", ctx->include_dir},
+           {"semver", ctx->semver},
+           {"compiler", ctx->compiler},
            {"name", ctx->project_name},
            {"authors", authors},
            {"src_dir", ctx->src_dir},
            {"build_dir", ctx->build_dir},
-           {"git", ctx->git},
            {"lang", ctx->lang},
            {"langversion", ctx->langversion},
        }},
   };
-
+  std::ofstream file;
+  file.open("./config.toml");
+  file << table;
+  file << '\n';
+  file.close();
   return false;
 }
 bool createHelloWorld() {
+  system("mkdir src");
   std::ofstream file;
   file.open("./src/main.cpp");
   file << "#include <iostream>\n\
@@ -89,6 +117,7 @@ bool createCppProject(std::shared_ptr<Context> ctx) {
   createToml(ctx);
   loadPackageToml(ctx);
   createCMakelists(ctx);
+  createHelloWorld();
   return true;
 }
 
@@ -111,33 +140,14 @@ void loadPackageToml(std::shared_ptr<Context> ctx) {
   ctx->semver = data["project"]["semver"].value_or("0.0.1");
 };
 
-void savePackageToml(std::shared_ptr<Context> ctx) {
-  toml::array authors = toml::array{};
-  for (auto &author : ctx->authors) {
-    authors.push_back(author);
-  }
-  toml::table table = toml::table{
-      {"project",
-       toml::table{
-           {"name", ctx->project_name},
-           {"authors", authors},
-           {"src_dir", ctx->src_dir},
-           {"build_dir", ctx->build_dir},
-           {"git", ctx->git},
-           {"lang", ctx->lang},
-           {"langversion", ctx->langversion},
-       }},
-  };
 
-  std::ofstream file("./build/test.toml");
-  file << table;
-}
 
 int init(std::shared_ptr<Context> ctx) {
   while (true) {
+    std::cout << "Language: ";
+    std::cin >> ctx->lang;
     if (ctx->lang == "cpp") {
       createCppProject(ctx);
-      savePackageToml(ctx);
       break;
     } else if (ctx->lang == "c") {
       createCProject();
@@ -156,4 +166,4 @@ int init(std::shared_ptr<Context> ctx) {
   return 0;
 }
 
-} 
+} // namespace Command
