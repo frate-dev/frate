@@ -6,7 +6,12 @@
 namespace Command {
 bool loadPackageToml(std::shared_ptr<Context> ctx) {
   try {
-    auto data = toml::parse_file("./build/config.toml");
+    std::string file_name = "./config.toml";
+    #ifdef DEBUG
+        file_name = "./build/config.toml";
+    #endif
+
+    auto data = toml::parse_file(file_name);
     ctx->project_name = data["project"]["project_name"].value_or("no name");
     for (auto &author : *data["project"]["authors"].as_array()) {
       ctx->authors.push_back(author.value_or("no author"));
