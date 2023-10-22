@@ -3,7 +3,7 @@ This command line application came to fruition out of the desperate hopes and dr
 
 # STAR THE REPO
 
-![](./source/images/average_cpp_learner.img)
+![](./source/images/average_cpp_learner.png)
 
 
 ## Built with
