@@ -1,15 +1,15 @@
 #include <iostream>
 #include "Command.h"
 
-
-namespace Command{
+namespace Command {
 
   int help() {
-    std::cout << "usage: " << ENDL  
+    std::cout << "usage: idk do what you want" << ENDL  
       "Commands:" << ENDL
-      "   init: initializes your project" << ENDL
-      "   run : builds and runs your project" <<ENDL
-      "   flags: adds a flag to your project" << ENDL;
+      "\tinit:  initializes your project"     << ENDL
+      "\trun:   builds and runs your project" << ENDL
+      "\tflags: adds a flag to your project"  << ENDL
+      "\thelp:  print help"  << ENDL;
     return 1;
   }
 
