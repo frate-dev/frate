@@ -1,5 +1,6 @@
 build/*
 .cache
+.cache/*
 .cmake
 Makefile
 CMakeFiles
