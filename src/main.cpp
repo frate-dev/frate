@@ -24,7 +24,13 @@ int main(int argc, char **argv)
     return 1;
   }
 
-  std::string command = argv[1];
+  std::string command = argv[1];  
+  std::vector<std::string> args;
+  for (int i = 2; i < argc; i++)
+  {
+   args.push_back(argv[i]);
+  }
+  
   // LUCAS MAKE SURE YOU INITIALIZE YOUR FUCKING STRUCT YOU TWAT
   std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
 
@@ -38,7 +44,7 @@ int main(int argc, char **argv)
   };
   // default if they accidentily pass nothing
   auto selection = cmd_options::help; 
-  
+
   auto it = table.find(command);
   if (it != table.end())
   {
@@ -48,8 +54,8 @@ int main(int argc, char **argv)
   switch (selection)
   {
   case 0: // i / init
-  case 1:
-    Command::init(ctx);
+  case 1: 
+    Command::init(ctx, args);
     break;
 
   case 2: // r / run

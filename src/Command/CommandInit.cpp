@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 namespace Command {
 
@@ -161,29 +162,79 @@ bool createCProject(std::shared_ptr<Context> ctx) {
   return false; 
 }
 
+bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
+  ctx->project_name = "cppProject"; 
 
+    toml::array authors = toml::array{};
+    toml::table table = toml::table{
+        {"project",
+         toml::table{
+             {"cmake_version", ctx->cmake_version},
+             {"include_dir", ctx->include_dir},
+             {"project_version", ctx->project_version},
+             {"compiler", ctx->compiler},
+             {"project_name", ctx->project_name},
+             {"authors", authors},
+             {"src_dir", ctx->src_dir},
+             {"build_dir", ctx->build_dir},
+             {"lang", ctx->lang},
+             {"lang_version", ctx->lang_version},
+         }},
+    };
+    std::cout << "📄New Toml File: \n";
+    std::cout << table << '\n';
 
-bool init(std::shared_ptr<Context> ctx) {
-  while (true) {
-    std::cout << "Language: ";
-    std::getline(std::cin,ctx->lang);
-    if (ctx->lang == "cpp" || ctx->lang ==  "c++") {
-      createCppProject(ctx);
-      break;
-    } else if (ctx->lang == "c") {
-      createCProject(ctx);
-      break;
-    } else if (ctx->lang == "rust") {
-      std::cout << "Fuck off" << ENDL;
-      break;
-    } else if (ctx->lang == "java") {
-      std::cout << "'Are you ok? Stop it get some help' - MJ" << ENDL;
-      break;
-    } else {
-      std::cout << "Invalid language" << ENDL;
-      return 1;
+    std::ofstream file;
+    file.open("./config.toml");
+    file << table;
+    file << '\n';
+    file.close();
+}
+
+bool init(std::shared_ptr<Context> ctx, std::vector<std::string> args)
+{
+
+  if (std::find(args.begin(), args.end(), "-y") != args.end())
+  {
+    defaultTomlCpp(ctx)
+    loadPackageToml(ctx);
+    createCMakelists(ctx);
+    createHelloWorldCpp();
+  }
+  else
+  {
+    while (true)
+    {
+      std::cout << "Language: ";
+      std::getline(std::cin, ctx->lang);
+      if (ctx->lang == "cpp" || ctx->lang == "c++")
+      {
+        createCppProject(ctx);
+        break;
+      }
+      else if (ctx->lang == "c")
+      {
+        createCProject(ctx);
+        break;
+      }
+      else if (ctx->lang == "rust")
+      {
+        std::cout << "Fuck off" << ENDL;
+        break;
+      }
+      else if (ctx->lang == "java")
+      {
+        std::cout << "'Are you ok? Stop it get some help' - MJ" << ENDL;
+        break;
+      }
+      else
+      {
+        std::cout << "Invalid language" << ENDL;
+        return 1;
+      }
     }
   }
+
   return true;
 }
 

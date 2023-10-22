@@ -31,13 +31,13 @@ typedef struct Context {
   std::string include_dir{"include"};
   std::string build_dir{"build"};
   std::string project_version{"0.0.1"};
-  std::vector<std::string> flags;
-
+  std::vector<std::string> flags; 
 } Context;
+
 bool loadPackageToml(std::shared_ptr<Context> ctx);
-bool init(std::shared_ptr<Context>);
+bool init(std::shared_ptr<Context>, std::vector<std::string> args);
 bool run(std::shared_ptr<Context>);
-bool ftp();
+bool ftp(std::shared_ptr<Context>);
 bool addFlag(std::shared_ptr<Context>, std::string);
 bool help();
 
