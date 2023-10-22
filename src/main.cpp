@@ -2,6 +2,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <cxxopts.hpp>
 
 /// @brief command options from user input. _must_ match map
 enum cmd_options

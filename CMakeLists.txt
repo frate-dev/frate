@@ -5,36 +5,30 @@ project (
     LANGUAGES CXX
 )
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_COMPILER g++)
-function(CloneRepository repositoryURL branchName projectName sourceDir)
-  #Commands are left empty so that we only checkout the source and no not perform any kind of build
-  message("Starting to clone ${projectName} into ${sourceDir}")
-  FetchContent_Declare(
-    "${projectName}"
-    GIT_REPOSITORY "${repositoryURL}"
-    SOURCE_DIR "${sourceDir}"
-    GIT_TAG "origin/${branchName}"
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
-  )
-  FetchContent_MakeAvailable(${projectName})
-endfunction(CloneRepository)
 
 
+include(FetchContent)
 
+FetchContent_Declare(
+  cxxopts
+  GIT_REPOSITORY "https://github.com/jarro2783/cxxopts.git"
+  GIT_TAG "origin/master"
+)
+
+
+FetchContent_MakeAvailable(cxxopts)
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
-  "include/**.h"
-  "include/**.hpp"
   "src/**.cpp"
   "src/**.c"
 )
 
+include_directories(${CMAKE_SOURCE_DIR}/include)
+set(HEADER_DIR ${CMAKE_SOURCE_DIR}/include)
+
 message("Sources: ${SOURCES}")
 
-
-
+#target_link_libraries(cmake-generator SHARED cxxopts)
 include_directories(include)
 add_executable(cmake-generator ${SOURCES})
 
@@ -50,6 +44,7 @@ else()
   add_definitions(-DDEBUG)
 endif()
 
+target_link_libraries(cmake-generator cxxopts)
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
 
