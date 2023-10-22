@@ -3,15 +3,13 @@
 #include <memory>
 #include <string>
 
+/// @brief command options from user input. _must_ match map
 enum cmd_options
 {
-  i = 0,
-  init = 1,
-  r = 2,
-  run = 3,
-  flags = 4,
-  help = 5
-
+  help = -1,
+  i, init = 0, 
+  r, run = 2, 
+  flags = 3,
 };
 
 int main(int argc, char **argv)
@@ -24,16 +22,17 @@ int main(int argc, char **argv)
     return 1;
   }
 
-  std::string command = argv[1];  
+  std::string command = argv[1];
   std::vector<std::string> args;
   for (int i = 2; i < argc; i++)
   {
-   args.push_back(argv[i]);
+    args.push_back(argv[i]);
   }
-  
+
   // LUCAS MAKE SURE YOU INITIALIZE YOUR FUCKING STRUCT YOU TWAT
   std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
 
+  /// table reflects what enum cmd_options contains to switch on user input.
   static std::map<std::string, cmd_options> const table = {
       {"i", cmd_options::i},
       {"init", cmd_options::init},
@@ -43,35 +42,33 @@ int main(int argc, char **argv)
       {"help", cmd_options::help},
   };
   // default if they accidentily pass nothing
-  auto selection = cmd_options::help; 
-
+  auto selection = cmd_options::help;
   auto it = table.find(command);
   if (it != table.end())
   {
     selection = it->second;
   }
 
+
   switch (selection)
   {
+  case -1: // help
+  default:
+    Command::help();
+    break;
+
   case 0: // i / init
-  case 1: 
     Command::init(ctx, args);
     break;
 
-  case 2: // r / run
-  case 3:
+  case 1: // r / run
     Command::loadPackageToml(ctx);
     Command::run(ctx);
     break;
 
-  case 4: // flags
+  case 2: // flags
     Command::loadPackageToml(ctx);
     Command::addFlag(ctx, argv[2]);
-    break;
-
-  case 5: // help
-  default:
-    Command::help();
     break;
   }
   return 0;

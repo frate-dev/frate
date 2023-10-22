@@ -35,7 +35,7 @@ typedef struct Context {
 } Context;
 
 bool loadPackageToml(std::shared_ptr<Context> ctx);
-bool init(std::shared_ptr<Context>, std::vector<std::string> args);
+bool init(std::shared_ptr<Context>, std::vector<std::string> &args);
 bool run(std::shared_ptr<Context>);
 bool ftp(std::shared_ptr<Context>);
 bool addFlag(std::shared_ptr<Context>, std::string);

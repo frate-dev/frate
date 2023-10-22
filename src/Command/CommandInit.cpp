@@ -122,9 +122,9 @@ bool createToml(std::shared_ptr<Context> ctx) {
 }
 
 bool createHelloWorldCpp() {
-  system("mkdir src");
+  system("cd build;mkdir src");
   std::ofstream file;
-  file.open("./src/main.cpp");
+  file.open("./build/src/main.cpp");
   file << 
     "#include <iostream>\n"
     "int main(){\n"
@@ -162,41 +162,43 @@ bool createCProject(std::shared_ptr<Context> ctx) {
   return false; 
 }
 
-bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
-  ctx->project_name = "cppProject"; 
+bool defaultTomlCpp(std::shared_ptr<Context> ctx) { 
+    ctx->project_name = "TestProject"; 
+    ctx->src_dir = "./src";
+    ctx->build_dir = "./build"; 
 
     toml::array authors = toml::array{};
     toml::table table = toml::table{
         {"project",
-         toml::table{
-             {"cmake_version", ctx->cmake_version},
-             {"include_dir", ctx->include_dir},
-             {"project_version", ctx->project_version},
-             {"compiler", ctx->compiler},
-             {"project_name", ctx->project_name},
-             {"authors", authors},
-             {"src_dir", ctx->src_dir},
-             {"build_dir", ctx->build_dir},
-             {"lang", ctx->lang},
-             {"lang_version", ctx->lang_version},
-         }},
+        toml::table{
+            {"cmake_version", ctx->cmake_version},
+            {"include_dir", ctx->include_dir},
+            {"project_version", ctx->project_version},
+            {"compiler", ctx->compiler},
+            {"project_name", ctx->project_name},
+            {"authors", authors},
+            {"src_dir", ctx->src_dir},
+            {"build_dir", ctx->build_dir},
+            {"lang", ctx->lang},
+            {"lang_version", ctx->lang_version},
+        }},
     };
     std::cout << "📄New Toml File: \n";
     std::cout << table << '\n';
 
     std::ofstream file;
-    file.open("./config.toml");
+    file.open("./build/config.toml");
     file << table;
     file << '\n';
     file.close();
-    return true;
+    return false;
 }
 
-bool init(std::shared_ptr<Context> ctx, std::vector<std::string> args)
+bool init(std::shared_ptr<Context> ctx, std::vector<std::string> &args)
 {
 
   if (std::find(args.begin(), args.end(), "-y") != args.end())
-  {
+  { 
     defaultTomlCpp(ctx);
     loadPackageToml(ctx);
     createCMakelists(ctx);

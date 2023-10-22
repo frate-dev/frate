@@ -6,7 +6,7 @@
 namespace Command {
 bool loadPackageToml(std::shared_ptr<Context> ctx) {
   try {
-    auto data = toml::parse_file("./config.toml");
+    auto data = toml::parse_file("./build/config.toml");
     ctx->project_name = data["project"]["project_name"].value_or("no name");
     for (auto &author : *data["project"]["authors"].as_array()) {
       ctx->authors.push_back(author.value_or("no author"));
@@ -56,7 +56,7 @@ bool writePackageToml(std::shared_ptr<Context> ctx) {
        }},
   };
   std::ofstream file;
-  file.open("./config.toml");
+  file.open("./build/config.toml");
   file << table;
   file << '\n';
   file.close();
