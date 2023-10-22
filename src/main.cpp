@@ -36,7 +36,9 @@ int main(int argc, char **argv)
       {"flags", cmd_options::flags},
       {"help", cmd_options::help},
   };
-  auto selection = cmd_options::help; // default
+  // default if they accidentily pass nothing
+  auto selection = cmd_options::help; 
+  
   auto it = table.find(command);
   if (it != table.end())
   {

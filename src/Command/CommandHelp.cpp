@@ -8,8 +8,8 @@ namespace Command {
       "Commands:" << ENDL
       "\t i | init:  initializes your project"     << ENDL
       "\t r | run:   builds and runs your project" << ENDL
-      "\tflags: adds a flag to your project"  << ENDL
-      "\thelp:  print help"  << ENDL;
+      "\t flags: adds a flag to your project"  << ENDL
+      "\t help:  print help"  << ENDL;
     return 1;
   }
 
