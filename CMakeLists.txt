@@ -22,14 +22,6 @@ function(CloneRepository repositoryURL branchName projectName sourceDir)
 endfunction(CloneRepository)
 
 
-#file(GLOB LIB_SRCS
-#  "./src/Command/*.cpp"
-#  "./src/Command/*.hpp"
-#  "./src/Command/*.h"
-#)
-#add_library(Command 
-#  ${LIB_SRCS}
-#)
 
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
@@ -37,10 +29,6 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "include/**.hpp"
   "src/**.cpp"
   "src/**.c"
-  #"${PROJECT_SOURCE_DIR}/include/*.h"
-  #"${PROJECT_SOURCE_DIR}/include/*.hpp"
-  #"${PROJECT_SOURCE_DIR}/src/*.cpp"
-  #"${PROJECT_SOURCE_DIR}/src/*.c"
 )
 
 message("Sources: ${SOURCES}")
@@ -49,6 +37,19 @@ message("Sources: ${SOURCES}")
 
 include_directories(include)
 add_executable(cmake-generator ${SOURCES})
+
+if(NOT DEFINED RELEASE)
+  set(RELEASE 0)
+endif()
+
+if(RELEASE EQUAL 1)
+  message("Release mode")
+  add_definitions(-DRELEASE)
+else()
+  message("Debug mode")
+  add_definitions(-DDEBUG)
+endif()
+
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
 

@@ -2,55 +2,113 @@
   {
     "arguments": [
       "/usr/bin/g++",
-      "-Wall",
-      "-Wextra",
-      "-Wpedantic",
-      "-Wold-style-cast",
-      "-std=c++20",
-      "-I./include",
+      "-I/home/deastl/repos/cmake-generator/include",
+      "-std=gnu++20",
       "-c",
       "-o",
-      "build/CommandGeneral.o",
-      "src/CommandGeneral.cpp"
+      "CMakeFiles/cmake-generator.dir/src/Command/CommandFTP.cpp.o",
+      "/home/deastl/repos/cmake-generator/src/Command/CommandFTP.cpp"
     ],
-    "directory": "/home/lucas/wrk/learning/cpp/cmake-generator",
-    "file": "/home/lucas/wrk/learning/cpp/cmake-generator/src/CommandGeneral.cpp",
-    "output": "/home/lucas/wrk/learning/cpp/cmake-generator/build/CommandGeneral.o"
+    "directory": "/home/deastl/repos/cmake-generator",
+    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandFTP.cpp",
+    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandFTP.cpp.o"
   },
   {
     "arguments": [
       "/usr/bin/g++",
-      "-Wall",
-      "-Wextra",
-      "-Wpedantic",
-      "-Wold-style-cast",
-      "-std=c++20",
-      "-I./include",
+      "-I/home/deastl/repos/cmake-generator/include",
+      "-std=gnu++20",
       "-c",
       "-o",
-      "build/CommandInit.o",
-      "src/CommandInit.cpp"
+      "CMakeFiles/cmake-generator.dir/src/Command/CommandFlags.cpp.o",
+      "/home/deastl/repos/cmake-generator/src/Command/CommandFlags.cpp"
     ],
-    "directory": "/home/lucas/wrk/learning/cpp/cmake-generator",
-    "file": "/home/lucas/wrk/learning/cpp/cmake-generator/src/CommandInit.cpp",
-    "output": "/home/lucas/wrk/learning/cpp/cmake-generator/build/CommandInit.o"
+    "directory": "/home/deastl/repos/cmake-generator",
+    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandFlags.cpp",
+    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandFlags.cpp.o"
   },
   {
     "arguments": [
       "/usr/bin/g++",
-      "-Wall",
-      "-Wextra",
-      "-Wpedantic",
-      "-Wold-style-cast",
-      "-std=c++20",
-      "-I./include",
+      "-I/home/deastl/repos/cmake-generator/include",
+      "-std=gnu++20",
       "-c",
       "-o",
-      "build/main.o",
-      "src/main.cpp"
+      "CMakeFiles/cmake-generator.dir/src/Command/CommandGeneral.cpp.o",
+      "/home/deastl/repos/cmake-generator/src/Command/CommandGeneral.cpp"
     ],
-    "directory": "/home/lucas/wrk/learning/cpp/cmake-generator",
-    "file": "/home/lucas/wrk/learning/cpp/cmake-generator/src/main.cpp",
-    "output": "/home/lucas/wrk/learning/cpp/cmake-generator/build/main.o"
+    "directory": "/home/deastl/repos/cmake-generator",
+    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandGeneral.cpp",
+    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandGeneral.cpp.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-I/home/deastl/repos/cmake-generator/include",
+      "-std=gnu++20",
+      "-c",
+      "-o",
+      "CMakeFiles/cmake-generator.dir/src/Command/CommandHelp.cpp.o",
+      "/home/deastl/repos/cmake-generator/src/Command/CommandHelp.cpp"
+    ],
+    "directory": "/home/deastl/repos/cmake-generator",
+    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandHelp.cpp",
+    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandHelp.cpp.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-I/home/deastl/repos/cmake-generator/include",
+      "-std=gnu++20",
+      "-c",
+      "-o",
+      "CMakeFiles/cmake-generator.dir/src/Command/CommandInit.cpp.o",
+      "/home/deastl/repos/cmake-generator/src/Command/CommandInit.cpp"
+    ],
+    "directory": "/home/deastl/repos/cmake-generator",
+    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandInit.cpp",
+    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandInit.cpp.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-I/home/deastl/repos/cmake-generator/include",
+      "-std=gnu++20",
+      "-c",
+      "-o",
+      "CMakeFiles/cmake-generator.dir/src/Command/CommandLib.cpp.o",
+      "/home/deastl/repos/cmake-generator/src/Command/CommandLib.cpp"
+    ],
+    "directory": "/home/deastl/repos/cmake-generator",
+    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandLib.cpp",
+    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandLib.cpp.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-I/home/deastl/repos/cmake-generator/include",
+      "-std=gnu++20",
+      "-c",
+      "-o",
+      "CMakeFiles/cmake-generator.dir/src/Command/CommandRun.cpp.o",
+      "/home/deastl/repos/cmake-generator/src/Command/CommandRun.cpp"
+    ],
+    "directory": "/home/deastl/repos/cmake-generator",
+    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandRun.cpp",
+    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandRun.cpp.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-I/home/deastl/repos/cmake-generator/include",
+      "-std=gnu++20",
+      "-c",
+      "-o",
+      "CMakeFiles/cmake-generator.dir/src/main.cpp.o",
+      "/home/deastl/repos/cmake-generator/src/main.cpp"
+    ],
+    "directory": "/home/deastl/repos/cmake-generator",
+    "file": "/home/deastl/repos/cmake-generator/src/main.cpp",
+    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/main.cpp.o"
   }
 ]
