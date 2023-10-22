@@ -57,10 +57,10 @@ RM = /usr/local/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lucas/wrk/learning/cpp/cmake-generator
+CMAKE_SOURCE_DIR = /home/lucas/wrk/cmake-generator
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lucas/wrk/learning/cpp/cmake-generator
+CMAKE_BINARY_DIR = /home/lucas/wrk/cmake-generator
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lucas/wrk/learning/cpp/cmake-generator/CMakeFiles /home/lucas/wrk/learning/cpp/cmake-generator//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lucas/wrk/cmake-generator/CMakeFiles /home/lucas/wrk/cmake-generator//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lucas/wrk/learning/cpp/cmake-generator/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lucas/wrk/cmake-generator/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -128,6 +128,30 @@ cmake-generator: cmake_check_build_system
 cmake-generator/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/build
 .PHONY : cmake-generator/fast
+
+src/Command/CommandFTP.o: src/Command/CommandFTP.cpp.o
+.PHONY : src/Command/CommandFTP.o
+
+# target to build an object file
+src/Command/CommandFTP.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/Command/CommandFTP.cpp.o
+.PHONY : src/Command/CommandFTP.cpp.o
+
+src/Command/CommandFTP.i: src/Command/CommandFTP.cpp.i
+.PHONY : src/Command/CommandFTP.i
+
+# target to preprocess a source file
+src/Command/CommandFTP.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/Command/CommandFTP.cpp.i
+.PHONY : src/Command/CommandFTP.cpp.i
+
+src/Command/CommandFTP.s: src/Command/CommandFTP.cpp.s
+.PHONY : src/Command/CommandFTP.s
+
+# target to generate assembly for a file
+src/Command/CommandFTP.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/Command/CommandFTP.cpp.s
+.PHONY : src/Command/CommandFTP.cpp.s
 
 src/Command/CommandFlags.o: src/Command/CommandFlags.cpp.o
 .PHONY : src/Command/CommandFlags.o
@@ -306,6 +330,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... cmake-generator"
+	@echo "... src/Command/CommandFTP.o"
+	@echo "... src/Command/CommandFTP.i"
+	@echo "... src/Command/CommandFTP.s"
 	@echo "... src/Command/CommandFlags.o"
 	@echo "... src/Command/CommandFlags.i"
 	@echo "... src/Command/CommandFlags.s"

@@ -5,4 +5,10 @@ Makefile
 CMakeFiles
 CMakeCache.txt
 cmake_install.cmake
+libCommand.a
 .vscode 
+compile_commands.json
+.cache
+_deps
+compile_commands.json
+generated-includes
