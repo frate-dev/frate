@@ -15,7 +15,7 @@ enum cmd_options
 
 int main(int argc, char **argv)
 {
-
+  /*
   cxxopts::Options options("Cmake-Generator", "Stop writing CMakeLists.txt files! let us suffer for you");
   options.parse_positional({ "command", "subcommand" });
   options.add_options()
@@ -30,7 +30,7 @@ int main(int argc, char **argv)
   {
     std::cout << result["command"].as<std::string>() << "\n";
   }
-
+  */
   if (argc < 2)
   {
     Command::help();
@@ -38,7 +38,9 @@ int main(int argc, char **argv)
               << "\n";
     return 1;
   }
-
+  #ifdef DEBUG
+  std::cout << "DEBUG MODE ENABLED\n";
+  #endif
 
   std::string command = argv[1];
   std::vector<std::string> args;

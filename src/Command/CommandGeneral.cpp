@@ -8,7 +8,7 @@ bool loadPackageToml(std::shared_ptr<Context> ctx) {
   try {
     std::string file_name = "./config.toml";
     #ifdef DEBUG
-        file_name = "./build/config.toml";
+         file_name = "./build/config.toml";
     #endif
 
     auto data = toml::parse_file(file_name);
@@ -61,7 +61,11 @@ bool writePackageToml(std::shared_ptr<Context> ctx) {
        }},
   };
   std::ofstream file;
-  file.open("./build/config.toml");
+  std::string file_name = "./config.toml";
+  #ifdef DEBUG
+     file_name = "./build/config.toml";
+  #endif
+  file.open(file_name);
   file << table;
   file << '\n';
   file.close();

@@ -41,9 +41,14 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
       ctx->project_name, ctx->build_dir);
 
   std::ofstream file;
-  remove("./CMakeLists.txt");
+  std::string file_name = "./CMakeLists.txt";
 
-  file.open("./CMakeLists.txt");
+  #ifdef DEBUG
+      file_name = "./build/CMakeLists.txt";
+  #endif
+  remove(file_name.c_str());
+
+  file.open(file_name);
   file << cmake_minimum_required << '\n';
   file << project_name << '\n';
   file << cxx_version << '\n';
@@ -118,7 +123,11 @@ bool createToml(std::shared_ptr<Context> ctx) {
   std::cout << table << '\n';
 
   std::ofstream file;
-  file.open("./config.toml");
+  std::string file_name = "./config.toml";
+  #ifdef DEBUG
+      file_name  ="./build/config.toml";
+  #endif
+  file.open(file_name);
   file << table;
   file << '\n';
   file.close();
@@ -128,6 +137,10 @@ bool createToml(std::shared_ptr<Context> ctx) {
 bool createHelloWorldCpp() {
   system("cd build;mkdir src");
   std::ofstream file;
+  std::string file_name = "./src/main.cpp";
+  #ifdef DEBUG
+      file_name = "./build/src/main.cpp";
+  #endif
   file.open("./build/src/main.cpp");
   file << "#include <iostream>\n"
           "int main(){\n"
@@ -139,7 +152,11 @@ bool createHelloWorldCpp() {
 bool createHelloWorldC() {
   system("mkdir src");
   std::ofstream file;
-  file.open("./src/main.c");
+  std::string file_name = "./src/main.c";
+  #ifdef DEBUG
+      file_name = "./build/src/main.c";
+  #endif
+  file.open(file_name);
   file << "#include <stdio.h>\n"
           "int main(){\n"
           " printf(\"Hello World\");\n"
@@ -185,11 +202,13 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
            {"lang_version", ctx->lang_version},
        }},
   };
-  std::cout << "📄New Toml File: \n";
+
+  std::cout << "📄 New Toml File: \n";
   std::cout << table << '\n';
 
   std::ofstream file;
   std::string file_name = "./config.toml";
+
   #ifdef DEBUG
      file_name = "./build/config.toml";
   #endif
