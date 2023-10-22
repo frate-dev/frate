@@ -22,16 +22,16 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
     std::format("set(CMAKE_CXX_COMPILER {})", ctx->compiler);
   std::string source_dir = std::format("set(SOURCE_DIR {})", ctx->src_dir);
   std::string build_dir = std::format("set(BUILD_DIR {})", ctx->build_dir);
-  std::string files = "file(GLOB all_SRCS\n\
-    \"${PROJECT_SOURCE_DIR}/include/*.h\"\n\
-    \"${PROJECT_SOURCE_DIR}/include/*.hpp\"\n\
-    \"${PROJECT_SOURCE_DIR}/src/*.cpp\"\n\
-    \"${PROJECT_SOURCE_DIR}/src/*.c\"\n\
+  std::string files = "file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}\n\
+    \"include/**.h\"\n\
+    \"include/**.hpp\"\n\
+    \"src/**.cpp\"\n\
+    \"src/**.c\"\n\
 )";
   std::string include_dir =
     std::format("include_directories({})", ctx->include_dir);
   std::string add_executable =
-    std::format("add_executable({} ", ctx->project_name) + "${all_SRCS})";
+    std::format("add_executable({} ", ctx->project_name) + "${SOURCES})";
 
   std::string set_build_dir =
     std::format("set_target_properties({} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {})", ctx->project_name, ctx->build_dir);
@@ -66,21 +66,21 @@ bool createToml(std::shared_ptr<Context> ctx) {
   std::string lang_version;
   std::string authors_str;
 
-  std::cout << "🔨Cmake version: (" << ctx->cmake_version << "): " << ENDL;
+  std::cout << "🔨Cmake version: (" << ctx->cmake_version << "): ";
   std::getline(std::cin, cmake_version);
-  std::cout << "📖Project name: (" << ctx->project_name << "): " << ENDL;
+  std::cout << "📖Project name: (" << ctx->project_name << "): ";
   std::getline(std::cin, project_name);
-  std::cout << "🗃️Version: (" << ctx->project_version << "): " << ENDL;
+  std::cout << "🗃️Version: (" << ctx->project_version << "): ";
   std::getline(std::cin, project_version);
-  std::cout << "📰Language Standard: (" << ctx->lang_version << "): " << ENDL;
+  std::cout << "📰Language Standard: (" << ctx->lang_version << "): ";
   std::getline(std::cin, lang_version);
-  std::cout << "💽Compiler: (" << ctx->compiler << "): " << ENDL;
+  std::cout << "💽Compiler: (" << ctx->compiler << "): ";
   std::getline(std::cin, compiler);
-  std::cout << "⛲Source Dir: (" << ctx->src_dir << "): " << ENDL;
+  std::cout << "⛲Source Dir: (" << ctx->src_dir << "): ";
   std::getline(std::cin, src_dir);
-  std::cout << "🛠️Build Dir: (" << ctx->build_dir << "): " << ENDL;
+  std::cout << "🛠️Build Dir: (" << ctx->build_dir << "): ";
   std::getline(std::cin, build_dir);
-  std::cout << "🫃Include Dir: (" << ctx->include_dir << "): " << ENDL;
+  std::cout << "🫃Include Dir: (" << ctx->include_dir << "): ";
   std::getline(std::cin, include_dir);
 
   ctx->cmake_version = cmake_version == "" ? ctx->cmake_version : cmake_version;
@@ -165,8 +165,8 @@ bool createCProject(std::shared_ptr<Context> ctx) {
 
 int init(std::shared_ptr<Context> ctx) {
   while (true) {
-    std::cout << "Language: " << ENDL;
-    std::cin >> ctx->lang;
+    std::cout << "Language: ";
+    std::getline(std::cin,ctx->lang);
     if (ctx->lang == "cpp" || ctx->lang ==  "c++") {
       createCppProject(ctx);
       break;

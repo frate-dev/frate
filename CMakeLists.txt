@@ -22,23 +22,35 @@ function(CloneRepository repositoryURL branchName projectName sourceDir)
 endfunction(CloneRepository)
 
 
-file(GLOB LIB_SRCS
-  "./src/Command/*.cpp"
-  "./src/Command/*.hpp"
-  "./src/Command/*.h"
+#file(GLOB LIB_SRCS
+#  "./src/Command/*.cpp"
+#  "./src/Command/*.hpp"
+#  "./src/Command/*.h"
+#)
+#add_library(Command 
+#  ${LIB_SRCS}
+#)
+
+
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
+  "include/**.h"
+  "include/**.hpp"
+  "src/**.cpp"
+  "src/**.c"
+  #"${PROJECT_SOURCE_DIR}/include/*.h"
+  #"${PROJECT_SOURCE_DIR}/include/*.hpp"
+  #"${PROJECT_SOURCE_DIR}/src/*.cpp"
+  #"${PROJECT_SOURCE_DIR}/src/*.c"
 )
-add_library(Command 
-  ${LIB_SRCS}
-)
-file(GLOB all_SRCS
-    "${PROJECT_SOURCE_DIR}/include/*.h"
-    "${PROJECT_SOURCE_DIR}/include/*.hpp"
-    "${PROJECT_SOURCE_DIR}/src/*.cpp"
-    "${PROJECT_SOURCE_DIR}/src/*.c"
-)
+
+message("Sources: ${SOURCES}")
+
+
+
 include_directories(include)
-add_executable(cmake-generator ${all_SRCS})
-target_link_libraries(cmake-generator Command)
+add_executable(cmake-generator ${SOURCES})
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
+
+
 set_target_properties(cmake-generator PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
