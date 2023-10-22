@@ -189,6 +189,7 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
     file << table;
     file << '\n';
     file.close();
+    return true;
 }
 
 bool init(std::shared_ptr<Context> ctx, std::vector<std::string> args)
@@ -196,7 +197,7 @@ bool init(std::shared_ptr<Context> ctx, std::vector<std::string> args)
 
   if (std::find(args.begin(), args.end(), "-y") != args.end())
   {
-    defaultTomlCpp(ctx)
+    defaultTomlCpp(ctx);
     loadPackageToml(ctx);
     createCMakelists(ctx);
     createHelloWorldCpp();
