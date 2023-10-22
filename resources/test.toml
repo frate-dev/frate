@@ -9,3 +9,6 @@ build_dir = "./build"
 include_dir = "./include"
 lang = "cpp"
 langversion = "17"
+[project.dependency.sdl2]
+git="https:asljdkajsd"
+version=""
