@@ -31,8 +31,8 @@ typedef struct Context {
   std::string build_dir{"build"};
   std::string project_version{"0.0.1"};
   std::vector<std::string> flags;
-} Context;
 
+} Context;
 int loadPackageToml(std::shared_ptr<Context> ctx);
 int init(std::shared_ptr<Context>);
 int run(std::shared_ptr<Context>);

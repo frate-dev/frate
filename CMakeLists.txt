@@ -6,6 +6,30 @@ project (
 )
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_COMPILER g++)
+function(CloneRepository repositoryURL branchName projectName sourceDir)
+  #Commands are left empty so that we only checkout the source and no not perform any kind of build
+  message("Starting to clone ${projectName} into ${sourceDir}")
+  FetchContent_Declare(
+    "${projectName}"
+    GIT_REPOSITORY "${repositoryURL}"
+    SOURCE_DIR "${sourceDir}"
+    GIT_TAG "origin/${branchName}"
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+  )
+  FetchContent_MakeAvailable(${projectName})
+endfunction(CloneRepository)
+
+
+file(GLOB LIB_SRCS
+  "./src/Command/*.cpp"
+  "./src/Command/*.hpp"
+  "./src/Command/*.h"
+)
+add_library(Command 
+  ${LIB_SRCS}
+)
 file(GLOB all_SRCS
     "${PROJECT_SOURCE_DIR}/include/*.h"
     "${PROJECT_SOURCE_DIR}/include/*.hpp"
@@ -14,6 +38,7 @@ file(GLOB all_SRCS
 )
 include_directories(include)
 add_executable(cmake-generator ${all_SRCS})
+target_link_libraries(cmake-generator Command)
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
 set_target_properties(cmake-generator PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)

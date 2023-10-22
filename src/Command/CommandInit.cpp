@@ -120,29 +120,46 @@ bool createToml(std::shared_ptr<Context> ctx) {
   return false;
 }
 
-bool createHelloWorld() {
+bool createHelloWorldCpp() {
   system("mkdir src");
   std::ofstream file;
   file.open("./src/main.cpp");
   file << 
     "#include <iostream>\n"
     "int main(){\n"
-    "std::cout << \"Hello World\" << std::endl;\n"
-    "return 0;\n"
+    " std::cout << \"Hello World\" << std::endl;\n"
+    " return 0;\n"
     "}\n";
   return false;
 }
-
+bool createHelloWorldC() {
+  system("mkdir src");
+  std::ofstream file;
+  file.open("./src/main.c");
+  file << 
+    "#include <stdio.h>\n"
+    "int main(){\n"
+    " printf(\"Hello World\");\n"
+    " return 0;\n"
+    "}\n";
+  return false;
+}
 bool createCppProject(std::shared_ptr<Context> ctx) {
 
   createToml(ctx);
   loadPackageToml(ctx);
   createCMakelists(ctx);
-  createHelloWorld();
+  createHelloWorldCpp();
   return true;
 }
 
-bool createCProject(std::shared_ptr<Context> ctx) { return false; }
+bool createCProject(std::shared_ptr<Context> ctx) {
+  createToml(ctx);
+  loadPackageToml(ctx);
+  createCMakelists(ctx);
+  createHelloWorldC();
+  return false; 
+}
 
 
 

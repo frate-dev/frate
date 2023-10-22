@@ -117,6 +117,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named Command
+
+# Build rule for target.
+Command: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Command
+.PHONY : Command
+
+# fast build rule for target.
+Command/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/build
+.PHONY : Command/fast
+
+#=============================================================================
 # Target rules for targets named cmake-generator
 
 # Build rule for target.
@@ -129,125 +142,149 @@ cmake-generator/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/build
 .PHONY : cmake-generator/fast
 
-src/CommandFlags.o: src/CommandFlags.cpp.o
-.PHONY : src/CommandFlags.o
+src/Command/CommandFlags.o: src/Command/CommandFlags.cpp.o
+.PHONY : src/Command/CommandFlags.o
 
 # target to build an object file
-src/CommandFlags.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandFlags.cpp.o
-.PHONY : src/CommandFlags.cpp.o
+src/Command/CommandFlags.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandFlags.cpp.o
+.PHONY : src/Command/CommandFlags.cpp.o
 
-src/CommandFlags.i: src/CommandFlags.cpp.i
-.PHONY : src/CommandFlags.i
+src/Command/CommandFlags.i: src/Command/CommandFlags.cpp.i
+.PHONY : src/Command/CommandFlags.i
 
 # target to preprocess a source file
-src/CommandFlags.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandFlags.cpp.i
-.PHONY : src/CommandFlags.cpp.i
+src/Command/CommandFlags.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandFlags.cpp.i
+.PHONY : src/Command/CommandFlags.cpp.i
 
-src/CommandFlags.s: src/CommandFlags.cpp.s
-.PHONY : src/CommandFlags.s
+src/Command/CommandFlags.s: src/Command/CommandFlags.cpp.s
+.PHONY : src/Command/CommandFlags.s
 
 # target to generate assembly for a file
-src/CommandFlags.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandFlags.cpp.s
-.PHONY : src/CommandFlags.cpp.s
+src/Command/CommandFlags.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandFlags.cpp.s
+.PHONY : src/Command/CommandFlags.cpp.s
 
-src/CommandGeneral.o: src/CommandGeneral.cpp.o
-.PHONY : src/CommandGeneral.o
+src/Command/CommandGeneral.o: src/Command/CommandGeneral.cpp.o
+.PHONY : src/Command/CommandGeneral.o
 
 # target to build an object file
-src/CommandGeneral.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandGeneral.cpp.o
-.PHONY : src/CommandGeneral.cpp.o
+src/Command/CommandGeneral.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandGeneral.cpp.o
+.PHONY : src/Command/CommandGeneral.cpp.o
 
-src/CommandGeneral.i: src/CommandGeneral.cpp.i
-.PHONY : src/CommandGeneral.i
+src/Command/CommandGeneral.i: src/Command/CommandGeneral.cpp.i
+.PHONY : src/Command/CommandGeneral.i
 
 # target to preprocess a source file
-src/CommandGeneral.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandGeneral.cpp.i
-.PHONY : src/CommandGeneral.cpp.i
+src/Command/CommandGeneral.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandGeneral.cpp.i
+.PHONY : src/Command/CommandGeneral.cpp.i
 
-src/CommandGeneral.s: src/CommandGeneral.cpp.s
-.PHONY : src/CommandGeneral.s
+src/Command/CommandGeneral.s: src/Command/CommandGeneral.cpp.s
+.PHONY : src/Command/CommandGeneral.s
 
 # target to generate assembly for a file
-src/CommandGeneral.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandGeneral.cpp.s
-.PHONY : src/CommandGeneral.cpp.s
+src/Command/CommandGeneral.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandGeneral.cpp.s
+.PHONY : src/Command/CommandGeneral.cpp.s
 
-src/CommandHelp.o: src/CommandHelp.cpp.o
-.PHONY : src/CommandHelp.o
+src/Command/CommandHelp.o: src/Command/CommandHelp.cpp.o
+.PHONY : src/Command/CommandHelp.o
 
 # target to build an object file
-src/CommandHelp.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandHelp.cpp.o
-.PHONY : src/CommandHelp.cpp.o
+src/Command/CommandHelp.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandHelp.cpp.o
+.PHONY : src/Command/CommandHelp.cpp.o
 
-src/CommandHelp.i: src/CommandHelp.cpp.i
-.PHONY : src/CommandHelp.i
+src/Command/CommandHelp.i: src/Command/CommandHelp.cpp.i
+.PHONY : src/Command/CommandHelp.i
 
 # target to preprocess a source file
-src/CommandHelp.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandHelp.cpp.i
-.PHONY : src/CommandHelp.cpp.i
+src/Command/CommandHelp.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandHelp.cpp.i
+.PHONY : src/Command/CommandHelp.cpp.i
 
-src/CommandHelp.s: src/CommandHelp.cpp.s
-.PHONY : src/CommandHelp.s
+src/Command/CommandHelp.s: src/Command/CommandHelp.cpp.s
+.PHONY : src/Command/CommandHelp.s
 
 # target to generate assembly for a file
-src/CommandHelp.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandHelp.cpp.s
-.PHONY : src/CommandHelp.cpp.s
+src/Command/CommandHelp.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandHelp.cpp.s
+.PHONY : src/Command/CommandHelp.cpp.s
 
-src/CommandInit.o: src/CommandInit.cpp.o
-.PHONY : src/CommandInit.o
+src/Command/CommandInit.o: src/Command/CommandInit.cpp.o
+.PHONY : src/Command/CommandInit.o
 
 # target to build an object file
-src/CommandInit.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandInit.cpp.o
-.PHONY : src/CommandInit.cpp.o
+src/Command/CommandInit.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandInit.cpp.o
+.PHONY : src/Command/CommandInit.cpp.o
 
-src/CommandInit.i: src/CommandInit.cpp.i
-.PHONY : src/CommandInit.i
+src/Command/CommandInit.i: src/Command/CommandInit.cpp.i
+.PHONY : src/Command/CommandInit.i
 
 # target to preprocess a source file
-src/CommandInit.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandInit.cpp.i
-.PHONY : src/CommandInit.cpp.i
+src/Command/CommandInit.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandInit.cpp.i
+.PHONY : src/Command/CommandInit.cpp.i
 
-src/CommandInit.s: src/CommandInit.cpp.s
-.PHONY : src/CommandInit.s
+src/Command/CommandInit.s: src/Command/CommandInit.cpp.s
+.PHONY : src/Command/CommandInit.s
 
 # target to generate assembly for a file
-src/CommandInit.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandInit.cpp.s
-.PHONY : src/CommandInit.cpp.s
+src/Command/CommandInit.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandInit.cpp.s
+.PHONY : src/Command/CommandInit.cpp.s
 
-src/CommandRun.o: src/CommandRun.cpp.o
-.PHONY : src/CommandRun.o
+src/Command/CommandLib.o: src/Command/CommandLib.cpp.o
+.PHONY : src/Command/CommandLib.o
 
 # target to build an object file
-src/CommandRun.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandRun.cpp.o
-.PHONY : src/CommandRun.cpp.o
+src/Command/CommandLib.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandLib.cpp.o
+.PHONY : src/Command/CommandLib.cpp.o
 
-src/CommandRun.i: src/CommandRun.cpp.i
-.PHONY : src/CommandRun.i
+src/Command/CommandLib.i: src/Command/CommandLib.cpp.i
+.PHONY : src/Command/CommandLib.i
 
 # target to preprocess a source file
-src/CommandRun.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandRun.cpp.i
-.PHONY : src/CommandRun.cpp.i
+src/Command/CommandLib.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandLib.cpp.i
+.PHONY : src/Command/CommandLib.cpp.i
 
-src/CommandRun.s: src/CommandRun.cpp.s
-.PHONY : src/CommandRun.s
+src/Command/CommandLib.s: src/Command/CommandLib.cpp.s
+.PHONY : src/Command/CommandLib.s
 
 # target to generate assembly for a file
-src/CommandRun.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/CommandRun.cpp.s
-.PHONY : src/CommandRun.cpp.s
+src/Command/CommandLib.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandLib.cpp.s
+.PHONY : src/Command/CommandLib.cpp.s
+
+src/Command/CommandRun.o: src/Command/CommandRun.cpp.o
+.PHONY : src/Command/CommandRun.o
+
+# target to build an object file
+src/Command/CommandRun.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandRun.cpp.o
+.PHONY : src/Command/CommandRun.cpp.o
+
+src/Command/CommandRun.i: src/Command/CommandRun.cpp.i
+.PHONY : src/Command/CommandRun.i
+
+# target to preprocess a source file
+src/Command/CommandRun.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandRun.cpp.i
+.PHONY : src/Command/CommandRun.cpp.i
+
+src/Command/CommandRun.s: src/Command/CommandRun.cpp.s
+.PHONY : src/Command/CommandRun.s
+
+# target to generate assembly for a file
+src/Command/CommandRun.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Command.dir/build.make CMakeFiles/Command.dir/src/Command/CommandRun.cpp.s
+.PHONY : src/Command/CommandRun.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -281,22 +318,26 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... Command"
 	@echo "... cmake-generator"
-	@echo "... src/CommandFlags.o"
-	@echo "... src/CommandFlags.i"
-	@echo "... src/CommandFlags.s"
-	@echo "... src/CommandGeneral.o"
-	@echo "... src/CommandGeneral.i"
-	@echo "... src/CommandGeneral.s"
-	@echo "... src/CommandHelp.o"
-	@echo "... src/CommandHelp.i"
-	@echo "... src/CommandHelp.s"
-	@echo "... src/CommandInit.o"
-	@echo "... src/CommandInit.i"
-	@echo "... src/CommandInit.s"
-	@echo "... src/CommandRun.o"
-	@echo "... src/CommandRun.i"
-	@echo "... src/CommandRun.s"
+	@echo "... src/Command/CommandFlags.o"
+	@echo "... src/Command/CommandFlags.i"
+	@echo "... src/Command/CommandFlags.s"
+	@echo "... src/Command/CommandGeneral.o"
+	@echo "... src/Command/CommandGeneral.i"
+	@echo "... src/Command/CommandGeneral.s"
+	@echo "... src/Command/CommandHelp.o"
+	@echo "... src/Command/CommandHelp.i"
+	@echo "... src/Command/CommandHelp.s"
+	@echo "... src/Command/CommandInit.o"
+	@echo "... src/Command/CommandInit.i"
+	@echo "... src/Command/CommandInit.s"
+	@echo "... src/Command/CommandLib.o"
+	@echo "... src/Command/CommandLib.i"
+	@echo "... src/Command/CommandLib.s"
+	@echo "... src/Command/CommandRun.o"
+	@echo "... src/Command/CommandRun.i"
+	@echo "... src/Command/CommandRun.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

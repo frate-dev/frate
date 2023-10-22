@@ -5,7 +5,7 @@
 namespace Command{
 
   int help() {
-    std::cout << "usage: "  << 
+    std::cout << "usage: " << ENDL  
       "init: initializes your project" << ENDL
       "run : builds and runs your project" <<ENDL
       "flags: adds a flag to your project" << ENDL;
