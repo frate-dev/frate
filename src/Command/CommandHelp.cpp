@@ -3,7 +3,7 @@
 
 namespace Command {
 
-  int help() {
+  bool help() {
     std::cout << "usage: idk do what you want" << ENDL  
       "Commands:" << ENDL
       "\t i | init:  initializes your project"     << ENDL
@@ -12,5 +12,4 @@ namespace Command {
       "\t help:  print help"  << ENDL;
     return 1;
   }
-
 }

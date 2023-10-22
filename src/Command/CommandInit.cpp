@@ -163,7 +163,7 @@ bool createCProject(std::shared_ptr<Context> ctx) {
 
 
 
-int init(std::shared_ptr<Context> ctx) {
+bool init(std::shared_ptr<Context> ctx) {
   while (true) {
     std::cout << "Language: ";
     std::getline(std::cin,ctx->lang);
@@ -184,7 +184,7 @@ int init(std::shared_ptr<Context> ctx) {
       return 1;
     }
   }
-  return 0;
+  return true;
 }
 
 } // namespace Command
