@@ -7,6 +7,7 @@ project (
 set(CMAKE_CXX_STANDARD 20)
 
 
+
 include(FetchContent)
 
 FetchContent_Declare(
@@ -36,12 +37,15 @@ if(NOT DEFINED RELEASE)
   set(RELEASE 0)
 endif()
 
+
+
 if(RELEASE EQUAL 1)
   message("Release mode")
   add_definitions(-DRELEASE)
 else()
   message("Debug mode")
   add_definitions(-DDEBUG)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
 endif()
 
 target_link_libraries(cmake-generator cxxopts)
