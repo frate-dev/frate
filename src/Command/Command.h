@@ -20,6 +20,7 @@ typedef struct Context {
    * TODO: This should be initialize to the current directory if not specified
    */
   std::string project_name;
+  std::filesystem::path project_path;
   std::string git{"null"};
   std::string lang{"cpp"};
   std::string cmake_version{"3.10"};
@@ -33,12 +34,13 @@ typedef struct Context {
   std::vector<std::string> flags;
 
 } Context;
-int loadPackageToml(std::shared_ptr<Context> ctx);
-int init(std::shared_ptr<Context>);
-int run(std::shared_ptr<Context>);
-int addFlag(std::shared_ptr<Context>, std::string);
-int help();
+bool loadPackageToml(std::shared_ptr<Context> ctx);
+bool init(std::shared_ptr<Context>);
+bool run(std::shared_ptr<Context>);
+bool ftp();
+bool addFlag(std::shared_ptr<Context>, std::string);
+bool help();
 
-int writePackageToml(std::shared_ptr<Context> ctx);
-int addLib(std::shared_ptr<Context>, std::string);
+bool writePackageToml(std::shared_ptr<Context> ctx);
+bool addLib(std::shared_ptr<Context>, std::string);
 }; // namespace Command
