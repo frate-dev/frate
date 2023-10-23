@@ -1,4 +1,4 @@
-#include "Command.h"
+#include "Command.hpp"
 #include "toml.hpp"
 #include <iostream>
 #include <memory>
