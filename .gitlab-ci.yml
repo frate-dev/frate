@@ -28,7 +28,7 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - cmake -DRELEASE=1 ./
-    - make
+    - make -j32
   artifacts:
     when: always
     paths:
