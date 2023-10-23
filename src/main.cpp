@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
     ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
     ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"));
 
-  auto result = options.parse(argc, argv);
+  cxxopts::ParseResult result = options.parse(argc, argv);
 
 
   if (!result.count("command")) {

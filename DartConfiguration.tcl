@@ -4,14 +4,14 @@
 
 
 # Configuration directories and files
-SourceDirectory: /home/deastl/repos/cmake-generator
-BuildDirectory: /home/deastl/repos/cmake-generator
+SourceDirectory: /home/lucas/wrk/cmake-generator
+BuildDirectory: /home/lucas/wrk/cmake-generator
 
 # Where to place the cost data store
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: arch-deastl
+Site: lucas
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
 BuildName: Linux-c++
@@ -27,8 +27,8 @@ SubmitInactivityTimeout:
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/usr/bin/cmake" "/home/deastl/repos/cmake-generator"
-MakeCommand: /usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
+ConfigureCommand: "/usr/local/bin/cmake" "/home/lucas/wrk/cmake-generator"
+MakeCommand: /usr/local/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
 DefaultCTestConfigurationType: Release
 
 # version control
@@ -64,7 +64,7 @@ UpdateType: git
 
 # Compiler info
 Compiler: /usr/bin/c++
-CompilerVersion: 13.2.1
+CompilerVersion: 13.1.0
 
 # Dynamic analysis (MemCheck)
 PurifyCommand: 

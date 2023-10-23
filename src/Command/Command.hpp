@@ -28,6 +28,7 @@ namespace Command {
       file.close();
       return true;
     }
+    return false;
   }
 
 

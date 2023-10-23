@@ -6,9 +6,12 @@
 
 
 namespace TestCommands {
-
+  
+ 
   bool testCommandInit() {
     std::shared_ptr<Command::Context> context = std::make_shared<Command::Context>();
+//    cxxopts::ParseResult args = cxxopts::ParseResult();
+//    Command::init(context, args);
 
     return true;
   }
