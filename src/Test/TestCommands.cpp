@@ -1,7 +1,6 @@
 #ifdef TEST
-
 #include <catch2/catch_test_macros.hpp>
-#include "../Command/Command.h"
+#include "../Command/Command.hpp"
 #include <cxxopts.hpp>
 #include <memory>
 

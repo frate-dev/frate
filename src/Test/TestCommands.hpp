@@ -1,9 +1,8 @@
 
-#pragma once
 #ifdef TEST
-
+#pragma once
+#include "../Command/Command.hpp"
 #include <catch2/catch_test_macros.hpp>
-#include "../Command/Command.h"
 #include <cxxopts.hpp>
 #include <memory>
 

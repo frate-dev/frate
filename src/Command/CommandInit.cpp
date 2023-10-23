@@ -68,7 +68,7 @@ bool createToml(std::shared_ptr<Context> ctx) {
   #ifdef DEBUG
       file_name  ="./build/config.toml";
   #endif
-  Command::file_exists(file_name);
+  file_exists(file_name);
   std::string cmake_version;
   std::string project_name;
   std::string project_version;
