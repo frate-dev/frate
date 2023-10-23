@@ -18,6 +18,7 @@ namespace Command {
 
   bool handleCProject();
 
+
   inline bool file_exists(const std::string& name) {
     std::ifstream file;
     file.open(name);
@@ -35,11 +36,20 @@ namespace Command {
     }
     return false;
   }
+
+  static  cxxopts::Options options(
+      "Cmake-Generator",
+      "Stop writing CMakeLists.txt files! let us suffer for you");
+
+  void initOptions();
+
   typedef struct dependency {
     std::string name;
     std::string version;
     std::string url;
   } dependency;
+
+
 
   typedef struct Context {
     /*
