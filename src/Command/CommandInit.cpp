@@ -10,57 +10,7 @@
 namespace Command {
 
   
-bool createCMakelists(std::shared_ptr<Context> ctx) {
-  std::string cmake_minimum_required =
-      std::format("cmake_minimum_required(VERSION {})", ctx->cmake_version);
-  std::string project_name =
-      std::format("project ( \n\
-    {} \n\
-    VERSION {}\n\
-    LANGUAGES CXX\n\
-)", ctx->project_name, ctx->project_version);
 
-  std::string cxx_version =
-      std::format("set(CMAKE_CXX_STANDARD {})", ctx->lang_version);
-  std::string compiler =
-      std::format("set(CMAKE_CXX_COMPILER {})", ctx->compiler);
-  std::string source_dir = std::format("set(SOURCE_DIR {})", ctx->src_dir);
-  std::string build_dir = std::format("set(BUILD_DIR {})", ctx->build_dir);
-  std::string files = "file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}\n\
-    \"include/**.h\"\n \"include/**.hpp\"\n\
-    \"src/**.cpp\"\n\
-    \"src/**.c\"\n\
-)";
-  std::string include_dir =
-      std::format("include_directories({})", ctx->include_dir);
-  std::string add_executable =
-      std::format("add_executable({} ", ctx->project_name) + "${SOURCES})";
-
-  std::string set_build_dir = std::format(
-      "set_target_properties({} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {})",
-      ctx->project_name, ctx->build_dir);
-
-  std::ofstream file;
-  std::string file_name = "./CMakeLists.txt";
-
-  #ifdef DEBUG
-      file_name = "./build/CMakeLists.txt";
-  #endif
-  remove(file_name.c_str());
-
-  file.open(file_name);
-  file << cmake_minimum_required << '\n';
-  file << project_name << '\n';
-  file << cxx_version << '\n';
-  file << compiler << '\n';
-  file << files << '\n';
-  file << include_dir << '\n';
-  file << add_executable << '\n';
-  file << source_dir << '\n';
-  file << build_dir << '\n';
-  file << set_build_dir << '\n';
-  return false;
-}
 
 bool createToml(std::shared_ptr<Context> ctx) {
   std::ofstream file;
@@ -169,7 +119,7 @@ bool createCppProject(std::shared_ptr<Context> ctx) {
 
   createToml(ctx);
   loadPackageToml(ctx);
-  createCMakelists(ctx);
+  Command::createCMakelists(ctx);
   createHelloWorldCpp();
   return true;
 }
@@ -177,7 +127,7 @@ bool createCppProject(std::shared_ptr<Context> ctx) {
 bool createCProject(std::shared_ptr<Context> ctx) {
   createToml(ctx);
   loadPackageToml(ctx);
-  createCMakelists(ctx);
+  Command::createCMakelists(ctx);
   createHelloWorldC();
   return false;
 }

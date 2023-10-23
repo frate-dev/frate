@@ -35,7 +35,11 @@ namespace Command {
     }
     return false;
   }
-
+  typedef struct dependency {
+    std::string name;
+    std::string version;
+    std::string url;
+  } dependency;
 
   typedef struct Context {
     /*
@@ -51,7 +55,9 @@ namespace Command {
     std::vector<std::string> authors;
     std::string src_dir{"src"};
     std::string include_dir{"include"};
+    std::vector<dependency> dependencies;
     std::string build_dir{"build"};
+    dependency testing_lib;
     std::string project_version{"0.0.1"};
     std::vector<std::string> flags; 
   } Context;
@@ -64,5 +70,6 @@ namespace Command {
   bool help();
 
   bool writePackageToml(std::shared_ptr<Context> ctx);
+  bool createCMakelists(std::shared_ptr<Context> ctx);
   bool addLib(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 }

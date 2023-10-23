@@ -1,15 +1,16 @@
 #include "Command.hpp"
 #include "toml.hpp"
 #include <cstddef>
+#include <format>
 #include <iostream>
 
 namespace Command {
 bool loadPackageToml(std::shared_ptr<Context> ctx) {
   try {
     std::string file_name = "./config.toml";
-    #ifdef DEBUG
-         file_name = "./build/config.toml";
-    #endif
+#ifdef DEBUG
+    file_name = "./build/config.toml";
+#endif
 
     auto data = toml::parse_file(file_name);
     ctx->project_name = data["project"]["project_name"].value_or("no name");
@@ -62,13 +63,102 @@ bool writePackageToml(std::shared_ptr<Context> ctx) {
   };
   std::ofstream file;
   std::string file_name = "./config.toml";
-  #ifdef DEBUG
-     file_name = "./build/config.toml";
-  #endif
+#ifdef DEBUG
+  file_name = "./build/config.toml";
+#endif
   file.open(file_name);
   file << table;
   file << '\n';
   file.close();
   return true;
+}
+bool createCMakelists(std::shared_ptr<Context> ctx) {
+  std::string cmake_minimum_required =
+      std::format("cmake_minimum_required(VERSION {})", ctx->cmake_version);
+  std::string project_name =
+      std::format("project ( \n\
+    {} \n\
+    VERSION {}\n\
+    LANGUAGES CXX\n\
+)",
+                  ctx->project_name, ctx->project_version);
+  std::string build_type =
+      "if (CMAKE_BUILD_TYPE STREQUAL \"Release\")\n\tmessage(\"Release "
+      "mode\")\n\tset(RELEASE 1)\n\telseif(CMAKE_BUILD_TYPE STREQUAL "
+      "\"Debug\")\n\tmessage(\"Debug mode\")\n\tset(RELEASE "
+      "0)\nelseif(CMAKE_BUILD_TYPE STREQUAL \"Test\")\n\tmessage(\"Test "
+      "mode\")\n\tset(RELEASE 0)\n\tset(TEST_MODE 1)\nelse()\n";
+  std::string cxx_version =
+      std::format("set(CMAKE_CXX_STANDARD {})", ctx->lang_version);
+  std::string compiler =
+      std::format("set(CMAKE_CXX_COMPILER {})\n", ctx->compiler);
+  std::string source_dir = std::format("set(SOURCE_DIR {})", ctx->src_dir);
+  std::string build_dir = std::format("set(BUILD_DIR {})", ctx->build_dir);
+  std::string FetchContent = "include(FetchContent)";
+  std::string files =
+      "file(GLOB_RECURSE SOURCES RELATIVE "
+      "${CMAKE_SOURCE_DIR}\n\t\"include/**.h\"\n "
+      "\"include/**.hpp\"\n\t\"src/**.cpp\"\n\t\"src/**.c\"\n)";
+  typedef struct make_dep {
+    std::string fetch_declare;
+    std::string fetch_make_available;
+    std::string target_link_libraries;
+  } make_dep;
+
+  std::vector<make_dep> dependencies;
+  for (Command::dependency &dep : ctx->dependencies) {
+    std::string FetchContent_Declare =
+        std::format("FetchContent_Declare(\n\t{} \n\tGIT_REPOSITORY "
+                    "\"{}\"\n\tGIT_TAG \"{}\"\n)",
+                    dep.name, dep.url, dep.version);
+    std::string FetchContent_MakeAvailable =
+        std::format("FetchContent_MakeAvailable({})", dep.name);
+    std::string target_link_libraries = std::format(
+        "target_link_libraries({} {})", ctx->project_name, dep.name);
+    make_dep dependency =
+        make_dep{FetchContent_Declare, FetchContent_MakeAvailable,
+                 target_link_libraries};
+    dependencies.push_back(dependency);
+  }
+
+  std::string include_dir =
+      std::format("include_directories({})", ctx->include_dir);
+  std::string add_executable =
+      std::format("add_executable({} ", ctx->project_name) + "${SOURCES})";
+
+  //  std::string mode = std::format("if(RELEASE EQUAL
+  //  1)\n\tadd_definitions(-DRELEASE)\nelse()\n\tadd_definitions(-DDEBUG)\n\tset(CMAKE_CXX_FLAGS
+  //  \"${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall\")\n\tif(TEST_MODE
+  //  EQUAL 1 {})\nendif()\nendif()", ctx->testing_lib);
+  std::string set_build_dir = std::format(
+      "set_target_properties({} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {})",
+      ctx->project_name, ctx->build_dir);
+
+  std::ofstream file;
+  std::string file_name = "./CMakeLists.txt";
+
+#ifdef DEBUG
+  file_name = "./build/CMakeLists.txt";
+#endif
+  remove(file_name.c_str());
+
+  file.open(file_name);
+  file << cmake_minimum_required << '\n';
+  file << project_name << '\n';
+  file << cxx_version << '\n';
+  file << compiler << '\n';
+  file << build_type << '\n';
+  for (make_dep &dep : dependencies) {
+    file << dep.fetch_declare << '\n';
+    file << dep.fetch_make_available << '\n';
+    file << dep.target_link_libraries << '\n';
+  }
+  file << files << '\n';
+  file << include_dir << '\n';
+  file << add_executable << '\n';
+  file << source_dir << '\n';
+  file << build_dir << '\n';
+  file << set_build_dir << '\n';
+  return false;
 }
 } // namespace Command
