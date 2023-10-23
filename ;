@@ -5,8 +5,10 @@
 namespace Command {
   bool run(std::shared_ptr<Context> ctx){
     #ifdef DEBUG
+      system("cd build");
       system("mkdir -p build/build/");
-      system("cd build && cmake  . && make  && cd ..");
+      system("cmake  . ");
+      system("make");
     #else
       system("mkdir -p build");
       system("cmake  . ");

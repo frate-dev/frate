@@ -9,7 +9,8 @@ enum cmd_options
 {
   help = -1,
   i, init = 0, 
-  r, run = 2, 
+  r = 1, 
+  run = 1, 
   flags = 3,
 };
 
