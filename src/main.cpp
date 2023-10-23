@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
     return returnCode;
   int numFailed = session.run();
   return (numFailed < 0xff ? numFailed : 0xff);
-#endif
+#else
 
 
 
@@ -76,4 +76,5 @@ int main(int argc, char **argv) {
     Command::loadPackageToml(ctx);
     Command::addDependency(ctx, result);
   }
+#endif
 }

@@ -5,7 +5,6 @@
 
 namespace Command{
   void initOptions(cxxopts::Options& options){
-    std::cout << "fucking options" << ENDL;
     options.parse_positional({"command",  "subcommand"});
     options.add_options()
       ("p,production", "Enable debug mode", cxxopts::value<bool>()->default_value("false"))
