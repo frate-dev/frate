@@ -15,6 +15,9 @@
 int main(int argc, char **argv) {
 
 
+  Command::initOptions();
+  cxxopts::ParseResult result = Command::options.parse(argc, argv);
+
 #ifdef TEST
   Catch::Session session;
   int returnCode = session.applyCommandLine(argc, argv);
@@ -24,20 +27,6 @@ int main(int argc, char **argv) {
   return (numFailed < 0xff ? numFailed : 0xff);
 #endif
 
-  cxxopts::Options options(
-      "Cmake-Generator",
-      "Stop writing CMakeLists.txt files! let us suffer for you");
-
-  options.parse_positional({"command",  "subcommand"});
-  options.add_options()
-    ("p,production", "Enable debug mode", cxxopts::value<bool>()->default_value("false"))
-    ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
-    ("subcommand", "Subcommand to run", cxxopts::value< std::vector<std::string>>())
-    ("h,help", "Print usage")
-    ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
-    ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"));
-
-  cxxopts::ParseResult result = options.parse(argc, argv);
 
 
   if (!result.count("command")) {
@@ -58,6 +47,9 @@ int main(int argc, char **argv) {
 
   // LUCAS MAKE SURE YOU INITIALIZE YOUR FUCKING STRUCT YOU TWAT
   std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
+  for(size_t i = 0; i < argc ; i++){
+    std::cout << argv[i] << ENDL;
+  }
   if (command == "init"){
     Command::init(ctx, result);
   }
