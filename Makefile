@@ -249,30 +249,6 @@ src/Command/CommandInit.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/Command/CommandInit.cpp.s
 .PHONY : src/Command/CommandInit.cpp.s
 
-src/Command/CommandLib.o: src/Command/CommandLib.cpp.o
-.PHONY : src/Command/CommandLib.o
-
-# target to build an object file
-src/Command/CommandLib.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/Command/CommandLib.cpp.o
-.PHONY : src/Command/CommandLib.cpp.o
-
-src/Command/CommandLib.i: src/Command/CommandLib.cpp.i
-.PHONY : src/Command/CommandLib.i
-
-# target to preprocess a source file
-src/Command/CommandLib.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/Command/CommandLib.cpp.i
-.PHONY : src/Command/CommandLib.cpp.i
-
-src/Command/CommandLib.s: src/Command/CommandLib.cpp.s
-.PHONY : src/Command/CommandLib.s
-
-# target to generate assembly for a file
-src/Command/CommandLib.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmake-generator.dir/build.make CMakeFiles/cmake-generator.dir/src/Command/CommandLib.cpp.s
-.PHONY : src/Command/CommandLib.cpp.s
-
 src/Command/CommandRun.o: src/Command/CommandRun.cpp.o
 .PHONY : src/Command/CommandRun.o
 
@@ -345,9 +321,6 @@ help:
 	@echo "... src/Command/CommandInit.o"
 	@echo "... src/Command/CommandInit.i"
 	@echo "... src/Command/CommandInit.s"
-	@echo "... src/Command/CommandLib.o"
-	@echo "... src/Command/CommandLib.i"
-	@echo "... src/Command/CommandLib.s"
 	@echo "... src/Command/CommandRun.o"
 	@echo "... src/Command/CommandRun.i"
 	@echo "... src/Command/CommandRun.s"

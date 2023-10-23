@@ -1,5 +1,6 @@
 #include "Command.h"
 #include "toml.hpp"
+#include <cxxopts.hpp>
 #include <algorithm>
 #include <format>
 #include <fstream>
@@ -25,8 +26,7 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
   std::string source_dir = std::format("set(SOURCE_DIR {})", ctx->src_dir);
   std::string build_dir = std::format("set(BUILD_DIR {})", ctx->build_dir);
   std::string files = "file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}\n\
-    \"include/**.h\"\n\
-    \"include/**.hpp\"\n\
+    \"include/**.h\"\n \"include/**.hpp\"\n\
     \"src/**.cpp\"\n\
     \"src/**.c\"\n\
 )";
@@ -219,9 +219,8 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
   return false;
 }
 
-bool init(std::shared_ptr<Context> ctx, std::vector<std::string> &args) {
-
-  if (std::find(args.begin(), args.end(), "-y") != args.end()) {
+bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
+  if (args["skip-init"].as<bool>()) {
     defaultTomlCpp(ctx);
     loadPackageToml(ctx);
     createCMakelists(ctx);

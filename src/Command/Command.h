@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include <cxxopts.hpp>
+
 
 #define ENDL "\n"
 
@@ -35,12 +37,12 @@ typedef struct Context {
 } Context;
 
 bool loadPackageToml(std::shared_ptr<Context> ctx);
-bool init(std::shared_ptr<Context>, std::vector<std::string> &args);
+bool init(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 bool run(std::shared_ptr<Context>);
 bool ftp(std::shared_ptr<Context>);
-bool addFlag(std::shared_ptr<Context>, std::string);
+bool addFlag(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 bool help();
 
 bool writePackageToml(std::shared_ptr<Context> ctx);
-bool addLib(std::shared_ptr<Context>, std::string);
+bool addLib(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 }; // namespace Command
