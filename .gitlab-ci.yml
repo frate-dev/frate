@@ -27,7 +27,7 @@ before_script:
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
-    - cmake -DRELEASE=1 ./
+    - cmake -DCMAKE_BUILD_TYPE=Release ./
     - make -j32
   artifacts:
     when: always

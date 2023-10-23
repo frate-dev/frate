@@ -10,6 +10,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 include(FetchContent)
 
+
+
 FetchContent_Declare(
   cxxopts
   GIT_REPOSITORY "https://github.com/jarro2783/cxxopts.git"
@@ -31,21 +33,48 @@ message("Sources: ${SOURCES}")
 
 #target_link_libraries(cmake-generator SHARED cxxopts)
 include_directories(include)
-add_executable(cmake-generator ${SOURCES})
 
 if(NOT DEFINED RELEASE)
   set(RELEASE 0)
 endif()
 
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  message("Release mode")
+  set(RELEASE 1)
 
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  message("Debug mode")
+  set(RELEASE 0)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
+  message("Test mode")
+  set(RELEASE 0)
+  set(TEST_MODE 1)
+else()
+  message("Default mode")
+  set(RELEASE 0)
+endif()
+
+
+
+
+add_executable(cmake-generator ${SOURCES}) #test mode
 
 if(RELEASE EQUAL 1)
-  message("Release mode")
   add_definitions(-DRELEASE)
 else()
-  message("Debug mode")
   add_definitions(-DDEBUG)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
+  if(TEST_MODE EQUAL 1)
+    FetchContent_Declare(
+      Catch2
+      GIT_REPOSITORY "https://github.com/catchorg/Catch2.git"
+      GIT_TAG "origin/devel"
+      )
+
+    FetchContent_MakeAvailable(Catch2)
+    add_definitions(-DTEST) #test mode
+    target_link_libraries(cmake-generator Catch2::Catch2) #test mode fuck you cmake
+  endif()
 endif()
 
 target_link_libraries(cmake-generator cxxopts)
