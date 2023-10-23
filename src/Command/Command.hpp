@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <cxxopts.hpp>
 
@@ -18,7 +19,7 @@ bool handleCProject();
 
 inline bool file_exists(const std::string& name) {
     std::ifstream file;
-    file.open("test.txt");
+    file.open(name);
     // opening the file
     if (file) {
         std::cout << "File exists" << std::endl;
