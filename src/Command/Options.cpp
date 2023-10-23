@@ -4,7 +4,7 @@
 #include "Command.hpp"
 
 namespace Command{
-  void initOptions(){
+  void initOptions(cxxopts::Options& options){
     std::cout << "fucking options" << ENDL;
     options.parse_positional({"command",  "subcommand"});
     options.add_options()

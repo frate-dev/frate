@@ -37,11 +37,7 @@ namespace Command {
     return false;
   }
 
-  static  cxxopts::Options options(
-      "Cmake-Generator",
-      "Stop writing CMakeLists.txt files! let us suffer for you");
-
-  void initOptions();
+  void initOptions(cxxopts::Options& options);
 
   typedef struct dependency {
     std::string name;
@@ -78,6 +74,7 @@ namespace Command {
   bool ftp(std::shared_ptr<Context>);
   bool addFlag(std::shared_ptr<Context>, cxxopts::ParseResult &args);
   bool help();
+  bool addDependency(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 
   bool writePackageToml(std::shared_ptr<Context> ctx);
   bool createCMakelists(std::shared_ptr<Context> ctx);

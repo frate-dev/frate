@@ -61,6 +61,15 @@ bool writePackageToml(std::shared_ptr<Context> ctx) {
            {"cflags", flags},
        }},
   };
+
+  toml::table deps_table;
+
+  for (auto &dep : ctx->dependencies) {
+    deps_table.insert_or_assign(
+        dep.name,
+        toml::table{{"url", dep.url}, {"version", dep.version}});
+  };
+
   std::ofstream file;
   std::string file_name = "./config.toml";
 #ifdef DEBUG
@@ -68,6 +77,7 @@ bool writePackageToml(std::shared_ptr<Context> ctx) {
 #endif
   file.open(file_name);
   file << table;
+  file << deps_table;
   file << '\n';
   file.close();
   return true;
@@ -95,10 +105,9 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
   std::string source_dir = std::format("set(SOURCE_DIR {})", ctx->src_dir);
   std::string build_dir = std::format("set(BUILD_DIR {})", ctx->build_dir);
   std::string FetchContent = "include(FetchContent)";
-  std::string files =
-      "file(GLOB_RECURSE SOURCES RELATIVE "
-      "${CMAKE_SOURCE_DIR}\n\t\"include/**.h\"\n "
-      "\"include/**.hpp\"\n\t\"src/**.cpp\"\n\t\"src/**.c\"\n)";
+  std::string files = "file(GLOB_RECURSE SOURCES RELATIVE "
+                      "${CMAKE_SOURCE_DIR}\n\t\"include/**.h\"\n "
+                      "\"include/**.hpp\"\n\t\"src/**.cpp\"\n\t\"src/**.c\"\n)";
   typedef struct make_dep {
     std::string fetch_declare;
     std::string fetch_make_available;
@@ -125,8 +134,12 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
       std::format("include_directories({})", ctx->include_dir);
   std::string add_executable =
       std::format("add_executable({} ", ctx->project_name) + "${SOURCES})";
-  std::string testing="ok";
-  //std::string mode = std::format("if(RELEASE EQUAL 1)\n\tset(CMAKE_CXX_FLAGS {} \"${CMAKE_CXX_FLAGS} -O3 -Wextra -Wpedantic -Wall\")\n\tadd_definitions(-DRELEASE)\nelse()\n\tadd_definitions(-DDEBUG)\n\tset(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -g -O0 -Wextra {} -Wpedantic -Wall\")\n\tif(TEST_MODE EQUAL 1)\n\tendif()\nendif()", testing);
+  std::string testing = "ok";
+  // std::string mode = std::format("if(RELEASE EQUAL 1)\n\tset(CMAKE_CXX_FLAGS
+  // {} \"${CMAKE_CXX_FLAGS} -O3 -Wextra -Wpedantic
+  // -Wall\")\n\tadd_definitions(-DRELEASE)\nelse()\n\tadd_definitions(-DDEBUG)\n\tset(CMAKE_CXX_FLAGS
+  // \"${CMAKE_CXX_FLAGS} -g -O0 -Wextra {} -Wpedantic -Wall\")\n\tif(TEST_MODE
+  // EQUAL 1)\n\tendif()\nendif()", testing);
   std::string set_build_dir = std::format(
       "set_target_properties({} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {})",
       ctx->project_name, ctx->build_dir);

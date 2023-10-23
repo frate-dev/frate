@@ -14,9 +14,13 @@
 #endif
 int main(int argc, char **argv) {
 
+  cxxopts::Options options(
+      "Cmake-Generator",
+      "Stop writing CMakeLists.txt files! let us suffer for you");
 
-  Command::initOptions();
-  cxxopts::ParseResult result = Command::options.parse(argc, argv);
+
+  Command::initOptions(options);
+  cxxopts::ParseResult result =options.parse(argc, argv);
 
 #ifdef TEST
   Catch::Session session;
@@ -67,5 +71,9 @@ int main(int argc, char **argv) {
   }
   else if (command == "ftp"){
     Command::ftp(ctx);
+  }
+  else if (command == "addDependency"){
+    Command::loadPackageToml(ctx);
+    Command::addDependency(ctx, result);
   }
 }

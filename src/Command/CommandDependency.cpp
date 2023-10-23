@@ -20,6 +20,7 @@ namespace Command {
         ctx->dependencies.push_back(dependency_new);
       }
     }
+    writePackageToml(ctx);
     return true;
   }
 }
