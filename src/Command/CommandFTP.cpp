@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Command.h"
+#include "Command.hpp"
 
 namespace Command{
   bool ftp(std::shared_ptr<Context> ctx) {
@@ -8,7 +8,11 @@ namespace Command{
       std::cout << "Error: Could not load config.toml" << std::endl;
       return false;
     }
-    system("rm -rf ./*");
+  #ifdef DEBUG
+    system("rm -rf ./build/*");
+   #else
+      system("rm -rf ./*");
+    #endif // DEBUG
     return true;
   }
 }

@@ -1,4 +1,4 @@
-#include "Command.h"
+#include "Command.hpp"
 #include "toml.hpp"
 #include <cxxopts.hpp>
 #include <algorithm>
@@ -9,6 +9,7 @@
 
 namespace Command {
 
+  
 bool createCMakelists(std::shared_ptr<Context> ctx) {
   std::string cmake_minimum_required =
       std::format("cmake_minimum_required(VERSION {})", ctx->cmake_version);
@@ -62,6 +63,12 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
 }
 
 bool createToml(std::shared_ptr<Context> ctx) {
+  std::ofstream file;
+  std::string file_name = "./config.toml";
+  #ifdef DEBUG
+      file_name  ="./build/config.toml";
+  #endif
+  Command::file_exists(file_name);
   std::string cmake_version;
   std::string project_name;
   std::string project_version;
@@ -121,11 +128,7 @@ bool createToml(std::shared_ptr<Context> ctx) {
   std::cout << "📄New Toml File: \n";
   std::cout << table << '\n';
 
-  std::ofstream file;
-  std::string file_name = "./config.toml";
-  #ifdef DEBUG
-      file_name  ="./build/config.toml";
-  #endif
+
   file.open(file_name);
   file << table;
   file << '\n';
@@ -180,7 +183,13 @@ bool createCProject(std::shared_ptr<Context> ctx) {
   return false;
 }
 
+
+
+
+
+
 bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
+  
   ctx->project_name = "TestProject";
   ctx->src_dir = "./src";
   ctx->build_dir = "./build";
@@ -212,6 +221,10 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
      file_name = "./build/config.toml";
   #endif
 
+  if (Command::file_exists(file_name)) {
+    std::cout << "Error: config.toml already exists" << ENDL;
+    return false;
+  }
   file.open(file_name);
   file << table;
   file << '\n';

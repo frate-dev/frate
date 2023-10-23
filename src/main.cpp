@@ -1,6 +1,7 @@
-#include "Command/Command.h"
+#include "Command/Command.hpp"
 #include <vector>
 #include <string>
+// LUCAS PAY ATTENTION TO IF THE HEADER IS .hpp OR .h
 #include <cxxopts.hpp>
 #include <iostream>
 #include <vector>

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Command.h"
+#include "Command.hpp"
 
 namespace Command {
 
