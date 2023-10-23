@@ -28,9 +28,6 @@ bool loadPackageToml(std::shared_ptr<Context> ctx) {
     ctx->lang_version =
         data["project"]["lang_version"].value_or("no langversion");
     ctx->project_version = data["project"]["project_version"].value_or("0.0.1");
-    /* for (auto &flag : *data["project"]["cflags"].as_array()) { */
-    /* ctx->flags.push_back(flag.value_or("no flag")); */
-    /* } */
 
   } catch (const toml::parse_error &err) {
     std::cout << "Error: Could not load config.toml" << std::endl;
@@ -62,13 +59,16 @@ bool writePackageToml(std::shared_ptr<Context> ctx) {
        }},
   };
 
-  toml::table deps_table;
+  toml::table deps_table = toml::table{{"dependencies", toml::table{}}};
 
-  for (auto &dep : ctx->dependencies) {
-    deps_table.insert_or_assign(
-        dep.name,
-        toml::table{{"url", dep.url}, {"version", dep.version}});
-  };
+  for (Command::dependency &dep : ctx->dependencies) {
+
+    toml::table deps_values = toml::table{
+        {"url", dep.url},
+        {"version", dep.version},
+    };
+    deps_table["dependencies"].as_table()->insert(dep.name, deps_values);
+  } 
 
   std::ofstream file;
   std::string file_name = "./config.toml";
@@ -77,6 +77,7 @@ bool writePackageToml(std::shared_ptr<Context> ctx) {
 #endif
   file.open(file_name);
   file << table;
+  file << '\n';
   file << deps_table;
   file << '\n';
   file.close();
@@ -94,10 +95,11 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
                   ctx->project_name, ctx->project_version);
   std::string build_type =
       "if (CMAKE_BUILD_TYPE STREQUAL \"Release\")\n\tmessage(\"Release "
-      "mode\")\n\tset(RELEASE 1)\n\telseif(CMAKE_BUILD_TYPE STREQUAL "
+      "mode\")\n\tset(RELEASE 1)\nelseif(CMAKE_BUILD_TYPE STREQUAL "
       "\"Debug\")\n\tmessage(\"Debug mode\")\n\tset(RELEASE "
       "0)\nelseif(CMAKE_BUILD_TYPE STREQUAL \"Test\")\n\tmessage(\"Test "
-      "mode\")\n\tset(RELEASE 0)\n\tset(TEST_MODE 1)\nelse()\n";
+      "mode\")\n\tset(RELEASE 0)\n\tset(TEST_MODE 1)\n"
+      "else()\n\tmessage(\"Default mode\")\n\tset(RELEASE 0)\nendif()";
   std::string cxx_version =
       std::format("set(CMAKE_CXX_STANDARD {})", ctx->lang_version);
   std::string compiler =
@@ -135,11 +137,12 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
   std::string add_executable =
       std::format("add_executable({} ", ctx->project_name) + "${SOURCES})";
   std::string testing = "ok";
-  // std::string mode = std::format("if(RELEASE EQUAL 1)\n\tset(CMAKE_CXX_FLAGS
-  // {} \"${CMAKE_CXX_FLAGS} -O3 -Wextra -Wpedantic
-  // -Wall\")\n\tadd_definitions(-DRELEASE)\nelse()\n\tadd_definitions(-DDEBUG)\n\tset(CMAKE_CXX_FLAGS
-  // \"${CMAKE_CXX_FLAGS} -g -O0 -Wextra {} -Wpedantic -Wall\")\n\tif(TEST_MODE
-  // EQUAL 1)\n\tendif()\nendif()", testing);
+  std::string mode =
+      "if(RELEASE EQUAL 1)\n\tset(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -O2 "
+      "-Wextra -Wpedantic "
+      "-Wall\")\n\tadd_definitions(-DRELEASE)\nelse()\tadd_definitions(-DDEBUG)"
+      "\tset(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic "
+      "-Wall\")\tif(TEST_MODE EQUAL 1)\tendif()\nendif()";
   std::string set_build_dir = std::format(
       "set_target_properties({} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {})",
       ctx->project_name, ctx->build_dir);
@@ -164,6 +167,7 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
     file << dep.target_link_libraries << '\n';
   }
   file << files << '\n';
+  file << mode << '\n';
   file << include_dir << '\n';
   file << add_executable << '\n';
   file << source_dir << '\n';

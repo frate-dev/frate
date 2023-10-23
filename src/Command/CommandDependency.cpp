@@ -11,16 +11,16 @@ namespace Command {
     if(args.count("help")) {
       std::cout << "Usage: addDependency [options] name url branch" << std::endl;
     }
-    if(args.count("subcommand") == 0) {
-      for(auto dependency: args["subcommand"].as<std::vector<std::string>>() ) {
+    if(args.count("subcommand") != 0) {
         struct dependency dependency_new;
         dependency_new.name = args["subcommand"].as<std::vector<std::string>>()[0];
         dependency_new.url = args["subcommand"].as<std::vector<std::string>>()[1];
         dependency_new.version = args["subcommand"].as<std::vector<std::string>>()[2];
         ctx->dependencies.push_back(dependency_new);
-      }
     }
-    writePackageToml(ctx);
+    std::cout << ctx->dependencies.size() << std::endl;
+    Command::writePackageToml(ctx);
+    Command::createCMakelists(ctx);
     return true;
   }
 }
