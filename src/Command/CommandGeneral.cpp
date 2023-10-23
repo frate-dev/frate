@@ -125,11 +125,8 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
       std::format("include_directories({})", ctx->include_dir);
   std::string add_executable =
       std::format("add_executable({} ", ctx->project_name) + "${SOURCES})";
-
-  //  std::string mode = std::format("if(RELEASE EQUAL
-  //  1)\n\tadd_definitions(-DRELEASE)\nelse()\n\tadd_definitions(-DDEBUG)\n\tset(CMAKE_CXX_FLAGS
-  //  \"${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall\")\n\tif(TEST_MODE
-  //  EQUAL 1 {})\nendif()\nendif()", ctx->testing_lib);
+  std::string testing="ok";
+  //std::string mode = std::format("if(RELEASE EQUAL 1)\n\tset(CMAKE_CXX_FLAGS {} \"${CMAKE_CXX_FLAGS} -O3 -Wextra -Wpedantic -Wall\")\n\tadd_definitions(-DRELEASE)\nelse()\n\tadd_definitions(-DDEBUG)\n\tset(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -g -O0 -Wextra {} -Wpedantic -Wall\")\n\tif(TEST_MODE EQUAL 1)\n\tendif()\nendif()", testing);
   std::string set_build_dir = std::format(
       "set_target_properties({} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {})",
       ctx->project_name, ctx->build_dir);

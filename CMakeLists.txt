@@ -1,16 +1,14 @@
 cmake_minimum_required(VERSION 3.10)
+
 project ( 
-    cmake-generator 
+    cmaker
     VERSION 0.0.1
     LANGUAGES CXX
 )
+
 set(CMAKE_CXX_STANDARD 20)
 
-
-
 include(FetchContent)
-
-
 
 FetchContent_Declare(
   cxxopts
@@ -31,7 +29,7 @@ set(HEADER_DIR ${CMAKE_SOURCE_DIR}/include)
 
 message("Sources: ${SOURCES}")
 
-#target_link_libraries(cmake-generator SHARED cxxopts)
+#target_link_libraries(cmaker SHARED cxxopts)
 include_directories(include)
 
 if(NOT DEFINED RELEASE)
@@ -53,12 +51,10 @@ else()
   set(RELEASE 0)
 endif()
 
-
-
-
-add_executable(cmake-generator ${SOURCES}) #test mode
+add_executable(cmaker ${SOURCES}) #test mode
 
 if(RELEASE EQUAL 1)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wextra -Wpedantic -Wall")
   add_definitions(-DRELEASE)
 else()
   add_definitions(-DDEBUG)
@@ -72,16 +68,16 @@ else()
 
     FetchContent_MakeAvailable(Catch2)
     add_definitions(-DTEST) #test mode
-    target_link_libraries(cmake-generator Catch2::Catch2) #test mode fuck you cmake
+    target_link_libraries(cmaker Catch2::Catch2) #test mode fuck you cmake
     include(CTest)
     include(Catch)
 
   endif()
 endif()
 
-target_link_libraries(cmake-generator cxxopts)
+target_link_libraries(cmaker cxxopts)
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
 
 
-set_target_properties(cmake-generator PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
+set_target_properties(cmaker PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
