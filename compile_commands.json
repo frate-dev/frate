@@ -3,160 +3,21 @@
     "arguments": [
       "/usr/bin/c++",
       "-DDEBUG",
+      "-DTEST",
       "-I/home/deastl/repos/cmake-generator/include",
+      "-I/home/deastl/repos/cmake-generator/_deps/catch2-src/src/catch2/..",
+      "-I/home/deastl/repos/cmake-generator/_deps/catch2-build/generated-includes",
       "-I/home/deastl/repos/cmake-generator/_deps/cxxopts-src/include",
       "-g",
       "-O0",
-      "-O3",
-      "-DNDEBUG",
       "-std=gnu++20",
       "-c",
       "-o",
-      "CMakeFiles/cmake-generator.dir/src/Command/CommandFTP.cpp.o",
-      "/home/deastl/repos/cmake-generator/src/Command/CommandFTP.cpp"
+      "CMakeFiles/cmake-generator.dir/src/Test/TestCommands.cpp.o",
+      "/home/deastl/repos/cmake-generator/src/Test/TestCommands.cpp"
     ],
     "directory": "/home/deastl/repos/cmake-generator",
-    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandFTP.cpp",
-    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandFTP.cpp.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/c++",
-      "-DDEBUG",
-      "-I/home/deastl/repos/cmake-generator/include",
-      "-I/home/deastl/repos/cmake-generator/_deps/cxxopts-src/include",
-      "-g",
-      "-O0",
-      "-O3",
-      "-DNDEBUG",
-      "-std=gnu++20",
-      "-c",
-      "-o",
-      "CMakeFiles/cmake-generator.dir/src/Command/CommandFlags.cpp.o",
-      "/home/deastl/repos/cmake-generator/src/Command/CommandFlags.cpp"
-    ],
-    "directory": "/home/deastl/repos/cmake-generator",
-    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandFlags.cpp",
-    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandFlags.cpp.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/c++",
-      "-DDEBUG",
-      "-I/home/deastl/repos/cmake-generator/include",
-      "-I/home/deastl/repos/cmake-generator/_deps/cxxopts-src/include",
-      "-g",
-      "-O0",
-      "-O3",
-      "-DNDEBUG",
-      "-std=gnu++20",
-      "-c",
-      "-o",
-      "CMakeFiles/cmake-generator.dir/src/Command/CommandGeneral.cpp.o",
-      "/home/deastl/repos/cmake-generator/src/Command/CommandGeneral.cpp"
-    ],
-    "directory": "/home/deastl/repos/cmake-generator",
-    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandGeneral.cpp",
-    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandGeneral.cpp.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/c++",
-      "-DDEBUG",
-      "-I/home/deastl/repos/cmake-generator/include",
-      "-I/home/deastl/repos/cmake-generator/_deps/cxxopts-src/include",
-      "-g",
-      "-O0",
-      "-O3",
-      "-DNDEBUG",
-      "-std=gnu++20",
-      "-c",
-      "-o",
-      "CMakeFiles/cmake-generator.dir/src/Command/CommandHelp.cpp.o",
-      "/home/deastl/repos/cmake-generator/src/Command/CommandHelp.cpp"
-    ],
-    "directory": "/home/deastl/repos/cmake-generator",
-    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandHelp.cpp",
-    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandHelp.cpp.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/c++",
-      "-DDEBUG",
-      "-I/home/deastl/repos/cmake-generator/include",
-      "-I/home/deastl/repos/cmake-generator/_deps/cxxopts-src/include",
-      "-g",
-      "-O0",
-      "-O3",
-      "-DNDEBUG",
-      "-std=gnu++20",
-      "-c",
-      "-o",
-      "CMakeFiles/cmake-generator.dir/src/Command/CommandInit.cpp.o",
-      "/home/deastl/repos/cmake-generator/src/Command/CommandInit.cpp"
-    ],
-    "directory": "/home/deastl/repos/cmake-generator",
-    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandInit.cpp",
-    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandInit.cpp.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/c++",
-      "-DDEBUG",
-      "-I/home/deastl/repos/cmake-generator/include",
-      "-I/home/deastl/repos/cmake-generator/_deps/cxxopts-src/include",
-      "-g",
-      "-O0",
-      "-O3",
-      "-DNDEBUG",
-      "-std=gnu++20",
-      "-c",
-      "-o",
-      "CMakeFiles/cmake-generator.dir/src/Command/CommandLib.cpp.o",
-      "/home/deastl/repos/cmake-generator/src/Command/CommandLib.cpp"
-    ],
-    "directory": "/home/deastl/repos/cmake-generator",
-    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandLib.cpp",
-    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandLib.cpp.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/c++",
-      "-DDEBUG",
-      "-I/home/deastl/repos/cmake-generator/include",
-      "-I/home/deastl/repos/cmake-generator/_deps/cxxopts-src/include",
-      "-g",
-      "-O0",
-      "-O3",
-      "-DNDEBUG",
-      "-std=gnu++20",
-      "-c",
-      "-o",
-      "CMakeFiles/cmake-generator.dir/src/Command/CommandRun.cpp.o",
-      "/home/deastl/repos/cmake-generator/src/Command/CommandRun.cpp"
-    ],
-    "directory": "/home/deastl/repos/cmake-generator",
-    "file": "/home/deastl/repos/cmake-generator/src/Command/CommandRun.cpp",
-    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Command/CommandRun.cpp.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/c++",
-      "-DDEBUG",
-      "-I/home/deastl/repos/cmake-generator/include",
-      "-I/home/deastl/repos/cmake-generator/_deps/cxxopts-src/include",
-      "-g",
-      "-O0",
-      "-O3",
-      "-DNDEBUG",
-      "-std=gnu++20",
-      "-c",
-      "-o",
-      "CMakeFiles/cmake-generator.dir/src/main.cpp.o",
-      "/home/deastl/repos/cmake-generator/src/main.cpp"
-    ],
-    "directory": "/home/deastl/repos/cmake-generator",
-    "file": "/home/deastl/repos/cmake-generator/src/main.cpp",
-    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/main.cpp.o"
+    "file": "/home/deastl/repos/cmake-generator/src/Test/TestCommands.cpp",
+    "output": "/home/deastl/repos/cmake-generator/CMakeFiles/cmake-generator.dir/src/Test/TestCommands.cpp.o"
   }
 ]

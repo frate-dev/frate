@@ -41,7 +41,6 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   message("Release mode")
   set(RELEASE 1)
-
 elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
   message("Debug mode")
   set(RELEASE 0)
@@ -63,7 +62,7 @@ if(RELEASE EQUAL 1)
   add_definitions(-DRELEASE)
 else()
   add_definitions(-DDEBUG)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
   if(TEST_MODE EQUAL 1)
     FetchContent_Declare(
       Catch2
@@ -74,6 +73,9 @@ else()
     FetchContent_MakeAvailable(Catch2)
     add_definitions(-DTEST) #test mode
     target_link_libraries(cmake-generator Catch2::Catch2) #test mode fuck you cmake
+    include(CTest)
+    include(Catch)
+
   endif()
 endif()
 

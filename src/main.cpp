@@ -7,7 +7,21 @@
 #include <memory>
 #include <string>
 
+#ifdef TEST
+  #include <catch2/catch_session.hpp>
+  #include "Test/TestCommands.hpp"
+#endif
 int main(int argc, char **argv) {
+
+
+#ifdef TEST
+  Catch::Session session;
+  int returnCode = session.applyCommandLine(argc, argv);
+  if (returnCode != 0) // Indicates a command line error
+    return returnCode;
+  int numFailed = session.run();
+  return (numFailed < 0xff ? numFailed : 0xff);
+#endif
 
   cxxopts::Options options(
       "Cmake-Generator",

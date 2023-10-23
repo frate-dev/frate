@@ -1,3 +1,4 @@
+#pragma once
 #include <memory>
 #include "toml.hpp"
 #include <map>
