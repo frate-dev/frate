@@ -9,7 +9,6 @@ namespace Command {
       system("mkdir -p build/build");
       system("cmake  . ");
       system("make");
-      system("cd ..");
     #else
       system("mkdir -p build");
       system("cmake  . ");

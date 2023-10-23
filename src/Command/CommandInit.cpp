@@ -16,8 +16,7 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
     {} \n\
     VERSION {}\n\
     LANGUAGES CXX\n\
-)",
-                  ctx->project_name, ctx->project_version);
+)", ctx->project_name, ctx->project_version);
 
   std::string cxx_version =
       std::format("set(CMAKE_CXX_STANDARD {})", ctx->lang_version);
