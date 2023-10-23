@@ -7,6 +7,14 @@
 
 namespace Command {
   bool addFlag(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
-      return true;
+    if(args.count("help")) {
+      std::cout << "Usage: addFlag [options] flags" << std::endl;
+    }
+    if(args.count("subcommand") == 0) {
+      for(auto flag: args["subcommand"].as<std::vector<std::string>>() ) {
+        ctx->flags.push_back(flag);
+      }
+    }
+    return true;
   }
 } 
