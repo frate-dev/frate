@@ -23,8 +23,13 @@ namespace Command {
     file.open(name);
     // opening the file
     if (file) {
-      std::cout << "File exists" << std::endl;
-      exit(1);
+      std::cout << "file config.toml exists" << std::endl;
+      std::cout << "do you want to overwrite it?[y/n]:";
+      std::string input;
+      std::getline(std::cin, input);
+      if (input != "y"){
+        exit(1);
+      }
       file.close();
       return true;
     }

@@ -68,8 +68,7 @@ bool createToml(std::shared_ptr<Context> ctx) {
   #ifdef DEBUG
       file_name  ="./build/config.toml";
   #endif
-  file_exists(file_name);
-  std::string cmake_version;
+    std::string cmake_version;
   std::string project_name;
   std::string project_version;
   std::string include_dir;
@@ -189,7 +188,6 @@ bool createCProject(std::shared_ptr<Context> ctx) {
 
 
 bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
-  
   ctx->project_name = "TestProject";
   ctx->src_dir = "./src";
   ctx->build_dir = "./build";
@@ -221,10 +219,7 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
      file_name = "./build/config.toml";
   #endif
 
-  if (Command::file_exists(file_name)) {
-    std::cout << "Error: config.toml already exists" << ENDL;
-    return false;
-  }
+
   file.open(file_name);
   file << table;
   file << '\n';
@@ -233,6 +228,13 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
 }
 
 bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
+  std::string file_name = "./config.toml";
+  #ifdef DEBUG
+      file_name = "./build/config.toml";
+  #endif
+  file_exists(file_name);
+
+
   if (args["skip-init"].as<bool>()) {
     defaultTomlCpp(ctx);
     loadPackageToml(ctx);
@@ -240,6 +242,7 @@ bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
     createHelloWorldCpp();
   } else {
     while (true) {
+
       std::cout << "Language: ";
       std::getline(std::cin, ctx->lang);
       if (ctx->lang == "cpp" || ctx->lang == "c++") {
