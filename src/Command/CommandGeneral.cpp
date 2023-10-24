@@ -7,12 +7,13 @@
 namespace Command {
 bool loadPackageToml(std::shared_ptr<Context> ctx) {
   try {
-    std::string file_name = "./config.toml";
+    std::string file_name = "config.toml";
 #ifdef DEBUG
-    file_name = "./build/config.toml";
+    file_name = "build/config.toml";
+    std::cout << "Loading config.toml from " << ctx->project_path / file_name
+              << std::endl;
 #endif
-
-    auto data = toml::parse_file(file_name);
+    auto data = toml::parse_file((ctx->project_path / file_name).string());
     ctx->project_name = data["project"]["project_name"].value_or("no name");
     for (auto &author : *data["project"]["authors"].as_array()) {
       ctx->authors.push_back(author.value_or("no author"));
@@ -80,11 +81,12 @@ bool writePackageToml(std::shared_ptr<Context> ctx) {
   }
 
   std::ofstream file;
-  std::string file_name = "./config.toml";
+  std::string file_name = "config.toml";
 #ifdef DEBUG
-  file_name = "./build/config.toml";
+  file_name = "build/config.toml";
+  std::cout << "Writing config.toml to " << ctx->project_path / file_name << std::endl;
 #endif
-  file.open(file_name);
+  file.open(ctx->project_path / file_name);
   file << table;
   file << '\n';
   file << deps_table;
@@ -158,14 +160,14 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
       ctx->project_name, ctx->build_dir);
 
   std::ofstream file;
-  std::string file_name = "./CMakeLists.txt";
+  std::string file_name = "CMakeLists.txt";
 
 #ifdef DEBUG
-  file_name = "./build/CMakeLists.txt";
+  file_name = "build/CMakeLists.txt";
 #endif
-  remove(file_name.c_str());
+  remove((ctx->project_path / file_name).c_str());
 
-  file.open(file_name);
+  file.open(ctx->project_path / file_name);
   file << cmake_minimum_required << '\n';
   file << project_name << '\n';
   file << cxx_version << '\n';

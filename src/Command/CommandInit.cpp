@@ -14,9 +14,9 @@ namespace Command {
 
 bool createToml(std::shared_ptr<Context> ctx) {
   std::ofstream file;
-  std::string file_name = "./config.toml";
+  std::string file_name = "config.toml";
   #ifdef DEBUG
-      file_name  ="./build/config.toml";
+      file_name  ="build/config.toml";
   #endif
     std::string cmake_version;
   std::string project_name;
@@ -78,21 +78,21 @@ bool createToml(std::shared_ptr<Context> ctx) {
   std::cout << table << '\n';
 
 
-  file.open(file_name);
+  file.open(ctx->project_path / file_name);
   file << table;
   file << '\n';
   file.close();
   return false;
 }
 
-bool createHelloWorldCpp() {
+bool createHelloWorldCpp(std::shared_ptr<Context> ctx) {
   system("cd build;mkdir src");
   std::ofstream file;
-  std::string file_name = "./src/main.cpp";
+  std::string file_name = ctx->project_path / "src/main.cpp";
   #ifdef DEBUG
-      file_name = "./build/src/main.cpp";
+      file_name = "build/src/main.cpp";
   #endif
-  file.open("./build/src/main.cpp");
+  file.open(ctx->project_path / file_name);
   file << "#include <iostream>\n"
           "int main(){\n"
           " std::cout << \"Hello World\" << std::endl;\n"
@@ -100,14 +100,14 @@ bool createHelloWorldCpp() {
           "}\n";
   return false;
 }
-bool createHelloWorldC() {
+bool createHelloWorldC(std::shared_ptr<Context> ctx) {
   system("mkdir src");
   std::ofstream file;
-  std::string file_name = "./src/main.c";
+  std::string file_name = "src/main.c";
   #ifdef DEBUG
-      file_name = "./build/src/main.c";
+      file_name = "build/src/main.c";
   #endif
-  file.open(file_name);
+  file.open(ctx->project_path / file_name);
   file << "#include <stdio.h>\n"
           "int main(){\n"
           " printf(\"Hello World\");\n"
@@ -120,7 +120,7 @@ bool createCppProject(std::shared_ptr<Context> ctx) {
   createToml(ctx);
   loadPackageToml(ctx);
   Command::createCMakelists(ctx);
-  createHelloWorldCpp();
+  createHelloWorldCpp(ctx);
   return true;
 }
 
@@ -128,7 +128,7 @@ bool createCProject(std::shared_ptr<Context> ctx) {
   createToml(ctx);
   loadPackageToml(ctx);
   Command::createCMakelists(ctx);
-  createHelloWorldC();
+  createHelloWorldC(ctx);
   return false;
 }
 
@@ -139,8 +139,6 @@ bool createCProject(std::shared_ptr<Context> ctx) {
 
 bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
   ctx->project_name = "TestProject";
-  ctx->src_dir = "./src";
-  ctx->build_dir = "./build";
 
   toml::array authors = toml::array{};
   toml::table table = toml::table{
@@ -163,14 +161,14 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
   std::cout << table << '\n';
 
   std::ofstream file;
-  std::string file_name = "./config.toml";
+  std::string file_name = "config.toml";
 
   #ifdef DEBUG
-     file_name = "./build/config.toml";
+     file_name = "build/config.toml";
   #endif
 
 
-  file.open(file_name);
+  file.open(ctx->project_path / file_name);
   file << table;
   file << '\n';
   file.close();
@@ -178,18 +176,22 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
 }
 
 bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
-  std::string file_name = "./config.toml";
+  std::string file_name = "config.toml";
   #ifdef DEBUG
-      file_name = "./build/config.toml";
+      file_name = "build/config.toml";
   #endif
   file_exists(file_name);
+  if(ctx->project_path.empty()){
+    ctx->project_path = std::filesystem::current_path();
+  }
 
-
+  std::cout << "project path" << ctx->project_path << ENDL;
+  std::cout << "config.toml path" << ctx->project_path / file_name << ENDL;
   if (args["skip-init"].as<bool>()) {
     defaultTomlCpp(ctx);
     loadPackageToml(ctx);
     createCMakelists(ctx);
-    createHelloWorldCpp();
+    createHelloWorldCpp(ctx);
   } else {
     while (true) {
 
