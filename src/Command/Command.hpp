@@ -129,6 +129,11 @@ namespace Command {
   /*
    * What the fuck lucas
    */
+  /*
+   *  adds  dependency to toml and regenerates the CMakeLists.txt
+   *  @returns bool -> finished successfully
+   */
+  bool add(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args);
   [[deprecated("use addDependency instead")]]
   bool addLib(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 }

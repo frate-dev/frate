@@ -6,7 +6,15 @@
 namespace Command {
 
 
-  bool  add(){
+  bool  add(std::shared_ptr<Context> ctx, cxxopts::ParseResult& args){
+    args.count("subcommand");
+    if(args.count("subcommand") != 0) {
+      std::string subcommand = args["subcommand"].as<std::vector<std::string>>()[0];
+      if (subcommand == "dep"){
+        addDependency(ctx, args);
+      }
+
+    }
     return true;
   }
 
@@ -15,13 +23,13 @@ namespace Command {
     // TODO: Add dependency to config.toml
     std::cout << "addDependency" << std::endl;
     if(args.count("help")) {
-      std::cout << "Usage: addDependency [options] name url branch" << std::endl;
+      std::cout << "Usage: add dep [options] name url branch" << std::endl;
     }
     if(args.count("subcommand") != 0) {
         struct dependency dependency_new;
-        dependency_new.name = args["subcommand"].as<std::vector<std::string>>()[0];
-        dependency_new.url = args["subcommand"].as<std::vector<std::string>>()[1];
-        dependency_new.version = args["subcommand"].as<std::vector<std::string>>()[2];
+        dependency_new.name = args["args"].as<std::vector<std::string>>()[0];
+        dependency_new.url = args["args"].as<std::vector<std::string>>()[1];
+        dependency_new.version = args["args"].as<std::vector<std::string>>()[2];
         ctx->dependencies.push_back(dependency_new);
     }
     std::cout << ctx->dependencies.size() << std::endl;

@@ -15,6 +15,8 @@ namespace Command{
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>()->default_value("help"))
       ("args", "Subcommand to run", cxxopts::value< std::vector<std::string>>())
+      ("l,language", "Language to use", cxxopts::value<std::string>()->default_value("cpp"))
+      ("n,name", "Name of the project", cxxopts::value<std::string>()->default_value("test"))
       ("h,help", "Print usage")
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"));

@@ -137,9 +137,9 @@ bool createCProject(std::shared_ptr<Context> ctx) {
 
 
 
-bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
-  ctx->project_name = "TestProject";
-
+bool defaultTomlCpp(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
+  std::string language = args["language"].as<std::string>();
+  std::string name = args["name"].as<std::string>();
   toml::array authors = toml::array{};
   toml::table table = toml::table{
       {"project",
@@ -188,7 +188,7 @@ bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
   std::cout << "project path" << ctx->project_path << ENDL;
   std::cout << "config.toml path" << ctx->project_path / file_name << ENDL;
   if (args["skip-init"].as<bool>()) {
-    defaultTomlCpp(ctx);
+    defaultTomlCpp(ctx, args);
     loadPackageToml(ctx);
     createCMakelists(ctx);
     createHelloWorldCpp(ctx);
