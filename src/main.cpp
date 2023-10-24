@@ -3,6 +3,7 @@
 #include <string>
 // LUCAS PAY ATTENTION TO IF THE HEADER IS .hpp OR .h
 #include <cxxopts.hpp>
+#include <nlohmann/json.hpp>
 #include <iostream>
 #include <vector>
 #include <memory>

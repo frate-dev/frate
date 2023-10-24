@@ -15,7 +15,13 @@ FetchContent_Declare(
   GIT_REPOSITORY "https://github.com/jarro2783/cxxopts.git"
   GIT_TAG "origin/master"
 )
+FetchContent_Declare(
+  json
+  GIT_REPOSITORY "https://github.com/nlohmann/json.git"
+  GIT_TAG "origin/master"
+)
 
+FetchContent_MakeAvailable(json)
 
 FetchContent_MakeAvailable(cxxopts)
 
