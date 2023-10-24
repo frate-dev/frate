@@ -39,5 +39,5 @@ unit-test-job:   # This job runs in the test stage.
   script:
     - cmake -DCMAKE_BUILD_TYPE=Test
     - make -j32
-    - build/cmake-generator
+    - build/cmaker
 
