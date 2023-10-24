@@ -178,7 +178,7 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
 bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
   std::string file_name = "config.toml";
   #ifdef DEBUG
-      file_name = "build/config.toml";
+  file_name = "build/config.toml";
   #endif
   file_exists(file_name);
   if(ctx->project_path.empty()){

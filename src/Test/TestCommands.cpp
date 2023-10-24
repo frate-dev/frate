@@ -1,3 +1,5 @@
+#include <cstdio>
+#include <filesystem>
 #ifdef TEST
 #include <catch2/catch_test_macros.hpp>
 #include "../Command/Command.hpp"
@@ -17,17 +19,16 @@ namespace TestCommands {
     std::string random_string;
     int random_string_length = 10;
     for (int i = 0; i < random_string_length; ++i) {
-      random_string += base64_chars[rand() % base64_chars.length()];
+      random_string += base64_chars[(rand() + time(NULL)) % base64_chars.length()];
     }
     return random_string;
   }
   
   bool testCommandInit() {
     std::shared_ptr<Command::Context> context = std::make_shared<Command::Context>();
-    context->project_path = std::filesystem::path("/tmp/cmake-generator-test" + genBase64String());
-    std::string mkdir = ("mkdir " + context->project_path.string());
-    system(mkdir.c_str());
     char* args[] = {"cmake-generator","init","-y"};
+
+    system(("rm -rf " + context->project_path.string() + "/*").c_str());
 
     for(auto arg : args) {
       std::cout << arg << std::endl;
@@ -38,16 +39,14 @@ namespace TestCommands {
     Command::initOptions(options);
     cxxopts::ParseResult parseResults = options.parse(3, args);
     Command::init(context, parseResults);
-
-    bool cmakeExists = std::filesystem::exists(context->project_path / "config.toml");
-    std::cout << context->project_path / "CMakeLists.txt and it exists: " << cmakeExists << std::endl;
-    if(cmakeExists) {
-      std::string rm = ("rm -rf " + context->project_path.string());
-      system(rm.c_str());
-      std::cout << "We found CMakeLists.txt" << std::endl;
-      return true;
+    std::ifstream file;
+    try{
+      file = std::ifstream(context->project_path / "CMakeLists.txt");
+    } catch (std::exception& e) {
+      std::cout << "Failed to load CMakeLists.txt" << std::endl;
+      return false;
     }
-    return false;
+    return true;
   }
 
   TEST_CASE("TestCommands", "[commands]"){
