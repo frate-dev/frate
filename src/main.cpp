@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
   else if (command == "ftp"){
     Command::ftp(ctx);
   }
-  else if (command == "addDependency"){
+  else if (command == "add"){
     Command::loadPackageToml(ctx);
     Command::addDependency(ctx, result);
   }

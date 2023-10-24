@@ -13,12 +13,16 @@
 #define ENDL "\n"
 
 namespace Command {
-
+  [[deprecated("I DON'T KNOW WHAT THIS FUCKING DOES")]]
   bool handleCppProject();
-
+  [[deprecated("I DON'T KNOW WHAT THIS FUCKING DOES")]]
   bool handleCProject();
 
-
+  /*
+   * Checks if the file exists
+   * @param name the name of the file
+   * @return bool -> file exists
+   */
   inline bool file_exists(const std::string& name) {
     std::ifstream file;
     file.open(name);
@@ -36,7 +40,10 @@ namespace Command {
     }
     return false;
   }
-
+  /*
+   * Initializes the options for the command line parser
+   * @param new options object
+   */
   void initOptions(cxxopts::Options& options);
 
   typedef struct dependency {
@@ -49,7 +56,7 @@ namespace Command {
 
   typedef struct Context {
     /*
-     * TODO: This should be initialize to the current directory if not specified
+     * TODO: The name should be initialize to the current directory if not specified
      */
     std::string project_name;
     std::filesystem::path project_path;
@@ -67,16 +74,61 @@ namespace Command {
     std::string project_version{"0.0.1"};
     std::vector<std::string> flags; 
   } Context;
-
+  /*
+   * Loads the config.toml file into the project context
+   * @param a blank project context
+   * @return bool -> finished successfully
+   */
   bool loadPackageToml(std::shared_ptr<Context> ctx);
+  /*
+   * Initializes the project
+   * Prompts the user for information about the project
+   * @param ctx the current project context
+   * @return bool -> finished successfully
+   */
   bool init(std::shared_ptr<Context>, cxxopts::ParseResult &args);
+  /*
+   * Builds and runs the project
+   * @param ctx the current project context
+   * @return bool -> finished successfully
+   */
   bool run(std::shared_ptr<Context>);
+  /*
+   * Fuck this project function
+   * Deletes the project entirely
+   * @param ctx the current project context
+   * @return bool -> finished successfully
+   */
   bool ftp(std::shared_ptr<Context>);
+  /*
+   * Adds flags to build script
+   * @param ctx project context
+   * @return bool -> finished successfully
+   */
   bool addFlag(std::shared_ptr<Context>, cxxopts::ParseResult &args);
+  /*
+   * prints all commands and their function and parameters
+   * @return bool -> finished successfully
+   */
   bool help();
+  /*
+   * adds a dependency to the config.toml
+   * @returns bool -> finished successfully
+   */
   bool addDependency(std::shared_ptr<Context>, cxxopts::ParseResult &args);
-
+  /*
+   * writes config.toml containing all information provided by project context
+   * @return bool -> finished successfully
+   */
   bool writePackageToml(std::shared_ptr<Context> ctx);
+  /*
+   * Generates cmake file for project based on the current project context
+   * @returns bool -> finished successfully
+   */
   bool createCMakelists(std::shared_ptr<Context> ctx);
+  /*
+   * What the fuck lucas
+   */
+  [[deprecated("use addDependency instead")]]
   bool addLib(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 }

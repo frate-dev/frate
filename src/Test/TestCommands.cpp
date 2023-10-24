@@ -48,6 +48,8 @@ namespace TestCommands {
     return true;
   }
 
+
+
   TEST_CASE("TestCommands", "[commands]"){
 
     REQUIRE(testCommandInit());
