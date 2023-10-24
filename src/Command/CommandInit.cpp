@@ -2,6 +2,7 @@
 #include "toml.hpp"
 #include <cxxopts.hpp>
 #include <algorithm>
+#include <ranges>
 #include <format>
 #include <fstream>
 #include <iostream>
@@ -187,8 +188,24 @@ bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
 
   std::cout << "project path" << ctx->project_path << ENDL;
   std::cout << "config.toml path" << ctx->project_path / file_name << ENDL;
+  std::string current_path =  ctx->project_path.string();
+  auto const dir { current_path
+    | std::views::split('\\')
+  };
+
+
+
   if (args["skip-init"].as<bool>()) {
-    defaultTomlCpp(ctx, args);
+    std::string language = args["language"].as<std::string>();
+    if (language == "cpp" || language == "c++"){
+      defaultTomlCpp(ctx, args);
+    }
+    else if (language == "c") { 
+      //defaultTomlC(ctx, args);
+      std::cout << "C is not supported yet" << ENDL;
+      exit(-1);
+    }
+
     loadPackageToml(ctx);
     createCMakelists(ctx);
     createHelloWorldCpp(ctx);
