@@ -16,12 +16,12 @@ FetchContent_Declare(
   GIT_TAG "origin/master"
 )
 FetchContent_Declare(
-  json
+  nlohmann_json
   GIT_REPOSITORY "https://github.com/nlohmann/json.git"
   GIT_TAG "origin/master"
 )
 
-FetchContent_MakeAvailable(json)
+FetchContent_MakeAvailable(nlohmann_json)
 FetchContent_MakeAvailable(cxxopts)
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
@@ -81,6 +81,7 @@ else()
 endif()
 
 target_link_libraries(cmaker cxxopts)
+target_link_libraries(cmaker nlohmann_json)
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
 

@@ -5,6 +5,12 @@
 
 namespace Command {
 
+
+  bool  add(){
+    return true;
+  }
+
+
   bool addDependency(std::shared_ptr<Context> ctx, cxxopts::ParseResult& args) {
     // TODO: Add dependency to config.toml
     std::cout << "addDependency" << std::endl;
