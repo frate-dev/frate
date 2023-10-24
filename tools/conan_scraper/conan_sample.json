@@ -1,0 +1,6456 @@
+{
+  "data": [
+    {
+      "name": "7bitconf",
+      "href": "/center/recipes/7bitconf?version=1.1.0"
+    },
+    {
+      "name": "7bitdi",
+      "href": "/center/recipes/7bitdi?version=1.0.0"
+    },
+    {
+      "name": "7zip",
+      "href": "/center/recipes/7zip?version=23.01"
+    },
+    {
+      "name": "aaf",
+      "href": "/center/recipes/aaf?version=1.2.0"
+    },
+    {
+      "name": "aaplus",
+      "href": "/center/recipes/aaplus?version=2.41"
+    },
+    {
+      "name": "absent",
+      "href": "/center/recipes/absent?version=0.3.1"
+    },
+    {
+      "name": "acado",
+      "href": "/center/recipes/acado?version=1.2.2-beta"
+    },
+    {
+      "name": "abseil",
+      "href": "/center/recipes/abseil?version=20230125.3"
+    },
+    {
+      "name": "accellera-uvm-systemc",
+      "href": "/center/recipes/accellera-uvm-systemc?version=1.0-beta4"
+    },
+    {
+      "name": "access_private",
+      "href": "/center/recipes/access_private?version=cci.20210621"
+    },
+    {
+      "name": "acl",
+      "href": "/center/recipes/acl?version=2.3.1"
+    },
+    {
+      "name": "ada",
+      "href": "/center/recipes/ada?version=2.7.0"
+    },
+    {
+      "name": "ade",
+      "href": "/center/recipes/ade?version=0.1.2d"
+    },
+    {
+      "name": "aeron",
+      "href": "/center/recipes/aeron?version=1.41.4"
+    },
+    {
+      "name": "aggeom-agg",
+      "href": "/center/recipes/aggeom-agg?version=2.7.1"
+    },
+    {
+      "name": "ags",
+      "href": "/center/recipes/ags?version=6.0.1"
+    },
+    {
+      "name": "alac",
+      "href": "/center/recipes/alac?version=cci.20121212"
+    },
+    {
+      "name": "alembic",
+      "href": "/center/recipes/alembic?version=1.8.5"
+    },
+    {
+      "name": "alpaca",
+      "href": "/center/recipes/alpaca?version=0.2.1"
+    },
+    {
+      "name": "amgcl",
+      "href": "/center/recipes/amgcl?version=1.4.3"
+    },
+    {
+      "name": "amqp-cpp",
+      "href": "/center/recipes/amqp-cpp?version=4.3.26"
+    },
+    {
+      "name": "andreasbuhr-cppcoro",
+      "href": "/center/recipes/andreasbuhr-cppcoro?version=cci.20210113"
+    },
+    {
+      "name": "android-ndk",
+      "href": "/center/recipes/android-ndk?version=r26b"
+    },
+    {
+      "name": "angelscript",
+      "href": "/center/recipes/angelscript?version=2.36.1"
+    },
+    {
+      "name": "antlr4-cppruntime",
+      "href": "/center/recipes/antlr4-cppruntime?version=4.13.1"
+    },
+    {
+      "name": "any-lite",
+      "href": "/center/recipes/any-lite?version=0.4.0"
+    },
+    {
+      "name": "anyrpc",
+      "href": "/center/recipes/anyrpc?version=1.0.2"
+    },
+    {
+      "name": "approvaltests.cpp",
+      "href": "/center/recipes/approvaltests.cpp?version=10.12.2"
+    },
+    {
+      "name": "apr",
+      "href": "/center/recipes/apr?version=1.7.4"
+    },
+    {
+      "name": "apr-util",
+      "href": "/center/recipes/apr-util?version=1.6.1"
+    },
+    {
+      "name": "apriltag",
+      "href": "/center/recipes/apriltag?version=3.1.4"
+    },
+    {
+      "name": "aravis",
+      "href": "/center/recipes/aravis?version=0.8.20"
+    },
+    {
+      "name": "archicad-apidevkit",
+      "href": "/center/recipes/archicad-apidevkit?version=26"
+    },
+    {
+      "name": "arcus",
+      "href": "/center/recipes/arcus?version=4.9.1"
+    },
+    {
+      "name": "arduinojson",
+      "href": "/center/recipes/arduinojson?version=6.21.2"
+    },
+    {
+      "name": "argon2",
+      "href": "/center/recipes/argon2?version=20190702"
+    },
+    {
+      "name": "args-parser",
+      "href": "/center/recipes/args-parser?version=6.3.3"
+    },
+    {
+      "name": "argtable2",
+      "href": "/center/recipes/argtable2?version=2.13"
+    },
+    {
+      "name": "argtable3",
+      "href": "/center/recipes/argtable3?version=3.2.2"
+    },
+    {
+      "name": "arg_router",
+      "href": "/center/recipes/arg_router?version=1.3.0"
+    },
+    {
+      "name": "armadillo",
+      "href": "/center/recipes/armadillo?version=12.6.4"
+    },
+    {
+      "name": "arrow",
+      "href": "/center/recipes/arrow?version=13.0.0"
+    },
+    {
+      "name": "argh",
+      "href": "/center/recipes/argh?version=1.3.2"
+    },
+    {
+      "name": "arsenalgear",
+      "href": "/center/recipes/arsenalgear?version=2.1.0"
+    },
+    {
+      "name": "artery-font-format",
+      "href": "/center/recipes/artery-font-format?version=1.0.1"
+    },
+    {
+      "name": "aruco",
+      "href": "/center/recipes/aruco?version=3.1.12"
+    },
+    {
+      "name": "argparse",
+      "href": "/center/recipes/argparse?version=2.9"
+    },
+    {
+      "name": "asio-grpc",
+      "href": "/center/recipes/asio-grpc?version=2.6.0"
+    },
+    {
+      "name": "asio",
+      "href": "/center/recipes/asio?version=1.28.1"
+    },
+    {
+      "name": "asmjit",
+      "href": "/center/recipes/asmjit?version=cci.20230325"
+    },
+    {
+      "name": "assimp",
+      "href": "/center/recipes/assimp?version=5.2.2"
+    },
+    {
+      "name": "astc-codec",
+      "href": "/center/recipes/astc-codec?version=cci.20190617"
+    },
+    {
+      "name": "astro-informatics-so3",
+      "href": "/center/recipes/astro-informatics-so3?version=1.3.4"
+    },
+    {
+      "name": "asyncly",
+      "href": "/center/recipes/asyncly?version=cci.20230420"
+    },
+    {
+      "name": "asn1c",
+      "href": "/center/recipes/asn1c?version=0.9.28"
+    },
+    {
+      "name": "asyncplusplus",
+      "href": "/center/recipes/asyncplusplus?version=1.1"
+    },
+    {
+      "name": "at-spi2-atk",
+      "href": "/center/recipes/at-spi2-atk?version=2.38.0"
+    },
+    {
+      "name": "at-spi2-core",
+      "href": "/center/recipes/at-spi2-core?version=2.50.0"
+    },
+    {
+      "name": "atk",
+      "href": "/center/recipes/atk?version=2.38.0"
+    },
+    {
+      "name": "audiofile",
+      "href": "/center/recipes/audiofile?version=1.1.1"
+    },
+    {
+      "name": "autoconf",
+      "href": "/center/recipes/autoconf?version=2.71"
+    },
+    {
+      "name": "autoconf-archive",
+      "href": "/center/recipes/autoconf-archive?version=2022.09.03"
+    },
+    {
+      "name": "automake",
+      "href": "/center/recipes/automake?version=1.16.5"
+    },
+    {
+      "name": "avahi",
+      "href": "/center/recipes/avahi?version=0.8"
+    },
+    {
+      "name": "avcpp",
+      "href": "/center/recipes/avcpp?version=cci.20220301"
+    },
+    {
+      "name": "avir",
+      "href": "/center/recipes/avir?version=3.0"
+    },
+    {
+      "name": "aws-c-auth",
+      "href": "/center/recipes/aws-c-auth?version=0.6.17"
+    },
+    {
+      "name": "aws-c-cal",
+      "href": "/center/recipes/aws-c-cal?version=0.6.1"
+    },
+    {
+      "name": "aws-c-common",
+      "href": "/center/recipes/aws-c-common?version=0.9.3"
+    },
+    {
+      "name": "aws-c-compression",
+      "href": "/center/recipes/aws-c-compression?version=0.2.17"
+    },
+    {
+      "name": "aws-c-event-stream",
+      "href": "/center/recipes/aws-c-event-stream?version=0.3.1"
+    },
+    {
+      "name": "async_simple",
+      "href": "/center/recipes/async_simple?version=1.0.0"
+    },
+    {
+      "name": "aws-c-http",
+      "href": "/center/recipes/aws-c-http?version=0.6.22"
+    },
+    {
+      "name": "aws-c-io",
+      "href": "/center/recipes/aws-c-io?version=0.13.32"
+    },
+    {
+      "name": "aws-c-mqtt",
+      "href": "/center/recipes/aws-c-mqtt?version=0.7.12"
+    },
+    {
+      "name": "aws-c-s3",
+      "href": "/center/recipes/aws-c-s3?version=0.1.49"
+    },
+    {
+      "name": "aws-c-sdkutils",
+      "href": "/center/recipes/aws-c-sdkutils?version=0.1.12"
+    },
+    {
+      "name": "aws-cdi-sdk",
+      "href": "/center/recipes/aws-cdi-sdk?version=2.2.0"
+    },
+    {
+      "name": "aws-checksums",
+      "href": "/center/recipes/aws-checksums?version=0.1.17"
+    },
+    {
+      "name": "aws-crt-cpp",
+      "href": "/center/recipes/aws-crt-cpp?version=0.18.8"
+    },
+    {
+      "name": "aws-kvs-pic",
+      "href": "/center/recipes/aws-kvs-pic?version=cci.20210812"
+    },
+    {
+      "name": "aws-libfabric",
+      "href": "/center/recipes/aws-libfabric?version=1.9.1amzncdi1.0"
+    },
+    {
+      "name": "aws-sdk-cpp",
+      "href": "/center/recipes/aws-sdk-cpp?version=1.9.234"
+    },
+    {
+      "name": "azure-storage-cpp",
+      "href": "/center/recipes/azure-storage-cpp?version=7.5.0"
+    },
+    {
+      "name": "b2",
+      "href": "/center/recipes/b2?version=4.10.1"
+    },
+    {
+      "name": "backport-cpp",
+      "href": "/center/recipes/backport-cpp?version=1.2.0"
+    },
+    {
+      "name": "backward-cpp",
+      "href": "/center/recipes/backward-cpp?version=1.6"
+    },
+    {
+      "name": "bacnet-stack",
+      "href": "/center/recipes/bacnet-stack?version=1.0.0"
+    },
+    {
+      "name": "baical-p7",
+      "href": "/center/recipes/baical-p7?version=5.6"
+    },
+    {
+      "name": "bandit",
+      "href": "/center/recipes/bandit?version=cci.20210618"
+    },
+    {
+      "name": "base64",
+      "href": "/center/recipes/base64?version=0.5.0"
+    },
+    {
+      "name": "bazel",
+      "href": "/center/recipes/bazel?version=6.2.0"
+    },
+    {
+      "name": "bdwgc",
+      "href": "/center/recipes/bdwgc?version=8.2.4"
+    },
+    {
+      "name": "bear",
+      "href": "/center/recipes/bear?version=3.0.21"
+    },
+    {
+      "name": "behaviortree.cpp",
+      "href": "/center/recipes/behaviortree.cpp?version=4.0.1"
+    },
+    {
+      "name": "benchmark",
+      "href": "/center/recipes/benchmark?version=1.8.3"
+    },
+    {
+      "name": "bertrand",
+      "href": "/center/recipes/bertrand?version=0.013"
+    },
+    {
+      "name": "bgfx",
+      "href": "/center/recipes/bgfx?version=cci.20230216"
+    },
+    {
+      "name": "b64",
+      "href": "/center/recipes/b64?version=2.0.0.1"
+    },
+    {
+      "name": "bigint",
+      "href": "/center/recipes/bigint?version=2010.04.30"
+    },
+    {
+      "name": "bimg",
+      "href": "/center/recipes/bimg?version=cci.20230114"
+    },
+    {
+      "name": "binutils",
+      "href": "/center/recipes/binutils?version=2.41"
+    },
+    {
+      "name": "bison",
+      "href": "/center/recipes/bison?version=3.8.2"
+    },
+    {
+      "name": "bit-lite",
+      "href": "/center/recipes/bit-lite?version=0.1.0"
+    },
+    {
+      "name": "bitflags",
+      "href": "/center/recipes/bitflags?version=1.5.0"
+    },
+    {
+      "name": "bitmagic",
+      "href": "/center/recipes/bitmagic?version=7.13.4"
+    },
+    {
+      "name": "bitserializer",
+      "href": "/center/recipes/bitserializer?version=0.65"
+    },
+    {
+      "name": "bitsery",
+      "href": "/center/recipes/bitsery?version=5.2.3"
+    },
+    {
+      "name": "blaze",
+      "href": "/center/recipes/blaze?version=3.8"
+    },
+    {
+      "name": "blend2d",
+      "href": "/center/recipes/blend2d?version=0.10.5"
+    },
+    {
+      "name": "bliss",
+      "href": "/center/recipes/bliss?version=0.77"
+    },
+    {
+      "name": "beauty",
+      "href": "/center/recipes/beauty?version=1.0.0-rc1"
+    },
+    {
+      "name": "boolean-lite",
+      "href": "/center/recipes/boolean-lite?version=0.1.0"
+    },
+    {
+      "name": "boolinq",
+      "href": "/center/recipes/boolinq?version=3.0.4"
+    },
+    {
+      "name": "boost-ext-ut",
+      "href": "/center/recipes/boost-ext-ut?version=2.0.0"
+    },
+    {
+      "name": "boost-leaf",
+      "href": "/center/recipes/boost-leaf?version=1.83.0"
+    },
+    {
+      "name": "boostdep",
+      "href": "/center/recipes/boostdep?version=1.82.0"
+    },
+    {
+      "name": "botan",
+      "href": "/center/recipes/botan?version=2.19.3"
+    },
+    {
+      "name": "box2d",
+      "href": "/center/recipes/box2d?version=2.4.1"
+    },
+    {
+      "name": "breakpad",
+      "href": "/center/recipes/breakpad?version=cci.20210521"
+    },
+    {
+      "name": "brigand",
+      "href": "/center/recipes/brigand?version=cpp11-1.3.0"
+    },
+    {
+      "name": "brotli",
+      "href": "/center/recipes/brotli?version=1.1.0"
+    },
+    {
+      "name": "brynet",
+      "href": "/center/recipes/brynet?version=1.12.2"
+    },
+    {
+      "name": "bshoshany-thread-pool",
+      "href": "/center/recipes/bshoshany-thread-pool?version=3.5.0"
+    },
+    {
+      "name": "btyacc",
+      "href": "/center/recipes/btyacc?version=3.0"
+    },
+    {
+      "name": "bullet3",
+      "href": "/center/recipes/bullet3?version=3.25"
+    },
+    {
+      "name": "butteraugli",
+      "href": "/center/recipes/butteraugli?version=cci.20190319"
+    },
+    {
+      "name": "bvdberg-ctest",
+      "href": "/center/recipes/bvdberg-ctest?version=1.0.0"
+    },
+    {
+      "name": "bx",
+      "href": "/center/recipes/bx?version=cci.20221116"
+    },
+    {
+      "name": "byte-lite",
+      "href": "/center/recipes/byte-lite?version=0.3.0"
+    },
+    {
+      "name": "bzip2",
+      "href": "/center/recipes/bzip2?version=1.0.8"
+    },
+    {
+      "name": "bzip3",
+      "href": "/center/recipes/bzip3?version=1.3.2"
+    },
+    {
+      "name": "c-ares",
+      "href": "/center/recipes/c-ares?version=1.20.1"
+    },
+    {
+      "name": "c-blosc",
+      "href": "/center/recipes/c-blosc?version=1.21.5"
+    },
+    {
+      "name": "c-blosc2",
+      "href": "/center/recipes/c-blosc2?version=2.10.5"
+    },
+    {
+      "name": "c-client",
+      "href": "/center/recipes/c-client?version=2007f"
+    },
+    {
+      "name": "c-dbg-macro",
+      "href": "/center/recipes/c-dbg-macro?version=0.12.1"
+    },
+    {
+      "name": "caf",
+      "href": "/center/recipes/caf?version=0.19.4"
+    },
+    {
+      "name": "cairomm",
+      "href": "/center/recipes/cairomm?version=1.16.1"
+    },
+    {
+      "name": "cajun-jsonapi",
+      "href": "/center/recipes/cajun-jsonapi?version=2.1.1"
+    },
+    {
+      "name": "calceph",
+      "href": "/center/recipes/calceph?version=3.5.1"
+    },
+    {
+      "name": "canary",
+      "href": "/center/recipes/canary?version=v1"
+    },
+    {
+      "name": "canvas_ity",
+      "href": "/center/recipes/canvas_ity?version=1.00"
+    },
+    {
+      "name": "capnproto",
+      "href": "/center/recipes/capnproto?version=1.0.1"
+    },
+    {
+      "name": "capstone",
+      "href": "/center/recipes/capstone?version=5.0"
+    },
+    {
+      "name": "cargs",
+      "href": "/center/recipes/cargs?version=1.0.3"
+    },
+    {
+      "name": "cassandra-cpp-driver",
+      "href": "/center/recipes/cassandra-cpp-driver?version=2.17.0"
+    },
+    {
+      "name": "catch2",
+      "href": "/center/recipes/catch2?version=3.4.0"
+    },
+    {
+      "name": "cc65",
+      "href": "/center/recipes/cc65?version=2.19"
+    },
+    {
+      "name": "ccache",
+      "href": "/center/recipes/ccache?version=4.8.3"
+    },
+    {
+      "name": "cccl",
+      "href": "/center/recipes/cccl?version=1.3"
+    },
+    {
+      "name": "ccfits",
+      "href": "/center/recipes/ccfits?version=2.6"
+    },
+    {
+      "name": "cctag",
+      "href": "/center/recipes/cctag?version=1.0.1"
+    },
+    {
+      "name": "cctz",
+      "href": "/center/recipes/cctz?version=2.3"
+    },
+    {
+      "name": "cd3-boost-unit-definitions",
+      "href": "/center/recipes/cd3-boost-unit-definitions?version=0.2.2"
+    },
+    {
+      "name": "celero",
+      "href": "/center/recipes/celero?version=2.8.2"
+    },
+    {
+      "name": "cereal",
+      "href": "/center/recipes/cereal?version=1.3.2"
+    },
+    {
+      "name": "ceres-solver",
+      "href": "/center/recipes/ceres-solver?version=2.1.0"
+    },
+    {
+      "name": "cern-root",
+      "href": "/center/recipes/cern-root?version=v6-22-06"
+    },
+    {
+      "name": "certify",
+      "href": "/center/recipes/certify?version=cci.20201114"
+    },
+    {
+      "name": "cfgfile",
+      "href": "/center/recipes/cfgfile?version=0.2.11"
+    },
+    {
+      "name": "cfitsio",
+      "href": "/center/recipes/cfitsio?version=4.2.0"
+    },
+    {
+      "name": "cgal",
+      "href": "/center/recipes/cgal?version=5.6"
+    },
+    {
+      "name": "cgif",
+      "href": "/center/recipes/cgif?version=0.3.2"
+    },
+    {
+      "name": "cgltf",
+      "href": "/center/recipes/cgltf?version=1.13"
+    },
+    {
+      "name": "chaiscript",
+      "href": "/center/recipes/chaiscript?version=6.1.0"
+    },
+    {
+      "name": "charls",
+      "href": "/center/recipes/charls?version=2.4.2"
+    },
+    {
+      "name": "chef-fun",
+      "href": "/center/recipes/chef-fun?version=1.0.1"
+    },
+    {
+      "name": "chipmunk2d",
+      "href": "/center/recipes/chipmunk2d?version=7.0.3"
+    },
+    {
+      "name": "choc",
+      "href": "/center/recipes/choc?version=cci.20230918"
+    },
+    {
+      "name": "cimg",
+      "href": "/center/recipes/cimg?version=3.3.0"
+    },
+    {
+      "name": "circularbuffer",
+      "href": "/center/recipes/circularbuffer?version=1.3.3"
+    },
+    {
+      "name": "cista",
+      "href": "/center/recipes/cista?version=0.11"
+    },
+    {
+      "name": "cityhash",
+      "href": "/center/recipes/cityhash?version=cci.20130801"
+    },
+    {
+      "name": "civetweb",
+      "href": "/center/recipes/civetweb?version=1.16"
+    },
+    {
+      "name": "cjson",
+      "href": "/center/recipes/cjson?version=1.7.16"
+    },
+    {
+      "name": "clara",
+      "href": "/center/recipes/clara?version=1.1.5"
+    },
+    {
+      "name": "clhep",
+      "href": "/center/recipes/clhep?version=2.4.1.3"
+    },
+    {
+      "name": "cli11",
+      "href": "/center/recipes/cli11?version=2.3.2"
+    },
+    {
+      "name": "clickhouse-cpp",
+      "href": "/center/recipes/clickhouse-cpp?version=2.5.1"
+    },
+    {
+      "name": "clipboard_lite",
+      "href": "/center/recipes/clipboard_lite?version=3.4"
+    },
+    {
+      "name": "clipp",
+      "href": "/center/recipes/clipp?version=1.2.3"
+    },
+    {
+      "name": "clipper",
+      "href": "/center/recipes/clipper?version=6.4.2"
+    },
+    {
+      "name": "clipper2",
+      "href": "/center/recipes/clipper2?version=1.2.2"
+    },
+    {
+      "name": "clove-unit",
+      "href": "/center/recipes/clove-unit?version=2.4.0"
+    },
+    {
+      "name": "cmake",
+      "href": "/center/recipes/cmake?version=3.27.7"
+    },
+    {
+      "name": "cminpack",
+      "href": "/center/recipes/cminpack?version=1.3.8"
+    },
+    {
+      "name": "cmocka",
+      "href": "/center/recipes/cmocka?version=1.1.5"
+    },
+    {
+      "name": "cmp",
+      "href": "/center/recipes/cmp?version=20"
+    },
+    {
+      "name": "cnpy",
+      "href": "/center/recipes/cnpy?version=cci.20180601"
+    },
+    {
+      "name": "cairo",
+      "href": "/center/recipes/cairo?version=1.17.6"
+    },
+    {
+      "name": "co",
+      "href": "/center/recipes/co?version=2.0.2"
+    },
+    {
+      "name": "cocoyaxi",
+      "href": "/center/recipes/cocoyaxi?version=2.0.3"
+    },
+    {
+      "name": "coin-cbc",
+      "href": "/center/recipes/coin-cbc?version=2.10.5"
+    },
+    {
+      "name": "coin-cgl",
+      "href": "/center/recipes/coin-cgl?version=0.60.6"
+    },
+    {
+      "name": "c4core",
+      "href": "/center/recipes/c4core?version=0.1.11"
+    },
+    {
+      "name": "coin-clp",
+      "href": "/center/recipes/coin-clp?version=1.17.7"
+    },
+    {
+      "name": "coin-lemon",
+      "href": "/center/recipes/coin-lemon?version=1.3.1"
+    },
+    {
+      "name": "coin-osi",
+      "href": "/center/recipes/coin-osi?version=0.108.7"
+    },
+    {
+      "name": "coin-utils",
+      "href": "/center/recipes/coin-utils?version=2.11.9"
+    },
+    {
+      "name": "commata",
+      "href": "/center/recipes/commata?version=0.2.6"
+    },
+    {
+      "name": "concurrencpp",
+      "href": "/center/recipes/concurrencpp?version=0.1.7"
+    },
+    {
+      "name": "confu_json",
+      "href": "/center/recipes/confu_json?version=1.0.0"
+    },
+    {
+      "name": "console_bridge",
+      "href": "/center/recipes/console_bridge?version=1.0.2"
+    },
+    {
+      "name": "cgns",
+      "href": "/center/recipes/cgns?version=4.3.0"
+    },
+    {
+      "name": "continuable",
+      "href": "/center/recipes/continuable?version=4.2.2"
+    },
+    {
+      "name": "coost",
+      "href": "/center/recipes/coost?version=3.0.1"
+    },
+    {
+      "name": "corrade",
+      "href": "/center/recipes/corrade?version=2020.06"
+    },
+    {
+      "name": "cose-c",
+      "href": "/center/recipes/cose-c?version=cci.20200430"
+    },
+    {
+      "name": "cotila",
+      "href": "/center/recipes/cotila?version=1.2.1"
+    },
+    {
+      "name": "coz",
+      "href": "/center/recipes/coz?version=cci.20210322"
+    },
+    {
+      "name": "cpp-httplib",
+      "href": "/center/recipes/cpp-httplib?version=0.14.1"
+    },
+    {
+      "name": "cpp-ipc",
+      "href": "/center/recipes/cpp-ipc?version=1.2.0"
+    },
+    {
+      "name": "cpp-jwt",
+      "href": "/center/recipes/cpp-jwt?version=1.4"
+    },
+    {
+      "name": "cpp-lazy",
+      "href": "/center/recipes/cpp-lazy?version=7.0.2"
+    },
+    {
+      "name": "cpp-peglib",
+      "href": "/center/recipes/cpp-peglib?version=1.8.5"
+    },
+    {
+      "name": "cpp-sort",
+      "href": "/center/recipes/cpp-sort?version=1.15.0"
+    },
+    {
+      "name": "cpp-taskflow",
+      "href": "/center/recipes/cpp-taskflow?version=2.4.0"
+    },
+    {
+      "name": "cglm",
+      "href": "/center/recipes/cglm?version=0.8.5"
+    },
+    {
+      "name": "cppbenchmark",
+      "href": "/center/recipes/cppbenchmark?version=cci.20201029"
+    },
+    {
+      "name": "cppcheck",
+      "href": "/center/recipes/cppcheck?version=2.12.1"
+    },
+    {
+      "name": "cppcmd",
+      "href": "/center/recipes/cppcmd?version=0.1.0"
+    },
+    {
+      "name": "cppcodec",
+      "href": "/center/recipes/cppcodec?version=0.2"
+    },
+    {
+      "name": "cppcommon",
+      "href": "/center/recipes/cppcommon?version=cci.20201104"
+    },
+    {
+      "name": "cppdap",
+      "href": "/center/recipes/cppdap?version=cci.20230526"
+    },
+    {
+      "name": "cppfront",
+      "href": "/center/recipes/cppfront?version=cci.20230103"
+    },
+    {
+      "name": "cppitertools",
+      "href": "/center/recipes/cppitertools?version=2.1"
+    },
+    {
+      "name": "cppkafka",
+      "href": "/center/recipes/cppkafka?version=0.4.0"
+    },
+    {
+      "name": "cppserver",
+      "href": "/center/recipes/cppserver?version=1.0.2.0"
+    },
+    {
+      "name": "cpptoml",
+      "href": "/center/recipes/cpptoml?version=0.1.1"
+    },
+    {
+      "name": "cppunit",
+      "href": "/center/recipes/cppunit?version=1.15.1"
+    },
+    {
+      "name": "cpputest",
+      "href": "/center/recipes/cpputest?version=4.0"
+    },
+    {
+      "name": "cppzmq",
+      "href": "/center/recipes/cppzmq?version=4.10.0"
+    },
+    {
+      "name": "cpp_project_framework",
+      "href": "/center/recipes/cpp_project_framework?version=1.0.0"
+    },
+    {
+      "name": "cpr",
+      "href": "/center/recipes/cpr?version=1.10.4"
+    },
+    {
+      "name": "cprocessing",
+      "href": "/center/recipes/cprocessing?version=1.4.5"
+    },
+    {
+      "name": "cpuinfo",
+      "href": "/center/recipes/cpuinfo?version=cci.20230118"
+    },
+    {
+      "name": "cpu_features",
+      "href": "/center/recipes/cpu_features?version=0.9.0"
+    },
+    {
+      "name": "cpython",
+      "href": "/center/recipes/cpython?version=3.10.0"
+    },
+    {
+      "name": "cqrlib",
+      "href": "/center/recipes/cqrlib?version=1.1.4"
+    },
+    {
+      "name": "crashpad",
+      "href": "/center/recipes/crashpad?version=cci.20220219"
+    },
+    {
+      "name": "crc32c",
+      "href": "/center/recipes/crc32c?version=1.1.2"
+    },
+    {
+      "name": "crc_cpp",
+      "href": "/center/recipes/crc_cpp?version=1.2.0"
+    },
+    {
+      "name": "create-dmg",
+      "href": "/center/recipes/create-dmg?version=1.1.0"
+    },
+    {
+      "name": "croncpp",
+      "href": "/center/recipes/croncpp?version=cci.20220503"
+    },
+    {
+      "name": "crow",
+      "href": "/center/recipes/crow?version=0.1"
+    },
+    {
+      "name": "crowcpp-crow",
+      "href": "/center/recipes/crowcpp-crow?version=1.0%2B5"
+    },
+    {
+      "name": "crunch",
+      "href": "/center/recipes/crunch?version=cci.20190615"
+    },
+    {
+      "name": "cryptopp",
+      "href": "/center/recipes/cryptopp?version=8.8.0"
+    },
+    {
+      "name": "cryptopp-pem",
+      "href": "/center/recipes/cryptopp-pem?version=8.2.0"
+    },
+    {
+      "name": "csm",
+      "href": "/center/recipes/csm?version=3.0.4"
+    },
+    {
+      "name": "cspice",
+      "href": "/center/recipes/cspice?version=0067"
+    },
+    {
+      "name": "csvmonkey",
+      "href": "/center/recipes/csvmonkey?version=0.0.5"
+    },
+    {
+      "name": "ctml",
+      "href": "/center/recipes/ctml?version=2.0.0"
+    },
+    {
+      "name": "ctpg",
+      "href": "/center/recipes/ctpg?version=1.3.7"
+    },
+    {
+      "name": "ctre",
+      "href": "/center/recipes/ctre?version=3.8.1"
+    },
+    {
+      "name": "cub",
+      "href": "/center/recipes/cub?version=1.17.2"
+    },
+    {
+      "name": "cubicinterpolation",
+      "href": "/center/recipes/cubicinterpolation?version=0.1.5"
+    },
+    {
+      "name": "cuda-api-wrappers",
+      "href": "/center/recipes/cuda-api-wrappers?version=0.7"
+    },
+    {
+      "name": "cuda-kat",
+      "href": "/center/recipes/cuda-kat?version=0.2"
+    },
+    {
+      "name": "cuda-samples",
+      "href": "/center/recipes/cuda-samples?version=12.2"
+    },
+    {
+      "name": "concurrentqueue",
+      "href": "/center/recipes/concurrentqueue?version=1.0.4"
+    },
+    {
+      "name": "cunit",
+      "href": "/center/recipes/cunit?version=2.1-3"
+    },
+    {
+      "name": "cute_headers",
+      "href": "/center/recipes/cute_headers?version=cci.20201022"
+    },
+    {
+      "name": "cvplot",
+      "href": "/center/recipes/cvplot?version=1.2.2"
+    },
+    {
+      "name": "cwalk",
+      "href": "/center/recipes/cwalk?version=1.2.7"
+    },
+    {
+      "name": "cxxopts",
+      "href": "/center/recipes/cxxopts?version=3.1.1"
+    },
+    {
+      "name": "cyclonedds",
+      "href": "/center/recipes/cyclonedds?version=0.10.4"
+    },
+    {
+      "name": "cyrus-sasl",
+      "href": "/center/recipes/cyrus-sasl?version=2.1.27"
+    },
+    {
+      "name": "czmq",
+      "href": "/center/recipes/czmq?version=4.2.1"
+    },
+    {
+      "name": "dacap-clip",
+      "href": "/center/recipes/dacap-clip?version=1.6"
+    },
+    {
+      "name": "daggy",
+      "href": "/center/recipes/daggy?version=2.1.2"
+    },
+    {
+      "name": "darknet",
+      "href": "/center/recipes/darknet?version=cci.20180914"
+    },
+    {
+      "name": "dataframe",
+      "href": "/center/recipes/dataframe?version=2.2.0"
+    },
+    {
+      "name": "date",
+      "href": "/center/recipes/date?version=3.0.1"
+    },
+    {
+      "name": "dav1d",
+      "href": "/center/recipes/dav1d?version=1.2.1"
+    },
+    {
+      "name": "cpp-optparse",
+      "href": "/center/recipes/cpp-optparse?version=cci.20171104"
+    },
+    {
+      "name": "daw_header_libraries",
+      "href": "/center/recipes/daw_header_libraries?version=2.96.1"
+    },
+    {
+      "name": "daw_json_link",
+      "href": "/center/recipes/daw_json_link?version=3.20.1"
+    },
+    {
+      "name": "daw_utf_range",
+      "href": "/center/recipes/daw_utf_range?version=2.2.3"
+    },
+    {
+      "name": "dbcppp",
+      "href": "/center/recipes/dbcppp?version=3.2.6"
+    },
+    {
+      "name": "dbg-macro",
+      "href": "/center/recipes/dbg-macro?version=0.5.1"
+    },
+    {
+      "name": "dbus",
+      "href": "/center/recipes/dbus?version=1.15.8"
+    },
+    {
+      "name": "dcmtk",
+      "href": "/center/recipes/dcmtk?version=3.6.7"
+    },
+    {
+      "name": "dd-opentracing-cpp",
+      "href": "/center/recipes/dd-opentracing-cpp?version=1.3.0"
+    },
+    {
+      "name": "debug_assert",
+      "href": "/center/recipes/debug_assert?version=1.3.3"
+    },
+    {
+      "name": "decimal_for_cpp",
+      "href": "/center/recipes/decimal_for_cpp?version=1.18"
+    },
+    {
+      "name": "deco",
+      "href": "/center/recipes/deco?version=1.0.1"
+    },
+    {
+      "name": "detools",
+      "href": "/center/recipes/detools?version=0.51.0"
+    },
+    {
+      "name": "detours",
+      "href": "/center/recipes/detours?version=cci.20220630"
+    },
+    {
+      "name": "di",
+      "href": "/center/recipes/di?version=1.3.0"
+    },
+    {
+      "name": "dice-template-library",
+      "href": "/center/recipes/dice-template-library?version=1.1.0"
+    },
+    {
+      "name": "diligent-core",
+      "href": "/center/recipes/diligent-core?version=api.252009"
+    },
+    {
+      "name": "diligent-fx",
+      "href": "/center/recipes/diligent-fx?version=cci.20220219"
+    },
+    {
+      "name": "diligent-tools",
+      "href": "/center/recipes/diligent-tools?version=cci.20211009"
+    },
+    {
+      "name": "diligentgraphics-spirv-headers",
+      "href": "/center/recipes/diligentgraphics-spirv-headers?version=cci.20211006"
+    },
+    {
+      "name": "diligentgraphics-vulkan-headers",
+      "href": "/center/recipes/diligentgraphics-vulkan-headers?version=cci.20211005"
+    },
+    {
+      "name": "dime",
+      "href": "/center/recipes/dime?version=0.9.1"
+    },
+    {
+      "name": "directshowbaseclasses",
+      "href": "/center/recipes/directshowbaseclasses?version=260557"
+    },
+    {
+      "name": "directx-headers",
+      "href": "/center/recipes/directx-headers?version=1.610.2"
+    },
+    {
+      "name": "dirent",
+      "href": "/center/recipes/dirent?version=1.24"
+    },
+    {
+      "name": "cn-cbor",
+      "href": "/center/recipes/cn-cbor?version=1.0.0"
+    },
+    {
+      "name": "discount",
+      "href": "/center/recipes/discount?version=2.2.7"
+    },
+    {
+      "name": "djinni-generator",
+      "href": "/center/recipes/djinni-generator?version=1.3.2"
+    },
+    {
+      "name": "djinni-support-lib",
+      "href": "/center/recipes/djinni-support-lib?version=1.2.1"
+    },
+    {
+      "name": "dlib",
+      "href": "/center/recipes/dlib?version=19.24"
+    },
+    {
+      "name": "dlpack",
+      "href": "/center/recipes/dlpack?version=0.8"
+    },
+    {
+      "name": "docopt.cpp",
+      "href": "/center/recipes/docopt.cpp?version=0.6.3"
+    },
+    {
+      "name": "doctest",
+      "href": "/center/recipes/doctest?version=2.4.11"
+    },
+    {
+      "name": "cs_libguarded",
+      "href": "/center/recipes/cs_libguarded?version=1.4.0"
+    },
+    {
+      "name": "double-conversion",
+      "href": "/center/recipes/double-conversion?version=3.3.0"
+    },
+    {
+      "name": "doxygen",
+      "href": "/center/recipes/doxygen?version=1.9.4"
+    },
+    {
+      "name": "draco",
+      "href": "/center/recipes/draco?version=1.5.6"
+    },
+    {
+      "name": "dragonbox",
+      "href": "/center/recipes/dragonbox?version=1.1.3"
+    },
+    {
+      "name": "drflac",
+      "href": "/center/recipes/drflac?version=0.12.39"
+    },
+    {
+      "name": "drmp3",
+      "href": "/center/recipes/drmp3?version=0.6.34"
+    },
+    {
+      "name": "depot_tools",
+      "href": "/center/recipes/depot_tools?version=cci.20201009"
+    },
+    {
+      "name": "drwav",
+      "href": "/center/recipes/drwav?version=0.13.12"
+    },
+    {
+      "name": "dr_libs",
+      "href": "/center/recipes/dr_libs?version=cci.20230529"
+    },
+    {
+      "name": "diligentgraphics-spirv-tools",
+      "href": "/center/recipes/diligentgraphics-spirv-tools?version=cci.20211008"
+    },
+    {
+      "name": "dsp-filters",
+      "href": "/center/recipes/dsp-filters?version=cci.20170309"
+    },
+    {
+      "name": "duckdb",
+      "href": "/center/recipes/duckdb?version=0.8.1"
+    },
+    {
+      "name": "duktape",
+      "href": "/center/recipes/duktape?version=2.7.0"
+    },
+    {
+      "name": "eabase",
+      "href": "/center/recipes/eabase?version=2.09.12"
+    },
+    {
+      "name": "earcut",
+      "href": "/center/recipes/earcut?version=2.2.4"
+    },
+    {
+      "name": "eastl",
+      "href": "/center/recipes/eastl?version=3.21.12"
+    },
+    {
+      "name": "easyexif",
+      "href": "/center/recipes/easyexif?version=1.0"
+    },
+    {
+      "name": "easyhttpcpp",
+      "href": "/center/recipes/easyhttpcpp?version=2.1.0"
+    },
+    {
+      "name": "easyloggingpp",
+      "href": "/center/recipes/easyloggingpp?version=9.97.1"
+    },
+    {
+      "name": "easylzma",
+      "href": "/center/recipes/easylzma?version=0.0.7"
+    },
+    {
+      "name": "easy_profiler",
+      "href": "/center/recipes/easy_profiler?version=2.1.0"
+    },
+    {
+      "name": "ecos",
+      "href": "/center/recipes/ecos?version=2.0.8"
+    },
+    {
+      "name": "editline",
+      "href": "/center/recipes/editline?version=3.1"
+    },
+    {
+      "name": "edlib",
+      "href": "/center/recipes/edlib?version=1.2.7"
+    },
+    {
+      "name": "effcee",
+      "href": "/center/recipes/effcee?version=2019.1"
+    },
+    {
+      "name": "effolkronium-random",
+      "href": "/center/recipes/effolkronium-random?version=1.5.0"
+    },
+    {
+      "name": "egl",
+      "href": "/center/recipes/egl?version=system"
+    },
+    {
+      "name": "egl-headers",
+      "href": "/center/recipes/egl-headers?version=cci.20220525"
+    },
+    {
+      "name": "eigen",
+      "href": "/center/recipes/eigen?version=3.4.0"
+    },
+    {
+      "name": "elfio",
+      "href": "/center/recipes/elfio?version=3.12"
+    },
+    {
+      "name": "elfutils",
+      "href": "/center/recipes/elfutils?version=0.186"
+    },
+    {
+      "name": "embag",
+      "href": "/center/recipes/embag?version=0.0.42"
+    },
+    {
+      "name": "embedded_ringbuf_cpp",
+      "href": "/center/recipes/embedded_ringbuf_cpp?version=1.3"
+    },
+    {
+      "name": "embree3",
+      "href": "/center/recipes/embree3?version=3.13.5"
+    },
+    {
+      "name": "emsdk",
+      "href": "/center/recipes/emsdk?version=3.1.44"
+    },
+    {
+      "name": "enchant",
+      "href": "/center/recipes/enchant?version=2.3.2"
+    },
+    {
+      "name": "enhex-generic_serialization",
+      "href": "/center/recipes/enhex-generic_serialization?version=1.0.0"
+    },
+    {
+      "name": "enhex-strong_type",
+      "href": "/center/recipes/enhex-strong_type?version=1.0.0"
+    },
+    {
+      "name": "enjincppsdk",
+      "href": "/center/recipes/enjincppsdk?version=1.0.0-beta.1"
+    },
+    {
+      "name": "cpprestsdk",
+      "href": "/center/recipes/cpprestsdk?version=2.10.18"
+    },
+    {
+      "name": "entityx",
+      "href": "/center/recipes/entityx?version=1.3.0"
+    },
+    {
+      "name": "entt",
+      "href": "/center/recipes/entt?version=3.12.2"
+    },
+    {
+      "name": "enum-flags",
+      "href": "/center/recipes/enum-flags?version=0.1a"
+    },
+    {
+      "name": "erikzenker-hsm",
+      "href": "/center/recipes/erikzenker-hsm?version=2.3.0"
+    },
+    {
+      "name": "erkir",
+      "href": "/center/recipes/erkir?version=2.0.0"
+    },
+    {
+      "name": "etc2comp",
+      "href": "/center/recipes/etc2comp?version=cci.20170424"
+    },
+    {
+      "name": "eternal",
+      "href": "/center/recipes/eternal?version=1.0.1"
+    },
+    {
+      "name": "etl",
+      "href": "/center/recipes/etl?version=20.38.4"
+    },
+    {
+      "name": "exiv2",
+      "href": "/center/recipes/exiv2?version=0.28.0"
+    },
+    {
+      "name": "expat",
+      "href": "/center/recipes/expat?version=2.5.0"
+    },
+    {
+      "name": "expected-lite",
+      "href": "/center/recipes/expected-lite?version=0.6.3"
+    },
+    {
+      "name": "exprtk",
+      "href": "/center/recipes/exprtk?version=0.0.2"
+    },
+    {
+      "name": "extra-cmake-modules",
+      "href": "/center/recipes/extra-cmake-modules?version=5.108.0"
+    },
+    {
+      "name": "ezc3d",
+      "href": "/center/recipes/ezc3d?version=1.5.4"
+    },
+    {
+      "name": "faac",
+      "href": "/center/recipes/faac?version=1.30"
+    },
+    {
+      "name": "fakeit",
+      "href": "/center/recipes/fakeit?version=2.4.0"
+    },
+    {
+      "name": "farmhash",
+      "href": "/center/recipes/farmhash?version=cci.20190513"
+    },
+    {
+      "name": "fast-cdr",
+      "href": "/center/recipes/fast-cdr?version=1.1.0"
+    },
+    {
+      "name": "fast-cpp-csv-parser",
+      "href": "/center/recipes/fast-cpp-csv-parser?version=cci.20211104"
+    },
+    {
+      "name": "fast-dds",
+      "href": "/center/recipes/fast-dds?version=2.11.1"
+    },
+    {
+      "name": "fastgltf",
+      "href": "/center/recipes/fastgltf?version=0.5.0"
+    },
+    {
+      "name": "fastnoise2",
+      "href": "/center/recipes/fastnoise2?version=0.10.0-alpha"
+    },
+    {
+      "name": "fastpfor",
+      "href": "/center/recipes/fastpfor?version=cci.20221225"
+    },
+    {
+      "name": "fastprng",
+      "href": "/center/recipes/fastprng?version=cci.20200628"
+    },
+    {
+      "name": "fast_double_parser",
+      "href": "/center/recipes/fast_double_parser?version=0.7.0"
+    },
+    {
+      "name": "fast_float",
+      "href": "/center/recipes/fast_float?version=5.2.0"
+    },
+    {
+      "name": "fcl",
+      "href": "/center/recipes/fcl?version=0.7.0"
+    },
+    {
+      "name": "fernandovelcic-hexdump",
+      "href": "/center/recipes/fernandovelcic-hexdump?version=1.0.0"
+    },
+    {
+      "name": "fff",
+      "href": "/center/recipes/fff?version=1.1"
+    },
+    {
+      "name": "ffmpeg",
+      "href": "/center/recipes/ffmpeg?version=6.0"
+    },
+    {
+      "name": "fft",
+      "href": "/center/recipes/fft?version=cci.20061228"
+    },
+    {
+      "name": "fftw",
+      "href": "/center/recipes/fftw?version=3.3.10"
+    },
+    {
+      "name": "fire-hpp",
+      "href": "/center/recipes/fire-hpp?version=0.2"
+    },
+    {
+      "name": "flac",
+      "href": "/center/recipes/flac?version=1.4.2"
+    },
+    {
+      "name": "flann",
+      "href": "/center/recipes/flann?version=1.9.2"
+    },
+    {
+      "name": "flatc",
+      "href": "/center/recipes/flatc?version=1.12.0"
+    },
+    {
+      "name": "flatbush",
+      "href": "/center/recipes/flatbush?version=1.2.0"
+    },
+    {
+      "name": "flatcc",
+      "href": "/center/recipes/flatcc?version=0.6.1"
+    },
+    {
+      "name": "flecs",
+      "href": "/center/recipes/flecs?version=3.2.4"
+    },
+    {
+      "name": "flex",
+      "href": "/center/recipes/flex?version=2.6.4"
+    },
+    {
+      "name": "flint",
+      "href": "/center/recipes/flint?version=2.8.1"
+    },
+    {
+      "name": "fltk",
+      "href": "/center/recipes/fltk?version=1.3.8"
+    },
+    {
+      "name": "fmi1",
+      "href": "/center/recipes/fmi1?version=1.0.1"
+    },
+    {
+      "name": "fmi2",
+      "href": "/center/recipes/fmi2?version=2.0.4"
+    },
+    {
+      "name": "fmi3",
+      "href": "/center/recipes/fmi3?version=3.0.1"
+    },
+    {
+      "name": "fmt",
+      "href": "/center/recipes/fmt?version=10.1.1"
+    },
+    {
+      "name": "fmtlog",
+      "href": "/center/recipes/fmtlog?version=2.2.1"
+    },
+    {
+      "name": "folly",
+      "href": "/center/recipes/folly?version=2022.01.31.00"
+    },
+    {
+      "name": "fontconfig",
+      "href": "/center/recipes/fontconfig?version=2.14.2"
+    },
+    {
+      "name": "foonathan-lexy",
+      "href": "/center/recipes/foonathan-lexy?version=2022.12.1"
+    },
+    {
+      "name": "emio",
+      "href": "/center/recipes/emio?version=0.6.0"
+    },
+    {
+      "name": "foonathan-memory",
+      "href": "/center/recipes/foonathan-memory?version=0.7.3"
+    },
+    {
+      "name": "forestdb",
+      "href": "/center/recipes/forestdb?version=cci.20220727"
+    },
+    {
+      "name": "foxglove-schemas-protobuf",
+      "href": "/center/recipes/foxglove-schemas-protobuf?version=0.1.0"
+    },
+    {
+      "name": "foxglove-websocket",
+      "href": "/center/recipes/foxglove-websocket?version=1.1.0"
+    },
+    {
+      "name": "foxi",
+      "href": "/center/recipes/foxi?version=cci.20210217"
+    },
+    {
+      "name": "fp16",
+      "href": "/center/recipes/fp16?version=cci.20210320"
+    },
+    {
+      "name": "fpgen",
+      "href": "/center/recipes/fpgen?version=1.1.0-clang"
+    },
+    {
+      "name": "fpzip",
+      "href": "/center/recipes/fpzip?version=1.3.0"
+    },
+    {
+      "name": "freeimage",
+      "href": "/center/recipes/freeimage?version=3.18.0"
+    },
+    {
+      "name": "freetype",
+      "href": "/center/recipes/freetype?version=2.13.0"
+    },
+    {
+      "name": "freexl",
+      "href": "/center/recipes/freexl?version=2.0.0"
+    },
+    {
+      "name": "frozen",
+      "href": "/center/recipes/frozen?version=1.1.1"
+    },
+    {
+      "name": "fruit",
+      "href": "/center/recipes/fruit?version=3.7.1"
+    },
+    {
+      "name": "ftjam",
+      "href": "/center/recipes/ftjam?version=2.5.2"
+    },
+    {
+      "name": "ftxui",
+      "href": "/center/recipes/ftxui?version=5.0.0"
+    },
+    {
+      "name": "function2",
+      "href": "/center/recipes/function2?version=4.2.3"
+    },
+    {
+      "name": "functionalplus",
+      "href": "/center/recipes/functionalplus?version=0.2.20-p0"
+    },
+    {
+      "name": "functions-framework-cpp",
+      "href": "/center/recipes/functions-framework-cpp?version=1.2.0"
+    },
+    {
+      "name": "fusepp",
+      "href": "/center/recipes/fusepp?version=cci.20210820"
+    },
+    {
+      "name": "fxdiv",
+      "href": "/center/recipes/fxdiv?version=cci.20200417"
+    },
+    {
+      "name": "g3log",
+      "href": "/center/recipes/g3log?version=2.3"
+    },
+    {
+      "name": "gainput",
+      "href": "/center/recipes/gainput?version=1.0.0"
+    },
+    {
+      "name": "gamenetworkingsockets",
+      "href": "/center/recipes/gamenetworkingsockets?version=1.3.0"
+    },
+    {
+      "name": "gamma",
+      "href": "/center/recipes/gamma?version=cci.20220221"
+    },
+    {
+      "name": "gcc",
+      "href": "/center/recipes/gcc?version=12.2.0"
+    },
+    {
+      "name": "gcem",
+      "href": "/center/recipes/gcem?version=1.17.0"
+    },
+    {
+      "name": "gdal",
+      "href": "/center/recipes/gdal?version=3.7.0"
+    },
+    {
+      "name": "gdbm",
+      "href": "/center/recipes/gdbm?version=1.23"
+    },
+    {
+      "name": "gdcm",
+      "href": "/center/recipes/gdcm?version=3.0.21"
+    },
+    {
+      "name": "gdk-pixbuf",
+      "href": "/center/recipes/gdk-pixbuf?version=2.42.10"
+    },
+    {
+      "name": "frugally-deep",
+      "href": "/center/recipes/frugally-deep?version=0.15.24-p0"
+    },
+    {
+      "name": "gemmlowp",
+      "href": "/center/recipes/gemmlowp?version=cci.20210928"
+    },
+    {
+      "name": "evmc",
+      "href": "/center/recipes/evmc?version=10.1.1"
+    },
+    {
+      "name": "geographiclib",
+      "href": "/center/recipes/geographiclib?version=1.52"
+    },
+    {
+      "name": "geotrans",
+      "href": "/center/recipes/geotrans?version=3.9"
+    },
+    {
+      "name": "getdns",
+      "href": "/center/recipes/getdns?version=1.6.0"
+    },
+    {
+      "name": "gegles-spdlog_setup",
+      "href": "/center/recipes/gegles-spdlog_setup?version=1.1.0"
+    },
+    {
+      "name": "gettext",
+      "href": "/center/recipes/gettext?version=0.21"
+    },
+    {
+      "name": "gf-complete",
+      "href": "/center/recipes/gf-complete?version=cci.20170410"
+    },
+    {
+      "name": "gflags",
+      "href": "/center/recipes/gflags?version=2.2.2"
+    },
+    {
+      "name": "gfortran",
+      "href": "/center/recipes/gfortran?version=10.2"
+    },
+    {
+      "name": "ghc-filesystem",
+      "href": "/center/recipes/ghc-filesystem?version=1.5.14"
+    },
+    {
+      "name": "ginkgo",
+      "href": "/center/recipes/ginkgo?version=1.4.0"
+    },
+    {
+      "name": "gklib",
+      "href": "/center/recipes/gklib?version=5.1.1"
+    },
+    {
+      "name": "glad",
+      "href": "/center/recipes/glad?version=0.1.36"
+    },
+    {
+      "name": "glaze",
+      "href": "/center/recipes/glaze?version=1.5.3"
+    },
+    {
+      "name": "glbinding",
+      "href": "/center/recipes/glbinding?version=3.1.0"
+    },
+    {
+      "name": "glew",
+      "href": "/center/recipes/glew?version=2.2.0"
+    },
+    {
+      "name": "glext",
+      "href": "/center/recipes/glext?version=cci.20210420"
+    },
+    {
+      "name": "glfw",
+      "href": "/center/recipes/glfw?version=3.3.8"
+    },
+    {
+      "name": "gli",
+      "href": "/center/recipes/gli?version=cci.20210515"
+    },
+    {
+      "name": "glib",
+      "href": "/center/recipes/glib?version=2.78.0"
+    },
+    {
+      "name": "glibmm",
+      "href": "/center/recipes/glibmm?version=2.75.0"
+    },
+    {
+      "name": "enkits",
+      "href": "/center/recipes/enkits?version=1.11"
+    },
+    {
+      "name": "glm",
+      "href": "/center/recipes/glm?version=cci.20230113"
+    },
+    {
+      "name": "glog",
+      "href": "/center/recipes/glog?version=0.6.0"
+    },
+    {
+      "name": "glpk",
+      "href": "/center/recipes/glpk?version=5.0"
+    },
+    {
+      "name": "glshaderpp",
+      "href": "/center/recipes/glshaderpp?version=1.0.0"
+    },
+    {
+      "name": "glslang",
+      "href": "/center/recipes/glslang?version=11.7.0"
+    },
+    {
+      "name": "glu",
+      "href": "/center/recipes/glu?version=system"
+    },
+    {
+      "name": "gm2calc",
+      "href": "/center/recipes/gm2calc?version=2.1.0"
+    },
+    {
+      "name": "gmp",
+      "href": "/center/recipes/gmp?version=6.3.0"
+    },
+    {
+      "name": "gnu-config",
+      "href": "/center/recipes/gnu-config?version=cci.20210814"
+    },
+    {
+      "name": "gnulib",
+      "href": "/center/recipes/gnulib?version=20200224"
+    },
+    {
+      "name": "gnutls",
+      "href": "/center/recipes/gnutls?version=3.7.8"
+    },
+    {
+      "name": "ethash",
+      "href": "/center/recipes/ethash?version=1.0.1"
+    },
+    {
+      "name": "gobject-introspection",
+      "href": "/center/recipes/gobject-introspection?version=1.72.0"
+    },
+    {
+      "name": "godot-cpp",
+      "href": "/center/recipes/godot-cpp?version=cci.3.2-20200130"
+    },
+    {
+      "name": "godot_headers",
+      "href": "/center/recipes/godot_headers?version=cci.3.2-20200130"
+    },
+    {
+      "name": "google-cloud-cpp",
+      "href": "/center/recipes/google-cloud-cpp?version=2.12.0"
+    },
+    {
+      "name": "gn",
+      "href": "/center/recipes/gn?version=cci.20210429"
+    },
+    {
+      "name": "gperf",
+      "href": "/center/recipes/gperf?version=3.1"
+    },
+    {
+      "name": "gperftools",
+      "href": "/center/recipes/gperftools?version=2.13.0"
+    },
+    {
+      "name": "graphene",
+      "href": "/center/recipes/graphene?version=1.10.8"
+    },
+    {
+      "name": "graphthewy",
+      "href": "/center/recipes/graphthewy?version=1.1"
+    },
+    {
+      "name": "greatest",
+      "href": "/center/recipes/greatest?version=1.5.0"
+    },
+    {
+      "name": "greg7mdp-gtl",
+      "href": "/center/recipes/greg7mdp-gtl?version=1.1.8"
+    },
+    {
+      "name": "grpc",
+      "href": "/center/recipes/grpc?version=1.54.3"
+    },
+    {
+      "name": "grpc-proto",
+      "href": "/center/recipes/grpc-proto?version=cci.20220627"
+    },
+    {
+      "name": "getopt-for-visual-studio",
+      "href": "/center/recipes/getopt-for-visual-studio?version=20200201"
+    },
+    {
+      "name": "gsl",
+      "href": "/center/recipes/gsl?version=2.7"
+    },
+    {
+      "name": "gsl-lite",
+      "href": "/center/recipes/gsl-lite?version=0.41.0"
+    },
+    {
+      "name": "gst-libav",
+      "href": "/center/recipes/gst-libav?version=1.19.1"
+    },
+    {
+      "name": "gsoap",
+      "href": "/center/recipes/gsoap?version=2.8.129"
+    },
+    {
+      "name": "gst-plugins-bad",
+      "href": "/center/recipes/gst-plugins-bad?version=1.19.1"
+    },
+    {
+      "name": "gst-plugins-base",
+      "href": "/center/recipes/gst-plugins-base?version=1.19.2"
+    },
+    {
+      "name": "gst-plugins-good",
+      "href": "/center/recipes/gst-plugins-good?version=1.19.1"
+    },
+    {
+      "name": "gst-plugins-ugly",
+      "href": "/center/recipes/gst-plugins-ugly?version=1.19.1"
+    },
+    {
+      "name": "gstreamer",
+      "href": "/center/recipes/gstreamer?version=1.22.3"
+    },
+    {
+      "name": "gtest",
+      "href": "/center/recipes/gtest?version=1.14.0"
+    },
+    {
+      "name": "gtk",
+      "href": "/center/recipes/gtk?version=system"
+    },
+    {
+      "name": "gtk-doc-stub",
+      "href": "/center/recipes/gtk-doc-stub?version=cci.20181216"
+    },
+    {
+      "name": "gtsam",
+      "href": "/center/recipes/gtsam?version=4.2.0a9"
+    },
+    {
+      "name": "guetzli",
+      "href": "/center/recipes/guetzli?version=1.0.1"
+    },
+    {
+      "name": "gumbo-parser",
+      "href": "/center/recipes/gumbo-parser?version=0.10.1"
+    },
+    {
+      "name": "genie",
+      "href": "/center/recipes/genie?version=1170"
+    },
+    {
+      "name": "gurkenlaeufer",
+      "href": "/center/recipes/gurkenlaeufer?version=1.1.0"
+    },
+    {
+      "name": "gzip-hpp",
+      "href": "/center/recipes/gzip-hpp?version=0.1.0"
+    },
+    {
+      "name": "h3",
+      "href": "/center/recipes/h3?version=4.1.0"
+    },
+    {
+      "name": "h5pp",
+      "href": "/center/recipes/h5pp?version=1.11.0"
+    },
+    {
+      "name": "half",
+      "href": "/center/recipes/half?version=2.2.0"
+    },
+    {
+      "name": "hana",
+      "href": "/center/recipes/hana?version=boost-1.78.0"
+    },
+    {
+      "name": "happly",
+      "href": "/center/recipes/happly?version=cci.20200822"
+    },
+    {
+      "name": "harfbuzz",
+      "href": "/center/recipes/harfbuzz?version=8.2.2"
+    },
+    {
+      "name": "hash-library",
+      "href": "/center/recipes/hash-library?version=8.0"
+    },
+    {
+      "name": "hazelcast-cpp-client",
+      "href": "/center/recipes/hazelcast-cpp-client?version=5.3.0"
+    },
+    {
+      "name": "hdf4",
+      "href": "/center/recipes/hdf4?version=4.2.15"
+    },
+    {
+      "name": "hdf5",
+      "href": "/center/recipes/hdf5?version=1.14.1"
+    },
+    {
+      "name": "hdrhistogram-c",
+      "href": "/center/recipes/hdrhistogram-c?version=0.11.6"
+    },
+    {
+      "name": "heatshrink",
+      "href": "/center/recipes/heatshrink?version=0.4.1"
+    },
+    {
+      "name": "hedley",
+      "href": "/center/recipes/hedley?version=15"
+    },
+    {
+      "name": "hexl",
+      "href": "/center/recipes/hexl?version=1.2.4"
+    },
+    {
+      "name": "hffix",
+      "href": "/center/recipes/hffix?version=1.3.0"
+    },
+    {
+      "name": "hictk",
+      "href": "/center/recipes/hictk?version=0.0.3"
+    },
+    {
+      "name": "hidapi",
+      "href": "/center/recipes/hidapi?version=0.14.0"
+    },
+    {
+      "name": "highfive",
+      "href": "/center/recipes/highfive?version=2.7.1"
+    },
+    {
+      "name": "highs",
+      "href": "/center/recipes/highs?version=1.6.0"
+    },
+    {
+      "name": "highway",
+      "href": "/center/recipes/highway?version=1.0.7"
+    },
+    {
+      "name": "hipony-enumerate",
+      "href": "/center/recipes/hipony-enumerate?version=2.4.1"
+    },
+    {
+      "name": "hippomocks",
+      "href": "/center/recipes/hippomocks?version=cci.20190311"
+    },
+    {
+      "name": "hiredis",
+      "href": "/center/recipes/hiredis?version=1.2.0"
+    },
+    {
+      "name": "hlslpp",
+      "href": "/center/recipes/hlslpp?version=3.2.2"
+    },
+    {
+      "name": "homog2d",
+      "href": "/center/recipes/homog2d?version=2.10"
+    },
+    {
+      "name": "http_parser",
+      "href": "/center/recipes/http_parser?version=2.9.4"
+    },
+    {
+      "name": "huffman",
+      "href": "/center/recipes/huffman?version=1.2.7"
+    },
+    {
+      "name": "hunspell",
+      "href": "/center/recipes/hunspell?version=1.7.2"
+    },
+    {
+      "name": "hwloc",
+      "href": "/center/recipes/hwloc?version=2.9.3"
+    },
+    {
+      "name": "hyperscan",
+      "href": "/center/recipes/hyperscan?version=5.4.2"
+    },
+    {
+      "name": "i2c-tools",
+      "href": "/center/recipes/i2c-tools?version=4.3"
+    },
+    {
+      "name": "freeglut",
+      "href": "/center/recipes/freeglut?version=3.4.0"
+    },
+    {
+      "name": "drogon",
+      "href": "/center/recipes/drogon?version=1.8.7"
+    },
+    {
+      "name": "iceoryx",
+      "href": "/center/recipes/iceoryx?version=2.0.2"
+    },
+    {
+      "name": "icu",
+      "href": "/center/recipes/icu?version=73.2"
+    },
+    {
+      "name": "id3v2lib",
+      "href": "/center/recipes/id3v2lib?version=2.1"
+    },
+    {
+      "name": "ignition-math",
+      "href": "/center/recipes/ignition-math?version=6.10.0"
+    },
+    {
+      "name": "ignition-tools",
+      "href": "/center/recipes/ignition-tools?version=1.4.0"
+    },
+    {
+      "name": "ignition-utils",
+      "href": "/center/recipes/ignition-utils?version=1.3.0"
+    },
+    {
+      "name": "iir1",
+      "href": "/center/recipes/iir1?version=1.9.1"
+    },
+    {
+      "name": "im95able-rea",
+      "href": "/center/recipes/im95able-rea?version=cci.20190225"
+    },
+    {
+      "name": "imagemagick",
+      "href": "/center/recipes/imagemagick?version=7.0.11-14"
+    },
+    {
+      "name": "imagl",
+      "href": "/center/recipes/imagl?version=0.2.1"
+    },
+    {
+      "name": "imake",
+      "href": "/center/recipes/imake?version=1.0.8"
+    },
+    {
+      "name": "imath",
+      "href": "/center/recipes/imath?version=3.1.9"
+    },
+    {
+      "name": "imgui",
+      "href": "/center/recipes/imgui?version=cci.20230105%2B1.89.2.docking"
+    },
+    {
+      "name": "imguizmo",
+      "href": "/center/recipes/imguizmo?version=1.83"
+    },
+    {
+      "name": "immer",
+      "href": "/center/recipes/immer?version=0.8.1"
+    },
+    {
+      "name": "implot",
+      "href": "/center/recipes/implot?version=0.16"
+    },
+    {
+      "name": "ignition-cmake",
+      "href": "/center/recipes/ignition-cmake?version=2.10.0"
+    },
+    {
+      "name": "imutils-cpp",
+      "href": "/center/recipes/imutils-cpp?version=1.0.1"
+    },
+    {
+      "name": "incbin",
+      "href": "/center/recipes/incbin?version=cci.20211107"
+    },
+    {
+      "name": "indicators",
+      "href": "/center/recipes/indicators?version=2.3"
+    },
+    {
+      "name": "indirect_value",
+      "href": "/center/recipes/indirect_value?version=0.0.1"
+    },
+    {
+      "name": "influxdb-cpp",
+      "href": "/center/recipes/influxdb-cpp?version=cci.20201227"
+    },
+    {
+      "name": "inih",
+      "href": "/center/recipes/inih?version=57"
+    },
+    {
+      "name": "inja",
+      "href": "/center/recipes/inja?version=3.4.0"
+    },
+    {
+      "name": "giflib",
+      "href": "/center/recipes/giflib?version=5.2.1"
+    },
+    {
+      "name": "innoextract",
+      "href": "/center/recipes/innoextract?version=1.9.0"
+    },
+    {
+      "name": "intel-neon2sse",
+      "href": "/center/recipes/intel-neon2sse?version=cci.20210225"
+    },
+    {
+      "name": "intx",
+      "href": "/center/recipes/intx?version=0.10.1"
+    },
+    {
+      "name": "ios-cmake",
+      "href": "/center/recipes/ios-cmake?version=4.2.0"
+    },
+    {
+      "name": "iowow",
+      "href": "/center/recipes/iowow?version=1.4.16"
+    },
+    {
+      "name": "iqa",
+      "href": "/center/recipes/iqa?version=cci.20181227"
+    },
+    {
+      "name": "dtl",
+      "href": "/center/recipes/dtl?version=cci.20210404"
+    },
+    {
+      "name": "isa-l",
+      "href": "/center/recipes/isa-l?version=2.30.0"
+    },
+    {
+      "name": "isl",
+      "href": "/center/recipes/isl?version=0.24"
+    },
+    {
+      "name": "iso8601lib",
+      "href": "/center/recipes/iso8601lib?version=cci.20230123"
+    },
+    {
+      "name": "itk",
+      "href": "/center/recipes/itk?version=5.1.2"
+    },
+    {
+      "name": "itlib",
+      "href": "/center/recipes/itlib?version=1.9.2"
+    },
+    {
+      "name": "fribidi",
+      "href": "/center/recipes/fribidi?version=1.0.13"
+    },
+    {
+      "name": "ittapi",
+      "href": "/center/recipes/ittapi?version=3.24.0"
+    },
+    {
+      "name": "ixwebsocket",
+      "href": "/center/recipes/ixwebsocket?version=11.4.3"
+    },
+    {
+      "name": "jansson",
+      "href": "/center/recipes/jansson?version=2.14"
+    },
+    {
+      "name": "jasper",
+      "href": "/center/recipes/jasper?version=4.0.0"
+    },
+    {
+      "name": "jbig",
+      "href": "/center/recipes/jbig?version=20160605"
+    },
+    {
+      "name": "jeaiii-itoa",
+      "href": "/center/recipes/jeaiii-itoa?version=cci.20220602"
+    },
+    {
+      "name": "jerryscript",
+      "href": "/center/recipes/jerryscript?version=2.4.0"
+    },
+    {
+      "name": "jfalcou-eve",
+      "href": "/center/recipes/jfalcou-eve?version=v2023.02.15"
+    },
+    {
+      "name": "jinja2cpp",
+      "href": "/center/recipes/jinja2cpp?version=1.2.1"
+    },
+    {
+      "name": "joltphysics",
+      "href": "/center/recipes/joltphysics?version=3.0.1"
+    },
+    {
+      "name": "jom",
+      "href": "/center/recipes/jom?version=1.1.3"
+    },
+    {
+      "name": "jpeg-compressor",
+      "href": "/center/recipes/jpeg-compressor?version=cci.20200507"
+    },
+    {
+      "name": "jsmn",
+      "href": "/center/recipes/jsmn?version=1.1.0"
+    },
+    {
+      "name": "json-c",
+      "href": "/center/recipes/json-c?version=0.17"
+    },
+    {
+      "name": "json-schema-validator",
+      "href": "/center/recipes/json-schema-validator?version=2.2.0"
+    },
+    {
+      "name": "jsoncons",
+      "href": "/center/recipes/jsoncons?version=0.171.0"
+    },
+    {
+      "name": "jsoncpp",
+      "href": "/center/recipes/jsoncpp?version=1.9.5"
+    },
+    {
+      "name": "jsonformoderncpp",
+      "href": "/center/recipes/jsonformoderncpp?version=3.7.0"
+    },
+    {
+      "name": "jsonnet",
+      "href": "/center/recipes/jsonnet?version=0.20.0"
+    },
+    {
+      "name": "icecream-cpp",
+      "href": "/center/recipes/icecream-cpp?version=0.3.1"
+    },
+    {
+      "name": "json_dto",
+      "href": "/center/recipes/json_dto?version=0.3.1"
+    },
+    {
+      "name": "jthread-lite",
+      "href": "/center/recipes/jthread-lite?version=0.1.0"
+    },
+    {
+      "name": "jungle",
+      "href": "/center/recipes/jungle?version=cci.20221201"
+    },
+    {
+      "name": "jwasm",
+      "href": "/center/recipes/jwasm?version=2.13"
+    },
+    {
+      "name": "jwt-cpp",
+      "href": "/center/recipes/jwt-cpp?version=0.6.0"
+    },
+    {
+      "name": "jxrlib",
+      "href": "/center/recipes/jxrlib?version=cci.20170615"
+    },
+    {
+      "name": "kainjow-mustache",
+      "href": "/center/recipes/kainjow-mustache?version=4.1"
+    },
+    {
+      "name": "kaitai_struct_cpp_stl_runtime",
+      "href": "/center/recipes/kaitai_struct_cpp_stl_runtime?version=cci.20210701"
+    },
+    {
+      "name": "kangaru",
+      "href": "/center/recipes/kangaru?version=4.3.1"
+    },
+    {
+      "name": "kcov",
+      "href": "/center/recipes/kcov?version=40"
+    },
+    {
+      "name": "kcp",
+      "href": "/center/recipes/kcp?version=1.7"
+    },
+    {
+      "name": "kdbindings",
+      "href": "/center/recipes/kdbindings?version=1.0.3"
+    },
+    {
+      "name": "kealib",
+      "href": "/center/recipes/kealib?version=1.4.14"
+    },
+    {
+      "name": "keychain",
+      "href": "/center/recipes/keychain?version=1.2.1"
+    },
+    {
+      "name": "khrplatform",
+      "href": "/center/recipes/khrplatform?version=cci.20200529"
+    },
+    {
+      "name": "kickcat",
+      "href": "/center/recipes/kickcat?version=v2-alpha4"
+    },
+    {
+      "name": "kissfft",
+      "href": "/center/recipes/kissfft?version=131.1.0"
+    },
+    {
+      "name": "kitten",
+      "href": "/center/recipes/kitten?version=0.1.0"
+    },
+    {
+      "name": "kmod",
+      "href": "/center/recipes/kmod?version=30"
+    },
+    {
+      "name": "kplot",
+      "href": "/center/recipes/kplot?version=0.1.15"
+    },
+    {
+      "name": "ktx",
+      "href": "/center/recipes/ktx?version=4.0.0"
+    },
+    {
+      "name": "kuba-zip",
+      "href": "/center/recipes/kuba-zip?version=0.2.6"
+    },
+    {
+      "name": "laszip",
+      "href": "/center/recipes/laszip?version=3.4.3"
+    },
+    {
+      "name": "lazycsv",
+      "href": "/center/recipes/lazycsv?version=cci.20221117"
+    },
+    {
+      "name": "lcms",
+      "href": "/center/recipes/lcms?version=2.14"
+    },
+    {
+      "name": "ldns",
+      "href": "/center/recipes/ldns?version=1.8.1"
+    },
+    {
+      "name": "lely-core",
+      "href": "/center/recipes/lely-core?version=2.3.2"
+    },
+    {
+      "name": "lemon",
+      "href": "/center/recipes/lemon?version=3.32.3"
+    },
+    {
+      "name": "leptonica",
+      "href": "/center/recipes/leptonica?version=1.83.1"
+    },
+    {
+      "name": "lerc",
+      "href": "/center/recipes/lerc?version=4.0.1"
+    },
+    {
+      "name": "lest",
+      "href": "/center/recipes/lest?version=1.35.1"
+    },
+    {
+      "name": "leveldb",
+      "href": "/center/recipes/leveldb?version=1.23"
+    },
+    {
+      "name": "lexbor",
+      "href": "/center/recipes/lexbor?version=2.3.0"
+    },
+    {
+      "name": "libaec",
+      "href": "/center/recipes/libaec?version=1.0.6"
+    },
+    {
+      "name": "libaesgm",
+      "href": "/center/recipes/libaesgm?version=2013.1.1"
+    },
+    {
+      "name": "libaio",
+      "href": "/center/recipes/libaio?version=0.3.113"
+    },
+    {
+      "name": "libalsa",
+      "href": "/center/recipes/libalsa?version=1.2.10"
+    },
+    {
+      "name": "libaom-av1",
+      "href": "/center/recipes/libaom-av1?version=3.6.1"
+    },
+    {
+      "name": "libarchive",
+      "href": "/center/recipes/libarchive?version=3.7.1"
+    },
+    {
+      "name": "libassert",
+      "href": "/center/recipes/libassert?version=1.1"
+    },
+    {
+      "name": "libatomic_ops",
+      "href": "/center/recipes/libatomic_ops?version=7.8.0"
+    },
+    {
+      "name": "libattr",
+      "href": "/center/recipes/libattr?version=2.5.1"
+    },
+    {
+      "name": "libavif",
+      "href": "/center/recipes/libavif?version=1.0.1"
+    },
+    {
+      "name": "libavrocpp",
+      "href": "/center/recipes/libavrocpp?version=1.11.1"
+    },
+    {
+      "name": "libb2",
+      "href": "/center/recipes/libb2?version=20190723"
+    },
+    {
+      "name": "libbacktrace",
+      "href": "/center/recipes/libbacktrace?version=cci.20210118"
+    },
+    {
+      "name": "libbigwig",
+      "href": "/center/recipes/libbigwig?version=0.4.7"
+    },
+    {
+      "name": "libbpf",
+      "href": "/center/recipes/libbpf?version=0.7.0"
+    },
+    {
+      "name": "libbsd",
+      "href": "/center/recipes/libbsd?version=0.10.0"
+    },
+    {
+      "name": "libcap",
+      "href": "/center/recipes/libcap?version=2.69"
+    },
+    {
+      "name": "libcbor",
+      "href": "/center/recipes/libcbor?version=0.10.2"
+    },
+    {
+      "name": "libccd",
+      "href": "/center/recipes/libccd?version=2.1"
+    },
+    {
+      "name": "googleapis",
+      "href": "/center/recipes/googleapis?version=cci.20230501"
+    },
+    {
+      "name": "libcds",
+      "href": "/center/recipes/libcds?version=2.3.3"
+    },
+    {
+      "name": "libcheck",
+      "href": "/center/recipes/libcheck?version=0.15.2"
+    },
+    {
+      "name": "libcoap",
+      "href": "/center/recipes/libcoap?version=cci.20200424"
+    },
+    {
+      "name": "libconfig",
+      "href": "/center/recipes/libconfig?version=1.7.3"
+    },
+    {
+      "name": "libconfuse",
+      "href": "/center/recipes/libconfuse?version=3.3"
+    },
+    {
+      "name": "libcoro",
+      "href": "/center/recipes/libcoro?version=0.9"
+    },
+    {
+      "name": "libcorrect",
+      "href": "/center/recipes/libcorrect?version=20181010"
+    },
+    {
+      "name": "libcpuid",
+      "href": "/center/recipes/libcpuid?version=0.5.1"
+    },
+    {
+      "name": "libcuckoo",
+      "href": "/center/recipes/libcuckoo?version=0.3.1"
+    },
+    {
+      "name": "libdb",
+      "href": "/center/recipes/libdb?version=5.3.28"
+    },
+    {
+      "name": "libdc1394",
+      "href": "/center/recipes/libdc1394?version=2.2.6"
+    },
+    {
+      "name": "libde265",
+      "href": "/center/recipes/libde265?version=1.0.12"
+    },
+    {
+      "name": "irrxml",
+      "href": "/center/recipes/irrxml?version=1.2"
+    },
+    {
+      "name": "libdisasm",
+      "href": "/center/recipes/libdisasm?version=0.23"
+    },
+    {
+      "name": "libdispatch",
+      "href": "/center/recipes/libdispatch?version=5.3.2"
+    },
+    {
+      "name": "libdivide",
+      "href": "/center/recipes/libdivide?version=5.0"
+    },
+    {
+      "name": "libdmtx",
+      "href": "/center/recipes/libdmtx?version=0.7.7"
+    },
+    {
+      "name": "libdrawille",
+      "href": "/center/recipes/libdrawille?version=cci.20160428"
+    },
+    {
+      "name": "libdrm",
+      "href": "/center/recipes/libdrm?version=2.4.114"
+    },
+    {
+      "name": "libdwarf",
+      "href": "/center/recipes/libdwarf?version=20191104"
+    },
+    {
+      "name": "libdxfrw",
+      "href": "/center/recipes/libdxfrw?version=2.2.0"
+    },
+    {
+      "name": "libelfin",
+      "href": "/center/recipes/libelfin?version=0.3"
+    },
+    {
+      "name": "libelf",
+      "href": "/center/recipes/libelf?version=0.8.13"
+    },
+    {
+      "name": "libenvpp",
+      "href": "/center/recipes/libenvpp?version=1.3.0"
+    },
+    {
+      "name": "libepoxy",
+      "href": "/center/recipes/libepoxy?version=1.5.10"
+    },
+    {
+      "name": "libest",
+      "href": "/center/recipes/libest?version=3.2.0"
+    },
+    {
+      "name": "libev",
+      "href": "/center/recipes/libev?version=4.33"
+    },
+    {
+      "name": "libevdev",
+      "href": "/center/recipes/libevdev?version=1.13.1"
+    },
+    {
+      "name": "flatbuffers",
+      "href": "/center/recipes/flatbuffers?version=23.5.26"
+    },
+    {
+      "name": "libexif",
+      "href": "/center/recipes/libexif?version=0.6.24"
+    },
+    {
+      "name": "libfabric",
+      "href": "/center/recipes/libfabric?version=1.12.1"
+    },
+    {
+      "name": "libfdk_aac",
+      "href": "/center/recipes/libfdk_aac?version=2.0.2"
+    },
+    {
+      "name": "libffi",
+      "href": "/center/recipes/libffi?version=3.4.4"
+    },
+    {
+      "name": "libfreenect",
+      "href": "/center/recipes/libfreenect?version=0.7.0"
+    },
+    {
+      "name": "libftdi",
+      "href": "/center/recipes/libftdi?version=1.5"
+    },
+    {
+      "name": "libfuse",
+      "href": "/center/recipes/libfuse?version=3.10.5"
+    },
+    {
+      "name": "libgcrypt",
+      "href": "/center/recipes/libgcrypt?version=1.8.4"
+    },
+    {
+      "name": "libgd",
+      "href": "/center/recipes/libgd?version=2.3.3"
+    },
+    {
+      "name": "libgeotiff",
+      "href": "/center/recipes/libgeotiff?version=1.7.1"
+    },
+    {
+      "name": "libfreenect2",
+      "href": "/center/recipes/libfreenect2?version=0.2.1"
+    },
+    {
+      "name": "libgettext",
+      "href": "/center/recipes/libgettext?version=0.22"
+    },
+    {
+      "name": "libgit2",
+      "href": "/center/recipes/libgit2?version=1.5.0"
+    },
+    {
+      "name": "libglvnd",
+      "href": "/center/recipes/libglvnd?version=1.5.0"
+    },
+    {
+      "name": "libgpg-error",
+      "href": "/center/recipes/libgpg-error?version=1.36"
+    },
+    {
+      "name": "libgphoto2",
+      "href": "/center/recipes/libgphoto2?version=2.5.27"
+    },
+    {
+      "name": "libgpiod",
+      "href": "/center/recipes/libgpiod?version=1.6.3"
+    },
+    {
+      "name": "libgta",
+      "href": "/center/recipes/libgta?version=1.2.1"
+    },
+    {
+      "name": "libhal",
+      "href": "/center/recipes/libhal?version=0.0.0"
+    },
+    {
+      "name": "libheif",
+      "href": "/center/recipes/libheif?version=1.16.2"
+    },
+    {
+      "name": "libhydrogen",
+      "href": "/center/recipes/libhydrogen?version=cci.20221115"
+    },
+    {
+      "name": "libiberty",
+      "href": "/center/recipes/libiberty?version=9.1.0"
+    },
+    {
+      "name": "libiconv",
+      "href": "/center/recipes/libiconv?version=1.17"
+    },
+    {
+      "name": "libid3tag",
+      "href": "/center/recipes/libid3tag?version=0.15.1b"
+    },
+    {
+      "name": "libidn",
+      "href": "/center/recipes/libidn?version=1.36"
+    },
+    {
+      "name": "libidn2",
+      "href": "/center/recipes/libidn2?version=2.3.0"
+    },
+    {
+      "name": "libigl",
+      "href": "/center/recipes/libigl?version=2.3.0"
+    },
+    {
+      "name": "libinterpolate",
+      "href": "/center/recipes/libinterpolate?version=2.6.4"
+    },
+    {
+      "name": "libdaemon",
+      "href": "/center/recipes/libdaemon?version=0.14"
+    },
+    {
+      "name": "libjpeg",
+      "href": "/center/recipes/libjpeg?version=9e"
+    },
+    {
+      "name": "libjpeg-turbo",
+      "href": "/center/recipes/libjpeg-turbo?version=3.0.0"
+    },
+    {
+      "name": "libjxl",
+      "href": "/center/recipes/libjxl?version=0.6.1"
+    },
+    {
+      "name": "libkml",
+      "href": "/center/recipes/libkml?version=1.3.0"
+    },
+    {
+      "name": "libliftoff",
+      "href": "/center/recipes/libliftoff?version=0.4.1"
+    },
+    {
+      "name": "liblsl",
+      "href": "/center/recipes/liblsl?version=1.16.2"
+    },
+    {
+      "name": "libltc",
+      "href": "/center/recipes/libltc?version=1.3.2"
+    },
+    {
+      "name": "liblzf",
+      "href": "/center/recipes/liblzf?version=3.6"
+    },
+    {
+      "name": "libmad",
+      "href": "/center/recipes/libmad?version=0.15.1b"
+    },
+    {
+      "name": "libmaxminddb",
+      "href": "/center/recipes/libmaxminddb?version=1.7.1"
+    },
+    {
+      "name": "libmbus",
+      "href": "/center/recipes/libmbus?version=20200515"
+    },
+    {
+      "name": "libmediainfo",
+      "href": "/center/recipes/libmediainfo?version=22.03"
+    },
+    {
+      "name": "libmemcached",
+      "href": "/center/recipes/libmemcached?version=1.0.18"
+    },
+    {
+      "name": "libmetalink",
+      "href": "/center/recipes/libmetalink?version=0.1.3"
+    },
+    {
+      "name": "libmicrohttpd",
+      "href": "/center/recipes/libmicrohttpd?version=0.9.75"
+    },
+    {
+      "name": "libmikmod",
+      "href": "/center/recipes/libmikmod?version=3.3.11.1"
+    },
+    {
+      "name": "libmnl",
+      "href": "/center/recipes/libmnl?version=1.0.4"
+    },
+    {
+      "name": "libmodbus",
+      "href": "/center/recipes/libmodbus?version=3.1.8"
+    },
+    {
+      "name": "libmodplug",
+      "href": "/center/recipes/libmodplug?version=0.8.9.0"
+    },
+    {
+      "name": "libmorton",
+      "href": "/center/recipes/libmorton?version=0.2.12"
+    },
+    {
+      "name": "libmount",
+      "href": "/center/recipes/libmount?version=2.39.2"
+    },
+    {
+      "name": "libmp3lame",
+      "href": "/center/recipes/libmp3lame?version=3.100"
+    },
+    {
+      "name": "libmpdclient",
+      "href": "/center/recipes/libmpdclient?version=2.20"
+    },
+    {
+      "name": "libmysqlclient",
+      "href": "/center/recipes/libmysqlclient?version=8.1.0"
+    },
+    {
+      "name": "libnabo",
+      "href": "/center/recipes/libnabo?version=1.0.7"
+    },
+    {
+      "name": "libnet",
+      "href": "/center/recipes/libnet?version=1.2"
+    },
+    {
+      "name": "libnetfilter_conntrack",
+      "href": "/center/recipes/libnetfilter_conntrack?version=1.0.8"
+    },
+    {
+      "name": "libnetfilter_queue",
+      "href": "/center/recipes/libnetfilter_queue?version=1.0.5"
+    },
+    {
+      "name": "libnfs",
+      "href": "/center/recipes/libnfs?version=5.0.2"
+    },
+    {
+      "name": "libnghttp2",
+      "href": "/center/recipes/libnghttp2?version=1.57.0"
+    },
+    {
+      "name": "libnice",
+      "href": "/center/recipes/libnice?version=0.1.21"
+    },
+    {
+      "name": "libnl",
+      "href": "/center/recipes/libnl?version=3.8.0"
+    },
+    {
+      "name": "libnoise",
+      "href": "/center/recipes/libnoise?version=1.0.0"
+    },
+    {
+      "name": "libnop",
+      "href": "/center/recipes/libnop?version=cci.20200728"
+    },
+    {
+      "name": "libnova",
+      "href": "/center/recipes/libnova?version=0.16.0"
+    },
+    {
+      "name": "libnpy",
+      "href": "/center/recipes/libnpy?version=1.0.1"
+    },
+    {
+      "name": "libnuma",
+      "href": "/center/recipes/libnuma?version=2.0.14"
+    },
+    {
+      "name": "liboping",
+      "href": "/center/recipes/liboping?version=1.10.0"
+    },
+    {
+      "name": "libnfnetlink",
+      "href": "/center/recipes/libnfnetlink?version=1.0.2"
+    },
+    {
+      "name": "libpcap",
+      "href": "/center/recipes/libpcap?version=1.10.4"
+    },
+    {
+      "name": "libpciaccess",
+      "href": "/center/recipes/libpciaccess?version=0.17"
+    },
+    {
+      "name": "libpfm4",
+      "href": "/center/recipes/libpfm4?version=4.13.0"
+    },
+    {
+      "name": "libpng",
+      "href": "/center/recipes/libpng?version=1.6.40"
+    },
+    {
+      "name": "libpointmatcher",
+      "href": "/center/recipes/libpointmatcher?version=1.3.1"
+    },
+    {
+      "name": "libpq",
+      "href": "/center/recipes/libpq?version=15.4"
+    },
+    {
+      "name": "libproperties",
+      "href": "/center/recipes/libproperties?version=1.1.2"
+    },
+    {
+      "name": "libpqxx",
+      "href": "/center/recipes/libpqxx?version=7.8.1"
+    },
+    {
+      "name": "libprotobuf-mutator",
+      "href": "/center/recipes/libprotobuf-mutator?version=cci.20210831"
+    },
+    {
+      "name": "libpsl",
+      "href": "/center/recipes/libpsl?version=0.21.1"
+    },
+    {
+      "name": "libqrencode",
+      "href": "/center/recipes/libqrencode?version=4.1.1"
+    },
+    {
+      "name": "librasterlite",
+      "href": "/center/recipes/librasterlite?version=1.1g"
+    },
+    {
+      "name": "librasterlite2",
+      "href": "/center/recipes/librasterlite2?version=1.1.0-beta1"
+    },
+    {
+      "name": "libraw",
+      "href": "/center/recipes/libraw?version=0.21.1"
+    },
+    {
+      "name": "librdkafka",
+      "href": "/center/recipes/librdkafka?version=2.2.0"
+    },
+    {
+      "name": "librealsense",
+      "href": "/center/recipes/librealsense?version=2.49.0"
+    },
+    {
+      "name": "libressl",
+      "href": "/center/recipes/libressl?version=3.5.3"
+    },
+    {
+      "name": "librhash",
+      "href": "/center/recipes/librhash?version=1.4.2"
+    },
+    {
+      "name": "librttopo",
+      "href": "/center/recipes/librttopo?version=1.1.0"
+    },
+    {
+      "name": "libsafec",
+      "href": "/center/recipes/libsafec?version=3.6.0"
+    },
+    {
+      "name": "libsamplerate",
+      "href": "/center/recipes/libsamplerate?version=0.2.2"
+    },
+    {
+      "name": "libsass",
+      "href": "/center/recipes/libsass?version=3.6.5"
+    },
+    {
+      "name": "libseat",
+      "href": "/center/recipes/libseat?version=0.8.0"
+    },
+    {
+      "name": "libsecret",
+      "href": "/center/recipes/libsecret?version=0.20.5"
+    },
+    {
+      "name": "libselinux",
+      "href": "/center/recipes/libselinux?version=3.5"
+    },
+    {
+      "name": "libserial",
+      "href": "/center/recipes/libserial?version=cci.20200930"
+    },
+    {
+      "name": "libsgp4",
+      "href": "/center/recipes/libsgp4?version=20191207"
+    },
+    {
+      "name": "libsigcpp",
+      "href": "/center/recipes/libsigcpp?version=3.0.7"
+    },
+    {
+      "name": "libsixel",
+      "href": "/center/recipes/libsixel?version=1.10.3"
+    },
+    {
+      "name": "libslz",
+      "href": "/center/recipes/libslz?version=1.2.1"
+    },
+    {
+      "name": "libsmacker",
+      "href": "/center/recipes/libsmacker?version=1.1.1r35"
+    },
+    {
+      "name": "libsndfile",
+      "href": "/center/recipes/libsndfile?version=1.2.2"
+    },
+    {
+      "name": "libdeflate",
+      "href": "/center/recipes/libdeflate?version=1.19"
+    },
+    {
+      "name": "libsodium",
+      "href": "/center/recipes/libsodium?version=cci.20220430"
+    },
+    {
+      "name": "libsolace",
+      "href": "/center/recipes/libsolace?version=0.3.9"
+    },
+    {
+      "name": "libspatialindex",
+      "href": "/center/recipes/libspatialindex?version=1.9.3"
+    },
+    {
+      "name": "libspatialite",
+      "href": "/center/recipes/libspatialite?version=5.0.1"
+    },
+    {
+      "name": "libspng",
+      "href": "/center/recipes/libspng?version=0.7.4"
+    },
+    {
+      "name": "libsquish",
+      "href": "/center/recipes/libsquish?version=1.15"
+    },
+    {
+      "name": "libssh2",
+      "href": "/center/recipes/libssh2?version=1.11.0"
+    },
+    {
+      "name": "libstudxml",
+      "href": "/center/recipes/libstudxml?version=1.1.0-b.10%2B1"
+    },
+    {
+      "name": "libsvm",
+      "href": "/center/recipes/libsvm?version=332"
+    },
+    {
+      "name": "libsvtav1",
+      "href": "/center/recipes/libsvtav1?version=1.7.0"
+    },
+    {
+      "name": "libtar",
+      "href": "/center/recipes/libtar?version=1.2.20"
+    },
+    {
+      "name": "libtasn1",
+      "href": "/center/recipes/libtasn1?version=4.16.0"
+    },
+    {
+      "name": "libtiff",
+      "href": "/center/recipes/libtiff?version=4.6.0"
+    },
+    {
+      "name": "libtins",
+      "href": "/center/recipes/libtins?version=4.5"
+    },
+    {
+      "name": "libtommath",
+      "href": "/center/recipes/libtommath?version=1.2.0"
+    },
+    {
+      "name": "libtool",
+      "href": "/center/recipes/libtool?version=2.4.7"
+    },
+    {
+      "name": "libtorrent",
+      "href": "/center/recipes/libtorrent?version=2.0.8"
+    },
+    {
+      "name": "libucl",
+      "href": "/center/recipes/libucl?version=0.8.2"
+    },
+    {
+      "name": "libudev",
+      "href": "/center/recipes/libudev?version=system"
+    },
+    {
+      "name": "libui",
+      "href": "/center/recipes/libui?version=0.4.1"
+    },
+    {
+      "name": "libunifex",
+      "href": "/center/recipes/libunifex?version=cci.20220430"
+    },
+    {
+      "name": "libunistring",
+      "href": "/center/recipes/libunistring?version=0.9.10"
+    },
+    {
+      "name": "libunwind",
+      "href": "/center/recipes/libunwind?version=1.7.2"
+    },
+    {
+      "name": "liburing",
+      "href": "/center/recipes/liburing?version=2.2"
+    },
+    {
+      "name": "libusb",
+      "href": "/center/recipes/libusb?version=1.0.26"
+    },
+    {
+      "name": "libusb-compat",
+      "href": "/center/recipes/libusb-compat?version=0.1.7"
+    },
+    {
+      "name": "libuuid",
+      "href": "/center/recipes/libuuid?version=1.0.3"
+    },
+    {
+      "name": "libharu",
+      "href": "/center/recipes/libharu?version=2.4.4"
+    },
+    {
+      "name": "libuv",
+      "href": "/center/recipes/libuv?version=1.46.0"
+    },
+    {
+      "name": "libuvc",
+      "href": "/center/recipes/libuvc?version=0.0.7"
+    },
+    {
+      "name": "libipt",
+      "href": "/center/recipes/libipt?version=2.0.6"
+    },
+    {
+      "name": "libverto",
+      "href": "/center/recipes/libverto?version=0.3.2"
+    },
+    {
+      "name": "libvips",
+      "href": "/center/recipes/libvips?version=8.14.2"
+    },
+    {
+      "name": "libvpx",
+      "href": "/center/recipes/libvpx?version=1.11.0"
+    },
+    {
+      "name": "libwebm",
+      "href": "/center/recipes/libwebm?version=1.0.0.30"
+    },
+    {
+      "name": "libwebp",
+      "href": "/center/recipes/libwebp?version=1.3.2"
+    },
+    {
+      "name": "libwebsockets",
+      "href": "/center/recipes/libwebsockets?version=4.3.2"
+    },
+    {
+      "name": "libx264",
+      "href": "/center/recipes/libx264?version=cci.20220602"
+    },
+    {
+      "name": "libx265",
+      "href": "/center/recipes/libx265?version=3.4"
+    },
+    {
+      "name": "libxcrypt",
+      "href": "/center/recipes/libxcrypt?version=4.4.35"
+    },
+    {
+      "name": "libxft",
+      "href": "/center/recipes/libxft?version=2.3.8"
+    },
+    {
+      "name": "libxls",
+      "href": "/center/recipes/libxls?version=1.6.2"
+    },
+    {
+      "name": "libxlsxwriter",
+      "href": "/center/recipes/libxlsxwriter?version=1.1.5"
+    },
+    {
+      "name": "libxml2",
+      "href": "/center/recipes/libxml2?version=2.11.5"
+    },
+    {
+      "name": "libxmlpp",
+      "href": "/center/recipes/libxmlpp?version=5.0.1"
+    },
+    {
+      "name": "libxpm",
+      "href": "/center/recipes/libxpm?version=3.5.13"
+    },
+    {
+      "name": "libxshmfence",
+      "href": "/center/recipes/libxshmfence?version=1.3"
+    },
+    {
+      "name": "libxslt",
+      "href": "/center/recipes/libxslt?version=1.1.34"
+    },
+    {
+      "name": "libyaml",
+      "href": "/center/recipes/libyaml?version=0.2.5"
+    },
+    {
+      "name": "libyuv",
+      "href": "/center/recipes/libyuv?version=1854"
+    },
+    {
+      "name": "libzen",
+      "href": "/center/recipes/libzen?version=0.4.38"
+    },
+    {
+      "name": "libzippp",
+      "href": "/center/recipes/libzippp?version=7.0-1.10.1"
+    },
+    {
+      "name": "lief",
+      "href": "/center/recipes/lief?version=0.13.1"
+    },
+    {
+      "name": "lightgbm",
+      "href": "/center/recipes/lightgbm?version=3.3.5"
+    },
+    {
+      "name": "linmath.h",
+      "href": "/center/recipes/linmath.h?version=cci.20220619"
+    },
+    {
+      "name": "linux-headers-generic",
+      "href": "/center/recipes/linux-headers-generic?version=5.15.128"
+    },
+    {
+      "name": "linux-syscall-support",
+      "href": "/center/recipes/linux-syscall-support?version=cci.20200813"
+    },
+    {
+      "name": "liquid-dsp",
+      "href": "/center/recipes/liquid-dsp?version=1.3.2"
+    },
+    {
+      "name": "litehtml",
+      "href": "/center/recipes/litehtml?version=cci.20211028"
+    },
+    {
+      "name": "llhttp",
+      "href": "/center/recipes/llhttp?version=8.1.0"
+    },
+    {
+      "name": "llvm-core",
+      "href": "/center/recipes/llvm-core?version=13.0.0"
+    },
+    {
+      "name": "llvm-openmp",
+      "href": "/center/recipes/llvm-openmp?version=12.0.1"
+    },
+    {
+      "name": "lmdb",
+      "href": "/center/recipes/lmdb?version=0.9.29"
+    },
+    {
+      "name": "lodepng",
+      "href": "/center/recipes/lodepng?version=cci.20200615"
+    },
+    {
+      "name": "log.c",
+      "href": "/center/recipes/log.c?version=cci.20200620"
+    },
+    {
+      "name": "log4cxx",
+      "href": "/center/recipes/log4cxx?version=0.12.1"
+    },
+    {
+      "name": "logr",
+      "href": "/center/recipes/logr?version=0.6.0"
+    },
+    {
+      "name": "loguru",
+      "href": "/center/recipes/loguru?version=cci.20230406"
+    },
+    {
+      "name": "lua",
+      "href": "/center/recipes/lua?version=5.4.6"
+    },
+    {
+      "name": "luau",
+      "href": "/center/recipes/luau?version=0.598"
+    },
+    {
+      "name": "lunasvg",
+      "href": "/center/recipes/lunasvg?version=2.3.8"
+    },
+    {
+      "name": "luple",
+      "href": "/center/recipes/luple?version=1.2"
+    },
+    {
+      "name": "lurlparser",
+      "href": "/center/recipes/lurlparser?version=1.1"
+    },
+    {
+      "name": "lyra",
+      "href": "/center/recipes/lyra?version=1.6.1"
+    },
+    {
+      "name": "lz4",
+      "href": "/center/recipes/lz4?version=1.9.4"
+    },
+    {
+      "name": "lzfse",
+      "href": "/center/recipes/lzfse?version=1.0"
+    },
+    {
+      "name": "lzham",
+      "href": "/center/recipes/lzham?version=cci.20220103"
+    },
+    {
+      "name": "lzip",
+      "href": "/center/recipes/lzip?version=1.23"
+    },
+    {
+      "name": "lzma_sdk",
+      "href": "/center/recipes/lzma_sdk?version=9.20"
+    },
+    {
+      "name": "lzo",
+      "href": "/center/recipes/lzo?version=2.10"
+    },
+    {
+      "name": "m4",
+      "href": "/center/recipes/m4?version=1.4.19"
+    },
+    {
+      "name": "maddy",
+      "href": "/center/recipes/maddy?version=1.3.0"
+    },
+    {
+      "name": "magic_enum",
+      "href": "/center/recipes/magic_enum?version=0.9.3"
+    },
+    {
+      "name": "magnum",
+      "href": "/center/recipes/magnum?version=2020.06"
+    },
+    {
+      "name": "magnum-extras",
+      "href": "/center/recipes/magnum-extras?version=2020.06"
+    },
+    {
+      "name": "magnum-integration",
+      "href": "/center/recipes/magnum-integration?version=2020.06"
+    },
+    {
+      "name": "magnum-plugins",
+      "href": "/center/recipes/magnum-plugins?version=2020.06"
+    },
+    {
+      "name": "mailio",
+      "href": "/center/recipes/mailio?version=0.23.0"
+    },
+    {
+      "name": "make",
+      "href": "/center/recipes/make?version=4.4"
+    },
+    {
+      "name": "makefile-project-workspace-creator",
+      "href": "/center/recipes/makefile-project-workspace-creator?version=4.1.46"
+    },
+    {
+      "name": "mapbox-geometry",
+      "href": "/center/recipes/mapbox-geometry?version=2.0.3"
+    },
+    {
+      "name": "mapbox-variant",
+      "href": "/center/recipes/mapbox-variant?version=1.2.0"
+    },
+    {
+      "name": "mariadb-connector-c",
+      "href": "/center/recipes/mariadb-connector-c?version=3.3.3"
+    },
+    {
+      "name": "marisa",
+      "href": "/center/recipes/marisa?version=0.2.6"
+    },
+    {
+      "name": "matchit",
+      "href": "/center/recipes/matchit?version=1.0.1"
+    },
+    {
+      "name": "mathfu",
+      "href": "/center/recipes/mathfu?version=1.1.0"
+    },
+    {
+      "name": "mathter",
+      "href": "/center/recipes/mathter?version=1.0.0"
+    },
+    {
+      "name": "matio",
+      "href": "/center/recipes/matio?version=1.5.23"
+    },
+    {
+      "name": "mattiasgustavsson-libs",
+      "href": "/center/recipes/mattiasgustavsson-libs?version=20200417"
+    },
+    {
+      "name": "maven",
+      "href": "/center/recipes/maven?version=3.9.4"
+    },
+    {
+      "name": "mawk",
+      "href": "/center/recipes/mawk?version=1.3.4-20230404"
+    },
+    {
+      "name": "libe57format",
+      "href": "/center/recipes/libe57format?version=2.3.0"
+    },
+    {
+      "name": "mbits-args",
+      "href": "/center/recipes/mbits-args?version=0.12.3"
+    },
+    {
+      "name": "mbits-diags",
+      "href": "/center/recipes/mbits-diags?version=0.9.6"
+    },
+    {
+      "name": "mbits-mstch",
+      "href": "/center/recipes/mbits-mstch?version=1.0.4"
+    },
+    {
+      "name": "libsystemd",
+      "href": "/center/recipes/libsystemd?version=253.10"
+    },
+    {
+      "name": "mbits-semver",
+      "href": "/center/recipes/mbits-semver?version=0.1.1"
+    },
+    {
+      "name": "mbits-utfconv",
+      "href": "/center/recipes/mbits-utfconv?version=1.0.3"
+    },
+    {
+      "name": "mcap",
+      "href": "/center/recipes/mcap?version=1.2.1"
+    },
+    {
+      "name": "md4c",
+      "href": "/center/recipes/md4c?version=0.4.8"
+    },
+    {
+      "name": "md4qt",
+      "href": "/center/recipes/md4qt?version=2.1.1"
+    },
+    {
+      "name": "mdns",
+      "href": "/center/recipes/mdns?version=1.4.3"
+    },
+    {
+      "name": "mdnsresponder",
+      "href": "/center/recipes/mdnsresponder?version=1790.80.10"
+    },
+    {
+      "name": "mdspan",
+      "href": "/center/recipes/mdspan?version=0.6.0"
+    },
+    {
+      "name": "meshoptimizer",
+      "href": "/center/recipes/meshoptimizer?version=0.17"
+    },
+    {
+      "name": "meson",
+      "href": "/center/recipes/meson?version=1.2.3"
+    },
+    {
+      "name": "metall",
+      "href": "/center/recipes/metall?version=0.26"
+    },
+    {
+      "name": "metis",
+      "href": "/center/recipes/metis?version=5.2.1"
+    },
+    {
+      "name": "mfast",
+      "href": "/center/recipes/mfast?version=1.2.2"
+    },
+    {
+      "name": "mgs",
+      "href": "/center/recipes/mgs?version=0.2.1"
+    },
+    {
+      "name": "microprofile",
+      "href": "/center/recipes/microprofile?version=3.1"
+    },
+    {
+      "name": "microservice-essentials",
+      "href": "/center/recipes/microservice-essentials?version=0.1.0"
+    },
+    {
+      "name": "microtar",
+      "href": "/center/recipes/microtar?version=0.1.0"
+    },
+    {
+      "name": "mikelankamp-fpm",
+      "href": "/center/recipes/mikelankamp-fpm?version=1.1.0"
+    },
+    {
+      "name": "mikktspace",
+      "href": "/center/recipes/mikktspace?version=cci.20200325"
+    },
+    {
+      "name": "mingw-builds",
+      "href": "/center/recipes/mingw-builds?version=12.2.0"
+    },
+    {
+      "name": "mingw-w64",
+      "href": "/center/recipes/mingw-w64?version=8.0.2"
+    },
+    {
+      "name": "miniaudio",
+      "href": "/center/recipes/miniaudio?version=0.11.17"
+    },
+    {
+      "name": "edyn",
+      "href": "/center/recipes/edyn?version=1.2.1"
+    },
+    {
+      "name": "minisat",
+      "href": "/center/recipes/minisat?version=2.2.0"
+    },
+    {
+      "name": "miniscript",
+      "href": "/center/recipes/miniscript?version=1.5.1"
+    },
+    {
+      "name": "minitrace",
+      "href": "/center/recipes/minitrace?version=cci.20230905"
+    },
+    {
+      "name": "miniupnpc",
+      "href": "/center/recipes/miniupnpc?version=2.2.2"
+    },
+    {
+      "name": "miniz",
+      "href": "/center/recipes/miniz?version=3.0.2"
+    },
+    {
+      "name": "minizip",
+      "href": "/center/recipes/minizip?version=1.2.13"
+    },
+    {
+      "name": "minizip-ng",
+      "href": "/center/recipes/minizip-ng?version=4.0.1"
+    },
+    {
+      "name": "minimp3",
+      "href": "/center/recipes/minimp3?version=cci.20211201"
+    },
+    {
+      "name": "mio",
+      "href": "/center/recipes/mio?version=cci.20230303"
+    },
+    {
+      "name": "mm_file",
+      "href": "/center/recipes/mm_file?version=1.0.0"
+    },
+    {
+      "name": "modern-cpp-kafka",
+      "href": "/center/recipes/modern-cpp-kafka?version=2023.03.07"
+    },
+    {
+      "name": "mold",
+      "href": "/center/recipes/mold?version=1.11.0"
+    },
+    {
+      "name": "moltenvk",
+      "href": "/center/recipes/moltenvk?version=1.2.2"
+    },
+    {
+      "name": "mongo-c-driver",
+      "href": "/center/recipes/mongo-c-driver?version=1.24.3"
+    },
+    {
+      "name": "mongo-cxx-driver",
+      "href": "/center/recipes/mongo-cxx-driver?version=3.8.0"
+    },
+    {
+      "name": "enet",
+      "href": "/center/recipes/enet?version=1.3.17"
+    },
+    {
+      "name": "morton-nd",
+      "href": "/center/recipes/morton-nd?version=4.0.0"
+    },
+    {
+      "name": "mosquitto",
+      "href": "/center/recipes/mosquitto?version=2.0.15"
+    },
+    {
+      "name": "mozilla-build",
+      "href": "/center/recipes/mozilla-build?version=3.3"
+    },
+    {
+      "name": "mozjpeg",
+      "href": "/center/recipes/mozjpeg?version=4.1.3"
+    },
+    {
+      "name": "mp-units",
+      "href": "/center/recipes/mp-units?version=2.0.0"
+    },
+    {
+      "name": "ensmallen",
+      "href": "/center/recipes/ensmallen?version=2.19.1"
+    },
+    {
+      "name": "mpark-variant",
+      "href": "/center/recipes/mpark-variant?version=1.4.0"
+    },
+    {
+      "name": "mpc",
+      "href": "/center/recipes/mpc?version=1.3.1"
+    },
+    {
+      "name": "mpfr",
+      "href": "/center/recipes/mpfr?version=4.2.1"
+    },
+    {
+      "name": "mpg123",
+      "href": "/center/recipes/mpg123?version=1.31.2"
+    },
+    {
+      "name": "mpir",
+      "href": "/center/recipes/mpir?version=3.0.0"
+    },
+    {
+      "name": "mpmcqueue",
+      "href": "/center/recipes/mpmcqueue?version=1.0"
+    },
+    {
+      "name": "ms-gsl",
+      "href": "/center/recipes/ms-gsl?version=4.0.0"
+    },
+    {
+      "name": "msdf-atlas-gen",
+      "href": "/center/recipes/msdf-atlas-gen?version=1.2.2"
+    },
+    {
+      "name": "msdfgen",
+      "href": "/center/recipes/msdfgen?version=1.10"
+    },
+    {
+      "name": "msgpack",
+      "href": "/center/recipes/msgpack?version=3.3.0"
+    },
+    {
+      "name": "msgpack-c",
+      "href": "/center/recipes/msgpack-c?version=6.0.0"
+    },
+    {
+      "name": "msgpack-cxx",
+      "href": "/center/recipes/msgpack-cxx?version=6.1.0"
+    },
+    {
+      "name": "msix",
+      "href": "/center/recipes/msix?version=1.7"
+    },
+    {
+      "name": "msys2",
+      "href": "/center/recipes/msys2?version=cci.latest"
+    },
+    {
+      "name": "mujs",
+      "href": "/center/recipes/mujs?version=1.1.2"
+    },
+    {
+      "name": "muparser",
+      "href": "/center/recipes/muparser?version=2.3.4"
+    },
+    {
+      "name": "mysql-connector-c",
+      "href": "/center/recipes/mysql-connector-c?version=6.1.11"
+    },
+    {
+      "name": "naive-tsearch",
+      "href": "/center/recipes/naive-tsearch?version=0.1.1"
+    },
+    {
+      "name": "namedtype",
+      "href": "/center/recipes/namedtype?version=20190324"
+    },
+    {
+      "name": "nameof",
+      "href": "/center/recipes/nameof?version=0.10.3"
+    },
+    {
+      "name": "nanobench",
+      "href": "/center/recipes/nanobench?version=4.3.11"
+    },
+    {
+      "name": "nanoflann",
+      "href": "/center/recipes/nanoflann?version=1.5.0"
+    },
+    {
+      "name": "nanomsg",
+      "href": "/center/recipes/nanomsg?version=1.2"
+    },
+    {
+      "name": "nanorange",
+      "href": "/center/recipes/nanorange?version=cci.20200706"
+    },
+    {
+      "name": "nanort",
+      "href": "/center/recipes/nanort?version=cci.20230207"
+    },
+    {
+      "name": "nanosvg",
+      "href": "/center/recipes/nanosvg?version=cci.20210904"
+    },
+    {
+      "name": "nativefiledialog",
+      "href": "/center/recipes/nativefiledialog?version=116"
+    },
+    {
+      "name": "nasm",
+      "href": "/center/recipes/nasm?version=2.15.05"
+    },
+    {
+      "name": "ncurses",
+      "href": "/center/recipes/ncurses?version=6.4"
+    },
+    {
+      "name": "neargye-semver",
+      "href": "/center/recipes/neargye-semver?version=0.3.0"
+    },
+    {
+      "name": "net-snmp",
+      "href": "/center/recipes/net-snmp?version=5.9.1"
+    },
+    {
+      "name": "netcdf",
+      "href": "/center/recipes/netcdf?version=4.8.1"
+    },
+    {
+      "name": "nettle",
+      "href": "/center/recipes/nettle?version=3.8.1"
+    },
+    {
+      "name": "newmat",
+      "href": "/center/recipes/newmat?version=11.0.1"
+    },
+    {
+      "name": "nextsilicon-cpp-subprocess",
+      "href": "/center/recipes/nextsilicon-cpp-subprocess?version=2.0.2"
+    },
+    {
+      "name": "nghttp3",
+      "href": "/center/recipes/nghttp3?version=1.0.0"
+    },
+    {
+      "name": "nfrechette-acl",
+      "href": "/center/recipes/nfrechette-acl?version=2.0.6"
+    },
+    {
+      "name": "ninja",
+      "href": "/center/recipes/ninja?version=1.11.1"
+    },
+    {
+      "name": "mtdev",
+      "href": "/center/recipes/mtdev?version=1.1.6"
+    },
+    {
+      "name": "nlohmann_json",
+      "href": "/center/recipes/nlohmann_json?version=3.11.2"
+    },
+    {
+      "name": "nlopt",
+      "href": "/center/recipes/nlopt?version=2.7.1"
+    },
+    {
+      "name": "nmea",
+      "href": "/center/recipes/nmea?version=0.5.3"
+    },
+    {
+      "name": "nmos-cpp",
+      "href": "/center/recipes/nmos-cpp?version=cci.20221203"
+    },
+    {
+      "name": "nmslib",
+      "href": "/center/recipes/nmslib?version=2.1.1"
+    },
+    {
+      "name": "nodejs",
+      "href": "/center/recipes/nodejs?version=18.15.0"
+    },
+    {
+      "name": "norm",
+      "href": "/center/recipes/norm?version=1.5.9"
+    },
+    {
+      "name": "npcap",
+      "href": "/center/recipes/npcap?version=1.70"
+    },
+    {
+      "name": "ncbi-cxx-toolkit-public",
+      "href": "/center/recipes/ncbi-cxx-toolkit-public?version=26.0.1"
+    },
+    {
+      "name": "nsimd",
+      "href": "/center/recipes/nsimd?version=3.0.1"
+    },
+    {
+      "name": "nspr",
+      "href": "/center/recipes/nspr?version=4.35"
+    },
+    {
+      "name": "lightpcapng",
+      "href": "/center/recipes/lightpcapng?version=cci.20211005"
+    },
+    {
+      "name": "nss",
+      "href": "/center/recipes/nss?version=3.93"
+    },
+    {
+      "name": "luajit",
+      "href": "/center/recipes/luajit?version=2.1.0-beta3"
+    },
+    {
+      "name": "nsync",
+      "href": "/center/recipes/nsync?version=1.26.0"
+    },
+    {
+      "name": "ntv2",
+      "href": "/center/recipes/ntv2?version=16.1"
+    },
+    {
+      "name": "nudb",
+      "href": "/center/recipes/nudb?version=2.0.8"
+    },
+    {
+      "name": "nuklear",
+      "href": "/center/recipes/nuklear?version=4.10.6"
+    },
+    {
+      "name": "numcpp",
+      "href": "/center/recipes/numcpp?version=2.12.1"
+    },
+    {
+      "name": "nv-codec-headers",
+      "href": "/center/recipes/nv-codec-headers?version=12.0.16.0"
+    },
+    {
+      "name": "nvcloth",
+      "href": "/center/recipes/nvcloth?version=1.1.6"
+    },
+    {
+      "name": "nvtx",
+      "href": "/center/recipes/nvtx?version=3.1.0"
+    },
+    {
+      "name": "oatpp",
+      "href": "/center/recipes/oatpp?version=1.3.0"
+    },
+    {
+      "name": "oatpp-libressl",
+      "href": "/center/recipes/oatpp-libressl?version=1.3.0"
+    },
+    {
+      "name": "oatpp-openssl",
+      "href": "/center/recipes/oatpp-openssl?version=1.3.0"
+    },
+    {
+      "name": "oatpp-postgresql",
+      "href": "/center/recipes/oatpp-postgresql?version=1.3.0"
+    },
+    {
+      "name": "muparserx",
+      "href": "/center/recipes/muparserx?version=4.0.8"
+    },
+    {
+      "name": "oatpp-sqlite",
+      "href": "/center/recipes/oatpp-sqlite?version=1.3.0"
+    },
+    {
+      "name": "oatpp-swagger",
+      "href": "/center/recipes/oatpp-swagger?version=1.3.0"
+    },
+    {
+      "name": "oatpp-websocket",
+      "href": "/center/recipes/oatpp-websocket?version=1.3.0"
+    },
+    {
+      "name": "objectbox",
+      "href": "/center/recipes/objectbox?version=0.19.0"
+    },
+    {
+      "name": "objectbox-generator",
+      "href": "/center/recipes/objectbox-generator?version=0.13.0"
+    },
+    {
+      "name": "observer-ptr-lite",
+      "href": "/center/recipes/observer-ptr-lite?version=0.4.0"
+    },
+    {
+      "name": "octo-encryption-cpp",
+      "href": "/center/recipes/octo-encryption-cpp?version=1.1.0"
+    },
+    {
+      "name": "octo-keygen-cpp",
+      "href": "/center/recipes/octo-keygen-cpp?version=1.0.0"
+    },
+    {
+      "name": "octo-logger-cpp",
+      "href": "/center/recipes/octo-logger-cpp?version=1.4.0"
+    },
+    {
+      "name": "nng",
+      "href": "/center/recipes/nng?version=1.5.2"
+    },
+    {
+      "name": "octo-wildcardmatching-cpp",
+      "href": "/center/recipes/octo-wildcardmatching-cpp?version=1.1.0"
+    },
+    {
+      "name": "octomap",
+      "href": "/center/recipes/octomap?version=1.9.8"
+    },
+    {
+      "name": "odbc",
+      "href": "/center/recipes/odbc?version=2.3.11"
+    },
+    {
+      "name": "ode",
+      "href": "/center/recipes/ode?version=0.16.2"
+    },
+    {
+      "name": "ofeli",
+      "href": "/center/recipes/ofeli?version=4.1.2"
+    },
+    {
+      "name": "libzip",
+      "href": "/center/recipes/libzip?version=1.10.1"
+    },
+    {
+      "name": "ogdf",
+      "href": "/center/recipes/ogdf?version=2022.02"
+    },
+    {
+      "name": "ogg",
+      "href": "/center/recipes/ogg?version=1.3.5"
+    },
+    {
+      "name": "ogre",
+      "href": "/center/recipes/ogre?version=1.10.2"
+    },
+    {
+      "name": "ohnet",
+      "href": "/center/recipes/ohnet?version=1.36.5182"
+    },
+    {
+      "name": "ois",
+      "href": "/center/recipes/ois?version=1.5.1"
+    },
+    {
+      "name": "geos",
+      "href": "/center/recipes/geos?version=3.12.0"
+    },
+    {
+      "name": "oniguruma",
+      "href": "/center/recipes/oniguruma?version=6.9.9"
+    },
+    {
+      "name": "onnx",
+      "href": "/center/recipes/onnx?version=1.14.1"
+    },
+    {
+      "name": "onnxruntime",
+      "href": "/center/recipes/onnxruntime?version=1.16.1"
+    },
+    {
+      "name": "open-dis-cpp",
+      "href": "/center/recipes/open-dis-cpp?version=1.0.1"
+    },
+    {
+      "name": "open-simulation-interface",
+      "href": "/center/recipes/open-simulation-interface?version=3.4.0"
+    },
+    {
+      "name": "onedpl",
+      "href": "/center/recipes/onedpl?version=20200330"
+    },
+    {
+      "name": "open62541",
+      "href": "/center/recipes/open62541?version=1.3.6"
+    },
+    {
+      "name": "openal",
+      "href": "/center/recipes/openal?version=1.22.2"
+    },
+    {
+      "name": "openal-soft",
+      "href": "/center/recipes/openal-soft?version=1.22.2"
+    },
+    {
+      "name": "openapi-generator",
+      "href": "/center/recipes/openapi-generator?version=7.0.0"
+    },
+    {
+      "name": "openblas",
+      "href": "/center/recipes/openblas?version=0.3.20"
+    },
+    {
+      "name": "opencascade",
+      "href": "/center/recipes/opencascade?version=7.6.2"
+    },
+    {
+      "name": "opencl-clhpp-headers",
+      "href": "/center/recipes/opencl-clhpp-headers?version=2023.04.17"
+    },
+    {
+      "name": "opencl-headers",
+      "href": "/center/recipes/opencl-headers?version=2023.04.17"
+    },
+    {
+      "name": "opencl-icd-loader",
+      "href": "/center/recipes/opencl-icd-loader?version=2023.04.17"
+    },
+    {
+      "name": "opencore-amr",
+      "href": "/center/recipes/opencore-amr?version=0.1.6"
+    },
+    {
+      "name": "opencv",
+      "href": "/center/recipes/opencv?version=4.5.5"
+    },
+    {
+      "name": "openddl-parser",
+      "href": "/center/recipes/openddl-parser?version=cci.20211217"
+    },
+    {
+      "name": "onetbb",
+      "href": "/center/recipes/onetbb?version=2021.10.0"
+    },
+    {
+      "name": "openexr",
+      "href": "/center/recipes/openexr?version=3.1.9"
+    },
+    {
+      "name": "openfbx",
+      "href": "/center/recipes/openfbx?version=cci.20210426"
+    },
+    {
+      "name": "openfst",
+      "href": "/center/recipes/openfst?version=1.8.2"
+    },
+    {
+      "name": "openfx",
+      "href": "/center/recipes/openfx?version=1.4.0"
+    },
+    {
+      "name": "opengl",
+      "href": "/center/recipes/opengl?version=system"
+    },
+    {
+      "name": "opengl-registry",
+      "href": "/center/recipes/opengl-registry?version=cci.20220929"
+    },
+    {
+      "name": "opengv",
+      "href": "/center/recipes/opengv?version=cci.20200806"
+    },
+    {
+      "name": "openh264",
+      "href": "/center/recipes/openh264?version=2.3.1"
+    },
+    {
+      "name": "openimageio",
+      "href": "/center/recipes/openimageio?version=2.4.7.1"
+    },
+    {
+      "name": "openjdk",
+      "href": "/center/recipes/openjdk?version=21.0.1"
+    },
+    {
+      "name": "openjpeg",
+      "href": "/center/recipes/openjpeg?version=2.5.0"
+    },
+    {
+      "name": "openldap",
+      "href": "/center/recipes/openldap?version=2.6.1"
+    },
+    {
+      "name": "openmesh",
+      "href": "/center/recipes/openmesh?version=9.0"
+    },
+    {
+      "name": "openmpi",
+      "href": "/center/recipes/openmpi?version=4.1.0"
+    },
+    {
+      "name": "openmvg",
+      "href": "/center/recipes/openmvg?version=2.0"
+    },
+    {
+      "name": "openpam",
+      "href": "/center/recipes/openpam?version=20190224"
+    },
+    {
+      "name": "openscenegraph",
+      "href": "/center/recipes/openscenegraph?version=3.6.5"
+    },
+    {
+      "name": "opensubdiv",
+      "href": "/center/recipes/opensubdiv?version=3.5.0"
+    },
+    {
+      "name": "openssl",
+      "href": "/center/recipes/openssl?version=3.1.3"
+    },
+    {
+      "name": "opentelemetry-cpp",
+      "href": "/center/recipes/opentelemetry-cpp?version=1.9.1"
+    },
+    {
+      "name": "opentelemetry-proto",
+      "href": "/center/recipes/opentelemetry-proto?version=1.0.0"
+    },
+    {
+      "name": "opentracing-cpp",
+      "href": "/center/recipes/opentracing-cpp?version=1.6.0"
+    },
+    {
+      "name": "openvino",
+      "href": "/center/recipes/openvino?version=2023.1.0"
+    },
+    {
+      "name": "openvr",
+      "href": "/center/recipes/openvr?version=1.16.8"
+    },
+    {
+      "name": "openxlsx",
+      "href": "/center/recipes/openxlsx?version=0.4.1"
+    },
+    {
+      "name": "optional-lite",
+      "href": "/center/recipes/optional-lite?version=3.5.0"
+    },
+    {
+      "name": "opus",
+      "href": "/center/recipes/opus?version=1.4"
+    },
+    {
+      "name": "openvdb",
+      "href": "/center/recipes/openvdb?version=8.0.1"
+    },
+    {
+      "name": "opusfile",
+      "href": "/center/recipes/opusfile?version=0.12"
+    },
+    {
+      "name": "orcania",
+      "href": "/center/recipes/orcania?version=2.3.1"
+    },
+    {
+      "name": "osgearth",
+      "href": "/center/recipes/osgearth?version=3.3"
+    },
+    {
+      "name": "osqp",
+      "href": "/center/recipes/osqp?version=0.6.2"
+    },
+    {
+      "name": "out_ptr",
+      "href": "/center/recipes/out_ptr?version=cci.20211119"
+    },
+    {
+      "name": "ozz-animation",
+      "href": "/center/recipes/ozz-animation?version=0.13.0"
+    },
+    {
+      "name": "p7zip",
+      "href": "/center/recipes/p7zip?version=16.02"
+    },
+    {
+      "name": "packio",
+      "href": "/center/recipes/packio?version=2.5.0"
+    },
+    {
+      "name": "pagmo2",
+      "href": "/center/recipes/pagmo2?version=2.17.0"
+    },
+    {
+      "name": "paho-mqtt-c",
+      "href": "/center/recipes/paho-mqtt-c?version=1.3.12"
+    },
+    {
+      "name": "paho-mqtt-cpp",
+      "href": "/center/recipes/paho-mqtt-cpp?version=1.2.0"
+    },
+    {
+      "name": "pango",
+      "href": "/center/recipes/pango?version=1.50.10"
+    },
+    {
+      "name": "pangomm",
+      "href": "/center/recipes/pangomm?version=2.50.0"
+    },
+    {
+      "name": "panzi-portable-endian",
+      "href": "/center/recipes/panzi-portable-endian?version=cci.20220509"
+    },
+    {
+      "name": "parallel-hashmap",
+      "href": "/center/recipes/parallel-hashmap?version=1.37"
+    },
+    {
+      "name": "parg",
+      "href": "/center/recipes/parg?version=1.0.2"
+    },
+    {
+      "name": "parson",
+      "href": "/center/recipes/parson?version=1.4.0"
+    },
+    {
+      "name": "patchelf",
+      "href": "/center/recipes/patchelf?version=0.18"
+    },
+    {
+      "name": "pbc",
+      "href": "/center/recipes/pbc?version=0.5.14"
+    },
+    {
+      "name": "pbtools",
+      "href": "/center/recipes/pbtools?version=0.47.0"
+    },
+    {
+      "name": "pcapplusplus",
+      "href": "/center/recipes/pcapplusplus?version=23.09"
+    },
+    {
+      "name": "pcg-cpp",
+      "href": "/center/recipes/pcg-cpp?version=cci.20220409"
+    },
+    {
+      "name": "pciutils",
+      "href": "/center/recipes/pciutils?version=3.7.0"
+    },
+    {
+      "name": "pcl",
+      "href": "/center/recipes/pcl?version=1.13.1"
+    },
+    {
+      "name": "pcre",
+      "href": "/center/recipes/pcre?version=8.45"
+    },
+    {
+      "name": "pcre2",
+      "href": "/center/recipes/pcre2?version=10.42"
+    },
+    {
+      "name": "pdal",
+      "href": "/center/recipes/pdal?version=2.3.0"
+    },
+    {
+      "name": "pdcurses",
+      "href": "/center/recipes/pdcurses?version=3.9"
+    },
+    {
+      "name": "pdfgen",
+      "href": "/center/recipes/pdfgen?version=0.1.0"
+    },
+    {
+      "name": "pdfium",
+      "href": "/center/recipes/pdfium?version=cci.20210730"
+    },
+    {
+      "name": "pdqsort",
+      "href": "/center/recipes/pdqsort?version=cci.20210314"
+    },
+    {
+      "name": "perf",
+      "href": "/center/recipes/perf?version=5.13"
+    },
+    {
+      "name": "perfetto",
+      "href": "/center/recipes/perfetto?version=37.0"
+    },
+    {
+      "name": "perlinnoise",
+      "href": "/center/recipes/perlinnoise?version=3.0.0"
+    },
+    {
+      "name": "pexports",
+      "href": "/center/recipes/pexports?version=0.47"
+    },
+    {
+      "name": "pffft",
+      "href": "/center/recipes/pffft?version=cci.20210511"
+    },
+    {
+      "name": "pfr",
+      "href": "/center/recipes/pfr?version=2.1.0"
+    },
+    {
+      "name": "pgm-index",
+      "href": "/center/recipes/pgm-index?version=cci.20220801"
+    },
+    {
+      "name": "physfs",
+      "href": "/center/recipes/physfs?version=3.0.2"
+    },
+    {
+      "name": "physx",
+      "href": "/center/recipes/physx?version=4.1.1"
+    },
+    {
+      "name": "picojson",
+      "href": "/center/recipes/picojson?version=cci.20210117"
+    },
+    {
+      "name": "picosha2",
+      "href": "/center/recipes/picosha2?version=cci.20220808"
+    },
+    {
+      "name": "pipes",
+      "href": "/center/recipes/pipes?version=1.0.0"
+    },
+    {
+      "name": "pixman",
+      "href": "/center/recipes/pixman?version=0.40.0"
+    },
+    {
+      "name": "pkgconf",
+      "href": "/center/recipes/pkgconf?version=2.0.3"
+    },
+    {
+      "name": "platform.converters",
+      "href": "/center/recipes/platform.converters?version=0.4.0"
+    },
+    {
+      "name": "platform.delegates",
+      "href": "/center/recipes/platform.delegates?version=0.3.7"
+    },
+    {
+      "name": "platform.equality",
+      "href": "/center/recipes/platform.equality?version=0.0.1"
+    },
+    {
+      "name": "platform.exceptions",
+      "href": "/center/recipes/platform.exceptions?version=0.5.0"
+    },
+    {
+      "name": "platform.hashing",
+      "href": "/center/recipes/platform.hashing?version=0.5.6"
+    },
+    {
+      "name": "platform.interfaces",
+      "href": "/center/recipes/platform.interfaces?version=0.3.41"
+    },
+    {
+      "name": "playrho",
+      "href": "/center/recipes/playrho?version=1.1.0"
+    },
+    {
+      "name": "plf_colony",
+      "href": "/center/recipes/plf_colony?version=7.06"
+    },
+    {
+      "name": "plf_indiesort",
+      "href": "/center/recipes/plf_indiesort?version=1.18"
+    },
+    {
+      "name": "plf_list",
+      "href": "/center/recipes/plf_list?version=2.57"
+    },
+    {
+      "name": "plf_nanotimer",
+      "href": "/center/recipes/plf_nanotimer?version=1.07"
+    },
+    {
+      "name": "plf_queue",
+      "href": "/center/recipes/plf_queue?version=1.22"
+    },
+    {
+      "name": "plf_stack",
+      "href": "/center/recipes/plf_stack?version=1.64"
+    },
+    {
+      "name": "plog",
+      "href": "/center/recipes/plog?version=1.1.10"
+    },
+    {
+      "name": "plusaes",
+      "href": "/center/recipes/plusaes?version=1.0.0"
+    },
+    {
+      "name": "pngpp",
+      "href": "/center/recipes/pngpp?version=0.2.10"
+    },
+    {
+      "name": "poco",
+      "href": "/center/recipes/poco?version=1.12.4"
+    },
+    {
+      "name": "inversify-cpp",
+      "href": "/center/recipes/inversify-cpp?version=2.1.0"
+    },
+    {
+      "name": "poly2tri",
+      "href": "/center/recipes/poly2tri?version=cci.20130502"
+    },
+    {
+      "name": "polylabel",
+      "href": "/center/recipes/polylabel?version=1.1.0"
+    },
+    {
+      "name": "polylineencoder",
+      "href": "/center/recipes/polylineencoder?version=1.1.2"
+    },
+    {
+      "name": "polymorphic_value",
+      "href": "/center/recipes/polymorphic_value?version=1.3.0"
+    },
+    {
+      "name": "poppler",
+      "href": "/center/recipes/poppler?version=21.07.0"
+    },
+    {
+      "name": "poppler-data",
+      "href": "/center/recipes/poppler-data?version=0.4.11"
+    },
+    {
+      "name": "popt",
+      "href": "/center/recipes/popt?version=1.16"
+    },
+    {
+      "name": "portable-file-dialogs",
+      "href": "/center/recipes/portable-file-dialogs?version=0.1.0"
+    },
+    {
+      "name": "poshlib",
+      "href": "/center/recipes/poshlib?version=1.3.002"
+    },
+    {
+      "name": "pprint",
+      "href": "/center/recipes/pprint?version=0.9.1"
+    },
+    {
+      "name": "pranav-csv2",
+      "href": "/center/recipes/pranav-csv2?version=0.1"
+    },
+    {
+      "name": "premake",
+      "href": "/center/recipes/premake?version=5.0.0-alpha15"
+    },
+    {
+      "name": "pretty-name",
+      "href": "/center/recipes/pretty-name?version=1.0.0"
+    },
+    {
+      "name": "pro-mdnsd",
+      "href": "/center/recipes/pro-mdnsd?version=0.8.4"
+    },
+    {
+      "name": "procxx-boost-ext-simd",
+      "href": "/center/recipes/procxx-boost-ext-simd?version=4.17.6.0"
+    },
+    {
+      "name": "jemalloc",
+      "href": "/center/recipes/jemalloc?version=5.3.0"
+    },
+    {
+      "name": "proj",
+      "href": "/center/recipes/proj?version=9.3.0"
+    },
+    {
+      "name": "prometheus-cpp",
+      "href": "/center/recipes/prometheus-cpp?version=1.1.0"
+    },
+    {
+      "name": "proposal",
+      "href": "/center/recipes/proposal?version=7.6.2"
+    },
+    {
+      "name": "protobuf-c",
+      "href": "/center/recipes/protobuf-c?version=1.4.1"
+    },
+    {
+      "name": "protopuf",
+      "href": "/center/recipes/protopuf?version=2.2.1"
+    },
+    {
+      "name": "protozero",
+      "href": "/center/recipes/protozero?version=1.7.1"
+    },
+    {
+      "name": "jpcre2",
+      "href": "/center/recipes/jpcre2?version=10.32.01"
+    },
+    {
+      "name": "libsrtp",
+      "href": "/center/recipes/libsrtp?version=2.4.2"
+    },
+    {
+      "name": "psimd",
+      "href": "/center/recipes/psimd?version=cci.20200517"
+    },
+    {
+      "name": "libschrift",
+      "href": "/center/recipes/libschrift?version=0.10.2"
+    },
+    {
+      "name": "psyinf-gmtl",
+      "href": "/center/recipes/psyinf-gmtl?version=0.7.1"
+    },
+    {
+      "name": "ls-qpack",
+      "href": "/center/recipes/ls-qpack?version=2.5.3"
+    },
+    {
+      "name": "lefticus-tools",
+      "href": "/center/recipes/lefticus-tools?version=cci.20230420"
+    },
+    {
+      "name": "pthreadpool",
+      "href": "/center/recipes/pthreadpool?version=cci.20210218"
+    },
+    {
+      "name": "log4cplus",
+      "href": "/center/recipes/log4cplus?version=2.1.0"
+    },
+    {
+      "name": "pthreads4w",
+      "href": "/center/recipes/pthreads4w?version=3.0.0"
+    },
+    {
+      "name": "pulseaudio",
+      "href": "/center/recipes/pulseaudio?version=14.2"
+    },
+    {
+      "name": "pupnp",
+      "href": "/center/recipes/pupnp?version=1.14.18"
+    },
+    {
+      "name": "pybind11",
+      "href": "/center/recipes/pybind11?version=2.10.4"
+    },
+    {
+      "name": "pybind11_json",
+      "href": "/center/recipes/pybind11_json?version=0.2.13"
+    },
+    {
+      "name": "pystring",
+      "href": "/center/recipes/pystring?version=1.1.4"
+    },
+    {
+      "name": "qcbor",
+      "href": "/center/recipes/qcbor?version=1.2"
+    },
+    {
+      "name": "qcoro",
+      "href": "/center/recipes/qcoro?version=0.4.0"
+    },
+    {
+      "name": "qcustomplot",
+      "href": "/center/recipes/qcustomplot?version=2.1.1"
+    },
+    {
+      "name": "qpdf",
+      "href": "/center/recipes/qpdf?version=11.1.1"
+    },
+    {
+      "name": "qt-advanced-docking-system",
+      "href": "/center/recipes/qt-advanced-docking-system?version=3.8.3"
+    },
+    {
+      "name": "qtawesome",
+      "href": "/center/recipes/qtawesome?version=6.4.0"
+    },
+    {
+      "name": "qtxlsxwriter",
+      "href": "/center/recipes/qtxlsxwriter?version=0.3.0"
+    },
+    {
+      "name": "quantlib",
+      "href": "/center/recipes/quantlib?version=1.30"
+    },
+    {
+      "name": "quaternions",
+      "href": "/center/recipes/quaternions?version=20160606"
+    },
+    {
+      "name": "quazip",
+      "href": "/center/recipes/quazip?version=1.4"
+    },
+    {
+      "name": "quickfast",
+      "href": "/center/recipes/quickfast?version=cci.20170314"
+    },
+    {
+      "name": "quickfix",
+      "href": "/center/recipes/quickfix?version=1.15.1"
+    },
+    {
+      "name": "quickjs",
+      "href": "/center/recipes/quickjs?version=2021-03-27"
+    },
+    {
+      "name": "quill",
+      "href": "/center/recipes/quill?version=3.3.1"
+    },
+    {
+      "name": "quirc",
+      "href": "/center/recipes/quirc?version=1.2"
+    },
+    {
+      "name": "qwt",
+      "href": "/center/recipes/qwt?version=6.2.0"
+    },
+    {
+      "name": "qxlsx",
+      "href": "/center/recipes/qxlsx?version=1.4.5"
+    },
+    {
+      "name": "qxmpp",
+      "href": "/center/recipes/qxmpp?version=1.4.0"
+    },
+    {
+      "name": "r8brain-free-src",
+      "href": "/center/recipes/r8brain-free-src?version=6.4"
+    },
+    {
+      "name": "rabbitmq-c",
+      "href": "/center/recipes/rabbitmq-c?version=0.13.0"
+    },
+    {
+      "name": "range-v3",
+      "href": "/center/recipes/range-v3?version=0.12.0"
+    },
+    {
+      "name": "rangeless",
+      "href": "/center/recipes/rangeless?version=cci.20201117"
+    },
+    {
+      "name": "rangesnext",
+      "href": "/center/recipes/rangesnext?version=cci.20210426"
+    },
+    {
+      "name": "rapidcheck",
+      "href": "/center/recipes/rapidcheck?version=cci.20220514"
+    },
+    {
+      "name": "rapidcsv",
+      "href": "/center/recipes/rapidcsv?version=8.80"
+    },
+    {
+      "name": "rapidfuzz",
+      "href": "/center/recipes/rapidfuzz?version=cci.20210513"
+    },
+    {
+      "name": "rapidjson",
+      "href": "/center/recipes/rapidjson?version=cci.20220822"
+    },
+    {
+      "name": "rapidxml",
+      "href": "/center/recipes/rapidxml?version=1.13"
+    },
+    {
+      "name": "rapidyaml",
+      "href": "/center/recipes/rapidyaml?version=0.5.0"
+    },
+    {
+      "name": "re2",
+      "href": "/center/recipes/re2?version=20230901"
+    },
+    {
+      "name": "re2c",
+      "href": "/center/recipes/re2c?version=3.0"
+    },
+    {
+      "name": "reactiveplusplus",
+      "href": "/center/recipes/reactiveplusplus?version=0.2.3"
+    },
+    {
+      "name": "protobuf",
+      "href": "/center/recipes/protobuf?version=3.21.12"
+    },
+    {
+      "name": "read-excel",
+      "href": "/center/recipes/read-excel?version=1.2.8"
+    },
+    {
+      "name": "readerwriterqueue",
+      "href": "/center/recipes/readerwriterqueue?version=1.0.6"
+    },
+    {
+      "name": "readline",
+      "href": "/center/recipes/readline?version=8.1.2"
+    },
+    {
+      "name": "readosm",
+      "href": "/center/recipes/readosm?version=1.1.0a"
+    },
+    {
+      "name": "recastnavigation",
+      "href": "/center/recipes/recastnavigation?version=cci.20200511"
+    },
+    {
+      "name": "reckless",
+      "href": "/center/recipes/reckless?version=3.0.3"
+    },
+    {
+      "name": "rectpack2d",
+      "href": "/center/recipes/rectpack2d?version=cci.20210710"
+    },
+    {
+      "name": "redboltz-mqtt_cpp",
+      "href": "/center/recipes/redboltz-mqtt_cpp?version=13.2.1"
+    },
+    {
+      "name": "redis-plus-plus",
+      "href": "/center/recipes/redis-plus-plus?version=1.3.10"
+    },
+    {
+      "name": "redradist-icc",
+      "href": "/center/recipes/redradist-icc?version=1.0.0"
+    },
+    {
+      "name": "refl-cpp",
+      "href": "/center/recipes/refl-cpp?version=0.12.4"
+    },
+    {
+      "name": "replxx",
+      "href": "/center/recipes/replxx?version=0.0.4"
+    },
+    {
+      "name": "restbed",
+      "href": "/center/recipes/restbed?version=4.8"
+    },
+    {
+      "name": "qhull",
+      "href": "/center/recipes/qhull?version=8.0.1"
+    },
+    {
+      "name": "restinio",
+      "href": "/center/recipes/restinio?version=0.6.19"
+    },
+    {
+      "name": "rgbcx",
+      "href": "/center/recipes/rgbcx?version=cci.20200415"
+    },
+    {
+      "name": "ring-span-lite",
+      "href": "/center/recipes/ring-span-lite?version=0.6.0"
+    },
+    {
+      "name": "rmlui",
+      "href": "/center/recipes/rmlui?version=4.4"
+    },
+    {
+      "name": "roaring",
+      "href": "/center/recipes/roaring?version=2.0.2"
+    },
+    {
+      "name": "robin-hood-hashing",
+      "href": "/center/recipes/robin-hood-hashing?version=3.11.5"
+    },
+    {
+      "name": "raylib",
+      "href": "/center/recipes/raylib?version=4.0.0"
+    },
+    {
+      "name": "mbits-lngs",
+      "href": "/center/recipes/mbits-lngs?version=0.7.6"
+    },
+    {
+      "name": "rtklib",
+      "href": "/center/recipes/rtklib?version=2.4.3-b34"
+    },
+    {
+      "name": "rtmidi",
+      "href": "/center/recipes/rtmidi?version=6.0.0"
+    },
+    {
+      "name": "ruby",
+      "href": "/center/recipes/ruby?version=3.1.0"
+    },
+    {
+      "name": "runtimeqml",
+      "href": "/center/recipes/runtimeqml?version=cci.20220923"
+    },
+    {
+      "name": "resource_pool",
+      "href": "/center/recipes/resource_pool?version=cci.20210322"
+    },
+    {
+      "name": "ruy",
+      "href": "/center/recipes/ruy?version=cci.20220628"
+    },
+    {
+      "name": "rvo2",
+      "href": "/center/recipes/rvo2?version=2.0.2"
+    },
+    {
+      "name": "libbasisu",
+      "href": "/center/recipes/libbasisu?version=1.15.0"
+    },
+    {
+      "name": "rxcpp",
+      "href": "/center/recipes/rxcpp?version=4.1.1"
+    },
+    {
+      "name": "s2geometry",
+      "href": "/center/recipes/s2geometry?version=0.10.0"
+    },
+    {
+      "name": "rg-etc1",
+      "href": "/center/recipes/rg-etc1?version=cci.20130516"
+    },
+    {
+      "name": "s2n",
+      "href": "/center/recipes/s2n?version=1.3.52"
+    },
+    {
+      "name": "rmm",
+      "href": "/center/recipes/rmm?version=23.06.00"
+    },
+    {
+      "name": "safeint",
+      "href": "/center/recipes/safeint?version=3.24"
+    },
+    {
+      "name": "libevent",
+      "href": "/center/recipes/libevent?version=2.1.12"
+    },
+    {
+      "name": "sail",
+      "href": "/center/recipes/sail?version=0.9.0-rc2"
+    },
+    {
+      "name": "samarium",
+      "href": "/center/recipes/samarium?version=1.0.1"
+    },
+    {
+      "name": "samurai",
+      "href": "/center/recipes/samurai?version=0.7.0"
+    },
+    {
+      "name": "qt",
+      "href": "/center/recipes/qt?version=6.6.0"
+    },
+    {
+      "name": "nanodbc",
+      "href": "/center/recipes/nanodbc?version=cci.20200807"
+    },
+    {
+      "name": "sassc",
+      "href": "/center/recipes/sassc?version=3.6.2"
+    },
+    {
+      "name": "sbepp",
+      "href": "/center/recipes/sbepp?version=1.1.0"
+    },
+    {
+      "name": "sbp",
+      "href": "/center/recipes/sbp?version=4.15.0"
+    },
+    {
+      "name": "scc",
+      "href": "/center/recipes/scc?version=2022.08"
+    },
+    {
+      "name": "scip",
+      "href": "/center/recipes/scip?version=8.0.4"
+    },
+    {
+      "name": "scippp",
+      "href": "/center/recipes/scippp?version=1.0.2"
+    },
+    {
+      "name": "oboe",
+      "href": "/center/recipes/oboe?version=1.7.0"
+    },
+    {
+      "name": "mimalloc",
+      "href": "/center/recipes/mimalloc?version=2.1.2"
+    },
+    {
+      "name": "scnlib",
+      "href": "/center/recipes/scnlib?version=1.1.2"
+    },
+    {
+      "name": "scons",
+      "href": "/center/recipes/scons?version=4.3.0"
+    },
+    {
+      "name": "scope-lite",
+      "href": "/center/recipes/scope-lite?version=0.2.0"
+    },
+    {
+      "name": "screen_capture_lite",
+      "href": "/center/recipes/screen_capture_lite?version=17.1.1369"
+    },
+    {
+      "name": "sdbus-cpp",
+      "href": "/center/recipes/sdbus-cpp?version=1.3.0"
+    },
+    {
+      "name": "sdf",
+      "href": "/center/recipes/sdf?version=cci.20141013"
+    },
+    {
+      "name": "sdl",
+      "href": "/center/recipes/sdl?version=2.28.3"
+    },
+    {
+      "name": "sdl_image",
+      "href": "/center/recipes/sdl_image?version=2.0.5"
+    },
+    {
+      "name": "nas",
+      "href": "/center/recipes/nas?version=1.9.5"
+    },
+    {
+      "name": "nuraft",
+      "href": "/center/recipes/nuraft?version=2.1.0"
+    },
+    {
+      "name": "sdl_mixer",
+      "href": "/center/recipes/sdl_mixer?version=2.0.4"
+    },
+    {
+      "name": "mppp",
+      "href": "/center/recipes/mppp?version=0.27"
+    },
+    {
+      "name": "sdl_net",
+      "href": "/center/recipes/sdl_net?version=2.0.1"
+    },
+    {
+      "name": "sdl_ttf",
+      "href": "/center/recipes/sdl_ttf?version=2.20.2"
+    },
+    {
+      "name": "seadex-essentials",
+      "href": "/center/recipes/seadex-essentials?version=2.1.3"
+    },
+    {
+      "name": "opentdf-client",
+      "href": "/center/recipes/opentdf-client?version=1.5.4"
+    },
+    {
+      "name": "seasocks",
+      "href": "/center/recipes/seasocks?version=1.4.6"
+    },
+    {
+      "name": "semimap",
+      "href": "/center/recipes/semimap?version=cci.20181023"
+    },
+    {
+      "name": "sentry-breakpad",
+      "href": "/center/recipes/sentry-breakpad?version=0.6.5"
+    },
+    {
+      "name": "sentry-crashpad",
+      "href": "/center/recipes/sentry-crashpad?version=0.6.5"
+    },
+    {
+      "name": "seqan3",
+      "href": "/center/recipes/seqan3?version=3.1.0"
+    },
+    {
+      "name": "serd",
+      "href": "/center/recipes/serd?version=0.30.16"
+    },
+    {
+      "name": "serdepp",
+      "href": "/center/recipes/serdepp?version=0.1.4.1"
+    },
+    {
+      "name": "semver.c",
+      "href": "/center/recipes/semver.c?version=1.0.0"
+    },
+    {
+      "name": "serial",
+      "href": "/center/recipes/serial?version=1.2.1"
+    },
+    {
+      "name": "sfml",
+      "href": "/center/recipes/sfml?version=2.6.0"
+    },
+    {
+      "name": "shapelib",
+      "href": "/center/recipes/shapelib?version=1.5.0"
+    },
+    {
+      "name": "si",
+      "href": "/center/recipes/si?version=2.5.1"
+    },
+    {
+      "name": "qr-code-generator",
+      "href": "/center/recipes/qr-code-generator?version=1.8.0"
+    },
+    {
+      "name": "signals-light",
+      "href": "/center/recipes/signals-light?version=cci.20210616"
+    },
+    {
+      "name": "rang",
+      "href": "/center/recipes/rang?version=3.2"
+    },
+    {
+      "name": "rpclib",
+      "href": "/center/recipes/rpclib?version=2.3.0"
+    },
+    {
+      "name": "simde",
+      "href": "/center/recipes/simde?version=0.7.6"
+    },
+    {
+      "name": "simdjson",
+      "href": "/center/recipes/simdjson?version=3.3.0"
+    },
+    {
+      "name": "simdutf",
+      "href": "/center/recipes/simdutf?version=3.2.17"
+    },
+    {
+      "name": "simple-websocket-server",
+      "href": "/center/recipes/simple-websocket-server?version=2.0.2"
+    },
+    {
+      "name": "simple-yaml",
+      "href": "/center/recipes/simple-yaml?version=0.2.2"
+    },
+    {
+      "name": "sleef",
+      "href": "/center/recipes/sleef?version=3.5.1"
+    },
+    {
+      "name": "sml",
+      "href": "/center/recipes/sml?version=1.1.9"
+    },
+    {
+      "name": "snappy",
+      "href": "/center/recipes/snappy?version=1.1.10"
+    },
+    {
+      "name": "mbedtls",
+      "href": "/center/recipes/mbedtls?version=3.5.0"
+    },
+    {
+      "name": "snowhouse",
+      "href": "/center/recipes/snowhouse?version=5.0.0"
+    },
+    {
+      "name": "so5extra",
+      "href": "/center/recipes/so5extra?version=1.6.0"
+    },
+    {
+      "name": "sobjectizer",
+      "href": "/center/recipes/sobjectizer?version=5.8.1"
+    },
+    {
+      "name": "soci",
+      "href": "/center/recipes/soci?version=4.0.3"
+    },
+    {
+      "name": "sofa",
+      "href": "/center/recipes/sofa?version=20210512"
+    },
+    {
+      "name": "sokol",
+      "href": "/center/recipes/sokol?version=cci.20230925"
+    },
+    {
+      "name": "sole",
+      "href": "/center/recipes/sole?version=1.0.4"
+    },
+    {
+      "name": "soplex",
+      "href": "/center/recipes/soplex?version=6.0.4"
+    },
+    {
+      "name": "osmanip",
+      "href": "/center/recipes/osmanip?version=4.4.0"
+    },
+    {
+      "name": "opene57",
+      "href": "/center/recipes/opene57?version=1.6.3"
+    },
+    {
+      "name": "opengrm",
+      "href": "/center/recipes/opengrm?version=1.3.8"
+    },
+    {
+      "name": "soundtouch",
+      "href": "/center/recipes/soundtouch?version=2.3.2"
+    },
+    {
+      "name": "source_location",
+      "href": "/center/recipes/source_location?version=0.2.1"
+    },
+    {
+      "name": "soxr",
+      "href": "/center/recipes/soxr?version=0.1.3"
+    },
+    {
+      "name": "pdf-writer",
+      "href": "/center/recipes/pdf-writer?version=4.6.1"
+    },
+    {
+      "name": "span-lite",
+      "href": "/center/recipes/span-lite?version=0.10.3"
+    },
+    {
+      "name": "spdlog",
+      "href": "/center/recipes/spdlog?version=1.12.0"
+    },
+    {
+      "name": "spectra",
+      "href": "/center/recipes/spectra?version=1.0.1"
+    },
+    {
+      "name": "spirv-cross",
+      "href": "/center/recipes/spirv-cross?version=cci.20211113"
+    },
+    {
+      "name": "spirv-headers",
+      "href": "/center/recipes/spirv-headers?version=cci.20211010"
+    },
+    {
+      "name": "spirv-tools",
+      "href": "/center/recipes/spirv-tools?version=1.3.243.0"
+    },
+    {
+      "name": "spix",
+      "href": "/center/recipes/spix?version=0.5"
+    },
+    {
+      "name": "serf",
+      "href": "/center/recipes/serf?version=1.3.9"
+    },
+    {
+      "name": "splunk-opentelemetry-cpp",
+      "href": "/center/recipes/splunk-opentelemetry-cpp?version=0.4.0"
+    },
+    {
+      "name": "spscqueue",
+      "href": "/center/recipes/spscqueue?version=1.1"
+    },
+    {
+      "name": "spy",
+      "href": "/center/recipes/spy?version=1.0.0"
+    },
+    {
+      "name": "sqlcipher",
+      "href": "/center/recipes/sqlcipher?version=4.5.1"
+    },
+    {
+      "name": "sqlite3",
+      "href": "/center/recipes/sqlite3?version=3.43.2"
+    },
+    {
+      "name": "sqlite_orm",
+      "href": "/center/recipes/sqlite_orm?version=1.8.2"
+    },
+    {
+      "name": "sqlpp11",
+      "href": "/center/recipes/sqlpp11?version=0.64"
+    },
+    {
+      "name": "sqlpp11-connector-sqlite3",
+      "href": "/center/recipes/sqlpp11-connector-sqlite3?version=0.30"
+    },
+    {
+      "name": "squirrel",
+      "href": "/center/recipes/squirrel?version=3.2"
+    },
+    {
+      "name": "srt",
+      "href": "/center/recipes/srt?version=1.4.4"
+    },
+    {
+      "name": "ssht",
+      "href": "/center/recipes/ssht?version=1.5.2"
+    },
+    {
+      "name": "ssp",
+      "href": "/center/recipes/ssp?version=1.6.1"
+    },
+    {
+      "name": "statslib",
+      "href": "/center/recipes/statslib?version=3.4.0"
+    },
+    {
+      "name": "status-code",
+      "href": "/center/recipes/status-code?version=cci.20220616"
+    },
+    {
+      "name": "status-value-lite",
+      "href": "/center/recipes/status-value-lite?version=1.1.0"
+    },
+    {
+      "name": "stb",
+      "href": "/center/recipes/stb?version=cci.20220909"
+    },
+    {
+      "name": "stc",
+      "href": "/center/recipes/stc?version=4.2"
+    },
+    {
+      "name": "stduuid",
+      "href": "/center/recipes/stduuid?version=1.2.3"
+    },
+    {
+      "name": "sqlitecpp",
+      "href": "/center/recipes/sqlitecpp?version=3.3.1"
+    },
+    {
+      "name": "strawberryperl",
+      "href": "/center/recipes/strawberryperl?version=5.32.1.1"
+    },
+    {
+      "name": "stringtoolbox",
+      "href": "/center/recipes/stringtoolbox?version=0.0.4"
+    },
+    {
+      "name": "string-view-lite",
+      "href": "/center/recipes/string-view-lite?version=1.7.0"
+    },
+    {
+      "name": "stringzilla",
+      "href": "/center/recipes/stringzilla?version=2.0.1"
+    },
+    {
+      "name": "strong_type",
+      "href": "/center/recipes/strong_type?version=v9"
+    },
+    {
+      "name": "structopt",
+      "href": "/center/recipes/structopt?version=0.1.3"
+    },
+    {
+      "name": "st_tree",
+      "href": "/center/recipes/st_tree?version=1.2.2"
+    },
+    {
+      "name": "sundials",
+      "href": "/center/recipes/sundials?version=5.4.0"
+    },
+    {
+      "name": "svector",
+      "href": "/center/recipes/svector?version=1.0.3"
+    },
+    {
+      "name": "svgpp",
+      "href": "/center/recipes/svgpp?version=cci.20221030"
+    },
+    {
+      "name": "svgwrite",
+      "href": "/center/recipes/svgwrite?version=0.2.0"
+    },
+    {
+      "name": "swig",
+      "href": "/center/recipes/swig?version=4.1.0"
+    },
+    {
+      "name": "subunit",
+      "href": "/center/recipes/subunit?version=1.4.0"
+    },
+    {
+      "name": "symengine",
+      "href": "/center/recipes/symengine?version=0.11.1"
+    },
+    {
+      "name": "systemc",
+      "href": "/center/recipes/systemc?version=2.3.4"
+    },
+    {
+      "name": "systemc-cci",
+      "href": "/center/recipes/systemc-cci?version=1.0.0"
+    },
+    {
+      "name": "szip",
+      "href": "/center/recipes/szip?version=2.1.1"
+    },
+    {
+      "name": "tabulate",
+      "href": "/center/recipes/tabulate?version=1.5"
+    },
+    {
+      "name": "taglib",
+      "href": "/center/recipes/taglib?version=1.13"
+    },
+    {
+      "name": "taocpp-json",
+      "href": "/center/recipes/taocpp-json?version=1.0.0-beta.14"
+    },
+    {
+      "name": "shield",
+      "href": "/center/recipes/shield?version=0.4"
+    },
+    {
+      "name": "mpdecimal",
+      "href": "/center/recipes/mpdecimal?version=2.5.1"
+    },
+    {
+      "name": "taocpp-operators",
+      "href": "/center/recipes/taocpp-operators?version=1.2.2"
+    },
+    {
+      "name": "taocpp-pegtl",
+      "href": "/center/recipes/taocpp-pegtl?version=3.2.7"
+    },
+    {
+      "name": "taocpp-sequences",
+      "href": "/center/recipes/taocpp-sequences?version=2.0.1"
+    },
+    {
+      "name": "taocpp-taopq",
+      "href": "/center/recipes/taocpp-taopq?version=cci.20210727"
+    },
+    {
+      "name": "tar",
+      "href": "/center/recipes/tar?version=1.32.90"
+    },
+    {
+      "name": "taskflow",
+      "href": "/center/recipes/taskflow?version=3.6.0"
+    },
+    {
+      "name": "tcb-span",
+      "href": "/center/recipes/tcb-span?version=cci.20220616"
+    },
+    {
+      "name": "tcl",
+      "href": "/center/recipes/tcl?version=8.6.13"
+    },
+    {
+      "name": "tclap",
+      "href": "/center/recipes/tclap?version=1.2.5"
+    },
+    {
+      "name": "tcp-wrappers",
+      "href": "/center/recipes/tcp-wrappers?version=7.6"
+    },
+    {
+      "name": "tcsbank-uri-template",
+      "href": "/center/recipes/tcsbank-uri-template?version=1.2.1"
+    },
+    {
+      "name": "teemo",
+      "href": "/center/recipes/teemo?version=2.7"
+    },
+    {
+      "name": "tensorflow-lite",
+      "href": "/center/recipes/tensorflow-lite?version=2.12.0"
+    },
+    {
+      "name": "tensorpipe",
+      "href": "/center/recipes/tensorpipe?version=cci.20210316"
+    },
+    {
+      "name": "termcap",
+      "href": "/center/recipes/termcap?version=1.3.1"
+    },
+    {
+      "name": "libvault",
+      "href": "/center/recipes/libvault?version=0.52.0"
+    },
+    {
+      "name": "termcolor",
+      "href": "/center/recipes/termcolor?version=2.1.0"
+    },
+    {
+      "name": "stlab",
+      "href": "/center/recipes/stlab?version=1.7.1"
+    },
+    {
+      "name": "tesseract",
+      "href": "/center/recipes/tesseract?version=5.3.0"
+    },
+    {
+      "name": "tgbot",
+      "href": "/center/recipes/tgbot?version=1.5"
+    },
+    {
+      "name": "thelink2012-any",
+      "href": "/center/recipes/thelink2012-any?version=cci.20230118"
+    },
+    {
+      "name": "theora",
+      "href": "/center/recipes/theora?version=1.1.1"
+    },
+    {
+      "name": "threadpool",
+      "href": "/center/recipes/threadpool?version=20140926"
+    },
+    {
+      "name": "thrift",
+      "href": "/center/recipes/thrift?version=0.18.1"
+    },
+    {
+      "name": "thrust",
+      "href": "/center/recipes/thrust?version=1.17.2"
+    },
+    {
+      "name": "tidy-html5",
+      "href": "/center/recipes/tidy-html5?version=5.8.0"
+    },
+    {
+      "name": "timsort",
+      "href": "/center/recipes/timsort?version=2.1.0"
+    },
+    {
+      "name": "tinkerforge-bindings",
+      "href": "/center/recipes/tinkerforge-bindings?version=2.1.32"
+    },
+    {
+      "name": "tiny-aes-c",
+      "href": "/center/recipes/tiny-aes-c?version=1.0.0"
+    },
+    {
+      "name": "tiny-bignum-c",
+      "href": "/center/recipes/tiny-bignum-c?version=cci.20200203"
+    },
+    {
+      "name": "tiny-dnn",
+      "href": "/center/recipes/tiny-dnn?version=cci.20201023"
+    },
+    {
+      "name": "tiny-regex-c",
+      "href": "/center/recipes/tiny-regex-c?version=cci.20210215"
+    },
+    {
+      "name": "tiny-utf8",
+      "href": "/center/recipes/tiny-utf8?version=4.4.3"
+    },
+    {
+      "name": "tinyalsa",
+      "href": "/center/recipes/tinyalsa?version=2.0.0"
+    },
+    {
+      "name": "tinycbor",
+      "href": "/center/recipes/tinycbor?version=0.6.0"
+    },
+    {
+      "name": "tinycthreadpool",
+      "href": "/center/recipes/tinycthreadpool?version=1.0"
+    },
+    {
+      "name": "tinydir",
+      "href": "/center/recipes/tinydir?version=1.2.5"
+    },
+    {
+      "name": "tinyexif",
+      "href": "/center/recipes/tinyexif?version=cci.20210411"
+    },
+    {
+      "name": "tinyexr",
+      "href": "/center/recipes/tinyexr?version=1.0.7"
+    },
+    {
+      "name": "tinymidi",
+      "href": "/center/recipes/tinymidi?version=cci.20130325"
+    },
+    {
+      "name": "tinyobjloader",
+      "href": "/center/recipes/tinyobjloader?version=2.0.0-rc10"
+    },
+    {
+      "name": "tinyply",
+      "href": "/center/recipes/tinyply?version=2.3.4"
+    },
+    {
+      "name": "tinyspline",
+      "href": "/center/recipes/tinyspline?version=0.6.0"
+    },
+    {
+      "name": "tinyxml",
+      "href": "/center/recipes/tinyxml?version=2.6.2"
+    },
+    {
+      "name": "tinyxml2",
+      "href": "/center/recipes/tinyxml2?version=9.0.0"
+    },
+    {
+      "name": "tixi3",
+      "href": "/center/recipes/tixi3?version=3.3.0"
+    },
+    {
+      "name": "tk",
+      "href": "/center/recipes/tk?version=8.6.10"
+    },
+    {
+      "name": "tl-expected",
+      "href": "/center/recipes/tl-expected?version=20190710"
+    },
+    {
+      "name": "tl-function-ref",
+      "href": "/center/recipes/tl-function-ref?version=1.0.0"
+    },
+    {
+      "name": "tl-optional",
+      "href": "/center/recipes/tl-optional?version=1.1.0"
+    },
+    {
+      "name": "tlx",
+      "href": "/center/recipes/tlx?version=0.6.1"
+    },
+    {
+      "name": "taywee-args",
+      "href": "/center/recipes/taywee-args?version=6.4.6"
+    },
+    {
+      "name": "tcsbank-uconfig",
+      "href": "/center/recipes/tcsbank-uconfig?version=2.1.0"
+    },
+    {
+      "name": "toml11",
+      "href": "/center/recipes/toml11?version=3.7.1"
+    },
+    {
+      "name": "tomlplusplus",
+      "href": "/center/recipes/tomlplusplus?version=3.4.0"
+    },
+    {
+      "name": "tracy",
+      "href": "/center/recipes/tracy?version=cci.20220130"
+    },
+    {
+      "name": "transwarp",
+      "href": "/center/recipes/transwarp?version=2.2.3"
+    },
+    {
+      "name": "tinygltf",
+      "href": "/center/recipes/tinygltf?version=2.8.13"
+    },
+    {
+      "name": "troldal-zippy",
+      "href": "/center/recipes/troldal-zippy?version=cci.20200622"
+    },
+    {
+      "name": "trompeloeil",
+      "href": "/center/recipes/trompeloeil?version=45"
+    },
+    {
+      "name": "tmx",
+      "href": "/center/recipes/tmx?version=1.4.0"
+    },
+    {
+      "name": "tsil",
+      "href": "/center/recipes/tsil?version=1.45"
+    },
+    {
+      "name": "tsl-array-hash",
+      "href": "/center/recipes/tsl-array-hash?version=0.7.1"
+    },
+    {
+      "name": "tinycthread",
+      "href": "/center/recipes/tinycthread?version=cci.20161001"
+    },
+    {
+      "name": "tsl-hopscotch-map",
+      "href": "/center/recipes/tsl-hopscotch-map?version=2.3.1"
+    },
+    {
+      "name": "tsl-ordered-map",
+      "href": "/center/recipes/tsl-ordered-map?version=1.1.0"
+    },
+    {
+      "name": "tsl-robin-map",
+      "href": "/center/recipes/tsl-robin-map?version=1.2.1"
+    },
+    {
+      "name": "tsl-sparse-map",
+      "href": "/center/recipes/tsl-sparse-map?version=0.6.2"
+    },
+    {
+      "name": "tuplet",
+      "href": "/center/recipes/tuplet?version=2.1.1"
+    },
+    {
+      "name": "turtle",
+      "href": "/center/recipes/turtle?version=1.3.2"
+    },
+    {
+      "name": "tweetnacl",
+      "href": "/center/recipes/tweetnacl?version=20140427"
+    },
+    {
+      "name": "twitch-native-ipc",
+      "href": "/center/recipes/twitch-native-ipc?version=3.1.1"
+    },
+    {
+      "name": "twitchtv-libsoundtrackutil",
+      "href": "/center/recipes/twitchtv-libsoundtrackutil?version=0.0.8"
+    },
+    {
+      "name": "type_safe",
+      "href": "/center/recipes/type_safe?version=0.2.3"
+    },
+    {
+      "name": "tz",
+      "href": "/center/recipes/tz?version=2023c"
+    },
+    {
+      "name": "ua-nodeset",
+      "href": "/center/recipes/ua-nodeset?version=padim-1.02-2021-07-21"
+    },
+    {
+      "name": "uchardet",
+      "href": "/center/recipes/uchardet?version=0.0.7"
+    },
+    {
+      "name": "ulfius",
+      "href": "/center/recipes/ulfius?version=2.7.11"
+    },
+    {
+      "name": "uncrustify",
+      "href": "/center/recipes/uncrustify?version=0.77.1"
+    },
+    {
+      "name": "uni-algo",
+      "href": "/center/recipes/uni-algo?version=1.1.0"
+    },
+    {
+      "name": "unicorn",
+      "href": "/center/recipes/unicorn?version=2.0.1"
+    },
+    {
+      "name": "units",
+      "href": "/center/recipes/units?version=2.3.3"
+    },
+    {
+      "name": "tbb",
+      "href": "/center/recipes/tbb?version=2020.3"
+    },
+    {
+      "name": "unity",
+      "href": "/center/recipes/unity?version=2.5.2"
+    },
+    {
+      "name": "univalue",
+      "href": "/center/recipes/univalue?version=1.1.1"
+    },
+    {
+      "name": "unleash-client-cpp",
+      "href": "/center/recipes/unleash-client-cpp?version=1.1.1"
+    },
+    {
+      "name": "seadex-genesis",
+      "href": "/center/recipes/seadex-genesis?version=2.0.0"
+    },
+    {
+      "name": "unqlite",
+      "href": "/center/recipes/unqlite?version=1.1.9"
+    },
+    {
+      "name": "upx",
+      "href": "/center/recipes/upx?version=3.96"
+    },
+    {
+      "name": "urdfdom",
+      "href": "/center/recipes/urdfdom?version=3.1.1"
+    },
+    {
+      "name": "userspace-rcu",
+      "href": "/center/recipes/userspace-rcu?version=0.11.4"
+    },
+    {
+      "name": "usockets",
+      "href": "/center/recipes/usockets?version=0.8.6"
+    },
+    {
+      "name": "sjson-cpp",
+      "href": "/center/recipes/sjson-cpp?version=0.8.3"
+    },
+    {
+      "name": "usrsctp",
+      "href": "/center/recipes/usrsctp?version=0.9.5.0"
+    },
+    {
+      "name": "utf8.h",
+      "href": "/center/recipes/utf8.h?version=cci.20210310"
+    },
+    {
+      "name": "utf8proc",
+      "href": "/center/recipes/utf8proc?version=2.9.0"
+    },
+    {
+      "name": "utfcpp",
+      "href": "/center/recipes/utfcpp?version=4.0.0"
+    },
+    {
+      "name": "util-linux-libuuid",
+      "href": "/center/recipes/util-linux-libuuid?version=2.39.2"
+    },
+    {
+      "name": "uvw",
+      "href": "/center/recipes/uvw?version=3.2.0"
+    },
+    {
+      "name": "uwebsockets",
+      "href": "/center/recipes/uwebsockets?version=20.47.0"
+    },
+    {
+      "name": "v-hacd",
+      "href": "/center/recipes/v-hacd?version=4.1.0"
+    },
+    {
+      "name": "vaapi",
+      "href": "/center/recipes/vaapi?version=system"
+    },
+    {
+      "name": "valijson",
+      "href": "/center/recipes/valijson?version=1.0.1"
+    },
+    {
+      "name": "tllist",
+      "href": "/center/recipes/tllist?version=1.0.5"
+    },
+    {
+      "name": "variant-lite",
+      "href": "/center/recipes/variant-lite?version=2.0.0"
+    },
+    {
+      "name": "vc",
+      "href": "/center/recipes/vc?version=1.4.3"
+    },
+    {
+      "name": "vcglib",
+      "href": "/center/recipes/vcglib?version=2022.02"
+    },
+    {
+      "name": "vectorclass",
+      "href": "/center/recipes/vectorclass?version=2.02.00"
+    },
+    {
+      "name": "vectorial",
+      "href": "/center/recipes/vectorial?version=cci.20190628"
+    },
+    {
+      "name": "veque",
+      "href": "/center/recipes/veque?version=1.3.7"
+    },
+    {
+      "name": "verilator",
+      "href": "/center/recipes/verilator?version=5.004"
+    },
+    {
+      "name": "vincentlaucsb-csv-parser",
+      "href": "/center/recipes/vincentlaucsb-csv-parser?version=2.1.3"
+    },
+    {
+      "name": "vir-simd",
+      "href": "/center/recipes/vir-simd?version=0.2.0"
+    },
+    {
+      "name": "vk-bootstrap",
+      "href": "/center/recipes/vk-bootstrap?version=0.7"
+    },
+    {
+      "name": "vo-amrwbenc",
+      "href": "/center/recipes/vo-amrwbenc?version=0.1.3"
+    },
+    {
+      "name": "volk",
+      "href": "/center/recipes/volk?version=1.3.243.0"
+    },
+    {
+      "name": "voropp",
+      "href": "/center/recipes/voropp?version=0.4.6"
+    },
+    {
+      "name": "vsg",
+      "href": "/center/recipes/vsg?version=1.0.9"
+    },
+    {
+      "name": "vtu11",
+      "href": "/center/recipes/vtu11?version=1.2"
+    },
+    {
+      "name": "vulkan-headers",
+      "href": "/center/recipes/vulkan-headers?version=1.3.250.0"
+    },
+    {
+      "name": "tree-sitter",
+      "href": "/center/recipes/tree-sitter?version=0.20.8"
+    },
+    {
+      "name": "vulkan-loader",
+      "href": "/center/recipes/vulkan-loader?version=1.3.243.0"
+    },
+    {
+      "name": "vulkan-memory-allocator",
+      "href": "/center/recipes/vulkan-memory-allocator?version=3.0.1"
+    },
+    {
+      "name": "vvenc",
+      "href": "/center/recipes/vvenc?version=1.8.0"
+    },
+    {
+      "name": "waf",
+      "href": "/center/recipes/waf?version=2.0.19"
+    },
+    {
+      "name": "wasm-micro-runtime",
+      "href": "/center/recipes/wasm-micro-runtime?version=1.2.3"
+    },
+    {
+      "name": "wasmedge",
+      "href": "/center/recipes/wasmedge?version=0.11.2"
+    },
+    {
+      "name": "wasmer",
+      "href": "/center/recipes/wasmer?version=4.2.0"
+    },
+    {
+      "name": "wasmtime",
+      "href": "/center/recipes/wasmtime?version=12.0.2"
+    },
+    {
+      "name": "watcher",
+      "href": "/center/recipes/watcher?version=0.9.5"
+    },
+    {
+      "name": "wavelet_buffer",
+      "href": "/center/recipes/wavelet_buffer?version=0.7.1"
+    },
+    {
+      "name": "wayland",
+      "href": "/center/recipes/wayland?version=1.22.0"
+    },
+    {
+      "name": "wayland-protocols",
+      "href": "/center/recipes/wayland-protocols?version=1.32"
+    },
+    {
+      "name": "websocketpp",
+      "href": "/center/recipes/websocketpp?version=0.8.2"
+    },
+    {
+      "name": "wg21-linear_algebra",
+      "href": "/center/recipes/wg21-linear_algebra?version=0.7.3"
+    },
+    {
+      "name": "wglext",
+      "href": "/center/recipes/wglext?version=cci.20200813"
+    },
+    {
+      "name": "whereami",
+      "href": "/center/recipes/whereami?version=cci.20220112"
+    },
+    {
+      "name": "whisper-cpp",
+      "href": "/center/recipes/whisper-cpp?version=1.4.2"
+    },
+    {
+      "name": "wil",
+      "href": "/center/recipes/wil?version=1.0.230824.2"
+    },
+    {
+      "name": "wildmidi",
+      "href": "/center/recipes/wildmidi?version=0.4.5"
+    },
+    {
+      "name": "wilzegers-autotest",
+      "href": "/center/recipes/wilzegers-autotest?version=cci.20200921"
+    },
+    {
+      "name": "wineditline",
+      "href": "/center/recipes/wineditline?version=2.206"
+    },
+    {
+      "name": "winflexbison",
+      "href": "/center/recipes/winflexbison?version=2.5.25"
+    },
+    {
+      "name": "winmd",
+      "href": "/center/recipes/winmd?version=1.0.210629.2"
+    },
+    {
+      "name": "wiringpi",
+      "href": "/center/recipes/wiringpi?version=cci.20210727"
+    },
+    {
+      "name": "wise_enum",
+      "href": "/center/recipes/wise_enum?version=3.0.0"
+    },
+    {
+      "name": "tsl-hat-trie",
+      "href": "/center/recipes/tsl-hat-trie?version=0.6.0"
+    },
+    {
+      "name": "wolfssl",
+      "href": "/center/recipes/wolfssl?version=5.6.3"
+    },
+    {
+      "name": "wslay",
+      "href": "/center/recipes/wslay?version=1.1.1"
+    },
+    {
+      "name": "wt",
+      "href": "/center/recipes/wt?version=4.10.1"
+    },
+    {
+      "name": "unordered_dense",
+      "href": "/center/recipes/unordered_dense?version=4.1.2"
+    },
+    {
+      "name": "xbyak",
+      "href": "/center/recipes/xbyak?version=6.73"
+    },
+    {
+      "name": "xege",
+      "href": "/center/recipes/xege?version=20.08"
+    },
+    {
+      "name": "xerces-c",
+      "href": "/center/recipes/xerces-c?version=3.2.4"
+    },
+    {
+      "name": "xkbcommon",
+      "href": "/center/recipes/xkbcommon?version=1.6.0"
+    },
+    {
+      "name": "xkeyboard-config",
+      "href": "/center/recipes/xkeyboard-config?version=system"
+    },
+    {
+      "name": "xlnt",
+      "href": "/center/recipes/xlnt?version=1.5.0"
+    },
+    {
+      "name": "xlsxio",
+      "href": "/center/recipes/xlsxio?version=0.2.34"
+    },
+    {
+      "name": "xmlsec",
+      "href": "/center/recipes/xmlsec?version=1.2.33"
+    },
+    {
+      "name": "xorg",
+      "href": "/center/recipes/xorg?version=system"
+    },
+    {
+      "name": "xorg-cf-files",
+      "href": "/center/recipes/xorg-cf-files?version=1.0.7"
+    },
+    {
+      "name": "xorg-macros",
+      "href": "/center/recipes/xorg-macros?version=1.19.3"
+    },
+    {
+      "name": "xorg-makedepend",
+      "href": "/center/recipes/xorg-makedepend?version=1.0.6"
+    },
+    {
+      "name": "xorstr",
+      "href": "/center/recipes/xorstr?version=cci.20210417"
+    },
+    {
+      "name": "tree-sitter-c",
+      "href": "/center/recipes/tree-sitter-c?version=0.20.3"
+    },
+    {
+      "name": "xoshiro-cpp",
+      "href": "/center/recipes/xoshiro-cpp?version=1.1"
+    },
+    {
+      "name": "vorbis",
+      "href": "/center/recipes/vorbis?version=1.3.7"
+    },
+    {
+      "name": "xapian-core",
+      "href": "/center/recipes/xapian-core?version=1.4.19"
+    },
+    {
+      "name": "sentry-native",
+      "href": "/center/recipes/sentry-native?version=0.6.5"
+    },
+    {
+      "name": "wasmtime-cpp",
+      "href": "/center/recipes/wasmtime-cpp?version=9.0.0"
+    },
+    {
+      "name": "vulkan-validationlayers",
+      "href": "/center/recipes/vulkan-validationlayers?version=1.3.239.0"
+    },
+    {
+      "name": "xproperty",
+      "href": "/center/recipes/xproperty?version=0.11.0"
+    },
+    {
+      "name": "xpack",
+      "href": "/center/recipes/xpack?version=1.0.4"
+    },
+    {
+      "name": "xqilla",
+      "href": "/center/recipes/xqilla?version=2.3.4"
+    },
+    {
+      "name": "uriparser",
+      "href": "/center/recipes/uriparser?version=0.9.7"
+    },
+    {
+      "name": "xsd",
+      "href": "/center/recipes/xsd?version=4.0.0"
+    },
+    {
+      "name": "xsimd",
+      "href": "/center/recipes/xsimd?version=11.1.0"
+    },
+    {
+      "name": "xtensor",
+      "href": "/center/recipes/xtensor?version=0.24.6"
+    },
+    {
+      "name": "xtl",
+      "href": "/center/recipes/xtl?version=0.7.5"
+    },
+    {
+      "name": "xtr",
+      "href": "/center/recipes/xtr?version=2.1.0"
+    },
+    {
+      "name": "xtrans",
+      "href": "/center/recipes/xtrans?version=system"
+    },
+    {
+      "name": "xxhash",
+      "href": "/center/recipes/xxhash?version=0.8.2"
+    },
+    {
+      "name": "xxsds-sdsl-lite",
+      "href": "/center/recipes/xxsds-sdsl-lite?version=cci.20210329"
+    },
+    {
+      "name": "xz_utils",
+      "href": "/center/recipes/xz_utils?version=5.4.4"
+    },
+    {
+      "name": "yaclib",
+      "href": "/center/recipes/yaclib?version=2022.12.20"
+    },
+    {
+      "name": "nodesoup",
+      "href": "/center/recipes/nodesoup?version=cci.20200905"
+    },
+    {
+      "name": "yajl",
+      "href": "/center/recipes/yajl?version=2.1.0"
+    },
+    {
+      "name": "yaml-cpp",
+      "href": "/center/recipes/yaml-cpp?version=0.8.0"
+    },
+    {
+      "name": "yandex-ozo",
+      "href": "/center/recipes/yandex-ozo?version=cci.20210509"
+    },
+    {
+      "name": "yasm",
+      "href": "/center/recipes/yasm?version=1.3.0"
+    },
+    {
+      "name": "yder",
+      "href": "/center/recipes/yder?version=1.4.18"
+    },
+    {
+      "name": "yoga",
+      "href": "/center/recipes/yoga?version=2.0.0"
+    },
+    {
+      "name": "yojimbo",
+      "href": "/center/recipes/yojimbo?version=1.2.1"
+    },
+    {
+      "name": "yyjson",
+      "href": "/center/recipes/yyjson?version=0.8.0"
+    },
+    {
+      "name": "z3",
+      "href": "/center/recipes/z3?version=4.12.2"
+    },
+    {
+      "name": "zbar",
+      "href": "/center/recipes/zbar?version=0.23.92"
+    },
+    {
+      "name": "zeromq",
+      "href": "/center/recipes/zeromq?version=4.3.4"
+    },
+    {
+      "name": "zfp",
+      "href": "/center/recipes/zfp?version=1.0.0"
+    },
+    {
+      "name": "zimg",
+      "href": "/center/recipes/zimg?version=3.0.5"
+    },
+    {
+      "name": "zint",
+      "href": "/center/recipes/zint?version=2.10.0"
+    },
+    {
+      "name": "zlib",
+      "href": "/center/recipes/zlib?version=1.3"
+    },
+    {
+      "name": "zlib-ng",
+      "href": "/center/recipes/zlib-ng?version=2.1.4"
+    },
+    {
+      "name": "zmarok-semver",
+      "href": "/center/recipes/zmarok-semver?version=1.1.0"
+    },
+    {
+      "name": "zmqpp",
+      "href": "/center/recipes/zmqpp?version=4.2.0"
+    },
+    {
+      "name": "zookeeper-client-c",
+      "href": "/center/recipes/zookeeper-client-c?version=3.9.0"
+    },
+    {
+      "name": "zopfli",
+      "href": "/center/recipes/zopfli?version=1.0.3"
+    },
+    {
+      "name": "zpp_bits",
+      "href": "/center/recipes/zpp_bits?version=4.4.19"
+    },
+    {
+      "name": "zstr",
+      "href": "/center/recipes/zstr?version=1.0.7"
+    },
+    {
+      "name": "zug",
+      "href": "/center/recipes/zug?version=cci.20220125"
+    },
+    {
+      "name": "zulu-openjdk",
+      "href": "/center/recipes/zulu-openjdk?version=21.0.1"
+    },
+    {
+      "name": "zxing-cpp",
+      "href": "/center/recipes/zxing-cpp?version=2.1.0"
+    },
+    {
+      "name": "zyre",
+      "href": "/center/recipes/zyre?version=2.0.1"
+    },
+    {
+      "name": "rocksdb",
+      "href": "/center/recipes/rocksdb?version=6.29.5"
+    },
+    {
+      "name": "openassetio",
+      "href": "/center/recipes/openassetio?version=1.0.0-alpha.9"
+    },
+    {
+      "name": "rtm",
+      "href": "/center/recipes/rtm?version=2.1.5"
+    },
+    {
+      "name": "opencolorio",
+      "href": "/center/recipes/opencolorio?version=2.2.1"
+    },
+    {
+      "name": "zpp_throwing",
+      "href": "/center/recipes/zpp_throwing?version=1.0.1"
+    },
+    {
+      "name": "outcome",
+      "href": "/center/recipes/outcome?version=2.2.7"
+    },
+    {
+      "name": "p-ranav-glob",
+      "href": "/center/recipes/p-ranav-glob?version=0.0.1"
+    },
+    {
+      "name": "picobench",
+      "href": "/center/recipes/picobench?version=2.05"
+    },
+    {
+      "name": "plutovg",
+      "href": "/center/recipes/plutovg?version=cci.20230205"
+    },
+    {
+      "name": "visit_struct",
+      "href": "/center/recipes/visit_struct?version=1.1.0"
+    },
+    {
+      "name": "sophus",
+      "href": "/center/recipes/sophus?version=1.22.10"
+    },
+    {
+      "name": "sol2",
+      "href": "/center/recipes/sol2?version=3.3.1"
+    },
+    {
+      "name": "wtl",
+      "href": "/center/recipes/wtl?version=10.0.9163"
+    },
+    {
+      "name": "xnnpack",
+      "href": "/center/recipes/xnnpack?version=cci.20230715"
+    },
+    {
+      "name": "seqan",
+      "href": "/center/recipes/seqan?version=2.4.0"
+    },
+    {
+      "name": "sigslot",
+      "href": "/center/recipes/sigslot?version=1.2.2"
+    },
+    {
+      "name": "ptex",
+      "href": "/center/recipes/ptex?version=2.4.0"
+    },
+    {
+      "name": "qarchive",
+      "href": "/center/recipes/qarchive?version=2.2.6"
+    },
+    {
+      "name": "libcurl",
+      "href": "/center/recipes/libcurl?version=8.2.1"
+    },
+    {
+      "name": "rectanglebinpack",
+      "href": "/center/recipes/rectanglebinpack?version=cci.20210901"
+    },
+    {
+      "name": "qpoases",
+      "href": "/center/recipes/qpoases?version=3.2.1"
+    },
+    {
+      "name": "pugixml",
+      "href": "/center/recipes/pugixml?version=1.14"
+    },
+    {
+      "name": "shaderc",
+      "href": "/center/recipes/shaderc?version=2021.1"
+    },
+    {
+      "name": "qdbm",
+      "href": "/center/recipes/qdbm?version=1.8.78"
+    },
+    {
+      "name": "ragel",
+      "href": "/center/recipes/ragel?version=6.10"
+    },
+    {
+      "name": "rply",
+      "href": "/center/recipes/rply?version=1.1.4"
+    },
+    {
+      "name": "taocpp-tuple",
+      "href": "/center/recipes/taocpp-tuple?version=1.0.0"
+    },
+    {
+      "name": "pistache",
+      "href": "/center/recipes/pistache?version=cci.20201127"
+    },
+    {
+      "name": "tgc",
+      "href": "/center/recipes/tgc?version=cci.20170813"
+    },
+    {
+      "name": "stx",
+      "href": "/center/recipes/stx?version=1.0.1"
+    },
+    {
+      "name": "rotor",
+      "href": "/center/recipes/rotor?version=0.25"
+    },
+    {
+      "name": "rsync",
+      "href": "/center/recipes/rsync?version=3.2.7"
+    },
+    {
+      "name": "s2let",
+      "href": "/center/recipes/s2let?version=2.2.3"
+    },
+    {
+      "name": "scdoc",
+      "href": "/center/recipes/scdoc?version=1.11.12"
+    },
+    {
+      "name": "skyr-url",
+      "href": "/center/recipes/skyr-url?version=1.13.0"
+    },
+    {
+      "name": "sonic-cpp",
+      "href": "/center/recipes/sonic-cpp?version=1.0.0"
+    },
+    {
+      "name": "streamvbyte",
+      "href": "/center/recipes/streamvbyte?version=1.0.0"
+    },
+    {
+      "name": "tl",
+      "href": "/center/recipes/tl?version=1.0.0"
+    },
+    {
+      "name": "tmxlite",
+      "href": "/center/recipes/tmxlite?version=1.3.0"
+    },
+    {
+      "name": "tre",
+      "href": "/center/recipes/tre?version=cci.20230717"
+    },
+    {
+      "name": "tng",
+      "href": "/center/recipes/tng?version=1.8.2"
+    },
+    {
+      "name": "tscns",
+      "href": "/center/recipes/tscns?version=2.0"
+    },
+    {
+      "name": "trantor",
+      "href": "/center/recipes/trantor?version=1.5.14"
+    },
+    {
+      "name": "vdpau",
+      "href": "/center/recipes/vdpau?version=system"
+    },
+    {
+      "name": "wyhash",
+      "href": "/center/recipes/wyhash?version=cci.20221102"
+    },
+    {
+      "name": "xorg-proto",
+      "href": "/center/recipes/xorg-proto?version=2022.2"
+    },
+    {
+      "name": "xorg-gccmakedep",
+      "href": "/center/recipes/xorg-gccmakedep?version=1.0.3"
+    },
+    {
+      "name": "yas",
+      "href": "/center/recipes/yas?version=7.1.0"
+    },
+    {
+      "name": "zstd",
+      "href": "/center/recipes/zstd?version=1.5.5"
+    },
+    {
+      "name": "zziplib",
+      "href": "/center/recipes/zziplib?version=0.13.72"
+    },
+    {
+      "name": "podofo",
+      "href": "/center/recipes/podofo?version=0.9.7"
+    },
+    {
+      "name": "resiprocate",
+      "href": "/center/recipes/resiprocate?version=1.12.0"
+    },
+    {
+      "name": "rttr",
+      "href": "/center/recipes/rttr?version=0.9.6"
+    },
+    {
+      "name": "boost",
+      "href": "/center/recipes/boost?version=1.83.0"
+    }
+  ]
+}
