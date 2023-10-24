@@ -28,6 +28,16 @@ bool loadPackageToml(std::shared_ptr<Context> ctx) {
     ctx->lang_version =
         data["project"]["lang_version"].value_or("no langversion");
     ctx->project_version = data["project"]["project_version"].value_or("0.0.1");
+    if (data.at_path("dependencies").is_table()) {
+      for (auto &dep : *data["dependencies"].as_table()) {
+
+        Command::dependency _dep;
+        _dep.name = dep.first;
+        _dep.url = data["dependencies"][dep.first].as_array()->at(0).value_or("");
+        _dep.version = data["dependencies"][dep.first].as_array()->at(1).value_or("");
+        ctx->dependencies.push_back(_dep);
+      }
+    }
 
   } catch (const toml::parse_error &err) {
     std::cout << "Error: Could not load config.toml" << std::endl;
@@ -63,12 +73,11 @@ bool writePackageToml(std::shared_ptr<Context> ctx) {
 
   for (Command::dependency &dep : ctx->dependencies) {
 
-    toml::table deps_values = toml::table{
-        {"url", dep.url},
-        {"version", dep.version},
-    };
+    toml::array deps_values = toml::array{};
+    deps_values.push_back(dep.url);
+    deps_values.push_back(dep.version);
     deps_table["dependencies"].as_table()->insert(dep.name, deps_values);
-  } 
+  }
 
   std::ofstream file;
   std::string file_name = "./config.toml";
@@ -131,6 +140,7 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
                  target_link_libraries};
     dependencies.push_back(dependency);
   }
+  std::string include_fetch = "include(FetchContent)";
 
   std::string include_dir =
       std::format("include_directories({})", ctx->include_dir);
@@ -140,9 +150,9 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
   std::string mode =
       "if(RELEASE EQUAL 1)\n\tset(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -O2 "
       "-Wextra -Wpedantic "
-      "-Wall\")\n\tadd_definitions(-DRELEASE)\nelse()\tadd_definitions(-DDEBUG)"
-      "\tset(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic "
-      "-Wall\")\tif(TEST_MODE EQUAL 1)\tendif()\nendif()";
+      "-Wall\")\n\tadd_definitions(-DRELEASE)\nelse()\n\tadd_definitions(-DDEBUG)"
+      "\n\tset(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic "
+      "-Wall\")\n\tif(TEST_MODE EQUAL 1)\n\tendif()\nendif()";
   std::string set_build_dir = std::format(
       "set_target_properties({} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {})",
       ctx->project_name, ctx->build_dir);
@@ -159,17 +169,17 @@ bool createCMakelists(std::shared_ptr<Context> ctx) {
   file << cmake_minimum_required << '\n';
   file << project_name << '\n';
   file << cxx_version << '\n';
-  file << compiler << '\n';
   file << build_type << '\n';
+  file << files << '\n';
+  file << add_executable << '\n';
+  file << FetchContent << '\n';
   for (make_dep &dep : dependencies) {
     file << dep.fetch_declare << '\n';
     file << dep.fetch_make_available << '\n';
     file << dep.target_link_libraries << '\n';
   }
-  file << files << '\n';
   file << mode << '\n';
   file << include_dir << '\n';
-  file << add_executable << '\n';
   file << source_dir << '\n';
   file << build_dir << '\n';
   file << set_build_dir << '\n';
