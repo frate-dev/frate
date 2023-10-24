@@ -28,7 +28,6 @@ namespace TestCommands {
     std::shared_ptr<Command::Context> context = std::make_shared<Command::Context>();
     char* args[] = {"cmake-generator","init","-y"};
 
-    system(("rm -rf " + context->project_path.string() + "/*").c_str());
 
     for(auto arg : args) {
       std::cout << arg << std::endl;
