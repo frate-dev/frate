@@ -22,7 +22,6 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(json)
-
 FetchContent_MakeAvailable(cxxopts)
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
