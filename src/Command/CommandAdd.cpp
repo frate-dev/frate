@@ -34,7 +34,7 @@ namespace Command {
         ctx->dependencies.push_back(dependency_new);
     }
     std::cout << ctx->dependencies.size() << std::endl;
-    Command::writePackageToml(ctx);
+    Generators::ConfigToml::writeConfig(ctx);
     Generators::CMakeList::create(ctx);
     return true;
   }

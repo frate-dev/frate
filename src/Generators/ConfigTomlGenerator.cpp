@@ -267,9 +267,12 @@ namespace Generators::ConfigToml {
   }
 
 
-
-  bool writeConfig(std::shared_ptr<Command::Context> &ctx){
+  bool writeConfig(std::shared_ptr<Command::Context> &ctx) {
     toml::array authors = toml::array{};
+    toml::array flags = toml::array{};
+    for (auto &flag : ctx->flags) {
+      flags.push_back(flag);
+    }
     toml::table table = toml::table{
       {"project",
         toml::table{
@@ -283,21 +286,36 @@ namespace Generators::ConfigToml {
           {"build_dir", ctx->build_dir},
           {"lang", ctx->lang},
           {"lang_version", ctx->lang_version},
+          {"cflags", flags},
         }},
     };
-    std::cout << "📄New Toml File: \n";
-    std::cout << table << '\n';
+
+    toml::table deps_table = toml::table{{"dependencies", toml::table{}}};
+
+    for (Command::dependency &dep : ctx->dependencies) {
+
+      toml::array deps_values = toml::array{};
+      deps_values.push_back(dep.url);
+      deps_values.push_back(dep.version);
+      deps_table["dependencies"].as_table()->insert(dep.name, deps_values);
+    }
+
     std::ofstream file;
     std::string file_name = "config.toml";
-    #ifdef DEBUG
-      file_name  ="build/config.toml";
-    #endif
-    std::cout << table << '\n';
+#ifdef DEBUG
+    file_name = "build/config.toml";
+    std::cout << "Writing config.toml to " << ctx->project_path / file_name
+      << std::endl;
+#endif
     file.open(ctx->project_path / file_name);
     file << table;
+    file << '\n';
+    file << deps_table;
     file << '\n';
     file.close();
     return true;
   }
+
+
 
 }

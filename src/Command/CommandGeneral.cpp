@@ -50,52 +50,5 @@ namespace Command {
 
     return true;
   };
-  bool writePackageToml(std::shared_ptr<Context> ctx) {
-    toml::array authors = toml::array{};
-    toml::array flags = toml::array{};
-    for (auto &flag : ctx->flags) {
-      flags.push_back(flag);
-    }
-    toml::table table = toml::table{
-      {"project",
-        toml::table{
-          {"cmake_version", ctx->cmake_version},
-          {"include_dir", ctx->include_dir},
-          {"project_version", ctx->project_version},
-          {"compiler", ctx->compiler},
-          {"project_name", ctx->project_name},
-          {"authors", authors},
-          {"src_dir", ctx->src_dir},
-          {"build_dir", ctx->build_dir},
-          {"lang", ctx->lang},
-          {"lang_version", ctx->lang_version},
-          {"cflags", flags},
-        }},
-    };
 
-    toml::table deps_table = toml::table{{"dependencies", toml::table{}}};
-
-    for (Command::dependency &dep : ctx->dependencies) {
-
-      toml::array deps_values = toml::array{};
-      deps_values.push_back(dep.url);
-      deps_values.push_back(dep.version);
-      deps_table["dependencies"].as_table()->insert(dep.name, deps_values);
-    }
-
-    std::ofstream file;
-    std::string file_name = "config.toml";
-#ifdef DEBUG
-    file_name = "build/config.toml";
-    std::cout << "Writing config.toml to " << ctx->project_path / file_name
-      << std::endl;
-#endif
-    file.open(ctx->project_path / file_name);
-    file << table;
-    file << '\n';
-    file << deps_table;
-    file << '\n';
-    file.close();
-    return true;
-  }
 } // namespace Command
