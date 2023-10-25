@@ -14,7 +14,9 @@ namespace Generators::ConfigToml {
    */
   bool cmakeVersion(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << prefix;
+#ifndef TEST
     std::getline(std::cin, config_toml->cmake_version);
+#endif
     //If the version is empty we're gonna set it
     if(config_toml->cmake_version == "") {
       goto end;
@@ -43,7 +45,9 @@ namespace Generators::ConfigToml {
    */
   bool projectName(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << prefix;
+#ifndef TEST
     std::getline(std::cin, config_toml->project_name);
+#endif
     //If the name is empty we're gonna set it
     if(config_toml->project_name == "") {
       goto end;
@@ -69,7 +73,9 @@ namespace Generators::ConfigToml {
    */
   bool projectVersion(std::string prefix,  std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << prefix;
-    std::getline(std::cin, config_toml->project_version);
+#ifndef TEST
+      std::getline(std::cin, config_toml->project_version);
+#endif
     if(config_toml->project_version == "") {
       goto end;
     }
@@ -99,7 +105,9 @@ namespace Generators::ConfigToml {
    */
   bool languageVersion(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << prefix;
-    std::getline(std::cin, config_toml->lang_version);
+#ifndef TEST
+      std::getline(std::cin, config_toml->lang_version);
+#endif
     std::vector<std::string> valid_c_versions = {"89", "90", "94", "99", "11", "18"};
     std::vector<std::string> valid_cpp_versions = {"98", "03", "11", "14", "17", "20","23"};
 
@@ -135,7 +143,9 @@ namespace Generators::ConfigToml {
    */
   bool compiler(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << prefix;
-    std::getline(std::cin, config_toml->compiler);
+#ifndef TEST
+      std::getline(std::cin, config_toml->compiler);
+#endif
     //If the compiler is empty we're gonna set it
     if(config_toml->compiler == "") {
       goto end;
@@ -168,7 +178,9 @@ namespace Generators::ConfigToml {
    */
   bool sourceDir(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << prefix;
-    std::getline(std::cin, config_toml->src_dir);
+#ifndef TEST
+      std::getline(std::cin, config_toml->src_dir);
+#endif
     //If the source directory is empty we're gonna set it
     if(config_toml->src_dir == "") {
       goto end;
@@ -196,7 +208,9 @@ namespace Generators::ConfigToml {
    */
   bool buildDir(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) { 
     std::cout << prefix;
-    std::getline(std::cin, config_toml->build_dir);
+#ifndef TEST
+      std::getline(std::cin, config_toml->build_dir);
+#endif
     //If the build directory is empty we're gonna set it
     if(config_toml->build_dir == "") {
       goto end;
@@ -223,7 +237,9 @@ namespace Generators::ConfigToml {
    */
   bool includeDir(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << prefix;
-    std::getline(std::cin, config_toml->include_dir);
+#ifndef TEST
+      std::getline(std::cin, config_toml->include_dir);
+#endif
     //If the include directory is empty we're gonna set it
     if(config_toml->include_dir == "") {
       goto end;

@@ -1,14 +1,16 @@
+
+#ifdef TEST
 #include <cstdio>
 #include <filesystem>
-#ifdef TEST
 #include <catch2/catch_test_macros.hpp>
 #include "../Command/Command.hpp"
 #include <cxxopts.hpp>
 #include <memory>
 #include <string>
+#include "Test.hpp"
 
 
-namespace TestCommands {
+namespace Tests::Commands {
 
   std::string genBase64String() {
     std::string base64_chars =
@@ -25,7 +27,7 @@ namespace TestCommands {
   }
   
   bool testCommandInit() {
-    std::shared_ptr<Command::Context> context = std::make_shared<Command::Context>();
+    std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
     char* args[] = {"cmake-generator","init","-y"};
 
 
@@ -35,9 +37,9 @@ namespace TestCommands {
     cxxopts::Options options(
       "Cmake-Generator",
       "Stop writing CMakeLists.txt files! let us suffer for you");
-    Command::initOptions(options);
+    ::Command::initOptions(options);
     cxxopts::ParseResult parseResults = options.parse(3, args);
-    Command::init(context, parseResults);
+    ::Command::init(context, parseResults);
     std::ifstream file;
     try{
       file = std::ifstream(context->project_path / "CMakeLists.txt");
