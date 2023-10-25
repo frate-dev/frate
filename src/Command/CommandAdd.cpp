@@ -7,20 +7,32 @@
 namespace Command {
 
 
-  bool  add(std::shared_ptr<Context> ctx, cxxopts::ParseResult& args){
+  bool  add(std::shared_ptr<Context> &ctx, cxxopts::ParseResult& args){
     args.count("subcommand");
     if(args.count("subcommand") != 0) {
-      std::string subcommand = args["subcommand"].as<std::vector<std::string>>()[0];
+      std::string subcommand = args["subcommand"].as<std::string>();
       if (subcommand == "dep"){
         addDependency(ctx, args);
       }
-
+      if (subcommand == "flag"){
+        addFlag(ctx, args);
+      }
+    }
+    return true;
+  }
+  bool addFlag(std::shared_ptr<Context>& ctx, cxxopts::ParseResult &args) {
+    if(args.count("help")) {
+      std::cout << "Usage: addFlag [options] flags" << std::endl;
+    }
+    if(args.count("subcommand") == 0) {
+      for(auto flag: args["subcommand"].as<std::vector<std::string>>() ) {
+        ctx->flags.push_back(flag);
+      }
     }
     return true;
   }
 
-
-  bool addDependency(std::shared_ptr<Context> ctx, cxxopts::ParseResult& args) {
+  bool addDependency(std::shared_ptr<Context>& ctx, cxxopts::ParseResult& args) {
     // TODO: Add dependency to config.toml
     std::cout << "addDependency" << std::endl;
     if(args.count("help")) {

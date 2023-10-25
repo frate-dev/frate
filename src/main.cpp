@@ -63,17 +63,13 @@ int main(int argc, char **argv) {
   else if (command == "help"){
     Command::help();
   }
-  else if (command == "flags"){
-    Command::loadPackageToml(ctx);
-    Command::addFlag(ctx, result);
 
-  }
   else if (command == "ftp"){
     Command::ftp(ctx);
   }
   else if (command == "add"){
     Command::loadPackageToml(ctx);
-    Command::addDependency(ctx, result);
+    Command::add(ctx, result);
   }
 #endif
 }

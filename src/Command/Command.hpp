@@ -105,7 +105,7 @@ namespace Command {
    * @param ctx project context
    * @return bool -> finished successfully
    */
-  bool addFlag(std::shared_ptr<Context>, cxxopts::ParseResult &args);
+  bool addFlag(std::shared_ptr<Context>&ctx, cxxopts::ParseResult&args);
   /*
    * prints all commands and their function and parameters
    * @return bool -> finished successfully
@@ -115,12 +115,7 @@ namespace Command {
    * adds a dependency to the config.toml
    * @returns bool -> finished successfully
    */
-  bool addDependency(std::shared_ptr<Context>, cxxopts::ParseResult &args);
-  /*
-   * writes config.toml containing all information provided by project context
-   * @return bool -> finished successfully
-   */
-  bool writePackageToml(std::shared_ptr<Context> ctx);
+  bool addDependency(std::shared_ptr<Context> &ctx, cxxopts::ParseResult &args);
   /*
    * Generates cmake file for project based on the current project context
    * @returns bool -> finished successfully
@@ -133,7 +128,7 @@ namespace Command {
    *  adds  dependency to toml and regenerates the CMakeLists.txt
    *  @returns bool -> finished successfully
    */
-  bool add(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args);
+  bool add(std::shared_ptr<Context>&ctx, cxxopts::ParseResult &args);
   [[deprecated("use addDependency instead")]]
   bool addLib(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 }

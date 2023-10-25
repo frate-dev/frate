@@ -84,6 +84,4 @@ target_link_libraries(cmaker cxxopts)
 target_link_libraries(cmaker nlohmann_json)
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
-
-
 set_target_properties(cmaker PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)

@@ -11,8 +11,6 @@
 
 namespace Command {
 
-  
-
 
 bool createToml(std::shared_ptr<Context> ctx) {
   //Lucas did it again

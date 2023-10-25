@@ -300,6 +300,8 @@ namespace Generators::ConfigToml {
       deps_table["dependencies"].as_table()->insert(dep.name, deps_values);
     }
 
+
+
     std::ofstream file;
     std::string file_name = "config.toml";
 #ifdef DEBUG

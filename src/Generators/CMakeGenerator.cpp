@@ -136,6 +136,4 @@ namespace Generators::CMakeList{
     file << cmake_context->set_build_dir << '\n';
     return true;
   }
-
-
 }
