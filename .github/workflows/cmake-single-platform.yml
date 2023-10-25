@@ -32,16 +32,11 @@ jobs:
       # Build your program with the given configuration
       run: make -j32
 
-    - name: Zip Artifact
-      run: |
-        mkdir ${{github.workspace}}/dist
-        tar -czvf ${{github.workspace}}/dist/cmaker.tar.gz ${{github.workspace}}/build/
-
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
         name: cmaker-artifact
-        path: ${{github.workspace}}/dist/cmaker.tar.gz
+        path: ${{github.workspace}}/build/
 
     - name: BuildTest
       working-directory: ${{github.workspace}}
