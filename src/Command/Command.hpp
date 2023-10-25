@@ -1,4 +1,5 @@
 #pragma once
+#include <exception>
 #include <memory>
 #include "toml.hpp"
 #include <map>
@@ -25,7 +26,12 @@ namespace Command {
    */
   inline bool file_exists(const std::string& name) {
     std::ifstream file;
-    file.open(name);
+    try{
+      file.open(name);
+    }catch(std::exception e){
+      std::cout << "failed to open file: " << name << ENDL;
+      exit(0);
+    }
     // opening the file
     if (file) {
       std::cout << "file config.toml exists" << std::endl;

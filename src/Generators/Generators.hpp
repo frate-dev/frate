@@ -22,6 +22,77 @@ namespace Generators::ConfigToml{
   bool readData(std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml);
   bool writeConfig(std::shared_ptr<Command::Context> &ctx);
 
+  /*
+   * Validate cmakeVersion 
+   * @param prefix: the prefix of the message
+   * @param ctx: the context of the command
+   * @param config_toml: the config toml context
+   * @return: true if the cmake version is valid
+   */
+  bool cmakeVersion(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml);
+
+  /*
+   * Validates the project name
+   * @param prefix: the prefix of the message
+   * @param ctx: the context of the command
+   * @param config_toml: the config toml context
+   * @return: true if the project name is valid
+   */
+  bool projectName(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml);
+
+  /*
+   * Validates the project version
+   * @param prefix: the prefix of the message
+   * @param ctx: the context of the command
+   * @param config_toml: the config toml context
+   * @return: true if the project version is valid
+   */
+  bool projectVersion(std::string prefix,  std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml);
+  
+  /*
+   * Validates the language version
+   * @param prefix: the prefix of the message
+   * @param ctx: the context of the command
+   * @param config_toml: the config toml context
+   * @return: true if the language version is valid
+   */
+  bool languageVersion(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml);
+
+  /*
+   * Validates the compiler 
+   * @param prefix: the prefix of the message
+   * @param ctx: the context of the command
+   * @param config_toml: the config toml context
+   * @return: true if the language is valid
+   */
+  bool compiler(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml);
+
+  /*
+   * Validates the source directory
+   * @param prefix: the prefix of the message
+   * @param ctx: the context of the command
+   * @param config_toml: the config toml context
+   * @return: true if the source directory is valid
+   */
+  bool sourceDir(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml);
+
+  /*
+   * Validates the build directory
+   * @param prefix: the prefix of the message
+   * @param ctx: the context of the command
+   * @param config_toml: the config toml context
+   * @return: true if the build directory is valid
+   */
+  bool buildDir(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml);
+
+  /*
+   * Reads the data from the user
+   * @param ctx: the context of the command
+   * @param config_toml: the config toml context
+   * @return: true if the data is valid
+   */
+  bool includeDir(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml);
+
 }
 
 
