@@ -31,11 +31,25 @@ jobs:
       working-directory: ${{github.workspace}}
       # Build your program with the given configuration
       run: make -j32
+
+    - name: Zip Artifact
+      run: |
+        mkdir ${{github.workspace}}/dist
+        cp ${{github.workspace}}/build/* ${{github.workspace}}/dist/
+        tar -czvf cmaker.tar.gz ${{github.workspace}}/dist/
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: cmaker-artifact
+        path: ${{github.workspace}}/dist/cmaker.tar.gz
+
     - name: BuildTest
       working-directory: ${{github.workspace}}
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: cmake -DCMAKE_BUILD_TYPE=Test ./ && make -j32
+
     - name: RunTest
       working-directory: ${{github.workspace}}
       run: ./build/cmaker
