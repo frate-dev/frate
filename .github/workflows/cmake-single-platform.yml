@@ -35,8 +35,7 @@ jobs:
     - name: Zip Artifact
       run: |
         mkdir ${{github.workspace}}/dist
-        cp ${{github.workspace}}/build/* ${{github.workspace}}/dist/
-        tar -czvf ${{github.workspace}}/dist/cmaker.tar.gz ${{github.workspace}}/dist/
+        tar -czvf ${{github.workspace}}/dist/cmaker.tar.gz ${{github.workspace}}/build/
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
