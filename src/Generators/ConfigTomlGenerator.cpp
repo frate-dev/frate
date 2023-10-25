@@ -13,25 +13,25 @@ namespace Generators::ConfigToml {
    * @return: true if the version is valid
    */
   bool cmakeVersion(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
-    std::cout << prefix << ENDL;
+    std::cout << prefix;
     std::getline(std::cin, config_toml->cmake_version);
-    bool valid_version = false;
-    //Checking if the version is x.x.x 
-    if(std::regex_match(config_toml->cmake_version, std::regex("^[0-9]+\\.[0-9]+\\.[0-9]+$"))) {
-      valid_version = true;
-    }
-    //Checking if the version is x.x
-    if(std::regex_match(config_toml->cmake_version, std::regex("^[0-9]+\\.[0-9]+$"))) {
-      valid_version = true;
-    }
     //If the version is empty we're gonna set it
     if(config_toml->cmake_version == "") {
-      valid_version = true;
+      goto end;
     }
-
-    ctx->cmake_version = config_toml->cmake_version == "" ? ctx->cmake_version : config_toml->cmake_version;
+    //Checking if the version is x.x.x 
+    if(std::regex_match(config_toml->cmake_version, std::regex("^[0-9]+\\.[0-9]+\\.[0-9]+$"))) {
+      goto end;
+    }
+    //Checking if the version is x.x
+    if(!std::regex_match(config_toml->cmake_version, std::regex("^[0-9]+\\.[0-9]+$"))) {
+      goto end;
+    }
+    return false;
+    end:
+      ctx->cmake_version = config_toml->cmake_version == "" ? ctx->cmake_version : config_toml->cmake_version;
     
-    return valid_version;
+    return true;
   }
 
   /*
@@ -42,21 +42,22 @@ namespace Generators::ConfigToml {
    * @return: true if the project name is valid
    */
   bool projectName(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
-    std::cout << prefix << ENDL;
+    std::cout << prefix;
     std::getline(std::cin, config_toml->project_name);
-    bool valid_name = false;
-    //Checking if the name is valid
-    if(std::regex_match(config_toml->project_name, std::regex("^[a-zA-Z0-9_-]+$"))) {
-      valid_name = true;
-    }
     //If the name is empty we're gonna set it
     if(config_toml->project_name == "") {
-      valid_name = true;
-      return valid_name;
-    }
+      goto end;
 
-    ctx->project_name = config_toml->project_name == "" ? ctx->project_name : config_toml->project_name;
-    return valid_name;
+    }
+    //Checking if the name is valid
+    if(std::regex_match(config_toml->project_name, std::regex("^[a-zA-Z0-9_-]+$"))) {
+      goto end;
+    }
+    return false;
+    end:
+      ctx->project_name = config_toml->project_name == "" ? ctx->project_name : config_toml->project_name;
+
+    return true;
   }
 
   /*
@@ -66,26 +67,26 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the project version is valid
    */
-  bool projectVersion(std::string,  std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
-    std::cout << "🗃️Version: (" << ctx->project_version << "): ";
+  bool projectVersion(std::string prefix,  std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
+    std::cout << prefix;
     std::getline(std::cin, config_toml->project_version);
-    bool valid_version = false;
+    if(config_toml->project_version == "") {
+      goto end;
+    }
     //Checking if the version is x.x.x 
     if(std::regex_match(config_toml->project_version, std::regex("^[0-9]+\\.[0-9]+\\.[0-9]+$"))) {
-      valid_version = true;
+      goto end;
     }
     //Checking if the version is x.x
     if(std::regex_match(config_toml->project_version, std::regex("^[0-9]+\\.[0-9]+$"))) {
-      valid_version = true;
+      goto end;
     }
+    return false;
     //If the version is empty we're gonna set it
-    if(config_toml->project_version == "") {
-      valid_version = true;
-    }
-
-    ctx->project_version = config_toml->project_version == "" ? ctx->project_version : config_toml->project_version;
+    end:
+      ctx->project_version = config_toml->project_version == "" ? ctx->project_version : config_toml->project_version;
     
-    return valid_version;
+    return true;
 
   }
   
@@ -96,34 +97,33 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the language version is valid
    */
-  bool languageVersion(std::string, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
-    std::cout << "📰Language Standard: (" << ctx->lang_version << "): ";
+  bool languageVersion(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
+    std::cout << prefix;
     std::getline(std::cin, config_toml->lang_version);
-    bool valid_version = false;
+    std::vector<std::string> valid_c_versions = {"89", "90", "94", "99", "11", "18"};
+    std::vector<std::string> valid_cpp_versions = {"98", "03", "11", "14", "17", "20","23"};
 
     //If the version is empty we're gonna set it
     if(config_toml->lang_version == "") {
-      valid_version = true;
+      goto end;
     }
-
-    //check if the version is valid for c++
-    if (config_toml->lang_version == "98" || config_toml->lang_version == "03" ||   config_toml->lang_version == "11" || config_toml->lang_version == "14" || config_toml->lang_version == "17" || config_toml->lang_version == "20" ) {
-      if(config_toml->lang == "c"){
-        valid_version = false;
+    for(std::string version : valid_c_versions) {
+      if(config_toml->lang_version == version) {
+        goto end;
+        break;
       }
-      valid_version = true;
     }
-    //check if the version is valid for c
-    if (config_toml->lang_version == "89" || config_toml->lang_version == "90" ||   config_toml->lang_version == "94" || config_toml->lang_version == "99" || config_toml->lang_version == "11" || config_toml->lang_version == "18" ) {
-      if(config_toml->lang == "cpp"){
-        valid_version = false;
+    for(std::string version : valid_cpp_versions) {
+      if(config_toml->lang_version == version) {
+        goto end;
+        break;
       }
-      valid_version = true;
     }
-
-    ctx->lang_version = config_toml->lang_version == "" ? ctx->lang_version : config_toml->lang_version;
+    return false;
+    end:
+      ctx->lang_version = config_toml->lang_version == "" ? ctx->lang_version : config_toml->lang_version;
     
-    return valid_version;
+    return true;
   }
 
   /*
@@ -133,32 +133,30 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the language is valid
    */
-  bool compiler(std::string, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
-    std::cout << "💽Compiler: (" << ctx->compiler << "): ";
+  bool compiler(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
+    std::cout << prefix;
     std::getline(std::cin, config_toml->compiler);
-    bool valid_compiler = false;
     //If the compiler is empty we're gonna set it
     if(config_toml->compiler == "") {
-      valid_compiler = true;
+      goto end;
     }
     //check if the compiler is valid for c++
     if (config_toml->compiler == "g++" || config_toml->compiler == "clang" ||   config_toml->compiler == "msvc" || config_toml->compiler == "icc" || config_toml->compiler == "tcc" || config_toml->compiler == "emcc" ) {
       if(config_toml->lang == "c"){
-        valid_compiler = false;
+        goto end;
       }
-      valid_compiler = true;
     }
     //check if the compiler is valid for c
     if (config_toml->compiler == "gcc" || config_toml->compiler == "clang" ||   config_toml->compiler == "msvc" || config_toml->compiler == "icc" || config_toml->compiler == "tcc" || config_toml->compiler == "emcc" ) {
-      if(config_toml->lang == "cpp"){
-        valid_compiler = false;
+      if(config_toml->lang == "c"){
+        goto end;
       }
-      valid_compiler = true;
     }
-
-    ctx->compiler = config_toml->compiler == "" ? ctx->compiler : config_toml->compiler;
+    return false;
+    end:
+      ctx->compiler = config_toml->compiler == "" ? ctx->compiler : config_toml->compiler;
     
-    return valid_compiler;
+    return true;
   }
 
   /*
@@ -168,25 +166,25 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the source directory is valid
    */
-  bool sourceDir(std::string, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
-    std::cout << "⛲Source Dir: (" << ctx->src_dir << "): ";
+  bool sourceDir(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
+    std::cout << prefix;
     std::getline(std::cin, config_toml->src_dir);
-    bool valid_src_dir = false;
     //If the source directory is empty we're gonna set it
     if(config_toml->src_dir == "") {
-      valid_src_dir = true;
+      goto end;
     }
     //check if the source directory is valid
     if (std::regex_match(config_toml->src_dir, std::regex("^[a-zA-Z0-9_-]+$"))) {
-      valid_src_dir = true;
+      goto end;
     }
     if (config_toml->src_dir == "src") {
-      valid_src_dir = false;
+      goto end;
     }
-
-    ctx->src_dir = config_toml->src_dir == "" ? ctx->src_dir : config_toml->src_dir;
+    return false;
+    end:
+      ctx->src_dir = config_toml->src_dir == "" ? ctx->src_dir : config_toml->src_dir;
     
-    return valid_src_dir;
+    return true;
   }
 
   /*
@@ -196,21 +194,25 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the build directory is valid
    */
-  bool buildDir(std::string, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) { std::cout << "🛠️Build Dir: (" << ctx->build_dir << "): ";
+  bool buildDir(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) { 
+    std::cout << prefix;
     std::getline(std::cin, config_toml->build_dir);
-    bool valid_build_dir = false;
     //If the build directory is empty we're gonna set it
     if(config_toml->build_dir == "") {
-      valid_build_dir = true;
+      goto end;
+    }
+    if (config_toml->build_dir == "build") {
+      goto end;
     }
     //check if the build directory is valid
     if (std::regex_match(config_toml->build_dir, std::regex("^[a-zA-Z0-9_-]+$"))) {
-      valid_build_dir = true;
+      goto end;
     }
-
-    ctx->build_dir = config_toml->build_dir == "" ? ctx->build_dir : config_toml->build_dir;
+    return false;
+    end:
+      ctx->build_dir = config_toml->build_dir == "" ? ctx->build_dir : config_toml->build_dir;
     
-    return valid_build_dir;
+    return true;
   }
 
   /*
@@ -219,48 +221,57 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the data is valid
    */
-  bool includeDir(std::string, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
-    std::cout << "🫃Include Dir: (" << ctx->include_dir << "): ";
+  bool includeDir(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
+    std::cout << prefix;
     std::getline(std::cin, config_toml->include_dir);
-    bool valid_include_dir = false;
     //If the include directory is empty we're gonna set it
     if(config_toml->include_dir == "") {
-      valid_include_dir = true;
+      goto end;
     }
     //check if the include directory is valid
     if (std::regex_match(config_toml->include_dir, std::regex("^[a-zA-Z0-9_-]+$"))) {
-      valid_include_dir = true;
+      goto end;
     }
 
-    ctx->include_dir = config_toml->include_dir == "" ? ctx->include_dir : config_toml->include_dir;
+    return false;
+    end:
+      ctx->include_dir = config_toml->include_dir == "" ? ctx->include_dir : config_toml->include_dir;
     
-    return valid_include_dir;
+    return true;
   }
 
 
   bool readData(std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     if (!cmakeVersion("🔨Cmake version: (" + ctx->cmake_version + "): ", ctx, config_toml)) {
+      std::cout << "Invalid cmake version - retry" << std::endl;
       readData(ctx, config_toml);
     }
     if (!projectName("📖Project name: (" + ctx->project_name + "): ", ctx, config_toml)) {
+      std::cout << "Invalid project name - retry" << std::endl;
       readData(ctx, config_toml);
     }  
     if (!projectVersion("🗃️Version: (" + ctx->project_version + "): ", ctx, config_toml)) {
+      std::cout << "Invalid project version - retry" << std::endl;
       readData(ctx, config_toml);
     }
     if (!languageVersion("📰Language Standard: (" + ctx->lang_version + "): ", ctx, config_toml)) {
+      std::cout << "Invalid language version - retry" << std::endl;
       readData(ctx, config_toml);
     }
     if (!compiler("💽Compiler: (" + ctx->compiler + "): ", ctx, config_toml)) {
+      std::cout << "Invalid compiler - retry" << std::endl;
       readData(ctx, config_toml);
     }
     if (!sourceDir("⛲Source Dir: (" + ctx->src_dir + "): ", ctx, config_toml)) {
+      std::cout << "Invalid source directory - retry" << std::endl;
       readData(ctx, config_toml);
     }
     if (!buildDir("🛠️Build Dir: (" + ctx->build_dir + "): ", ctx, config_toml)) {
+      std::cout << "Invalid build directory - retry" << std::endl;
       readData(ctx, config_toml);
     }
     if (!includeDir("🫃Include Dir: (" + ctx->include_dir + "): ", ctx, config_toml)) {
+      std::cout << "Invalid include directory - retry" << std::endl;
       readData(ctx, config_toml);
     }
     return true;
