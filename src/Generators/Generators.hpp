@@ -3,6 +3,27 @@
 #include <format>
 #include "../Command/Command.hpp"
 
+namespace Generators::ConfigToml{
+
+  typedef struct ConfigToml{
+    std::string cmake_version;
+    std::string project_name;
+    std::string project_version;
+    std::string include_dir;
+    std::string compiler;
+    std::string name;
+    std::string src_dir;
+    std::string build_dir;
+    std::string lang;
+    std::string lang_version;
+    std::string authors_str;
+  } ConfigToml;
+
+  bool readData(std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml);
+
+}
+
+
 
 namespace Generators::CMakeList{
   typedef struct Dep {
@@ -35,9 +56,6 @@ namespace Generators::CMakeList{
    * @return a vector of dependencies that will be later combined to build the cmake file
    */
   void generateDeps(std::shared_ptr<Command::Context> ctx, std::shared_ptr<CMakeContext> cmake_context);
-
-
-  
   
   bool create(std::shared_ptr<Command::Context> ctx); 
 }
