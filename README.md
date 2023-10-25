@@ -1,4 +1,4 @@
-# cmake-generator
+# cmaker
 This command line application came to fruition out of the desperate hopes and dreams of a few people looking to softly lighten their suffering while using c++. 
 
 # STAR THE REPO
@@ -22,7 +22,6 @@ todo!
 - [ ] more scuff
 - [ ] package manager
 - [ ] tests
-- [ ] 
 
 ### Your friend in the world of C/C++
 cmake-generator is a command line utility used to expedite building modern c/c++ applications.
