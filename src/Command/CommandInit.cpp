@@ -15,75 +15,8 @@ namespace Command {
 
 
 bool createToml(std::shared_ptr<Context> ctx) {
-  std::ofstream file;
-  std::string file_name = "config.toml";
-  #ifdef DEBUG
-      file_name  ="build/config.toml";
-  #endif
-    std::string cmake_version;
-  std::string project_name;
-  std::string project_version;
-  std::string include_dir;
-  std::string compiler;
-  std::string name;
-  std::string src_dir;
-  std::string build_dir;
-  std::string lang;
-  std::string lang_version;
-  std::string authors_str;
-
-  std::cout << "🔨Cmake version: (" << ctx->cmake_version << "): ";
-  std::getline(std::cin, cmake_version);
-  std::cout << "📖Project name: (" << ctx->project_name << "): ";
-  std::getline(std::cin, project_name);
-  std::cout << "🗃️Version: (" << ctx->project_version << "): ";
-  std::getline(std::cin, project_version);
-  std::cout << "📰Language Standard: (" << ctx->lang_version << "): ";
-  std::getline(std::cin, lang_version);
-  std::cout << "💽Compiler: (" << ctx->compiler << "): ";
-  std::getline(std::cin, compiler);
-  std::cout << "⛲Source Dir: (" << ctx->src_dir << "): ";
-  std::getline(std::cin, src_dir);
-  std::cout << "🛠️Build Dir: (" << ctx->build_dir << "): ";
-  std::getline(std::cin, build_dir);
-  std::cout << "🫃Include Dir: (" << ctx->include_dir << "): ";
-  std::getline(std::cin, include_dir);
-
-  ctx->cmake_version = cmake_version == "" ? ctx->cmake_version : cmake_version;
-  ctx->project_name = project_name == "" ? ctx->project_name : project_name;
-  ctx->project_version =
-      project_version == "" ? ctx->project_version : project_version;
-  ctx->lang_version = lang_version == "" ? ctx->lang_version : lang_version;
-  ctx->lang = lang == "" ? ctx->lang : lang;
-  ctx->compiler = compiler == "" ? ctx->compiler : compiler;
-  ctx->src_dir = src_dir == "" ? ctx->src_dir : src_dir;
-  ctx->build_dir = build_dir == "" ? ctx->build_dir : build_dir;
-  ctx->include_dir = include_dir == "" ? ctx->include_dir : include_dir;
-
-  toml::array authors = toml::array{};
-  toml::table table = toml::table{
-      {"project",
-       toml::table{
-           {"cmake_version", ctx->cmake_version},
-           {"include_dir", ctx->include_dir},
-           {"project_version", ctx->project_version},
-           {"compiler", ctx->compiler},
-           {"project_name", ctx->project_name},
-           {"authors", authors},
-           {"src_dir", ctx->src_dir},
-           {"build_dir", ctx->build_dir},
-           {"lang", ctx->lang},
-           {"lang_version", ctx->lang_version},
-       }},
-  };
-  std::cout << "📄New Toml File: \n";
-  std::cout << table << '\n';
-
-
-  file.open(ctx->project_path / file_name);
-  file << table;
-  file << '\n';
-  file.close();
+  std::shared_ptr<Generators::ConfigToml::ConfigToml>config_toml;
+  Generators::ConfigToml::readData(ctx, config_toml);
   return false;
 }
 
@@ -135,10 +68,6 @@ bool createCProject(std::shared_ptr<Context> ctx) {
 }
 
 
-
-
-
-
 bool defaultTomlCpp(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
   std::string language = args["language"].as<std::string>();
   std::string name = args["name"].as<std::string>();
@@ -170,7 +99,6 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
      file_name = "build/config.toml";
   #endif
 
-
   file.open(ctx->project_path / file_name);
   file << table;
   file << '\n';
@@ -181,7 +109,7 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
 bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
   std::string file_name = "config.toml";
   #ifdef DEBUG
-  file_name = "build/config.toml";
+    file_name = "build/config.toml";
   #endif
   file_exists(file_name);
   if(ctx->project_path.empty()){
@@ -191,10 +119,6 @@ bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
   std::cout << "project path" << ctx->project_path << ENDL;
   std::cout << "config.toml path" << ctx->project_path / file_name << ENDL;
   std::string current_path =  ctx->project_path.string();
-  auto const dir { current_path
-    | std::views::split('\\')
-  };
-
 
 
   if (args["skip-init"].as<bool>()) {
