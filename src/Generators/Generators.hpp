@@ -19,7 +19,7 @@ namespace Generators::ConfigToml{
     std::string authors_str;
   } ConfigToml;
 
-  bool readData(std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml);
+  bool readData(std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml);
 
 }
 

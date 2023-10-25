@@ -12,7 +12,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the version is valid
    */
-  bool cmakeVersion(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool cmakeVersion(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << prefix << ENDL;
     std::getline(std::cin, config_toml->cmake_version);
     bool valid_version = false;
@@ -41,7 +41,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the project name is valid
    */
-  bool projectName(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool projectName(std::string prefix, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << prefix << ENDL;
     std::getline(std::cin, config_toml->project_name);
     bool valid_name = false;
@@ -66,7 +66,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the project version is valid
    */
-  bool projectVersion(std::string,  std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool projectVersion(std::string,  std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << "🗃️Version: (" << ctx->project_version << "): ";
     std::getline(std::cin, config_toml->project_version);
     bool valid_version = false;
@@ -96,7 +96,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the language version is valid
    */
-  bool languageVersion(std::string, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool languageVersion(std::string, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << "📰Language Standard: (" << ctx->lang_version << "): ";
     std::getline(std::cin, config_toml->lang_version);
     bool valid_version = false;
@@ -133,7 +133,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the language is valid
    */
-  bool compiler(std::string, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool compiler(std::string, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << "💽Compiler: (" << ctx->compiler << "): ";
     std::getline(std::cin, config_toml->compiler);
     bool valid_compiler = false;
@@ -168,7 +168,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the source directory is valid
    */
-  bool sourceDir(std::string, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool sourceDir(std::string, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << "⛲Source Dir: (" << ctx->src_dir << "): ";
     std::getline(std::cin, config_toml->src_dir);
     bool valid_src_dir = false;
@@ -196,7 +196,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the build directory is valid
    */
-  bool buildDir(std::string, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) { std::cout << "🛠️Build Dir: (" << ctx->build_dir << "): ";
+  bool buildDir(std::string, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) { std::cout << "🛠️Build Dir: (" << ctx->build_dir << "): ";
     std::getline(std::cin, config_toml->build_dir);
     bool valid_build_dir = false;
     //If the build directory is empty we're gonna set it
@@ -219,7 +219,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the data is valid
    */
-  bool includeDir(std::string, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool includeDir(std::string, std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     std::cout << "🫃Include Dir: (" << ctx->include_dir << "): ";
     std::getline(std::cin, config_toml->include_dir);
     bool valid_include_dir = false;
@@ -238,7 +238,7 @@ namespace Generators::ConfigToml {
   }
 
 
-  bool readData(std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool readData(std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
     if (!cmakeVersion("🔨Cmake version: (" + ctx->cmake_version + "): ", ctx, config_toml)) {
       readData(ctx, config_toml);
     }
@@ -268,7 +268,7 @@ namespace Generators::ConfigToml {
 
 
 
-  bool writeConfig(std::shared_ptr<Command::Context> ctx){
+  bool writeConfig(std::shared_ptr<Command::Context> &ctx){
     toml::array authors = toml::array{};
     toml::table table = toml::table{
       {"project",

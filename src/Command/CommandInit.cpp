@@ -5,7 +5,7 @@
 #include <ranges>
 #include <format>
 #include <fstream>
-#include <iostream>
+#include <iostream> 
 #include <string>
 #include "../Generators/Generators.hpp"
 
@@ -15,7 +15,8 @@ namespace Command {
 
 
 bool createToml(std::shared_ptr<Context> ctx) {
-  std::shared_ptr<Generators::ConfigToml::ConfigToml>config_toml;
+  //Lucas did it again
+  std::shared_ptr<Generators::ConfigToml::ConfigToml>config_toml = std::make_shared<Generators::ConfigToml::ConfigToml>();
   Generators::ConfigToml::readData(ctx, config_toml);
   return false;
 }
