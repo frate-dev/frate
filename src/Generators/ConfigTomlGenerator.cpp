@@ -292,7 +292,7 @@ namespace Generators::ConfigToml {
     #ifdef DEBUG
       file_name  ="build/config.toml";
     #endif
-
+    std::cout << table << '\n';
     file.open(ctx->project_path / file_name);
     file << table;
     file << '\n';

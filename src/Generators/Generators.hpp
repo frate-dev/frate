@@ -20,6 +20,7 @@ namespace Generators::ConfigToml{
   } ConfigToml;
 
   bool readData(std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml);
+  bool writeConfig(std::shared_ptr<Command::Context> &ctx);
 
 }
 
