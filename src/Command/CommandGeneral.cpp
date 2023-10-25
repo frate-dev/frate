@@ -102,19 +102,24 @@ namespace Command {
     std::string cmake_minimum_required =
       std::format("cmake_minimum_required(VERSION {})", ctx->cmake_version);
     std::string project_name =
-      std::format("project ( \n\
-      {} \n\
-          VERSION {}\n\
-          LANGUAGES CXX\n\
-          )",
+      std::format("project ({} VERSION {} LANGUAGES CXX)",
           ctx->project_name, ctx->project_version);
-    std::string build_type =
-      "if (CMAKE_BUILD_TYPE STREQUAL \"Release\")\n\tmessage(\"Release "
-      "mode\")\n\tset(RELEASE 1)\nelseif(CMAKE_BUILD_TYPE STREQUAL "
-      "\"Debug\")\n\tmessage(\"Debug mode\")\n\tset(RELEASE "
-      "0)\nelseif(CMAKE_BUILD_TYPE STREQUAL \"Test\")\n\tmessage(\"Test "
-      "mode\")\n\tset(RELEASE 0)\n\tset(TEST_MODE 1)\n"
-      "else()\n\tmessage(\"Default mode\")\n\tset(RELEASE 0)\nendif()";
+    std::string build_type = R"V0G0N(
+      if (CMAKE_BUILD_TYPE STREQUAL "Release")
+        message("Release mode")
+        set(RELEASE 1)
+      elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        message("Debug mode")
+        set(RELEASE 0)
+      elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
+        message("Test mode")
+        set(RELEASE 0)
+        set(TEST_MODE 1)
+      else()
+        message("Default mode")
+        set(RELEASE 0)
+      endif()
+      )V0G0N";
     std::string cxx_version =
       std::format("set(CMAKE_CXX_STANDARD {})", ctx->lang_version);
     std::string compiler =
@@ -122,9 +127,15 @@ namespace Command {
     std::string source_dir = std::format("set(SOURCE_DIR {})", ctx->src_dir);
     std::string build_dir = std::format("set(BUILD_DIR {})", ctx->build_dir);
     std::string FetchContent = "include(FetchContent)";
-    std::string files = "file(GLOB_RECURSE SOURCES RELATIVE "
-      "${CMAKE_SOURCE_DIR}\n\t\"include/**.h\"\n "
-      "\"include/**.hpp\"\n\t\"src/**.cpp\"\n\t\"src/**.c\"\n)";
+
+    std::string files = R"V0G0N(
+      file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
+        "include/**.h"
+        "include/**.hpp"
+        "src/**.cpp"
+        "src/**.c"
+        )
+      )V0G0N";
     typedef struct make_dep {
       std::string fetch_declare;
       std::string fetch_make_available;
@@ -134,9 +145,16 @@ namespace Command {
     std::vector<make_dep> dependencies;
     for (Command::dependency &dep : ctx->dependencies) {
       std::string FetchContent_Declare =
-        std::format("FetchContent_Declare(\n\t{} \n\tGIT_REPOSITORY "
-            "\"{}\"\n\tGIT_TAG \"{}\"\n)",
-            dep.name, dep.url, dep.version);
+        std::format(
+        R"V0G0N(
+        FetchContent_Declare(
+          {}
+          GIT_REPOSITORY "{}"
+          GIT_TAG "{}"
+        )
+        )V0G0N",
+        dep.name, dep.url, dep.version);
+
       std::string FetchContent_MakeAvailable =
         std::format("FetchContent_MakeAvailable({})", dep.name);
       std::string target_link_libraries = std::format(
@@ -153,13 +171,17 @@ namespace Command {
     std::string add_executable =
       std::format("add_executable({} ", ctx->project_name) + "${SOURCES})";
     std::string testing = "ok";
-    std::string mode =
-      "if(RELEASE EQUAL 1)\n\tset(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -O2 "
-      "-Wextra -Wpedantic "
-      "-Wall\")\n\tadd_definitions(-DRELEASE)\nelse()\n\tadd_definitions(-"
-      "DDEBUG)"
-      "\n\tset(CMAKE_CXX_FLAGS \"${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic "
-      "-Wall\")\n\tif(TEST_MODE EQUAL 1)\n\tendif()\nendif()";
+    std::string mode = R"V0G0N(
+      if(RELEASE EQUAL 1)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wextra -Wpedantic -Wall")
+        add_definitions(-DRELEASE)
+      else()
+        add_definitions(-DDEBUG)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
+        if(TEST_MODE EQUAL 1)
+        endif()
+      endif()
+      )V0G0N";
     std::string set_build_dir = std::format(
         "set_target_properties({} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {})",
         ctx->project_name, ctx->build_dir);
