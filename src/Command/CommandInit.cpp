@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "../Generators/Generators.hpp"
 
 namespace Command {
 
@@ -120,7 +121,7 @@ bool createCppProject(std::shared_ptr<Context> ctx) {
 
   createToml(ctx);
   loadPackageToml(ctx);
-  Command::createCMakelists(ctx);
+  Generators::CMakeList::create(ctx);
   createHelloWorldCpp(ctx);
   return true;
 }
@@ -128,7 +129,7 @@ bool createCppProject(std::shared_ptr<Context> ctx) {
 bool createCProject(std::shared_ptr<Context> ctx) {
   createToml(ctx);
   loadPackageToml(ctx);
-  Command::createCMakelists(ctx);
+  Generators::CMakeList::create(ctx);
   createHelloWorldC(ctx);
   return false;
 }
@@ -207,7 +208,7 @@ bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
     }
 
     loadPackageToml(ctx);
-    createCMakelists(ctx);
+    Generators::CMakeList::create(ctx);
     createHelloWorldCpp(ctx);
   } else {
     while (true) {

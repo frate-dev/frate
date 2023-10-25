@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <cxxopts.hpp>
+#include "../Generators/Generators.hpp"
 
 namespace Command {
 
@@ -34,7 +35,7 @@ namespace Command {
     }
     std::cout << ctx->dependencies.size() << std::endl;
     Command::writePackageToml(ctx);
-    Command::createCMakelists(ctx);
+    Generators::CMakeList::create(ctx);
     return true;
   }
 }
