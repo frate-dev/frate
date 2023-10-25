@@ -159,6 +159,7 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
        }},
   };
 
+
   std::cout << "📄 New Toml File: \n";
   std::cout << table << '\n';
 

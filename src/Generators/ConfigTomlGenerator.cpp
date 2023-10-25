@@ -2,9 +2,37 @@
 #include "../Command/Command.hpp"
 #include <string>
 #include <iostream>
+#include <regex>
 
 namespace Generators::ConfigToml {
- 
+  /*
+   * Validates the cmake version
+   * @param prefix: the prefix of the message
+   * @param ctx: the context of the command
+   * @param config_toml: the config toml context
+   * @return: true if the version is valid
+   */
+  bool cmakeVersion(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+    std::cout << prefix << ENDL;
+    std::getline(std::cin, config_toml->cmake_version);
+    bool valid_version = false;
+    //Checking if the version is x.x.x 
+    if(std::regex_match(config_toml->cmake_version, std::regex("^[0-9]+\\.[0-9]+\\.[0-9]+$"))) {
+      valid_version = true;
+    }
+    //Checking if the version is x.x
+    if(std::regex_match(config_toml->cmake_version, std::regex("^[0-9]+\\.[0-9]+$"))) {
+      valid_version = true;
+    }
+    //If the version is empty we're gonna set it
+    if(config_toml->cmake_version == "") {
+      valid_version = true;
+    }
+
+    ctx->cmake_version = config_toml->cmake_version == "" ? ctx->cmake_version : config_toml->cmake_version;
+    
+    return valid_version;
+  }
 
   bool readData(std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
     std::cout << "🔨Cmake version: (" << ctx->cmake_version << "): ";
