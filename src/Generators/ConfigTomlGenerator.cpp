@@ -54,9 +54,13 @@ namespace Generators::ConfigToml {
 
     }
     //Checking if the name is valid
+    if ((config_toml->project_name.size() > 255)) {
+      return false;
+    }
     if(std::regex_match(config_toml->project_name, std::regex("^[a-zA-Z0-9_-]+$"))) {
       goto end;
     }
+
     return false;
     end:
       ctx->project_name = config_toml->project_name == "" ? ctx->project_name : config_toml->project_name;
@@ -185,11 +189,17 @@ namespace Generators::ConfigToml {
     if(config_toml->src_dir == "") {
       goto end;
     }
+    if (config_toml->src_dir.size() > 255) {
+      return false;
+    }
     //check if the source directory is valid
     if (std::regex_match(config_toml->src_dir, std::regex("^[a-zA-Z0-9_-]+$"))) {
       goto end;
     }
     if (config_toml->src_dir == "src") {
+      goto end;
+    }
+    if (sizeof(config_toml->src_dir) > 255) {
       goto end;
     }
     return false;
@@ -215,11 +225,17 @@ namespace Generators::ConfigToml {
     if(config_toml->build_dir == "") {
       goto end;
     }
+    if (config_toml->build_dir.size() > 255) {
+      return false;
+    }
     if (config_toml->build_dir == "build") {
       goto end;
     }
     //check if the build directory is valid
     if (std::regex_match(config_toml->build_dir, std::regex("^[a-zA-Z0-9_-]+$"))) {
+      goto end;
+    }
+    if (sizeof(config_toml->build_dir) > 255) {
       goto end;
     }
     return false;
@@ -244,6 +260,10 @@ namespace Generators::ConfigToml {
     if(config_toml->include_dir == "") {
       goto end;
     }
+    if (config_toml->include_dir.size() > 255) {
+      return false;
+    }
+
     //check if the include directory is valid
     if (std::regex_match(config_toml->include_dir, std::regex("^[a-zA-Z0-9_-]+$"))) {
       goto end;

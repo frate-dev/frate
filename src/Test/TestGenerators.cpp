@@ -4,6 +4,8 @@
 #include <memory>
 
 namespace Test::Generators {
+
+  const std::string long_string = "LoremipsumdolorsitametofficiaexcepteurexfugiatreprehenderitenimlaboreculpasintadnisiLorempariaturmollitexesseexercitationametNisianimcupidatatexcepteurofficiaReprehenderitnostrudnostrudipsumLoremestaliquipametvoluptatevoluptatedolorminimnullaestproidentNostrudofficiapariaturutofficiaSitirureelitesseeanullasuntexoccaecatreprehenderitcommodoofficiadolorLoremduislaboriscupidatatofficiavoluptateCulpaproidentadipisicingidnullanisilaborisexinLoremsuntduisofficiaeiusmodAliquareprehenderitcommodoexnonexcepteurduissuntvelitenimVoluptatelaborissintcupidatatullamcouteaconsecteturetestculpaetculpaduisLoremipsumdolorsitametofficiaexcepteurexfugiatreprehenderitenimlaboreculpasintadnisiLorempariaturmollitexesseexercitationametNisianimcupidatatexcepteurofficiaReprehenderitnostrudnostrudipsumLoremestaliquipametvoluptatevoluptatedolorminimnullaestproidentNostrudofficiapariaturutofficiaSitirureelitesseeanullasuntexoccaecatreprehenderitcommodoofficiadolorLoremduislaboriscupidatatofficiavoluptateCulpaproidentadipisicingidnullanisilaborisexinLoremsuntduisofficiaeiusmodAliquareprehenderitcommodoexnonexcepteurduissuntvelitenimVoluptatelaborissintcupidatatullamcouteaconsecteturetestculpaetculpaduis";
   namespace CMakeLists {
     bool testCmakeVersion(){
       std::vector<std::string> versions{"3.28", "3.27", "3.26", "3.25", "3.24", "3.23", "3.22", "3.21", "3.20", "3.19", "3.18", "3.17", "3.16", "3.15", "3.14", "3.13", "3.12", "3.11", "3.10", "3.9", "3.8", "3.7", "3.6", "3.5", "3.4", "3.3", "3.2", "3.1", "3.0"};
@@ -48,12 +50,12 @@ namespace Test::Generators {
         "Test Project^123",
         "Test Project%123",
         "Test Project$123",
+        long_string,
         "Test Project_123-123",
         "Test Project&123",
         "Test Project#123",
         "Test Project@123-123",
       };
-      bool result = true;
 
       for(std::string name : mock_names){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
@@ -204,7 +206,7 @@ namespace Test::Generators {
 
     bool testSourceDir(){
       std::vector<std::string> passing_source_dirs = {"src","source","sources","srcs","src_dir","source_dir","sources_dir","srcs_dir"};
-      std::vector<std::string> failing_source_dirs = {"S*($#*(@","*(\&\$\^","srcs_dir//*$","src_dir//348934","source_dir///84$#*","sources_dir*$(@#"};
+      std::vector<std::string> failing_source_dirs = {"S*($#*(@","*(\&\$\^","srcs_dir//*$", long_string,"src_dir//348934","source_dir///84$#*","sources_dir*$(@#"};
 
       for(std::string source_dir : passing_source_dirs){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
@@ -230,7 +232,7 @@ namespace Test::Generators {
     };
     bool testBuildDir(){
       std::vector<std::string> passing_build_dirs = {"build","build_dir","builds","builds_dir"};
-      std::vector<std::string> failing_build_dirs = {"B*($#*(@","*(\&\$\^","builds_dir//*$","build_dir//348934","builds_dir///84$#*","builds_dir*$(@#"};
+      std::vector<std::string> failing_build_dirs = {"B*($#*(@","*(\&\$\^","builds_dir//*$","build_dir//348934", long_string,"builds_dir///84$#*","builds_dir*$(@#"};
 
       for(std::string build_dir : passing_build_dirs){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
@@ -256,7 +258,7 @@ namespace Test::Generators {
     }
     bool testIncludeDir(){
       std::vector<std::string> passing_include_dirs = {"include","include_dir","includes","includes_dir"};
-      std::vector<std::string> failing_include_dirs = {"I*($#*(@","*(\&\$\^","includes_dir//*$","include_dir//348934","includes_dir///84$#*"};
+      std::vector<std::string> failing_include_dirs = {"I*($#*(@","*(\&\$\^","includes_dir//*$", long_string,"include_dir//348934","includes_dir///84$#*"};
 
       for(std::string include_dir : passing_include_dirs){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
