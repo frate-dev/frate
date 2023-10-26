@@ -59,7 +59,8 @@ jobs:
         file: ${{github.workspace}}/dist/release-${{github.run_number}}.tar.gz
         asset_name: cmaker-${{github.run_number}}
         tag: nightly
-        overwrite: true
-        body: "This is my release text"
+        overwrite: false
+        pre-release: true
+        body: "Release build: ${{github.run_number}}" 
       
 
