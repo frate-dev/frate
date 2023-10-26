@@ -35,7 +35,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: cmaker-artifact
+        name: cmaker-artifact-${{github.run_number}}
         path: ${{github.workspace}}/build/
 
     - name: BuildTest
@@ -47,5 +47,10 @@ jobs:
     - name: RunTest
       working-directory: ${{github.workspace}}
       run: ./build/cmaker
+
+    - name: Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: cmaker-artifact-${{github.run_number}}
       
 
