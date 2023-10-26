@@ -60,7 +60,9 @@ jobs:
         asset_name: cmaker-${{github.run_number}}
         tag: nightly
         overwrite: false
-        pre-release: true
-        body: "Release build: ${{github.run_number}}" 
+        prerelease: true
+        make_latest: true
+        release_name: "Alpha: ${{github.run_number}}"
+        body: "Alpha build: ${{github.run_number}}" 
       
 
