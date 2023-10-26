@@ -10,16 +10,15 @@
 #include "Test.hpp"
 
 
-namespace Tests::Commands {
+namespace Tests::Command {
 
-  std::string genBase64String() {
+  std::string genBase64String(int random_string_length) {
     std::string base64_chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
       "abcdefghijklmnopqrstuvwxyz"
       "0123456789-_";
 
     std::string random_string;
-    int random_string_length = 10;
     for (int i = 0; i < random_string_length; ++i) {
       random_string += base64_chars[(rand() + time(NULL)) % base64_chars.length()];
     }

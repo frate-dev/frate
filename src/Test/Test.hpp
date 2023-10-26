@@ -8,6 +8,7 @@
 
 namespace Tests::Command {
 
+  std::string genBase64String(int random_string_length);
   bool testCommandInit();
 }
 
