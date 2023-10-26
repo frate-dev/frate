@@ -22,7 +22,7 @@ namespace Test::Generators {
         std::shared_ptr<::Generators::ConfigToml::ConfigToml> cmake_context =
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->cmake_version = version;
-        if(!::Generators::ConfigToml::cmakeVersion("Testing version " + version + "\n",ctx, cmake_context)){
+        if(!::Generators::ConfigToml::validateCmakeVersion("Testing version " + version + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -32,7 +32,7 @@ namespace Test::Generators {
         std::shared_ptr<::Generators::ConfigToml::ConfigToml> cmake_context =
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->cmake_version = version;
-        if(::Generators::ConfigToml::cmakeVersion("Testing failing version " + version + "\n",ctx, cmake_context)){
+        if(::Generators::ConfigToml::validateCmakeVersion("Testing failing version " + version + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -67,7 +67,7 @@ namespace Test::Generators {
         std::shared_ptr<::Generators::ConfigToml::ConfigToml> cmake_context =
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->project_name = name;
-        if(!::Generators::ConfigToml::projectName("Test " + name + " \n",ctx, cmake_context)){
+        if(!::Generators::ConfigToml::validateProjectName("Test " + name + " \n",ctx, cmake_context)){
           return false;
         }
       }
@@ -77,7 +77,7 @@ namespace Test::Generators {
         std::shared_ptr<::Generators::ConfigToml::ConfigToml> cmake_context =
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->project_name = name;
-        if(::Generators::ConfigToml::projectName("Test failing name " + name + " \n",ctx, cmake_context)){
+        if(::Generators::ConfigToml::validateProjectName("Test failing name " + name + " \n",ctx, cmake_context)){
           return false;
         }
       }
@@ -92,7 +92,7 @@ namespace Test::Generators {
         std::shared_ptr<::Generators::ConfigToml::ConfigToml> cmake_context =
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->project_version = version;
-        if(!::Generators::ConfigToml::projectVersion("Testing version " + version + "\n",ctx, cmake_context)){
+        if(!::Generators::ConfigToml::validateProjectVersion("Testing version " + version + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -101,7 +101,7 @@ namespace Test::Generators {
         std::shared_ptr<::Generators::ConfigToml::ConfigToml> cmake_context =
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->project_version = version;
-        if(::Generators::ConfigToml::projectVersion("Testing failing version " + version + "\n",ctx, cmake_context)){
+        if(::Generators::ConfigToml::validateProjectVersion("Testing failing version " + version + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -121,7 +121,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->lang_version = version;
         cmake_context->lang = "cpp";
-        if(!::Generators::ConfigToml::languageVersion("Testing cpp language version " + version + "\n",ctx, cmake_context)){
+        if(!::Generators::ConfigToml::validateLanguageVersion("Testing cpp language version " + version + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -131,7 +131,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->lang_version = version;
         cmake_context->lang = "cpp";
-        if(::Generators::ConfigToml::languageVersion("Testing failing cpp language version " + version + "\n",ctx, cmake_context)){
+        if(::Generators::ConfigToml::validateLanguageVersion("Testing failing cpp language version " + version + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -141,7 +141,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->lang_version = version;
         cmake_context->lang = "c";
-        if(!::Generators::ConfigToml::languageVersion("Testing c language version " + version + "\n",ctx, cmake_context)){
+        if(!::Generators::ConfigToml::validateLanguageVersion("Testing c language version " + version + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -151,7 +151,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->lang_version = version;
         cmake_context->lang = "c";
-        if(::Generators::ConfigToml::languageVersion("Testing failing c language version " + version + "\n",ctx, cmake_context)){
+        if(::Generators::ConfigToml::validateLanguageVersion("Testing failing c language version " + version + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -171,7 +171,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->compiler = compiler;
         cmake_context->lang = "c";
-        if(!::Generators::ConfigToml::compiler("Testing c compiler " + compiler + "\n",ctx, cmake_context)){
+        if(!::Generators::ConfigToml::validateCompiler("Testing c compiler " + compiler + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -181,7 +181,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->compiler = compiler;
         cmake_context->lang = "c";
-        if(::Generators::ConfigToml::compiler("Testing failing c compiler " + compiler + "\n",ctx, cmake_context)){
+        if(::Generators::ConfigToml::validateCompiler("Testing failing c compiler " + compiler + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -191,7 +191,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->compiler = compiler;
         cmake_context->lang = "cpp";
-        if(!::Generators::ConfigToml::compiler("Testing cpp compiler " + compiler + "\n",ctx, cmake_context)){
+        if(!::Generators::ConfigToml::validateCompiler("Testing cpp compiler " + compiler + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -201,7 +201,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
         cmake_context->compiler = compiler;
         cmake_context->lang = "cpp";
-        if(::Generators::ConfigToml::compiler("Testing failing cpp compiler " + compiler + "\n",ctx, cmake_context)){
+        if(::Generators::ConfigToml::validateCompiler("Testing failing cpp compiler " + compiler + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -219,7 +219,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
 
         cmake_context->src_dir = source_dir;
-        if(!::Generators::ConfigToml::sourceDir("Testing source dir " + source_dir + "\n",ctx, cmake_context)){
+        if(!::Generators::ConfigToml::validateSourceDir("Testing source dir " + source_dir + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -229,7 +229,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
 
         cmake_context->src_dir = source_dir;
-        if(::Generators::ConfigToml::sourceDir("Testing failing source dir " + source_dir + "\n",ctx, cmake_context)){
+        if(::Generators::ConfigToml::validateSourceDir("Testing failing source dir " + source_dir + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -245,7 +245,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
 
         cmake_context->build_dir = build_dir;
-        if(!::Generators::ConfigToml::buildDir("Testing build dir " + build_dir + "\n",ctx, cmake_context)){
+        if(!::Generators::ConfigToml::validateBuildDir("Testing build dir " + build_dir + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -255,7 +255,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
 
         cmake_context->build_dir = build_dir;
-        if(::Generators::ConfigToml::buildDir("Testing failing build dir " + build_dir + "\n",ctx, cmake_context)){
+        if(::Generators::ConfigToml::validateBuildDir("Testing failing build dir " + build_dir + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -271,7 +271,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
 
         cmake_context->include_dir = include_dir;
-        if(!::Generators::ConfigToml::includeDir("Testing include dir " + include_dir + "\n",ctx, cmake_context)){
+        if(!::Generators::ConfigToml::validateIncludeDir("Testing include dir " + include_dir + "\n",ctx, cmake_context)){
           return false;
         }
       }
@@ -281,7 +281,7 @@ namespace Test::Generators {
           std::make_shared<::Generators::ConfigToml::ConfigToml>();
 
         cmake_context->include_dir = include_dir;
-        if(::Generators::ConfigToml::includeDir("Testing failing include dir " + include_dir + "\n",ctx, cmake_context)){
+        if(::Generators::ConfigToml::validateIncludeDir("Testing failing include dir " + include_dir + "\n",ctx, cmake_context)){
           return false;
         }
       }
