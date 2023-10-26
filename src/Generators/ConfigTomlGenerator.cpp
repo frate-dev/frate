@@ -22,11 +22,11 @@ namespace Generators::ConfigToml {
       goto end;
     }
     //Checking if the version is x.x.x 
-    if(std::regex_match(config_toml->cmake_version, std::regex("^[0-9]+\\.[0-9]+\\.[0-9]+$"))) {
+    if(std::regex_match(config_toml->cmake_version, std::regex("^[0-4]+\\.[0-9]+\\.[0-9]+$"))) {
       goto end;
     }
     //Checking if the version is x.x
-    if(!std::regex_match(config_toml->cmake_version, std::regex("^[0-9]+\\.[0-9]+$"))) {
+    if(std::regex_match(config_toml->cmake_version, std::regex("^[0-4]+\\.[0-9]+$"))) {
       goto end;
     }
     return false;
@@ -151,13 +151,13 @@ namespace Generators::ConfigToml {
       goto end;
     }
     //check if the compiler is valid for c++
-    if (config_toml->compiler == "g++" || config_toml->compiler == "clang" ||   config_toml->compiler == "msvc" || config_toml->compiler == "icc" || config_toml->compiler == "tcc" || config_toml->compiler == "emcc" ) {
-      if(config_toml->lang == "c"){
+    if (config_toml->compiler == "g++" || config_toml->compiler == "clang++") {
+      if(config_toml->lang == "cpp" || config_toml->lang == "c++"){
         goto end;
       }
     }
     //check if the compiler is valid for c
-    if (config_toml->compiler == "gcc" || config_toml->compiler == "clang" ||   config_toml->compiler == "msvc" || config_toml->compiler == "icc" || config_toml->compiler == "tcc" || config_toml->compiler == "emcc" ) {
+    if (config_toml->compiler == "gcc" || config_toml->compiler == "clang" ||   config_toml->compiler == "msvc" || config_toml->compiler == "icc" || config_toml->compiler == "tcc" || config_toml->compiler == "emcc" || config_toml->compiler == "clang++" || config_toml->compiler == "g++") {
       if(config_toml->lang == "c"){
         goto end;
       }
