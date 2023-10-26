@@ -47,11 +47,5 @@ jobs:
     - name: RunTest
       working-directory: ${{github.workspace}}
       run: ./build/cmaker
-
-    - name: Release
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: cmaker-artifact-${{github.run_number}}
-        tag: "nightly"
       
 
