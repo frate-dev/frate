@@ -52,5 +52,6 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: cmaker-artifact-${{github.run_number}}
+        tag: "nightly"
       
 
