@@ -1,8 +1,17 @@
 #include <iostream>
+#include <string>
+#include <cstdbool>
+#include <sys/ioctl.h>
 #include "Command.hpp"
 
 namespace Command {
   bool help() {
+    if ((static_cast<std::string>(std::getenv("TERM")) == "xterm-kitty")){
+      struct winsize w = {500, 500, 0, 0};
+      ioctl(0, TIOCGWINSZ, &w);
+      system("kitty +kitten icat --align left ~/Downloads/logo.png");
+    }
+
     std::cout << "usage: cmaker <sub-command>" << ENDL  
       "Commands:" << ENDL
       "\t i | init [<package-name>]" << ENDL

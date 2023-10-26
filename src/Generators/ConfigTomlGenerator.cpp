@@ -51,7 +51,6 @@ namespace Generators::ConfigToml {
     //If the name is empty we're gonna set it
     if(config_toml->project_name == "") {
       goto end;
-
     }
     //Checking if the name is valid
     if ((config_toml->project_name.size() > 255)) {
