@@ -48,15 +48,15 @@ jobs:
       working-directory: ${{github.workspace}}
       run: ./build/cmaker
       
-    #- name: Build Release
-      #working-directory: ${{github.workspace}}
-      #run: cmake -DCMAKE_BUILD_TYPE=Release ./ && make -j32 && mkdir ./dist/ && tar -czf ./dist/release-${{github.run_number}}.tar.gz ./build/
+    - name: Build Release
+      working-directory: ${{github.workspace}}
+      run: cmake -DCMAKE_BUILD_TYPE=Release ./ && make -j32 && mkdir ./dist/ && tar -czf ./dist/release-${{github.run_number}}.tar.gz ./build/
       
     - name: Upload artifacts
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.CI_TOKEN }}
-        file: cmaker-artifact-${{github.run_number}}
+        file: ${{github.workspace}}/dist/release-${{github.run_number}}.tar.gz
         asset_name: cmaker-${{github.run_number}}
         tag: nightly
         overwrite: true
