@@ -11,6 +11,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  RELEASE_VERSION: 0.1.0
 
 jobs:
   build:
@@ -50,19 +51,19 @@ jobs:
       
     - name: Build Release
       working-directory: ${{github.workspace}}
-      run: cmake -DCMAKE_BUILD_TYPE=Release ./ && make -j32 && mkdir ./dist/ && tar -czf ./dist/cmaker-nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}.tar.gz ./build/
+      run: cmake -DCMAKE_BUILD_TYPE=Release ./ && make -j32 && mkdir ./dist/ && tar -czf ./dist/cmaker-nightly-$RELEASE_VERSION.${{github.run_number}}.tar.gz ./build/
       
     - name: Upload artifacts
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.CI_TOKEN }}
-        file: ${{github.workspace}}/dist/cmaker-nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}.tar.gz
-        asset_name: cmaker-nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}
-        tag: nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}
+        file: ${{github.workspace}}/dist/cmaker-nightly-$RELEASE_VERSION.${{github.run_number}}.tar.gz
+        asset_name: cmaker-nightly-$RELEASE_VERSION.${{github.run_number}}
+        tag: nightly-$RELEASE_VERSION.${{github.run_number}}
         overwrite: false
         prerelease: true
         make_latest: true
-        release_name: "CMaker nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}"
-        body: "CMaker nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}" 
+        release_name: "CMaker nightly-$RELEASE_VERSION.${{github.run_number}}"
+        body: "CMaker nightly-$RELEASE_VERSION.${{github.run_number}}" 
       
 
