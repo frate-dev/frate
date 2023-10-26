@@ -30,8 +30,8 @@ bool createHelloWorldCpp(std::shared_ptr<Context> ctx) {
   file.open(ctx->project_path / file_name);
   file << "#include <iostream>\n"
           "int main(){\n"
-          " std::cout << \"Hello World\" << std::endl;\n"
-          " return 0;\n"
+          "\tstd::cout << \"Hello World\" << std::endl;\n"
+          "\treturn 0;\n"
           "}\n";
   return false;
 }
@@ -45,8 +45,8 @@ bool createHelloWorldC(std::shared_ptr<Context> ctx) {
   file.open(ctx->project_path / file_name);
   file << "#include <stdio.h>\n"
           "int main(){\n"
-          " printf(\"Hello World\");\n"
-          " return 0;\n"
+          "\tprintf(\"Hello World\");\n"
+          "\treturn 0;\n"
           "}\n";
   return false;
 }

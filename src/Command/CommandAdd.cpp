@@ -33,16 +33,17 @@ namespace Command {
   }
 
   bool addDependency(std::shared_ptr<Context>& ctx, cxxopts::ParseResult& args) {
-    // TODO: Add dependency to config.toml
     std::cout << "addDependency" << std::endl;
     if(args.count("help")) {
       std::cout << "Usage: add dep [options] name url branch" << std::endl;
     }
+    //TODO: add dependency target_link to dependency
     if(args.count("subcommand") != 0) {
         struct dependency dependency_new;
         dependency_new.name = args["args"].as<std::vector<std::string>>()[0];
         dependency_new.url = args["args"].as<std::vector<std::string>>()[1];
         dependency_new.version = args["args"].as<std::vector<std::string>>()[2];
+        dependency_new.target_link = args["args"].as<std::vector<std::string>>()[3];
         ctx->dependencies.push_back(dependency_new);
     }
     std::cout << ctx->dependencies.size() << std::endl;

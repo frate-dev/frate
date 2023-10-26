@@ -56,6 +56,7 @@ namespace Command {
     std::string name;
     std::string version;
     std::string url;
+    std::string target_link;
   } dependency;
 
 

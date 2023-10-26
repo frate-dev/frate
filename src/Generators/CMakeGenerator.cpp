@@ -27,7 +27,7 @@ namespace Generators::CMakeList{
       std::string FetchContent_MakeAvailable =
         std::format("FetchContent_MakeAvailable({})", dep.name);
       std::string target_link_libraries = std::format(
-          "target_link_libraries({} {})", ctx->project_name, dep.name);
+          "target_link_libraries({} {})", ctx->project_name, dep.target_link);
       Dep dependency =
         Dep{FetchContent_Declare, FetchContent_MakeAvailable,
           target_link_libraries};

@@ -12,7 +12,7 @@ namespace Command {
       system("cmake  . ");
       system("make");
     #endif
-    std::string file_name = "./build";
+    std::string file_name = "./build/";
     #ifdef DEBUG
       file_name = "./build/build/";
     #endif

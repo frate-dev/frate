@@ -258,14 +258,15 @@ namespace Generators::ConfigToml {
 
 
   bool readData(std::shared_ptr<Command::Context> &ctx, std::shared_ptr<ConfigToml> &config_toml) {
+    if (!projectName("📖Project name: (" + ctx->project_name + "): ", ctx, config_toml)) {
+      std::cout << "Invalid project name - retry" << std::endl;
+      readData(ctx, config_toml);
+    }
     if (!cmakeVersion("🔨Cmake version: (" + ctx->cmake_version + "): ", ctx, config_toml)) {
       std::cout << "Invalid cmake version - retry" << std::endl;
       readData(ctx, config_toml);
     }
-    if (!projectName("📖Project name: (" + ctx->project_name + "): ", ctx, config_toml)) {
-      std::cout << "Invalid project name - retry" << std::endl;
-      readData(ctx, config_toml);
-    }  
+  
     if (!projectVersion("🗃️Version: (" + ctx->project_version + "): ", ctx, config_toml)) {
       std::cout << "Invalid project version - retry" << std::endl;
       readData(ctx, config_toml);
