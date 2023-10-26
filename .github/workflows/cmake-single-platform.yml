@@ -48,4 +48,18 @@ jobs:
       working-directory: ${{github.workspace}}
       run: ./build/cmaker
       
+    #- name: Build Release
+      #working-directory: ${{github.workspace}}
+      #run: cmake -DCMAKE_BUILD_TYPE=Release ./ && make -j32 && mkdir ./dist/ && tar -czf ./dist/release-${{github.run_number}}.tar.gz ./build/
+      
+    - name: Upload artifacts
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: cmaker-artifact-${{github.run_number}}
+        asset_name: cmaker-${{github.run_number}}
+        tag: nightly
+        overwrite: true
+        body: "This is my release text"
+      
 
