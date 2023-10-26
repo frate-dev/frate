@@ -1,5 +1,6 @@
-# cmaker
+# CMaker
 This command line application came to fruition out of the desperate hopes and dreams of a few people looking to softly lighten their suffering while using c++. 
+
 
 # STAR THE REPO
 
