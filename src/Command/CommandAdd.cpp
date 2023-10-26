@@ -37,6 +37,7 @@ namespace Command {
     if(args.count("help")) {
       std::cout << "Usage: add dep [options] name url branch" << std::endl;
     }
+
     //TODO: add dependency target_link to dependency
     if(args.count("subcommand") != 0) {
         struct dependency dependency_new;

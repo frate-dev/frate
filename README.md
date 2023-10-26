@@ -18,6 +18,10 @@ vscode
 ## What it do!
 todo!
 
+## Install binary for yourself
+```bash
+sudo curl --proto '=https' --tlsv1.2 -sSf "https://github.com/cmaker-dev/cmaker/releases/download/nightly-53/cmaker-53" -o /usr/bin/cmaker
+```
 
 ## Roadmap
 - [ ] more scuff

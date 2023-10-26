@@ -16,7 +16,7 @@
 namespace Command {
   [[deprecated("I DON'T KNOW WHAT THIS FUCKING DOES")]]
   bool handleCppProject();
-  [[deprecated("I DON'T KNOW WHAT THIS FUCKING DOES")]]
+  [[deprecated("WE ARE A BIG PROJECT MUST HAVE DEPRECATED STUFF")]]
   bool handleCProject();
 
   /*
