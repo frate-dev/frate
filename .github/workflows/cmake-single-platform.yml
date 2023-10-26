@@ -50,19 +50,19 @@ jobs:
       
     - name: Build Release
       working-directory: ${{github.workspace}}
-      run: cmake -DCMAKE_BUILD_TYPE=Release ./ && make -j32 && mkdir ./dist/ && tar -czf ./dist/cmaker-nightly-${{variables.RELEASE_VERSION}}.${{github.run_number}}.tar.gz ./build/
+      run: cmake -DCMAKE_BUILD_TYPE=Release ./ && make -j32 && mkdir ./dist/ && tar -czf ./dist/cmaker-nightly-${{RELEASE_VERSION}}.${{github.run_number}}.tar.gz ./build/
       
     - name: Upload artifacts
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.CI_TOKEN }}
-        file: ${{github.workspace}}/dist/cmaker-nightly-${{variables.RELEASE_VERSION}}.${{github.run_number}}.tar.gz
-        asset_name: cmaker-nightly-${{variables.RELEASE_VERSION}}.${{github.run_number}}
-        tag: nightly-${{variables.RELEASE_VERSION}}.${{github.run_number}}
+        file: ${{github.workspace}}/dist/cmaker-nightly-${{RELEASE_VERSION}}.${{github.run_number}}.tar.gz
+        asset_name: cmaker-nightly-${{RELEASE_VERSION}}.${{github.run_number}}
+        tag: nightly-${{RELEASE_VERSION}}.${{github.run_number}}
         overwrite: false
         prerelease: true
         make_latest: true
-        release_name: "CMaker nightly-${{variables.RELEASE_VERSION}}.${{github.run_number}}"
-        body: "CMaker nightly-${{variables.RELEASE_VERSION}}.${{github.run_number}}" 
+        release_name: "CMaker nightly-${{RELEASE_VERSION}}.${{github.run_number}}"
+        body: "CMaker nightly-${{RELEASE_VERSION}}.${{github.run_number}}" 
       
 
