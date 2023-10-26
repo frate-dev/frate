@@ -9,9 +9,7 @@
 #include <string>
 #include "Test.hpp"
 
-
-namespace Tests::Command {
-
+namespace Tests{
   std::string genBase64String(int random_string_length) {
     std::string base64_chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -24,9 +22,15 @@ namespace Tests::Command {
     }
     return random_string;
   }
+}
+
+
+
+namespace Tests::Command {
+
+
   
-  bool testCommandInit() {
-    std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
+  bool testCommandInit() { std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
     char* args[] = {"cmake-generator","init","-y"};
 
 

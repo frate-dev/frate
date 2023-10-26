@@ -5,10 +5,12 @@
 #include <cxxopts.hpp>
 #include <memory>
 
+namespace Tests{
+  std::string genBase64String(int random_string_length);
+}
+
 
 namespace Tests::Command {
-
-  std::string genBase64String(int random_string_length);
   bool testCommandInit();
 }
 

@@ -4,9 +4,12 @@
 #include <catch2/catch_test_macros.hpp>
 #include <memory>
 
+namespace Tests{
+  std::string genBase64String(int random_string_length);
+}
 namespace Test::Generators {
 
-  const std::string long_string = Tests::Command::genBase64String(256); 
+  const std::string long_string = Tests::genBase64String(1000); 
 
   namespace CMakeLists {
     bool testCmakeVersion(){
