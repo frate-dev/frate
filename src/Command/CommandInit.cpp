@@ -1,5 +1,5 @@
 #include "Command.hpp"
-#include "toml++/toml.h"
+#include <toml++/toml.hpp>
 #include <cxxopts.hpp>
 #include <algorithm>
 #include <ranges>

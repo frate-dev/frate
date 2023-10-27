@@ -26,9 +26,14 @@ FetchContent_Declare(
   GIT_TAG "v3.4.0"
 )
 
+
+
 FetchContent_MakeAvailable(nlohmann_json)
 FetchContent_MakeAvailable(cxxopts)
 FetchContent_MakeAvailable(tomlplusplus)
+
+
+
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
@@ -40,7 +45,6 @@ set(HEADER_DIR ${CMAKE_SOURCE_DIR}/include)
 
 message("Sources: ${SOURCES}")
 
-include_directories(include)
 
 if(NOT DEFINED RELEASE)
   set(RELEASE 0)
@@ -87,7 +91,7 @@ endif()
 
 target_link_libraries(cmaker cxxopts)
 target_link_libraries(cmaker nlohmann_json)
-target_link_libraries(cmaker tomlplusplus)
+target_link_libraries(cmaker tomlplusplus::tomlplusplus)
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
 set_target_properties(cmaker PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
