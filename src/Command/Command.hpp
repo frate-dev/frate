@@ -54,8 +54,8 @@ namespace Command {
 
   typedef struct dependency {
     std::string name;
-    std::string version;
     std::string url;
+    std::string version;
     std::string target_link;
   } dependency;
 
@@ -122,7 +122,7 @@ namespace Command {
    * adds a dependency to the config.toml
    * @returns bool -> finished successfully
    */
-  bool addDependency(std::shared_ptr<Context>, cxxopts::ParseResult &args);
+  bool addDependency(std::shared_ptr<Context> &ctx, cxxopts::ParseResult &args);
   /*
    * Generates cmake file for project based on the current project context
    * @returns bool -> finished successfully
@@ -135,7 +135,7 @@ namespace Command {
    *  adds  dependency to toml and regenerates the CMakeLists.txt
    *  @returns bool -> finished successfully
    */
-  bool add(std::shared_ptr<Context>, cxxopts::ParseResult &args);
+  bool add(std::shared_ptr<Context>& ctx, cxxopts::ParseResult &args);
   [[deprecated("use addDependency instead")]]
   bool addLib(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 }

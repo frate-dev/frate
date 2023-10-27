@@ -12,7 +12,7 @@ namespace Generators::CMakeList{
    * @return a vector of dependencies that will be later combined to build the cmake file
    */
   void generateDeps(std::shared_ptr<Command::Context> ctx, std::shared_ptr<CMakeContext> cmake_context){
-    for (Command::dependency &dep : ctx->dependencies) {
+    for (auto dep : ctx->dependencies) {
       std::string FetchContent_Declare =
         std::format(
         R"V0G0N(
@@ -26,11 +26,15 @@ namespace Generators::CMakeList{
 
       std::string FetchContent_MakeAvailable =
         std::format("FetchContent_MakeAvailable({})", dep.name);
+
       std::string target_link_libraries = std::format(
           "target_link_libraries({} {})", ctx->project_name, dep.target_link);
       Dep dependency =
         Dep{FetchContent_Declare, FetchContent_MakeAvailable,
           target_link_libraries};
+      std::cout << dependency.fetch_declare << std::endl;
+      std::cout << dependency.fetch_make_available << std::endl;
+      std::cout << dependency.target_link_libraries << std::endl;
       cmake_context->dependencies.push_back(dependency);
     }
   }
@@ -124,7 +128,7 @@ namespace Generators::CMakeList{
     file << cmake_context->files << '\n';
     file << cmake_context->add_executable << '\n';
     file << cmake_context->fetch_content << '\n';
-    for (Dep &dep : cmake_context->dependencies) {
+    for (Dep dep : cmake_context->dependencies) {
       file << dep.fetch_declare << '\n';
       file << dep.fetch_make_available << '\n';
       file << dep.target_link_libraries << '\n';

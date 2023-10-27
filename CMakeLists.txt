@@ -11,10 +11,11 @@ set(CMAKE_CXX_STANDARD 20)
 include(FetchContent)
 
 FetchContent_Declare(
-  cxxopts
+  cxxopts 
   GIT_REPOSITORY "https://github.com/jarro2783/cxxopts.git"
   GIT_TAG "origin/master"
 )
+
 FetchContent_Declare(
   nlohmann_json
   GIT_REPOSITORY "https://github.com/nlohmann/json.git"
@@ -26,8 +27,12 @@ FetchContent_Declare(
   GIT_TAG "v3.4.0"
 )
 
-
-
+FetchContent_Declare(
+  cpr 
+  GIT_REPOSITORY https://github.com/libcpr/cpr.git
+  GIT_TAG master 
+) # The commit hash for 1.10.x. Replace with the latest from: https://github.com/libcpr/cpr/releases
+FetchContent_MakeAvailable(cpr)
 FetchContent_MakeAvailable(nlohmann_json)
 FetchContent_MakeAvailable(cxxopts)
 FetchContent_MakeAvailable(tomlplusplus)
@@ -89,9 +94,10 @@ else()
   endif()
 endif()
 
-target_link_libraries(cmaker cxxopts)
-target_link_libraries(cmaker nlohmann_json)
-target_link_libraries(cmaker tomlplusplus::tomlplusplus)
+target_link_libraries(${PROJECT_NAME} cxxopts)
+target_link_libraries(${PROJECT_NAME}  cpr::cpr)
+target_link_libraries(${PROJECT_NAME} nlohmann_json)
+target_link_libraries(${PROJECT_NAME} tomlplusplus::tomlplusplus)
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
 set_target_properties(cmaker PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)

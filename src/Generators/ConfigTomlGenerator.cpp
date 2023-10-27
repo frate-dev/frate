@@ -45,9 +45,9 @@ namespace Generators::ConfigToml {
    */
   bool validateProjectName(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
     std::cout << prefix;
-#ifndef TEST
-    std::getline(std::cin, config_toml->project_name);
-#endif
+    #ifndef TEST
+      std::getline(std::cin, config_toml->project_name);
+    #endif
     //If the name is empty we're gonna set it
     if(config_toml->project_name == "") {
       goto end;
@@ -362,7 +362,7 @@ namespace Generators::ConfigToml {
   }
 
 
-  bool writeConfig(std::shared_ptr<Command::Context> ctx) {
+  bool writeConfig(std::shared_ptr<Command::Context> &ctx) {
     toml::array authors = toml::array{};
     toml::array flags = toml::array{};
     for (auto &flag : ctx->flags) {
@@ -387,11 +387,13 @@ namespace Generators::ConfigToml {
 
     toml::table deps_table = toml::table{{"dependencies", toml::table{}}};
 
-    for (Command::dependency &dep : ctx->dependencies) {
-
+    for (Command::dependency dep : ctx->dependencies) {
+      
       toml::array deps_values = toml::array{};
       deps_values.push_back(dep.url);
       deps_values.push_back(dep.version);
+      deps_values.push_back(dep.target_link);
+      std::cout << deps_values << std::endl;
       deps_table["dependencies"].as_table()->insert(dep.name, deps_values);
     }
 

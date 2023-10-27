@@ -8,11 +8,11 @@ namespace Command {
   bool loadPackageToml(std::shared_ptr<Context> ctx) {
     try {
       std::string file_name = "config.toml";
-#ifdef DEBUG
-      file_name = "build/config.toml";
-      std::cout << "Loading config.toml from " << ctx->project_path / file_name
-        << std::endl;
-#endif
+      #ifdef DEBUG
+        file_name = "build/config.toml";
+        std::cout << "Loading config.toml from " << ctx->project_path / file_name
+          << std::endl;
+      #endif
 
       auto data = toml::parse_file((ctx->project_path / file_name).string());
       ctx->project_name = data["project"]["project_name"].value_or("no name");
@@ -39,7 +39,10 @@ namespace Command {
             data["dependencies"][dep.first].as_array()->at(0).value_or("");
           _dep.version =
             data["dependencies"][dep.first].as_array()->at(1).value_or("");
+          _dep.target_link = data["dependencies"][dep.first].as_array()->at(2).value_or("");
+
           ctx->dependencies.push_back(_dep);
+
         }
       }
 
