@@ -50,20 +50,16 @@ bool createHelloWorldC(std::shared_ptr<Context> ctx) {
           "}\n";
   return false;
 }
-bool createCppProject(std::shared_ptr<Context> ctx) {
 
+bool createProject(std::shared_ptr<Context> ctx){
   createToml(ctx);
   loadPackageToml(ctx);
   Generators::CMakeList::create(ctx);
-  createHelloWorldCpp(ctx);
-  return true;
-}
-
-bool createCProject(std::shared_ptr<Context> ctx) {
-  createToml(ctx);
-  loadPackageToml(ctx);
-  Generators::CMakeList::create(ctx);
-  createHelloWorldC(ctx);
+  if(ctx->lang == "cpp"){
+    createHelloWorldCpp(ctx);
+  }else if(ctx->lang == "c"){
+    createHelloWorldC(ctx);
+  }
   return false;
 }
 
@@ -106,11 +102,28 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
   return false;
 }
 
+std::string getFolderName(){
+  std::string directory_name = std::filesystem::current_path();
+  directory_name = directory_name.substr(directory_name.find_last_of("/\\") + 1);
+  return directory_name;
+}
+
 bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
   std::string file_name = "config.toml";
+  std::string new_project_name = "";
   #ifdef DEBUG
     file_name = "build/config.toml";
+    new_project_name = "DEBUG";
+  #else
+    new_project_name = getFolderName();
   #endif
+
+  if(args["name"].count() > 0){
+    new_project_name = args["name"].as<std::string>();
+  }
+
+  ctx->project_name = new_project_name;
+
   file_exists(file_name);
   if(ctx->project_path.empty()){
     ctx->project_path = std::filesystem::current_path();
@@ -136,27 +149,7 @@ bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
     Generators::CMakeList::create(ctx);
     createHelloWorldCpp(ctx);
   } else {
-    while (true) {
-
-      std::cout << "Language: ";
-      std::getline(std::cin, ctx->lang);
-      if (ctx->lang == "cpp" || ctx->lang == "c++") {
-        createCppProject(ctx);
-        break;
-      } else if (ctx->lang == "c") {
-        createCProject(ctx);
-        break;
-      } else if (ctx->lang == "rust") {
-        std::cout << "Fuck off" << ENDL;
-        break;
-      } else if (ctx->lang == "java") {
-        std::cout << "'Are you ok? Stop it get some help' - MJ" << ENDL;
-        break;
-      } else {
-        std::cout << "Invalid language" << ENDL;
-        return 1;
-      }
-    }
+      createProject(ctx);
   }
 
   return true;
