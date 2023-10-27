@@ -1,5 +1,5 @@
 #include "Command.hpp"
-#include "toml.hpp"
+#include "toml++/toml.h"
 #include <cxxopts.hpp>
 #include <algorithm>
 #include <ranges>
@@ -8,6 +8,7 @@
 #include <iostream> 
 #include <string>
 #include "../Generators/Generators.hpp"
+#include "../Utils/General.hpp"
 
 namespace Command {
 
@@ -102,11 +103,6 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
   return false;
 }
 
-std::string getFolderName(){
-  std::string directory_name = std::filesystem::current_path();
-  directory_name = directory_name.substr(directory_name.find_last_of("/\\") + 1);
-  return directory_name;
-}
 
 bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
   std::string file_name = "config.toml";
@@ -115,7 +111,7 @@ bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
     file_name = "build/config.toml";
     new_project_name = "DEBUG";
   #else
-    new_project_name = getFolderName();
+    new_project_name = Utils::getFolderName();
   #endif
 
   if(args["name"].count() > 0){
