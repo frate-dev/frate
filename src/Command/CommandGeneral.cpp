@@ -15,21 +15,21 @@ namespace Command {
       #endif
 
       auto data = toml::parse_file((ctx->project_path / file_name).string());
-      ctx->project_name = data["project"]["project_name"].value_or("no name");
+      ctx->project_name = data["project"]["project_name"].value_or("");
       for (auto &author : *data["project"]["authors"].as_array()) {
-        ctx->authors.push_back(author.value_or("no author"));
+        ctx->authors.push_back(author.value_or(""));
       }
-      ctx->src_dir = data["project"]["src_dir"].value_or("no src_dir");
-      ctx->build_dir = data["project"]["build_dir"].value_or("no build_dir");
-      ctx->compiler = data["project"]["compiler"].value_or("no compiler");
+      ctx->src_dir = data["project"]["src_dir"].value_or("");
+      ctx->build_dir = data["project"]["build_dir"].value_or("");
+      ctx->compiler = data["project"]["compiler"].value_or("");
       ctx->cmake_version = data["project"]["cmake_version"].value_or("");
-      ctx->git = data["project"]["git"].value_or("no git");
-      ctx->lang = data["project"]["lang"].value_or("no lang");
+      ctx->git = data["project"]["git"].value_or("");
+      ctx->lang = data["project"]["lang"].value_or("");
       ctx->include_dir =
-        data["project"]["include_dir"].value_or("no include_dir");
+        data["project"]["include_dir"].value_or("");
       ctx->lang_version =
-        data["project"]["lang_version"].value_or("no langversion");
-      ctx->project_version = data["project"]["project_version"].value_or("0.0.1");
+        data["project"]["lang_version"].value_or("");
+      ctx->project_version = data["project"]["project_version"].value_or("");
       if (data.at_path("dependencies").is_table()) {
         for (auto &dep : *data["dependencies"].as_table()) {
 

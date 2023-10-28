@@ -70,6 +70,10 @@ int main(int argc, char **argv) {
   else if (command == "add"){
     Command::loadPackageToml(ctx);
     Command::add(ctx, result);
+  }else{
+    std::cout << "Invalid command try one of these" << ENDL;
+    Command::help();
+
   }
 #endif
 }
