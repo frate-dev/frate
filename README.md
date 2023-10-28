@@ -1,5 +1,10 @@
-# CMaker
-This command line application came to fruition out of the desperate hopes and dreams of a few people looking to softly lighten their suffering while using c++. 
+<p align="center">
+ <img width="250px" src="https://github.com/cmaker-dev/cmaker/blob/main/source/images/cmakerlogo.svg" align="center" alt="GitHub Readme Stats" />
+ <h2 align="center">CMaker</h2>
+ <p align="center">This command line application came to fruition out of the desperate hopes and dreams of a few people looking to softly lighten their suffering while using c++. </p>
+</p>
+
+
 
 
 # STAR THE REPO
