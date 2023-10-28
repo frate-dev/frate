@@ -24,8 +24,19 @@ vscode
 todo!
 
 ## Install binary for yourself
+### Prerequisites
+```
+gcc >= 13
+clangd >= 18
+cmake >= 3
+```
+
+### Installation
 ```bash
-sudo curl --proto '=https' --tlsv1.2 -sSf "https://github.com/cmaker-dev/cmaker/releases/download/nightly-53/cmaker-53" -o /usr/bin/cmaker
+git clone https://github.com/cmaker-dev/cmaker.git
+cd cmaker
+cmake -DCMAKE_BUILD_TYPE=Release ./
+sudo make install
 ```
 
 ## Roadmap
