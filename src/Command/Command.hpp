@@ -62,9 +62,6 @@ namespace Command {
 
 
   typedef struct Context {
-    /*
-     * TODO: The name should be initialize to the current directory if not specified
-     */
     std::string project_name;
     std::filesystem::path project_path;
     std::string git{"null"};

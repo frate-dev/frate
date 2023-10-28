@@ -5,6 +5,7 @@
 #include "../Command/Command.hpp"
 
 
+
 namespace Generators::CMakeList{
   /*
    * Generate the dependencies for the project
