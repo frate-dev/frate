@@ -13,10 +13,10 @@
 
 
 ## Built with
-tears
-sadness
-neovim
-vscode *yuck*
+tears \
+sadness \
+neovim \
+vscode *yuck* \
 
 ## What it do!
 todo!
