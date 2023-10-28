@@ -13,12 +13,10 @@
 
 
 ## Built with
-tears\
-sadness\
-cmake > 3.2 \
-g++ > 13 \
-make \
-vscode
+tears
+sadness
+neovim
+vscode *yuck*
 
 ## What it do!
 todo!
