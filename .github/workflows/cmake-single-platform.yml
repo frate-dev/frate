@@ -58,7 +58,7 @@ jobs:
       with:
         repo_token: ${{ secrets.CI_TOKEN }}
         file: ${{github.workspace}}/dist/cmaker-nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}.tar.gz
-        asset_name: cmaker-nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}
+        asset_name: cmaker
         tag: nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}
         overwrite: false
         prerelease: true

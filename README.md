@@ -13,13 +13,10 @@
 
 
 ## Built with
-tears \
-sadness \
-neovim \
-vscode *yuck* \
-
-## What it do!
-todo!
+- tears
+- sadness
+- neovim
+- vscode *yuck*
 
 ## Install binary for yourself
 ### Prerequisites
@@ -29,6 +26,23 @@ clangd >= 18
 cmake >= 3
 ```
 
+### Basic Usage
+```bash
+$ cmaker init
+#Follow prompt to build your project
+
+$ cmaker run
+#If everything worked properly, it will build and run the example project
+#which is a basic hello world program
+
+$ cmaker add dep <package name>
+#Pick one of the results
+
+$ cmaker run
+#To rebuild your project with the new dependency
+```
+
+
 ### Installation
 ```bash
 git clone https://github.com/cmaker-dev/cmaker.git
@@ -37,14 +51,21 @@ cmake -DCMAKE_BUILD_TYPE=Release ./
 sudo make install
 ```
 
-## Roadmap
-- [ ] more scuff
-- [ ] package manager
-- [ ] tests
+#### Alternatively, you can simply copy the binary from our [release page](https://github.com/cmaker-dev/cmaker/releases) to your path
+`/usr/local/bin/`
+
+### Why use CMaker
+- Easy project creation and maintenance
+- Simple default configurations that are easy to extend
+- Get the functionality of utilities like cargo, npm , or yarn and use a language you're already familiar with
+- Dencentralized package management
+
 
 ### Your friend in the world of C/C++
 cmake-generator is a command line utility used to expedite building modern c/c++ applications.
 
 - [x] Simple project initialization
-- [ ] Simple dependency management
+- [x] Simple dependency management
+- [ ] Multi platform builds
 - [ ] Existing cmake project migration
+- [ ] Extensible toml configuration
