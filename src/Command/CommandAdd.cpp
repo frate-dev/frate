@@ -124,6 +124,11 @@ namespace Command {
     return false;
   }
 
+  bool searchVersions(){
+    std::cout << "Getting versions" << std::endl;
+    return true;
+  }
+
   bool addDependency(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
     for(auto arg: args.arguments()){
       std::cout << arg.key() << std::endl;
@@ -145,6 +150,28 @@ namespace Command {
 
       std::cout << "Installing " << searchResults[index].name << std::endl;
 
+      json versionJson = Utils::fetchJson("https://raw.githubusercontent.com/cmaker-dev/index/main/index/" + searchResults[index].name + "/info.json"); 
+    
+      std::vector<std::string> versionTokens = versionJson["versions"];
+      std::string version = ""; 
+      for(size_t i = 0; i < versionTokens.size(); i++){
+        std::cout << "[" << i << "]" << versionTokens[i] << std::endl;
+        if (versionTokens[i] ==  "master" || versionTokens[i] == "main"  ||  versionTokens[i] == "stable"){
+          version = versionTokens[i];
+
+        }
+      }
+
+      
+      std::cout << "Select a version to install [" + version + "] : ";
+      std::string versionInput;
+      std::cin >> versionInput;
+
+      int versionIndex = std::stoi(input);
+      if (!(versionInput == "")){
+        version = versionTokens[versionIndex];
+      }
+    
       if(checkForOverlappingDependencies(ctx, searchResults[index].name)){
         std::cout << "Package already installed" << std::endl;
         return false;
@@ -155,7 +182,7 @@ namespace Command {
 
         .name = searchResults[index].name,
         .url = searchResults[index].url,
-        .version = "origin/main",
+        .version = version,
         //TODO: Change target link to be the actual link
         .target_link = searchResults[index].name
 

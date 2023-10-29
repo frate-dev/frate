@@ -20,19 +20,14 @@ namespace Command {
       std::cout << "args:" << name << std::endl;
     }
     std::cout << "removing dependencies" << std::endl;
-    ctx->dependencies.erase(
-        std::remove_if(ctx->dependencies.begin(), ctx->dependencies.end(),
-          [&name_to_remove](const dependency &dep) {
-          std::cout << dep.name << std::endl;
-
-          for (std::string name : name_to_remove) {
-            std::cout << name << std::endl;
-            std::cout << (dep.name == name) << ENDL;
+    std::erase_if(ctx->dependencies, [&name_to_remove](auto &dep) {
+        for (std::string name : name_to_remove) {
+          if (dep.name == name) {
+            return true;
           }
-          for (std::string name : name_to_remove)
-            return dep.name == name;
-          return false;
-          }));
+        }
+        return false;
+    });
 
     Generators::ConfigToml::writeConfig(ctx);
     Generators::CMakeList::create(ctx);
