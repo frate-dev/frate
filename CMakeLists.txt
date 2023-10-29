@@ -95,7 +95,7 @@ else()
 endif()
 
 target_link_libraries(${PROJECT_NAME} cxxopts)
-target_link_libraries(${PROJECT_NAME}  cpr::cpr)
+target_link_libraries(${PROJECT_NAME} cpr::cpr)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
 target_link_libraries(${PROJECT_NAME} tomlplusplus::tomlplusplus)
 set(SOURCE_DIR src)

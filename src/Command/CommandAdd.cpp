@@ -36,34 +36,9 @@ namespace Command {
     return true;
   }
 
-  nlohmann::json fetch(cpr::Url url) {
-    cpr::Response r = cpr::Get(cpr::Url{url});
-    // add error handling
-    r.status_code == 200
-      ? [&url](cpr::Response r) -> void{
-        std::cout << r.error.message << std::endl;
-        std::cout << "couldn't connect to " << url  << std::endl;
-        exit(1);
-      }(r)
-    : [&url](cpr::Response r) -> void{
-      std::cout << r.status_code << std::endl;
-      std::cout << "fetching data from:"  << url << std::endl;
-    }(r);
-    try {
-      nlohmann::json json = nlohmann::json::parse(r.text);
-      return json;
-    } catch (const std::exception &e) {
-      std::cout << "Error: " << e.what() << std::endl;
-      exit(1);
-    }
-  }
+  
 
-  std::string downloadIndex() {
-    std::cout << "Downloading index.json" << std::endl;
-    cpr::Response r = cpr::Get(cpr::Url{"https://github.com/cmaker-dev/index/releases/latest/download/index.json"});
-    std::cout << r.status_code << std::endl;
-    return r.text;
-  }
+
 
   typedef struct packageResult {
     std::string name;
@@ -74,8 +49,7 @@ namespace Command {
 
   std::vector<packageResult> calculatePackageScores(std::vector<std::string> queryTokens){
     std::vector<packageResult> results;
-    std::string index = downloadIndex();
-    json rawIndex = json::parse(index);
+    json rawIndex = Utils::fetchJson("https://github.com/cmaker-dev/index/releases/latest/download/index.json"); 
     int lengthDiffAbs = 0;
     for(std::string query: queryTokens){
       for(json package: rawIndex){
@@ -157,8 +131,8 @@ namespace Command {
     if (args.count("subcommand") > 2) {
       std::cout << "Usage: add dep [options] name url branch" << std::endl;
       return false;
-    }else{
-
+    }
+    else{
       std::vector<packageResult> searchResults = searchPackage(args["args"].as<std::vector<std::string>>()[0]);
       if(searchResults.size() == 0){
         std::cout << "No results found" << std::endl;
