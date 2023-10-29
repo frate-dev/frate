@@ -20,7 +20,7 @@ namespace Command {
       "\t          [-l | --language cpp/c]:" << ENDL
       "\t          initializes your project" << ENDL
       "\t r | run:   builds and runs your project" << ENDL
-      "\t add <name> <github-url> <branch-tag> : adds a dependency to your project" << ENDL
+      "\t add  [subcommand dep lib, flags]: add library, dependency or flags to your project" << ENDL
       "\t ftp:  deletes the entire project" << ENDL
       "\t flags: adds a flag to your project"  << ENDL
       "\t help:  print help"  << ENDL;

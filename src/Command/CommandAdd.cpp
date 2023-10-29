@@ -12,7 +12,6 @@
 namespace Command {
   using nlohmann::json;
   bool add(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
-    args.count("subcommand");
     if (args.count("subcommand") != 0) {
       std::string subcommand = args["subcommand"].as<std::string>();
       if (subcommand == "dep") {
@@ -21,13 +20,17 @@ namespace Command {
       if (subcommand == "flag") {
         addFlag(ctx, args);
       }
+    }else{
+    std::cout <<  R"EOF(
+Usage add:
+  dep: adds a dependency
+  flag: adds a flag
+  lib:  adds a library
+        )EOF" << std::endl;
     }
     return true;
   }
   bool addFlag(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
-    if (args.count("help")) {
-      std::cout << "Usage: addFlag [options] flags" << std::endl;
-    }
     if (args.count("subcommand") == 0) {
       for (auto flag : args["subcommand"].as<std::vector<std::string>>()) {
         ctx->flags.push_back(flag);
@@ -130,6 +133,17 @@ namespace Command {
   }
 
   bool addDependency(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
+    if (args.count("args") == 0) {
+      std::cout << R"EOF(
+Usage add dep:
+    [args]: the dependencies to project
+    cmake add dep [args] 
+
+         )EOF" << std::endl;
+      return false;
+    }
+
+
     for(auto arg: args.arguments()){
       std::cout << arg.key() << std::endl;
     }

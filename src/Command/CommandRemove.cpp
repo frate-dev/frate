@@ -8,12 +8,27 @@ namespace Command {
       if (subcommand == "dep") {
         removeDep(ctx, args);
       }
+    }else{
+    std::cout <<  R"EOF(
+Usage remove:
+  dep: removes dependencies
+  lib:  removes libraries
+  flag: removes  flags
+        )EOF" << std::endl;
     }
+
     return true;
   }
   bool removeDep(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
-    if (args.count("help")) {
-      std::cout << "Usage: remove dep [options] dep" << std::endl;
+
+    if (args.count("args") == 0) {
+      std::cout << R"EOF(
+Usage remove dep:
+   [args]: the dependencies to remove
+   cmake remove dep [args] 
+
+        )EOF" << std::endl;
+      return false;
     }
     std::vector<std::string> name_to_remove = args["args"].as<std::vector<std::string>>();
     for (std::string name : name_to_remove) {
