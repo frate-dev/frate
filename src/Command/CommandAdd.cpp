@@ -11,7 +11,7 @@
 
 namespace Command {
   using nlohmann::json;
-  bool add(std::shared_ptr<Context> &ctx, cxxopts::ParseResult &args) {
+  bool add(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
     args.count("subcommand");
     if (args.count("subcommand") != 0) {
       std::string subcommand = args["subcommand"].as<std::string>();
@@ -64,12 +64,14 @@ namespace Command {
     std::cout << r.status_code << std::endl;
     return r.text;
   }
+
   typedef struct packageResult {
     std::string name;
     std::string url;
     std::string version;
     int score;
   } packageResult;
+
   std::vector<packageResult> calculatePackageScores(std::vector<std::string> queryTokens){
     std::vector<packageResult> results;
     std::string index = downloadIndex();
@@ -115,6 +117,7 @@ namespace Command {
     }
     return resultsUnique;
   }
+
   std::vector<packageResult> searchPackage(std::string query){
     std::cout << "Searching for package" << std::endl;
 
@@ -144,6 +147,7 @@ namespace Command {
         return true;
       }
     }
+    return false;
   }
 
   bool addDependency(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
@@ -184,37 +188,9 @@ namespace Command {
       });
       std::cout << "Writing config.toml" << std::endl;
       Generators::ConfigToml::writeConfig(ctx);
+      Generators::CMakeList::create(ctx);
 
       return true;
     }
-
-
-
-    // nlohmann::json json = fetch(
-    //     "https://github.com/cmaker-dev/index/releases/latest/download/index.json");
-
-
-//     for (nlohmann::json package : json) {
-//       if (package["Name"] == args["args"].as<std::vector<std::string>>()[0]) {
-//         dependency dependency_new = {
-//           .name = static_cast<std::string>(package_data["Name"]),
-//           .url = static_cast<std::string>(package_data["Homepage"]),
-//           .version = static_cast<std::string>(package_data["Tag"]),
-//           .target_link = static_cast<std::string>(package_data["Link"])};
-// 
-//         if (std::any_of(ctx->dependencies.begin(), ctx->dependencies.end(),
-//               [&dependency_new](dependency &dep) {
-//               return dep.name == dependency_new.name;
-//               })) {
-//           std::cout << "Dependency already exists not adding" << std::endl;
-//         } else {
-//           ctx->dependencies.push_back(dependency_new);
-//         }
-//       }
-    // }
-    std::cout << ctx->dependencies.size() << std::endl;
-    Generators::ConfigToml::writeConfig(ctx);
-    Generators::CMakeList::create(ctx);
-    return true;
   }
 } // namespace Command

@@ -415,6 +415,4 @@ namespace Generators::ConfigToml {
     return true;
   }
 
-
-
 }
