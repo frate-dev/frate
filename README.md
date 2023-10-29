@@ -4,7 +4,7 @@
  <p align="center">This command line application came to fruition out of the desperate hopes and dreams of a few people looking to softly lighten their suffering while using c++. </p>
 </p>
 
-
+# THIS PROJECT IS STILL IN ALPHA DEVELOPMENT, STUFF MAY BREAK BETWEEN NIGHTLYS
 
 
 # STAR THE REPO
