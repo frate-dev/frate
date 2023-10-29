@@ -76,6 +76,9 @@ int main(int argc, char **argv) {
     Command::loadPackageToml(ctx);
     Command::remove(ctx, result);
   }
+  else if (command == "update"){
+    Command::update(ctx, result);
+  }
   else{
     std::cout << "Invalid command try one of these" << ENDL;
     Command::help();

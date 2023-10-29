@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include <cpr/cpr.h>
+#include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
 #include <cxxopts.hpp>
@@ -28,7 +30,7 @@ namespace Command {
     std::ifstream file;
     try{
       file.open(name);
-    }catch(std::exception e){
+    }catch(std::exception &e){
       std::cout << "failed to open file: " << name << ENDL;
       exit(0);
     }
@@ -131,6 +133,9 @@ namespace Command {
   /*
    * What the fuck lucas
    */
+
+  std::string downloadIndex();
+  nlohmann::json fetch(cpr::Url url) ;
   /*
    *  adds  dependency to toml and regenerates the CMakeLists.txt
    *  @returns bool -> finished successfully
@@ -138,6 +143,7 @@ namespace Command {
   bool add(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args);
   [[deprecated("use addDependency instead")]]
   bool addLib(std::shared_ptr<Context>, cxxopts::ParseResult &args);
+  bool update(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 
   bool remove(std::shared_ptr<Context>ctx,  cxxopts::ParseResult &args);
   bool removeDep(std::shared_ptr<Context>  ctx, cxxopts::ParseResult &args);
