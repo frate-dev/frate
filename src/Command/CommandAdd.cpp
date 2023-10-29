@@ -138,7 +138,6 @@ Usage add:
 Usage add dep:
     [args]: the dependencies to project
     cmake add dep [args] 
-
          )EOF" << std::endl;
       return false;
     }
