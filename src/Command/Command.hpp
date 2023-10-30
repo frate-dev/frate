@@ -58,6 +58,13 @@ namespace Command {
   ParseResult removeOptions(int argc, char** argv);
   ParseResult updateOptions(int argc, char** argv);
 
+  typedef struct packageResult {
+    std::string name;
+    std::string url;
+    std::string version;
+    int score;
+  } packageResult;
+
   typedef struct dependency {
     std::string name;
     std::string url;
@@ -133,6 +140,8 @@ namespace Command {
   /*
    * What the fuck lucas
    */
+
+  std::vector<packageResult> searchPackage(std::string query);
 
   std::string downloadIndex();
   /*
