@@ -1,10 +1,14 @@
 /usr/local/bin/cmaker
-/usr/local/lib/libz.a
+/usr/local/lib/libz.so.1.2.13.zlib-ng
+/usr/local/lib/libz.so.1
+/usr/local/lib/libz.so
 /usr/local/include/zlib.h
 /usr/local/include/zlib_name_mangling.h
 /usr/local/include/zconf.h
 /usr/local/lib/pkgconfig/zlib.pc
-/usr/local/lib/libcurl.a
+/usr/local/lib/libcurl.so.4.8.0
+/usr/local/lib/libcurl.so.4
+/usr/local/lib/libcurl.so
 /usr/local/bin/curl-config
 /usr/local/lib/pkgconfig/libcurl.pc
 /usr/local/include/curl/multi.h
@@ -23,7 +27,9 @@
 /usr/local/lib/cmake/CURL/CURLTargets-release.cmake
 /usr/local/lib/cmake/CURL/CURLConfigVersion.cmake
 /usr/local/lib/cmake/CURL/CURLConfig.cmake
-/usr/local/lib/libcpr.a
+/usr/local/lib/libcpr.so.1.11.0
+/usr/local/lib/libcpr.so.1
+/usr/local/lib/libcpr.so
 /usr/local/include/cpr/verbose.h
 /usr/local/include/cpr/response.h
 /usr/local/include/cpr/multiperform.h

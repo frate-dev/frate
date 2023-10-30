@@ -153,11 +153,11 @@ namespace Command {
   
     std::vector<std::string> versionTokens = versionJson["versions"];
     std::string version = ""; 
+
     for(size_t i = 0; i < versionTokens.size(); i++){
       std::cout << "[" << i << "]" << versionTokens[i] << std::endl;
       if (versionTokens[i] ==  "master" || versionTokens[i] == "main"  ||  versionTokens[i] == "stable"){
         version = versionTokens[i];
-
       }
     }
 
