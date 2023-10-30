@@ -3,6 +3,7 @@ build/*
 .cache/*
 .cmake
 Makefile
+config.toml
 CMakeFiles
 CMakeCache.txt
 cmake_install.cmake
@@ -13,3 +14,4 @@ compile_commands.json
 _deps/*
 compile_commands.json
 generated-includes/
+install_manifest.txt

@@ -52,7 +52,12 @@ namespace Command {
    * Initializes the options for the command line parser
    * @param new options object
    */
-  void initOptions(cxxopts::Options& options);
+  using namespace cxxopts;
+  ParseResult mainOptions(int argc, char** argv);
+  ParseResult initOptions(int argc, char** argv);
+  ParseResult addOptions(int argc, char** argv);
+  ParseResult removeOptions(int argc, char** argv);
+  ParseResult updateOptions(int argc, char** argv);
 
   typedef struct dependency {
     std::string name;
@@ -60,7 +65,6 @@ namespace Command {
     std::string version;
     std::string target_link;
   } dependency;
-
 
 
   typedef struct Context {

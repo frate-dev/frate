@@ -15,24 +15,18 @@
 #endif
 int main(int argc, char **argv) {
 
-  cxxopts::Options options(
-      "Cmake-Generator",
-      "Stop writing CMakeLists.txt files! let us suffer for you");
+  // LUCAS MAKE SURE YOU INITIALIZE YOUR FUCKING STRUCT YOU TWAT
+  std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
+  cxxopts::ParseResult result = Command::mainOptions(argc, argv);
 
-
-  Command::initOptions(options);
-  cxxopts::ParseResult result =options.parse(argc, argv);
-
-#ifdef TEST
-  Catch::Session session;
-  int returnCode = session.applyCommandLine(argc, argv);
-  if (returnCode != 0) // Indicates a command line error
-    return returnCode;
-  int numFailed = session.run();
-  return (numFailed < 0xff ? numFailed : 0xff);
-#else
-
-
+  #ifdef TEST
+    Catch::Session session;
+    int returnCode = session.applyCommandLine(argc, argv);
+    if (returnCode != 0) // Indicates a command line error
+      return returnCode;
+    int numFailed = session.run();
+    return (numFailed < 0xff ? numFailed : 0xff);
+  #else
 
   if (!result.count("command")) {
     Command::help();
@@ -40,21 +34,18 @@ int main(int argc, char **argv) {
   }
 
   std::string command = result["command"].as<std::string>() ;
-  if (argc < 2) {
-    Command::help();
-    std::cout << "needs more args"
-              << "\n";
-    return 1;
-  }
+ 
   #ifdef DEBUG
     std::cout << "DEBUG MODE ENABLED\n";
   #endif
 
-  // LUCAS MAKE SURE YOU INITIALIZE YOUR FUCKING STRUCT YOU TWAT
-  std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-
+  using namespace cxxopts;
   if (command == "init"){
-    Command::init(ctx, result);
+    ParseResult options = Command::initOptions(argc, argv);
+    for (auto option : options.arguments())
+      std::cout << option.key()  <<option.value() << ENDL;
+    
+    Command::init(ctx, options);
   }
   else if (command == "run"){
     Command::loadPackageToml(ctx);
@@ -68,15 +59,22 @@ int main(int argc, char **argv) {
     Command::ftp(ctx);
   }
   else if (command == "add"){
+    ParseResult options = Command::addOptions(argc, argv);
+    for (auto &i : options.arguments()){
+      std::cout << i.key() << " " << i.value() << ENDL;
+    }
     Command::loadPackageToml(ctx);
-    Command::add(ctx, result);
+    Command::add(ctx, options);
 
   }
   else if (command == "remove"){
+    ParseResult options = Command::removeOptions(argc, argv);
     Command::loadPackageToml(ctx);
-    Command::remove(ctx, result);
+    Command::remove(ctx, options);
   }
   else if (command == "update"){
+
+    ParseResult options = Command::updateOptions(argc, argv);
     Command::update(ctx, result);
   }
   else{
