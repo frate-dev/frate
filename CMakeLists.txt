@@ -1,53 +1,104 @@
 cmake_minimum_required(VERSION 3.10)
-project ( VERSION 0.0.1 LANGUAGES CXX)
+
+project ( 
+    cmaker
+    VERSION 0.0.1
+    LANGUAGES CXX
+)
+
 set(CMAKE_CXX_STANDARD 20)
 
-      if (CMAKE_BUILD_TYPE STREQUAL "Release")
-        message("Release mode")
-        set(RELEASE 1)
-      elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        message("Debug mode")
-        set(RELEASE 0)
-      elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
-        message("Test mode")
-        set(RELEASE 0)
-        set(TEST_MODE 1)
-      else()
-        message("Default mode")
-        set(RELEASE 0)
-      endif()
-      
-
-      file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
-        "include/**.h"
-        "include/**.hpp"
-        "src/**.cpp"
-        "src/**.c"
-        )
-      
-add_executable( ${SOURCES})
 include(FetchContent)
 
-        FetchContent_Declare(
-          cxxopts
-          GIT_REPOSITORY "https://github.com/jarro2783/cxxopts"
-          GIT_TAG "master"
-        )
-        
-FetchContent_MakeAvailable(cxxopts)
-target_link_libraries( cxxopts)
+FetchContent_Declare(
+  cxxopts 
+  GIT_REPOSITORY "https://github.com/jarro2783/cxxopts.git"
+  GIT_TAG "origin/master"
+)
 
-      if(RELEASE EQUAL 1)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wextra -Wpedantic -Wall")
-        add_definitions(-DRELEASE)
-      else()
-        add_definitions(-DDEBUG)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
-        if(TEST_MODE EQUAL 1)
-        endif()
-      endif()
-      
-include_directories(include)
+FetchContent_Declare(
+  nlohmann_json
+  GIT_REPOSITORY "https://github.com/nlohmann/json.git"
+  GIT_TAG "origin/master"
+)
+FetchContent_Declare(
+  tomlplusplus
+  GIT_REPOSITORY "https://github.com/marzer/tomlplusplus.git"
+  GIT_TAG "v3.4.0"
+)
+
+FetchContent_Declare(
+  cpr 
+  GIT_REPOSITORY https://github.com/libcpr/cpr.git
+  GIT_TAG master 
+) # The commit hash for 1.10.x. Replace with the latest from: https://github.com/libcpr/cpr/releases
+FetchContent_MakeAvailable(cpr)
+FetchContent_MakeAvailable(nlohmann_json)
+FetchContent_MakeAvailable(cxxopts)
+FetchContent_MakeAvailable(tomlplusplus)
+
+
+
+
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
+  "src/**.cpp"
+  "src/**.c"
+)
+
+include_directories(${CMAKE_SOURCE_DIR}/include)
+set(HEADER_DIR ${CMAKE_SOURCE_DIR}/include)
+
+message("Sources: ${SOURCES}")
+
+
+if(NOT DEFINED RELEASE)
+  set(RELEASE 0)
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  message("Release mode")
+  set(RELEASE 1)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  message("Debug mode")
+  set(RELEASE 0)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
+  message("Test mode")
+  set(RELEASE 0)
+  set(TEST_MODE 1)
+else()
+  message("Default mode")
+  set(RELEASE 0)
+endif()
+
+add_executable(cmaker ${SOURCES}) #test mode
+
+if(RELEASE EQUAL 1)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wextra -Wpedantic -Wall")
+  add_definitions(-DRELEASE)
+else()
+  add_definitions(-DDEBUG)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
+  if(TEST_MODE EQUAL 1)
+    FetchContent_Declare(
+      Catch2
+      GIT_REPOSITORY "https://github.com/catchorg/Catch2.git"
+      GIT_TAG "origin/devel"
+      )
+
+    FetchContent_MakeAvailable(Catch2)
+    add_definitions(-DTEST) #test mode
+    target_link_libraries(cmaker Catch2::Catch2) #test mode fuck you cmake
+    include(CTest)
+    include(Catch)
+
+  endif()
+endif()
+
+target_link_libraries(${PROJECT_NAME} cxxopts)
+target_link_libraries(${PROJECT_NAME} cpr::cpr)
+target_link_libraries(${PROJECT_NAME} nlohmann_json)
+target_link_libraries(${PROJECT_NAME} tomlplusplus::tomlplusplus)
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
-set_target_properties( PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
+set_target_properties(cmaker PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
+install(TARGETS cmaker DESTINATION bin)
