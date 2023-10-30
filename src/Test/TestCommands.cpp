@@ -35,11 +35,7 @@ namespace Tests::Command {
     for(auto arg : args) {
       std::cout << arg << std::endl;
     }
-    cxxopts::Options options(
-      "Cmake-Generator",
-      "Stop writing CMakeLists.txt files! let us suffer for you");
-    ::Command::initOptions(options);
-    cxxopts::ParseResult parseResults = options.parse(3, args);
+    cxxopts::ParseResult parseResults = ::Command::initOptions(3, args);
     ::Command::init(context, parseResults);
     std::ifstream file;
     try{
@@ -57,11 +53,7 @@ namespace Tests::Command {
     for(auto arg : args) {
       std::cout << arg << std::endl;
     }
-    cxxopts::Options options(
-      "Cmake-Generator",
-      "Stop writing CMakeLists.txt files! let us suffer for you");
-    ::Command::initOptions(options);
-    cxxopts::ParseResult parseResults = options.parse(3, args);
+    cxxopts::ParseResult parseResults = ::Command::initOptions(3,args);
     ::Command::init(context, parseResults);
     std::ifstream file;
     try{
