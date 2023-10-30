@@ -59,12 +59,12 @@ int main(int argc, char **argv) {
     Command::ftp(ctx);
   }
   else if (command == "add"){
-    ParseResult options = Command::addOptions(argc, argv);
-    for (auto &i : options.arguments()){
+    cxxopts::ParseResult args = Command::addOptions(argc, argv);
+    for (auto &i : args.arguments()){
       std::cout << i.key() << " " << i.value() << ENDL;
     }
     Command::loadPackageToml(ctx);
-    Command::add(ctx, options);
+    Command::add(ctx, args);
 
   }
   else if (command == "remove"){

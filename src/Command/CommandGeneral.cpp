@@ -13,7 +13,6 @@ namespace Command {
         std::cout << "Loading config.toml from " << ctx->project_path / file_name
           << std::endl;
       #endif
-
       auto data = toml::parse_file((ctx->project_path / file_name).string());
       ctx->project_name = data["project"]["project_name"].value_or("");
       for (auto &author : *data["project"]["authors"].as_array()) {

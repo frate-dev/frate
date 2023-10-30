@@ -55,8 +55,9 @@ namespace Command {
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
       ("args", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>());
+    options.help();
     try {
-      return options.parse(argc, argv);
+      return  options.parse(argc, argv);
     } catch (std::exception &e) {
       std::cout << "failed to parse options" << ENDL;
       exit(1);
