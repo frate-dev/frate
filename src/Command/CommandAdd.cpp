@@ -1,7 +1,6 @@
 #include "../Generators/Generators.hpp"
 #include "Command.hpp"
 #include <algorithm>
-#include <cpr/cpr.h>
 #include <cxxopts.hpp>
 #include <iostream>
 #include <nlohmann/json.hpp>

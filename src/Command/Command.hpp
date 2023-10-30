@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 #include <filesystem>
-#include <cpr/cpr.h>
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
@@ -136,7 +135,6 @@ namespace Command {
    */
 
   std::string downloadIndex();
-  nlohmann::json fetch(cpr::Url url) ;
   /*
    *  adds  dependency to toml and regenerates the CMakeLists.txt
    *  @returns bool -> finished successfully

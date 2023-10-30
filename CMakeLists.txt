@@ -27,12 +27,6 @@ FetchContent_Declare(
   GIT_TAG "v3.4.0"
 )
 
-FetchContent_Declare(
-  cpr 
-  GIT_REPOSITORY https://github.com/libcpr/cpr.git
-  GIT_TAG master 
-) # The commit hash for 1.10.x. Replace with the latest from: https://github.com/libcpr/cpr/releases
-FetchContent_MakeAvailable(cpr)
 FetchContent_MakeAvailable(nlohmann_json)
 FetchContent_MakeAvailable(cxxopts)
 FetchContent_MakeAvailable(tomlplusplus)
@@ -95,7 +89,7 @@ else()
 endif()
 
 target_link_libraries(${PROJECT_NAME} cxxopts)
-target_link_libraries(${PROJECT_NAME} cpr::cpr)
+target_link_libraries(${PROJECT_NAME} curl)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
 target_link_libraries(${PROJECT_NAME} tomlplusplus::tomlplusplus)
 set(SOURCE_DIR src)
