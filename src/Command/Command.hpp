@@ -135,6 +135,7 @@ namespace Command {
    * @returns bool -> finished successfully
    */
   bool addDependency(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args);
+  bool addAuthor(std::shared_ptr<Context>ctx, cxxopts::ParseResult &args);
   /*
    * Generates cmake file for project based on the current project context
    * @returns bool -> finished successfully
