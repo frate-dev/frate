@@ -10,90 +10,60 @@ namespace Command {
    * This allows us to use options in multiple places
    * @param options the options class to initialize
    */
-  ParseResult mainOptions(int argc, char **argv) {
-    Options options("Cmake-Generator", "Stop writing CMakeLists.txt files! let us suffer for you");
-    options.parse_positional({"command"});
-    options.allow_unrecognised_options().add_options()
+  bool OptionsInit::Main(Interface* inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command"});
+    inter->options->allow_unrecognised_options().add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("h,help", "Print usage");
 
-    try {
-      return options.parse(argc, argv);
-    } catch (std::exception &e) {
-      std::cout << "failed to parse options" << ENDL;
-      exit(1);
-    }
+    return inter->parse();
   }
 
 
-  ParseResult initOptions(int argc, char **argv) {
-    Options options(
-        "Cmake-Generator", 
-        "Stop writing CMakeLists.txt files! let us suffer for you");
-    options.parse_positional({"command", "subcommand"});
-    options.add_options()
+  bool OptionsInit::Init(Interface* inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand"});
+    inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "Subcommand to run", cxxopts::value<std::vector<std::string>>())("h,help", "Print usage")
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
       ("name", "Name of the project", cxxopts::value<std::string>()->default_value("false"))
       ("language", "Language of the project", cxxopts::value<std::string>()->default_value("cpp"));
-    try {
-      return options.parse(argc, argv);
-    } catch (std::exception &e) {
-      std::cout << "failed to parse options" << ENDL;
-      exit(1);
-    }
+    return inter->parse();
   }
-  ParseResult addOptions(int argc, char **argv) {
-    Options options("Cmake-Generator",
-        "Stop writing CMakeLists.txt files! let us suffer for you");
-    options.parse_positional({"command", "subcommand", "args"});
-    options.add_options()
+  bool OptionsInit::Add(Interface* inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand", "args"});
+    inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
       ("args", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>());
-    options.help();
-    try {
-      return  options.parse(argc, argv);
-    } catch (std::exception &e) {
-      std::cout << "failed to parse options" << ENDL;
-      exit(1);
-    }
+    inter->options->help();
+    return inter->parse();
   }
-  ParseResult removeOptions(int argc, char **argv) {
-    Options options("Cmake-Generator",
-        "Stop writing CMakeLists.txt files! let us suffer for you");
-    options.parse_positional({"command", "subcommand", "args"});
-    options.add_options()
+  bool OptionsInit::Remove(Interface *inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand", "args"});
+    inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
       ("args", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>());
-    try {
-      return options.parse(argc, argv);
-    } catch (std::exception &e) {
-      std::cout << "failed to parse options" << ENDL;
-      exit(1);
-    }
+    return inter->parse();
   }
-  ParseResult updateOptions(int argc, char **argv) {
-    Options options("Cmake-Generator",
-        "Stop writing CMakeLists.txt files! let us suffer for you");
-    options.parse_positional({"command", "subcommand"});
-    options.add_options()
+  bool OptionsInit::Update(Interface *interface) {
+    interface->InitHeader();
+    interface->options->parse_positional({"command", "subcommand"});
+    interface->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"));
-    try {
-      return options.parse(argc, argv);
-    } catch (std::exception &e) {
-      std::cout << "failed to parse options" << ENDL;
-      exit(1);
-    }
+    return interface->parse();
   }
 } // namespace Command

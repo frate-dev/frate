@@ -10,37 +10,37 @@
 
 namespace Command {
   using nlohmann::json;
-  bool add(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
-    if (!(args.count("subcommand") > 0)) {
+  bool Interface::add() {
+    if (!(args->count("subcommand") > 0)) {
       std::cout << "Usage add:" << ENDL
         "\tdep: adds a dependency" << ENDL
         "\tflag: adds a flag" << ENDL
         "\tlib:  adds a library" << std::endl;
       return false;
     }
-      std::string subcommand = args["subcommand"].as<std::string>();
+      std::string subcommand = args->operator[]("subcommand").as<std::string>();
       if (subcommand == "dep") {
-        addDependency(ctx, args);
+        this->addDependency();
       }
       if (subcommand == "flag") {
-        addFlag(ctx, args);
+        this->addFlag();
       }
 
     return true;
   }
 
-  bool addFlag(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
-    if (args.count("subcommand") == 0) {
-      for (auto flag : args["subcommand"].as<std::vector<std::string>>()) {
+  bool Interface::addFlag() {
+    if (args->count("subcommand") == 0) {
+      for (auto flag : args->operator[]("subcommand").as<std::vector<std::string>>()) {
         ctx->flags.push_back(flag);
       }
     }
     return true;
   }
 
-  bool addAuthors(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args){
-    if (args.count("args") == 0) {
-      for (auto author : args["args"].as<std::vector<std::string>>()) {
+  bool Interface::addAuthors(){
+    if (ctx->args->count("args") == 0) {
+      for (auto author : ctx->args->operator[]("args").as<std::vector<std::string>>()) {
         ctx->authors.push_back(author);
       }
     }
@@ -64,16 +64,16 @@ namespace Command {
     return true;
   }
 
-  bool addDependency(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
-    if (args.count("args") == 0) {
+  bool Interface::addDependency() {
+    if (args->count("args") == 0) {
       std::cout << 
         "Usage add dep:" << ENDL
         "\t[args]: the dependencies to project" << ENDL
         "\tcmake add dep [args] " << std::endl;
       return false;
     }
-
-    std::vector<packageResult> searchResults = searchPackage(args["args"].as<std::vector<std::string>>()[0]);
+    std::string query = args->operator[]("args").as<std::vector<std::string>>()[0];
+    std::vector<packageResult> searchResults = searchPackage(query);
     if(searchResults.size() == 0){
       std::cout << "No results found" << std::endl;
       return false;

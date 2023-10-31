@@ -80,12 +80,12 @@ else()
   add_definitions(-DDEBUG)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
   if(TEST_MODE EQUAL 1)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
     FetchContent_Declare(
       Catch2
       GIT_REPOSITORY "https://github.com/catchorg/Catch2.git"
       GIT_TAG "origin/devel"
       )
-
     FetchContent_MakeAvailable(Catch2)
     add_definitions(-DTEST) #test mode
     target_link_libraries(cmaker Catch2::Catch2) #test mode fuck you cmake

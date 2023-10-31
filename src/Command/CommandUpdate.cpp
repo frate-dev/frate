@@ -8,8 +8,8 @@
 namespace Command {
   using nlohmann::json;
 
-  bool update(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
-    if (args["subcommand"].as<std::string>() == "packages") {
+  bool Interface::update() {
+    if (this->args->operator[]("subcommand").as<std::string>() == "packages") {
       std::cout << "Updating packages" << ENDL;
       updateIndex();
     }

@@ -5,7 +5,7 @@
 #include "Command.hpp"
 
 namespace Command {
-  bool help() {
+  bool Interface::help() {
     if ((static_cast<std::string>(std::getenv("TERM")) == "xterm-kitty")){
       struct winsize w = {500, 500, 0, 0};
       ioctl(0, TIOCGWINSZ, &w);

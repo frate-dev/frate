@@ -52,22 +52,22 @@ bool createHelloWorldC(std::shared_ptr<Context> ctx) {
   return false;
 }
 
-bool createProject(std::shared_ptr<Context> ctx){
-  createToml(ctx);
-  loadPackageToml(ctx);
-  Generators::CMakeList::create(ctx);
-  if(ctx->lang == "cpp"){
-    createHelloWorldCpp(ctx);
-  }else if(ctx->lang == "c"){
-    createHelloWorldC(ctx);
+bool createProject(Interface *inter){
+  createToml(inter->ctx);
+  inter->LoadPackageToml();
+  Generators::CMakeList::create(inter->ctx);
+  if(inter->ctx->lang == "cpp"){
+    createHelloWorldCpp(inter->ctx);
+  }else if(inter->ctx->lang == "c"){
+    createHelloWorldC(inter->ctx);
   }
   return false;
 }
 
 
-bool defaultTomlCpp(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
-  std::string language = args["language"].as<std::string>();
-  std::string name = args["name"].as<std::string>();
+bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
+  std::string language = ctx->args->operator[]("language").as<std::string>();
+  std::string name = ctx->args->operator[]("name").as<std::string>();
   toml::array authors = toml::array{};
   toml::table table = toml::table{
       {"project",
@@ -104,7 +104,7 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
 }
 
 
-bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
+bool Interface::init() {
   std::string file_name = "config.toml";
   std::string new_project_name = "";
   #ifdef DEBUG
@@ -114,8 +114,8 @@ bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
     new_project_name = Utils::getFolderName();
   #endif
 
-  if(args["name"].count() > 0){
-    new_project_name = args["name"].as<std::string>();
+  if(args->operator[]("name").count() > 0){
+    new_project_name = args->operator[]("name").as<std::string>();
   }
 
   ctx->project_name = new_project_name;
@@ -130,10 +130,10 @@ bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
   std::string current_path =  ctx->project_path.string();
 
 
-  if (args["skip-init"].as<bool>()) {
-    std::string language = args["language"].as<std::string>();
+  if (args->operator[]("skip-init").as<bool>()) {
+    std::string language = args->operator[]("language").as<std::string>();
     if (language == "cpp" || language == "c++"){
-      defaultTomlCpp(ctx, args);
+      defaultTomlCpp(ctx);
     }
     else if (language == "c") { 
       //defaultTomlC(ctx, args);
@@ -141,11 +141,11 @@ bool init(std::shared_ptr<Context> ctx,  cxxopts::ParseResult &args) {
       exit(-1);
     }
 
-    loadPackageToml(ctx);
+    this->LoadPackageToml();
     Generators::CMakeList::create(ctx);
     createHelloWorldCpp(ctx);
   } else {
-      createProject(ctx);
+      createProject(this);
   }
 
   return true;

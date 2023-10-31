@@ -64,11 +64,11 @@ class FileWatcher {
 };
 
 namespace Command {
-  bool dev(std::shared_ptr<Command::Context> ctx) {
+  bool Interface::dev() {
     std::cout << "Starting dev mode" << std::endl;
     std::cout << "Watching for changes in " << ctx->src_dir << std::endl;
     FileWatcher fw{ctx->src_dir, std::chrono::milliseconds(500)};
-    fw.start([ctx](std::string path_to_watch, FileStatus status) -> void {
+    fw.start([this](std::string path_to_watch, FileStatus status) -> void {
       std::string command = "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name;
       switch (status) {
       case FileStatus::created:

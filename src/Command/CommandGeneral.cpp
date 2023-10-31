@@ -5,7 +5,7 @@
 #include <iostream>
 
 namespace Command {
-  bool loadPackageToml(std::shared_ptr<Context> ctx) {
+  bool Interface::LoadPackageToml() {
     try {
       std::string file_name = "config.toml";
       #ifdef DEBUG

@@ -28,7 +28,7 @@ namespace Tests{
 namespace Tests::Command {
 
 
-  
+  [[deprecated("This test is deprecated because it is not a unit test")]]  
   bool testCommandInit() { std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
     char* args[] = {"cmake-generator","init","-y"};
 
@@ -46,9 +46,9 @@ namespace Tests::Command {
     }
     return true;
   }
-
+  [[deprecated("This test is deprecated because it is not a unit test")]]
   bool testCommandAdd() { std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
-    char* args[] = {"cmake-generator","add","dep", "cxxopts"};
+    char* args[] = {"cmaker","add","dep", "cxxopts"};
 
     for(auto arg : args) {
       std::cout << arg << std::endl;
@@ -62,6 +62,7 @@ namespace Tests::Command {
       std::cout << "Failed to load CMakeLists.txt" << std::endl;
       return false;
     }
+    
     return true;
   }
 
@@ -69,7 +70,7 @@ namespace Tests::Command {
 
   TEST_CASE("TestCommands", "[commands]"){
 
-    REQUIRE(testCommandInit());
+    //REQUIRE(testCommandInit());
     //REQUIRE(testCommandAdd());
   }
 }

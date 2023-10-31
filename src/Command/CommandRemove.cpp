@@ -1,12 +1,12 @@
 #include "../Generators/Generators.hpp"
 #include "Command.hpp"
 namespace Command {
-  bool remove(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
-    args.count("subcommand");
-    if (args.count("subcommand") != 0) {
-      std::string subcommand = args["subcommand"].as<std::string>();
+  bool Interface::remove() {
+    args->count("subcommand");
+    if (args->count("subcommand") != 0) {
+      std::string subcommand = args->operator[]("subcommand").as<std::string>();
       if (subcommand == "dep") {
-        removeDep(ctx, args);
+        this->removeDep();
       }
     }else{
     std::cout <<  R"EOF(
@@ -19,9 +19,9 @@ Usage remove:
 
     return true;
   }
-  bool removeDep(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
+  bool Interface::removeDep() {
 
-    if (args.count("args") == 0) {
+    if (args->count("args") == 0) {
       std::cout << R"EOF(
 Usage remove dep:
    [args]: the dependencies to remove
@@ -30,7 +30,7 @@ Usage remove dep:
         )EOF" << std::endl;
       return false;
     }
-    std::vector<std::string> name_to_remove = args["args"].as<std::vector<std::string>>();
+    std::vector<std::string> name_to_remove = args->operator[]("args").as<std::vector<std::string>>();
     for (std::string name : name_to_remove) {
       std::cout << "args:" << name << std::endl;
     }

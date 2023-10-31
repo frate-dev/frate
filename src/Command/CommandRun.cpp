@@ -3,7 +3,7 @@
 #include <string>
 
 namespace Command {
-  bool run(std::shared_ptr<Context> ctx){
+  bool Interface::run(){
     #ifdef DEBUG
       system("mkdir -p build/build/");
       system("cd build && cmake  . && make  && cd ..");

@@ -2,8 +2,8 @@
 #include "Command.hpp"
 
 namespace Command{
-  bool ftp(std::shared_ptr<Context> ctx) {
-    bool test = loadPackageToml(ctx);
+  bool Interface::ftp() {
+    bool test = this->LoadPackageToml();
     if(!test) {
       std::cout << "Error: Could not load config.toml" << std::endl;
       return false;
