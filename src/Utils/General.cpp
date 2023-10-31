@@ -92,10 +92,8 @@ namespace Utils{
   }
   //"https://github.com/cmaker-dev/index/releases/latest/download/index.json"
   std::string fetchText(std::string url) {
-    std::cout << "Downloading index.json" << std::endl;
     std::string requrl = url;
     CurlResponse r = HttpGet(requrl);
-    std::cout << r.status_code << std::endl;
     
     switch(r.status_code){
       case 200:

@@ -44,8 +44,7 @@ namespace Command{
       std::cout << "Creating a new index file" << ENDL;
       std::system("mkdir -p ~/.local/cmaker");
       std::system("touch ~/.local/cmaker/index.json");
-      std::ofstream indexFile(indexFileName);
-      return;
+      std::ifstream indexFile(indexFileName);
     }
 
     json data = Utils::fetchJson(indexUrl);

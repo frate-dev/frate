@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
     Command::dev(ctx);
   }
   else if (command == "update"){
-    ParseResult options = Command::updateOptions(argc, argv);
+    ParseResult result = Command::updateOptions(argc, argv);
     Command::update(ctx, result);
   }
   else{

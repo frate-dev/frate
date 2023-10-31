@@ -10,8 +10,8 @@ namespace Command {
 
   bool update(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args) {
     if (args["subcommand"].as<std::string>() == "packages") {
+      std::cout << "Updating packages" << ENDL;
       updateIndex();
-      json data = fetchIndex();
     }
     return true;
   }
