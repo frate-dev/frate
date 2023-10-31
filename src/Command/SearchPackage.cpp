@@ -42,7 +42,7 @@ namespace Command {
   }
   std::vector<packageResult> calculatePackageScores(std::vector<std::string> queryTokens){
     std::vector<packageResult> results;
-    json rawIndex = Utils::fetchJson("https://github.com/cmaker-dev/index/releases/latest/download/index.json"); 
+    json rawIndex = fetchIndex();
     int lengthDiffAbs = 0;
     for(std::string query: queryTokens){
       for(json package: rawIndex){
@@ -57,14 +57,14 @@ namespace Command {
             .score = 0
             });
         //if it is an exact match
-        if(results.back().name == query){
+        if(Utils::toLower(results.back().name) == Utils::toLower(query)){
           results.back().score += 100;
         }
         //Check if the query is in the package name
-        if(results.back().name.find(query) != std::string::npos){
+        if(Utils::toLower(results.back().name).find(Utils::toLower(query)) != std::string::npos){
           results.back().score += 50;
         }
-        if(levensteinDistance(results.back().name, query) < 3){
+        if(levensteinDistance(Utils::toLower(results.back().name), Utils::toLower(query)) < 3){
           results.back().score += 10;
         }
 
@@ -82,7 +82,7 @@ namespace Command {
     for(packageResult result: results){
       if(std::any_of(resultsUnique.begin(), resultsUnique.end(), [&result](packageResult &r){
             r.score += result.score;
-            return r.name == result.name;
+            return Utils::toLower(r.name) == Utils::toLower(result.name);
             })){
         continue;
       }
@@ -100,6 +100,7 @@ namespace Command {
 
 
     std::cout << "Results:" << std::endl;
+    std::cout << "Results: " << results.size() << std::endl;
     for(int i = results.size();i > -1; i--){
       if(results[i].score > 10){
         //Adjusting the indexes for the normies

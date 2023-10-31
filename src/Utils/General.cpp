@@ -84,6 +84,12 @@ namespace Utils{
     }
     return result;
   }
+  std::string toLower(std::string str){
+    for (char& c : str) {
+      c = tolower(c);
+    }
+    return str;
+  }
   //"https://github.com/cmaker-dev/index/releases/latest/download/index.json"
   std::string fetchText(std::string url) {
     std::cout << "Downloading index.json" << std::endl;

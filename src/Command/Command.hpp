@@ -1,4 +1,5 @@
 #pragma once
+#include "nlohmann/json_fwd.hpp"
 #include <exception>
 #include <memory>
 #include <toml++/toml.hpp>
@@ -15,6 +16,7 @@
 #define ENDL "\n"
 
 namespace Command {
+  using nlohmann::json;
   [[deprecated("I DON'T KNOW WHAT THIS FUCKING DOES")]]
   bool handleCppProject();
   [[deprecated("WE ARE A BIG PROJECT MUST HAVE DEPRECATED STUFF")]]
@@ -150,10 +152,17 @@ namespace Command {
    *  @returns bool -> finished successfully
    */
   bool add(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args);
-  [[deprecated("use addDependency instead")]]
+
+  json fetchIndex();
+  void updateIndex();
+
+  bool update(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args);
+
   bool addLib(std::shared_ptr<Context>, cxxopts::ParseResult &args);
   bool update(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 
   bool remove(std::shared_ptr<Context>ctx,  cxxopts::ParseResult &args);
   bool removeDep(std::shared_ptr<Context>  ctx, cxxopts::ParseResult &args);
+
+
 }
