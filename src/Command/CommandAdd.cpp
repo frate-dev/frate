@@ -38,7 +38,14 @@ namespace Command {
     return true;
   }
 
-
+  bool addAuthors(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args){
+    if (args.count("args") == 0) {
+      for (auto author : args["args"].as<std::vector<std::string>>()) {
+        ctx->authors.push_back(author);
+      }
+    }
+    return true;
+  }
 
   bool checkForOverlappingDependencies(std::shared_ptr<Context> ctx, std::string name){
     if(ctx->dependencies.size() == 0){

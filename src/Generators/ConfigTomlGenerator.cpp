@@ -7,8 +7,7 @@
 namespace Generators::ConfigToml {
   /*
    * Validates the cmake version
-   * @param prefix: the prefix of the message
-   * @param ctx: the context of the command
+   * @param prefix: the prefix of the message @param ctx: the context of the command
    * @param config_toml: the config toml context
    * @return: true if the version is valid
    */
@@ -367,6 +366,9 @@ namespace Generators::ConfigToml {
     toml::array flags = toml::array{};
     for (auto &flag : ctx->flags) {
       flags.push_back(flag);
+    }
+    for (const auto &author : ctx->authors) {
+      authors.push_back(author);
     }
     toml::table table = toml::table{
       {"project",
