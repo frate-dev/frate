@@ -154,6 +154,7 @@ namespace Command {
   bool addLib(std::shared_ptr<Context>, cxxopts::ParseResult &args);
   bool update(std::shared_ptr<Context>, cxxopts::ParseResult &args);
 
+  bool dev(std::shared_ptr<Context> ctx);
   bool remove(std::shared_ptr<Context>ctx,  cxxopts::ParseResult &args);
   bool removeDep(std::shared_ptr<Context>  ctx, cxxopts::ParseResult &args);
 }
