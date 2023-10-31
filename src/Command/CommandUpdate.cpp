@@ -1,13 +1,17 @@
 #include "Command.hpp"
 #include <nlohmann/json.hpp>
 #include "../Utils/General.hpp"
+#include <iostream>
+#include <cstdlib>
+
 
 namespace Command {
   using nlohmann::json;
   bool updatePackages(){
 
     json data = Utils::fetchJson("https://github.com/cmaker-dev/index/releases/latest/download/index.json");
-    system("mkdir -p ~/.config/cmaker");
+    std::string command = "mkdir -p " + static_cast<std::string>(std::getenv("HOME"))  + "/.config/cmaker";
+    system(command.c_str());
 
     std::ofstream file;
     file.open(static_cast<std::string>(std::getenv("HOME")) + "/.config/cmaker/index.json");

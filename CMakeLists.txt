@@ -26,7 +26,13 @@ FetchContent_Declare(
   GIT_REPOSITORY "https://github.com/marzer/tomlplusplus.git"
   GIT_TAG "v3.4.0"
 )
+FetchContent_Declare(
+  curl
+  GIT_REPOSITORY "https://github.com/curl/curl.git"
+  GIT_TAG "curl-8_4_0"
+)
 
+FetchContent_MakeAvailable(curl)
 FetchContent_MakeAvailable(nlohmann_json)
 FetchContent_MakeAvailable(cxxopts)
 FetchContent_MakeAvailable(tomlplusplus)

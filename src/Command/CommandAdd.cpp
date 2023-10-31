@@ -78,15 +78,15 @@ namespace Command {
 
     std::cout << "Installing " << searchResults[index].name << std::endl;
 
-    json versionJson = Utils::fetchJson("https://raw.githubusercontent.com/cmaker-dev/index/main/index/" + searchResults[index].name + "/info.json"); 
+    //json versionJson = Utils::fetchJson("https://raw.githubusercontent.com/cmaker-dev/index/main/index/" + searchResults[index].name + "/info.json"); 
   
-    std::vector<std::string> versionTokens = versionJson["versions"];
+    std::vector<std::string> versions = searchResults[index].versions;
     std::string version = ""; 
 
-    for(size_t i = 0; i < versionTokens.size(); i++){
-      std::cout << "[" << i << "]" << versionTokens[i] << std::endl;
-      if (versionTokens[i] ==  "master" || versionTokens[i] == "main"  ||  versionTokens[i] == "stable"){
-        version = versionTokens[i];
+    for(size_t i = 0; i < versions.size(); i++){
+      std::cout << "[" << i << "]" << versions[i] << std::endl;
+      if (versions[i] ==  "master" || versions[i] == "main"  ||  versions[i] == "stable"){
+        version = versions[i];
       }
     }
 
@@ -96,9 +96,7 @@ namespace Command {
     std::cin >> versionInput;
 
     int versionIndex = std::stoi(input);
-    if (!(versionInput == "")){
-      version = versionTokens[versionIndex];
-    }
+    version = versions[versionIndex];
   
     if(checkForOverlappingDependencies(ctx, searchResults[index].name)){
       std::cout << "Package already installed" << std::endl;
@@ -110,9 +108,11 @@ namespace Command {
 
       .name = searchResults[index].name,
       .url = searchResults[index].url,
-      .version = version,
+      .version = searchResults[index].versions[versionIndex],
       //TODO: Change target link to be the actual link
-      .target_link = searchResults[index].name
+      .target_link = searchResults[index].target_link == "" 
+        ? searchResults[index].name
+        : searchResults[index].target_link
 
     });
     std::cout << "Writing config.toml" << std::endl;

@@ -50,6 +50,10 @@ namespace Command {
         results.push_back({
             .name = package["name"],
             .url = package["git"],
+            .versions = package["versions"],
+            .target_link = package.contains("target_link") 
+              ? package["target_link"]
+              : package["name"],
             .score = 0
             });
         //if it is an exact match

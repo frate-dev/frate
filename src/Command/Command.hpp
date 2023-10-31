@@ -61,7 +61,8 @@ namespace Command {
   typedef struct packageResult {
     std::string name;
     std::string url;
-    std::string version;
+    std::vector<std::string> versions;
+    std::string target_link;
     int score;
   } packageResult;
 
