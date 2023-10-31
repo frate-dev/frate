@@ -19,9 +19,10 @@ namespace Command {
       "\t          [-n | --name example-name] " << ENDL
       "\t          [-l | --language cpp/c]:" << ENDL
       "\t          initializes your project" << ENDL
-      "\t r | run:   builds and runs your project" << ENDL
+      "\t run:   builds and runs your project" << ENDL
+      "\t dev:   watches builds and runs your project on changes" << ENDL
       "\t add  [subcommand dep lib, flags]: add library, dependency or flags to your project" << ENDL
-      "\t ftp:  deletes the entire project" << ENDL
+      "\t ftp:  deletes the entire project (F*ck this project)" << ENDL
       "\t flags: adds a flag to your project"  << ENDL
       "\t help:  print help"  << ENDL;
     return 1;

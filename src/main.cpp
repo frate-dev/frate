@@ -72,8 +72,11 @@ int main(int argc, char **argv) {
     Command::loadPackageToml(ctx);
     Command::remove(ctx, options);
   }
+  else if (command == "dev"){
+    Command::loadPackageToml(ctx);
+    Command::dev(ctx);
+  }
   else if (command == "update"){
-
     ParseResult options = Command::updateOptions(argc, argv);
     Command::update(ctx, result);
   }
