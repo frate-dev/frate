@@ -8,6 +8,7 @@ project (
 
 set(CMAKE_CXX_STANDARD 20)
 
+set(BUILD_CURL_EXE OFF)
 include(FetchContent)
 
 FetchContent_Declare(
@@ -29,13 +30,13 @@ FetchContent_Declare(
 FetchContent_Declare(
   curl
   GIT_REPOSITORY "https://github.com/curl/curl.git"
-  GIT_TAG "curl-8_4_0"
+  GIT_TAG "curl-8_3_0"
 )
 
-FetchContent_MakeAvailable(curl)
 FetchContent_MakeAvailable(nlohmann_json)
 FetchContent_MakeAvailable(cxxopts)
 FetchContent_MakeAvailable(tomlplusplus)
+FetchContent_MakeAvailable(curl)
 
 
 
@@ -94,8 +95,8 @@ else()
   endif()
 endif()
 
-target_link_libraries(${PROJECT_NAME} cxxopts)
 target_link_libraries(${PROJECT_NAME} curl)
+target_link_libraries(${PROJECT_NAME} cxxopts)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
 target_link_libraries(${PROJECT_NAME} tomlplusplus::tomlplusplus)
 set(SOURCE_DIR src)

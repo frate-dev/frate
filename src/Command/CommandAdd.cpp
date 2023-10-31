@@ -95,7 +95,7 @@ namespace Command {
     std::string versionInput;
     std::cin >> versionInput;
 
-    int versionIndex = std::stoi(input);
+    int versionIndex = std::stoi(versionInput);
     version = versions[versionIndex];
   
     if(checkForOverlappingDependencies(ctx, searchResults[index].name)){
