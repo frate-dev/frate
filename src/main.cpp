@@ -17,7 +17,6 @@ int main(int argc, char **argv) {
 
   // LUCAS MAKE SURE YOU INITIALIZE YOUR FUCKING STRUCT YOU TWAT
   std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-  // cxxopts::ParseResult result = Command::mainOptions(argc, argv);
 
   #ifdef TEST
     Catch::Session session;
@@ -31,5 +30,5 @@ int main(int argc, char **argv) {
 
   new Command::Interface(argc,argv);
 
-#endif
+  #endif
 }

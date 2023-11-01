@@ -28,43 +28,43 @@ namespace Tests{
 namespace Tests::Command {
 
 
-  [[deprecated("This test is deprecated because it is not a unit test")]]  
-  bool testCommandInit() { std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
-    char* args[] = {"cmake-generator","init","-y"};
-
-    for(auto arg : args) {
-      std::cout << arg << std::endl;
-    }
-    cxxopts::ParseResult parseResults = ::Command::initOptions(3, args);
-    ::Command::init(context, parseResults);
-    std::ifstream file;
-    try{
-      file = std::ifstream(context->project_path / "CMakeLists.txt");
-    } catch (std::exception& e) {
-      std::cout << "Failed to load CMakeLists.txt" << std::endl;
-      return false;
-    }
-    return true;
-  }
-  [[deprecated("This test is deprecated because it is not a unit test")]]
-  bool testCommandAdd() { std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
-    char* args[] = {"cmaker","add","dep", "cxxopts"};
-
-    for(auto arg : args) {
-      std::cout << arg << std::endl;
-    }
-    cxxopts::ParseResult parseResults = ::Command::initOptions(3,args);
-    ::Command::init(context, parseResults);
-    std::ifstream file;
-    try{
-      file = std::ifstream(context->project_path / "CMakeLists.txt");
-    } catch (std::exception& e) {
-      std::cout << "Failed to load CMakeLists.txt" << std::endl;
-      return false;
-    }
-    
-    return true;
-  }
+//  [[deprecated("This test is deprecated because it is not a unit test")]]  
+//  bool testCommandInit() { std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
+//    char* args[] = {"cmake-generator","init","-y"};
+//
+//    for(auto arg : args) {
+//      std::cout << arg << std::endl;
+//    }
+//    cxxopts::ParseResult parseResults = ::Command::initOptions(3, args);
+//    ::Command::init(context, parseResults);
+//    std::ifstream file;
+//    try{
+//      file = std::ifstream(context->project_path / "CMakeLists.txt");
+//    } catch (std::exception& e) {
+//      std::cout << "Failed to load CMakeLists.txt" << std::endl;
+//      return false;
+//    }
+//    return true;
+//  }
+//  [[deprecated("This test is deprecated because it is not a unit test")]]
+//  bool testCommandAdd() { std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
+//    char* args[] = {"cmaker","add","dep", "cxxopts"};
+//
+//    for(auto arg : args) {
+//      std::cout << arg << std::endl;
+//    }
+//    cxxopts::ParseResult parseResults = ::Command::initOptions(3,args);
+//    ::Command::init(context, parseResults);
+//    std::ifstream file;
+//    try{
+//      file = std::ifstream(context->project_path / "CMakeLists.txt");
+//    } catch (std::exception& e) {
+//      std::cout << "Failed to load CMakeLists.txt" << std::endl;
+//      return false;
+//    }
+//    
+//    return true;
+//  }
 
 
 
