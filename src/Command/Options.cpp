@@ -1,7 +1,7 @@
-
 #include "Command.hpp"
 #include <cxxopts.hpp>
 #include <string>
+
 
 namespace Command {
   using namespace cxxopts;
