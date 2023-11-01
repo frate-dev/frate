@@ -109,7 +109,7 @@ namespace Command {
       bool addAuthors();
       bool addDependency();
       bool ftp();
-      bool dev();
+      bool watch();
     public:
       std::shared_ptr<Context> ctx;
       bool parse();
@@ -129,6 +129,7 @@ namespace Command {
       bool Remove(Interface*);
       bool Update(Interface*);
       bool Main(Interface*);
+      bool Watch(Interface*);
   };
 
 

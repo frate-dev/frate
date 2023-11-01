@@ -91,7 +91,7 @@ namespace Command {
     std::vector<std::string> versions = searchResults[index].versions;
     std::string version = ""; 
 
-    for(size_t i = 0; i < versions.size(); i++){
+    for(size_t i = versions.size(); i > 0; i--){
       std::cout << "[" << termcolor::green << i << termcolor::white << "]" << versions[i] << std::endl;
       if (versions[i] ==  "master" || versions[i] == "main"  ||  versions[i] == "stable"){
         version = versions[i];

@@ -71,9 +71,10 @@ namespace Command {
       this->LoadPackageToml();
       this->remove();
     }
-    else if (command == "dev"){
+    else if (command == "watch"){
+      OptionsInit::Watch(this);
       this->LoadPackageToml();
-      this->dev();
+      this->watch();
     }
     else if (command == "update"){
       OptionsInit::Update(this);

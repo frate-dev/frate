@@ -6,13 +6,10 @@
 
 namespace Command {
 
-  size_t walk(int epoll_fd){
+  size_t walk(int epoll_fd, std::string path){
     std::vector<int> filedescriptors;
-#ifdef DEBUG
-    for(auto filetoken:std::filesystem::recursive_directory_iterator("./build/src")){
-#else
-    for(auto filetoken:std::filesystem::recursive_directory_iterator("./src")){
-#endif
+
+    for(auto filetoken:std::filesystem::recursive_directory_iterator(path)){
       if(std::filesystem::is_directory(filetoken.path())){
         std::cout << filetoken.path() << std::endl;
         int temp_fd = inotify_init();
@@ -41,7 +38,7 @@ namespace Command {
   }
 
 
-  void watcher(const std::function<void()> &changeCallback) {
+  void watcher(const std::function<void()> &changeCallback, std::string path) {
     int inotify_fd = inotify_init();
     int epoll_fd = epoll_create(1);
 
@@ -50,17 +47,14 @@ namespace Command {
     ev.events = EPOLLIN;
     ev.data.fd = inotify_fd;
     // TODO: Add recursive directory watching
-#ifdef DEBUG
-    size_t watch_desc = inotify_add_watch(inotify_fd, "./build/src", IN_MODIFY | IN_CREATE | IN_DELETE | IN_MOVED_FROM | IN_MOVED_TO);
-#else
-    size_t watch_desc = inotify_add_watch(inotify_fd, "./src", IN_MODIFY | IN_CREATE | IN_DELETE | IN_MOVED_FROM | IN_MOVED_TO);
-#endif
+
+    size_t watch_desc = inotify_add_watch(inotify_fd, path.c_str(), IN_MODIFY | IN_CREATE | IN_DELETE | IN_MOVED_FROM | IN_MOVED_TO);
     if (watch_desc < 0) {
       std::cout << "Error adding watch" << std::endl;
       return;
     }
     epoll_ctl(epoll_fd, EPOLL_CTL_ADD, inotify_fd, &ev);
-    size_t num_dirs = walk(epoll_fd);
+    size_t filedescriptors = walk(epoll_fd, path);
 
 
 
@@ -75,17 +69,17 @@ namespace Command {
       std::cout << "\nChange detected!\n" << std::endl;
       std::vector<std::string> dirs;
 #ifdef DEBUG
-      for(auto filetoken:std::filesystem::recursive_directory_iterator("./build/src")){
+      for(auto filetoken:std::filesystem::recursive_directory_iterator(path)){
 #else
-      for(auto filetoken:std::filesystem::recursive_directory_iterator("./src")){
+      for(auto filetoken:std::filesystem::recursive_directory_iterator(path)){
 #endif
           if(std::filesystem::is_directory(filetoken.path())){
             dirs.push_back(filetoken.path());
           }
       }
-      if (dirs.size() != num_dirs){
+      if (dirs.size() != filedescriptors){
         std::cout << "\nDirectory change detected\n" << std::endl;
-        num_dirs = walk(epoll_fd);
+        filedescriptors= walk(epoll_fd, path.c_str());
       }
       if (num_events > 0) {
         char buffer[1024];
@@ -105,20 +99,33 @@ namespace Command {
     close(epoll_fd);
   }
 
-  bool Interface::dev() {
+  bool Interface::watch() {
     // This is where you call the watcher function and provide a lambda for the
     // callback
-    watcher([this]() {
-        std::string command =
+
+    
 #ifdef DEBUG
-        "cmake ./build/ && make && ./build/" + ctx->build_dir + "/" + ctx->project_name;
+    const std::string path = "./build/src";
 #else
-        "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name;
+    const std::string path = "./src";
+
+#endif
+
+    watcher([this]() {
+#ifdef DEBUG
+        std::vector<std::string> args_vec =  args->operator[]("args").as<std::vector<std::string>>();
+        std::string command_args = std::accumulate(
+            args_vec.begin(), args_vec.end(), args_vec[0],
+            [](std::string a, std::string b) { return a + " " + b; }
+        );
+        const std::string command = "cmake ./build/ && make && ./build/" + ctx->build_dir + "/" + ctx->project_name + "  " +command_args;
+#else
+      const std::string command = "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name  + " " + command_args;
 #endif
         system(command.c_str());
 
         // Call your recompilation command or any other action you want
-        });
+        },path);
     return true;
   }
 } // namespace Command
