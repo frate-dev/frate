@@ -8,7 +8,11 @@ namespace Command {
 
   size_t walk(int epoll_fd){
     std::vector<int> filedescriptors;
+#ifdef DEBUG
+    for(auto filetoken:std::filesystem::recursive_directory_iterator("./build/src")){
+#else
     for(auto filetoken:std::filesystem::recursive_directory_iterator("./src")){
+#endif
       if(std::filesystem::is_directory(filetoken.path())){
         std::cout << filetoken.path() << std::endl;
         int temp_fd = inotify_init();
@@ -46,7 +50,11 @@ namespace Command {
     ev.events = EPOLLIN;
     ev.data.fd = inotify_fd;
     // TODO: Add recursive directory watching
+#ifdef DEBUG
+    size_t watch_desc = inotify_add_watch(inotify_fd, "./build/src", IN_MODIFY | IN_CREATE | IN_DELETE | IN_MOVED_FROM | IN_MOVED_TO);
+#else
     size_t watch_desc = inotify_add_watch(inotify_fd, "./src", IN_MODIFY | IN_CREATE | IN_DELETE | IN_MOVED_FROM | IN_MOVED_TO);
+#endif
     if (watch_desc < 0) {
       std::cout << "Error adding watch" << std::endl;
       return;
@@ -66,7 +74,11 @@ namespace Command {
       int num_events = epoll_wait(epoll_fd, events, 1, -1);
       std::cout << "\nChange detected!\n" << std::endl;
       std::vector<std::string> dirs;
+#ifdef DEBUG
+      for(auto filetoken:std::filesystem::recursive_directory_iterator("./build/src")){
+#else
       for(auto filetoken:std::filesystem::recursive_directory_iterator("./src")){
+#endif
           if(std::filesystem::is_directory(filetoken.path())){
             dirs.push_back(filetoken.path());
           }
@@ -98,7 +110,11 @@ namespace Command {
     // callback
     watcher([this]() {
         std::string command =
+#ifdef DEBUG
+        "cmake ./build/ && make && ./build/" + ctx->build_dir + "/" + ctx->project_name;
+#else
         "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name;
+#endif
         system(command.c_str());
 
         // Call your recompilation command or any other action you want
