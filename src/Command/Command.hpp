@@ -65,6 +65,7 @@ namespace Command {
     std::string url;
     std::vector<std::string> versions;
     std::string target_link;
+    std::string description;
     int score;
   } packageResult;
 

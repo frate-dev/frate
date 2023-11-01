@@ -3,6 +3,8 @@
 #include <curl/easy.h>
 #include <nlohmann/json.hpp>
 #include "../Utils/General.hpp"
+#include "termcolor/termcolor.hpp"
+#include <termcolor/termcolor.hpp>
 
 
 
@@ -40,6 +42,16 @@ namespace Command {
     delete[] curr;
     return result;
   }
+  int compareDescription(packageResult& package, std::string& query){
+    int score = 0;
+    std::vector<std::string> queryTokens = Utils::split(query, ' ');
+    for(std::string token: queryTokens){
+      if(package.description.find(token) != std::string::npos){
+        score += 1;
+      }
+    }
+    return score;
+  }
   std::vector<packageResult> calculatePackageScores(std::vector<std::string> queryTokens){
     std::vector<packageResult> results;
     json rawIndex = fetchIndex();
@@ -47,13 +59,16 @@ namespace Command {
     for(std::string query: queryTokens){
       for(json package: rawIndex){
         //TODO: add description that can be searched
-        results.push_back({
+        results.push_back(packageResult{
             .name = package["name"],
             .url = package["git"],
             .versions = package["versions"],
             .target_link = package.contains("target_link") 
               ? package["target_link"]
               : package["name"],
+            .description = package.contains("description")
+              ? package["description"]
+              : "",
             .score = 0
             });
         //if it is an exact match
@@ -66,6 +81,10 @@ namespace Command {
         }
         if(levensteinDistance(Utils::toLower(results.back().name), Utils::toLower(query)) < 3){
           results.back().score += 10;
+        }
+
+        if(!results.back().description.empty() && results.back().score < 20){
+          results.back().score += compareDescription(results.back(), query);
         }
 
         lengthDiffAbs = std::abs((int)results.back().name.length() - (int)query.length());
@@ -99,12 +118,12 @@ namespace Command {
     std::vector<packageResult> results = calculatePackageScores(queryTokens);
 
 
-    std::cout << "Results:" << std::endl;
     std::cout << "Results: " << results.size() << std::endl;
     for(int i = results.size();i > -1; i--){
       if(results[i].score > 10){
         //Adjusting the indexes for the normies
-        std::cout << "[" << i << "]" << "[s:" << results[i].score << "] " << results[i].name << " - (" << results[i].url << ")" << std::endl;
+        std::cout << "[" << termcolor::green << i << termcolor::white << "]" << "[s:" << results[i].score << "] " << results[i].name << " - (" << termcolor::bright_blue << results[i].url << termcolor::white <<  ")" << std::endl;
+        std::cout << "    " << termcolor::cyan << results[i].description << termcolor::white << std::endl;
       }
     }
 

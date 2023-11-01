@@ -32,11 +32,17 @@ FetchContent_Declare(
   GIT_REPOSITORY "https://github.com/curl/curl.git"
   GIT_TAG "curl-8_3_0"
 )
+FetchContent_Declare(
+  termcolor
+  GIT_REPOSITORY "https://github.com/ikalnytskyi/termcolor.git"
+  GIT_TAG "v2.1.0"
+  )
 
 FetchContent_MakeAvailable(nlohmann_json)
 FetchContent_MakeAvailable(cxxopts)
 FetchContent_MakeAvailable(tomlplusplus)
 FetchContent_MakeAvailable(curl)
+FetchContent_MakeAvailable(termcolor)
 
 
 
@@ -99,6 +105,8 @@ target_link_libraries(${PROJECT_NAME} curl)
 target_link_libraries(${PROJECT_NAME} cxxopts)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
 target_link_libraries(${PROJECT_NAME} tomlplusplus::tomlplusplus)
+target_link_libraries(${PROJECT_NAME} termcolor::termcolor)
+
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
 set_target_properties(cmaker PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)

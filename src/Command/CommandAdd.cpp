@@ -7,6 +7,7 @@
 #include <string>
 #include "../Utils/General.hpp"
 #include <cmath>
+#include <termcolor/termcolor.hpp>
 
 namespace Command {
   using nlohmann::json;
@@ -91,14 +92,14 @@ namespace Command {
     std::string version = ""; 
 
     for(size_t i = 0; i < versions.size(); i++){
-      std::cout << "[" << i << "]" << versions[i] << std::endl;
+      std::cout << "[" << termcolor::green << i << termcolor::white << "]" << versions[i] << std::endl;
       if (versions[i] ==  "master" || versions[i] == "main"  ||  versions[i] == "stable"){
         version = versions[i];
       }
     }
 
     
-    std::cout << "Select a version to install [" + version + "] : ";
+    std::cout << "Select a version to install [" << termcolor::green <<  version << termcolor::white << "] : ";
     std::string versionInput;
     std::cin >> versionInput;
 
