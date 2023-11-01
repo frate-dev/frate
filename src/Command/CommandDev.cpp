@@ -1,91 +1,109 @@
-#include <chrono>
-#include <filesystem>
-#include <functional>
-#include <string>
-#include <thread>
-#include <unordered_map>
 #include "Command.hpp"
-
-enum class FileStatus { created, modified, erased };
-
-class FileWatcher {
-  public:
-    std::string path_to_watch;
-    std::chrono::duration<int, std::milli> delay;
-    bool running_ = true;
-    std::unordered_map<std::string, std::filesystem::file_time_type> paths_;
-    // Keep a record of files from the base directory and their last modification
-    // time
-    FileWatcher(std::string path_to_watch, std::chrono::duration<int, std::milli> delay): path_to_watch{path_to_watch}, delay{delay} {
-      for (auto &file :
-           std::filesystem::recursive_directory_iterator(path_to_watch)) {
-        paths_[file.path().string()] = std::filesystem::last_write_time(file);
-      }
-    }
-    bool contains(const std::string &key) {
-      auto el = paths_.find(key);
-      return el != paths_.end();
-    }
-    void start(const std::function<void(std::string, FileStatus)> &action) {
-      while (running_) {
-        // Wait for "delay" milliseconds
-        std::this_thread::sleep_for(delay);
-
-        auto it = paths_.begin();
-        while (it != paths_.end()) {
-          if (!std::filesystem::exists(it->first)) {
-            action(it->first, FileStatus::erased);
-            it = paths_.erase(it);
-          } else {
-            it++;
-          }
-        }
-
-        // Check if a file was created or modified
-        for (auto &file : std::filesystem::recursive_directory_iterator(path_to_watch)) {
-          auto current_file_last_write_time =
-              std::filesystem::last_write_time(file);
-
-          // File creation
-          if (!contains(file.path().string())) {
-            paths_[file.path().string()] = current_file_last_write_time;
-            action(file.path().string(), FileStatus::created);
-            // File modification
-          } 
-          else {
-            if (paths_[file.path().string()] != current_file_last_write_time) {
-              paths_[file.path().string()] = current_file_last_write_time;
-              action(file.path().string(), FileStatus::modified);
-            }
-          }
-        }
-      }
-    }
-};
+#include <functional>
+#include <iostream>
+#include <sys/epoll.h>
+#include <sys/inotify.h>
 
 namespace Command {
-  bool Interface::dev() {
-    std::cout << "Starting dev mode" << std::endl;
-    std::cout << "Watching for changes in " << ctx->src_dir << std::endl;
-    FileWatcher fw{ctx->src_dir, std::chrono::milliseconds(500)};
-    fw.start([this](std::string path_to_watch, FileStatus status) -> void {
-      std::string command = "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name;
-      switch (status) {
-      case FileStatus::created:
-        std::cout << "File created: " << path_to_watch << '\n';
-        break;
-      case FileStatus::modified:
-        std::cout << "File modified: " << path_to_watch << '\n';
-        break;
-      case FileStatus::erased:
-        std::cout << "File erased: " << path_to_watch << '\n';
-        break;
-      default:
-        std::cout << "Error! Unknown file status.\n";
+
+  size_t walk(int epoll_fd){
+    std::vector<int> filedescriptors;
+    for(auto filetoken:std::filesystem::recursive_directory_iterator("./src")){
+      if(std::filesystem::is_directory(filetoken.path())){
+        std::cout << filetoken.path() << std::endl;
+        int temp_fd = inotify_init();
+        if(temp_fd < 0){
+          std::cout << "Error creating inotify instance" << std::endl;
+          exit(1);
+        }
+        int err = inotify_add_watch(temp_fd, filetoken.path().c_str(), IN_MODIFY | IN_CREATE | IN_DELETE | IN_MOVED_FROM | IN_MOVED_TO);
+        if(err < 0){
+          std::cout << "Error adding watch" << std::endl;
+          exit(1);
+        }
+        filedescriptors.push_back(temp_fd);
       }
-      system(command.c_str());
-    });
-    return true;
+    };
+
+
+    for(int fd: filedescriptors){
+      struct epoll_event temp_ev;
+      temp_ev.data.fd = fd;
+      temp_ev.events = EPOLLIN;
+      epoll_ctl(epoll_fd, EPOLL_CTL_ADD, fd, &temp_ev);
+    }
+    return filedescriptors.size();
+
   }
 
-}
+
+  void watcher(const std::function<void()> &changeCallback) {
+    int inotify_fd = inotify_init();
+    int epoll_fd = epoll_create(1);
+
+    // Add inotify file descriptor to the epoll instance
+    struct epoll_event ev;
+    ev.events = EPOLLIN;
+    ev.data.fd = inotify_fd;
+    // TODO: Add recursive directory watching
+    size_t watch_desc = inotify_add_watch(inotify_fd, "./src", IN_MODIFY | IN_CREATE | IN_DELETE | IN_MOVED_FROM | IN_MOVED_TO);
+    if (watch_desc < 0) {
+      std::cout << "Error adding watch" << std::endl;
+      return;
+    }
+    epoll_ctl(epoll_fd, EPOLL_CTL_ADD, inotify_fd, &ev);
+    size_t num_dirs = walk(epoll_fd);
+
+
+
+    // Add the directory you want to watch
+
+
+    // Now, you can use epoll to wait for events
+    struct epoll_event events[1];
+    while (true) {
+      std::cout << "\nWaiting for changes...\n" << std::endl;
+      int num_events = epoll_wait(epoll_fd, events, 1, -1);
+      std::cout << "\nChange detected!\n" << std::endl;
+      std::vector<std::string> dirs;
+      for(auto filetoken:std::filesystem::recursive_directory_iterator("./src")){
+          if(std::filesystem::is_directory(filetoken.path())){
+            dirs.push_back(filetoken.path());
+          }
+      }
+      if (dirs.size() != num_dirs){
+        std::cout << "\nDirectory change detected\n" << std::endl;
+        num_dirs = walk(epoll_fd);
+      }
+      if (num_events > 0) {
+        char buffer[1024];
+        while (read(events[0].data.fd,&buffer, sizeof(buffer))<0) {
+
+        }
+        std::cout << buffer << std::endl;
+        changeCallback();
+
+      }
+    }
+
+
+    // Don't forget to clean up your file descriptors when you're done
+    close(watch_desc);
+    close(inotify_fd);
+    close(epoll_fd);
+  }
+
+  bool Interface::dev() {
+    // This is where you call the watcher function and provide a lambda for the
+    // callback
+    watcher([this]() {
+        std::string command =
+        "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name;
+        system(command.c_str());
+
+        // Call your recompilation command or any other action you want
+        });
+    return true;
+  }
+} // namespace Command
+
