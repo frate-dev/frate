@@ -120,6 +120,11 @@ namespace Command {
         );
         const std::string command = "cmake ./build/ && make && ./build/" + ctx->build_dir + "/" + ctx->project_name + "  " +command_args;
 #else
+        std::string command_args = std::accumulate(
+            args_vec.begin(), args_vec.end(), args_vec[0],
+            [](std::string a, std::string b) { return a + " " + b; }
+        );
+
       const std::string command = "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name  + " " + command_args;
 #endif
         system(command.c_str());
