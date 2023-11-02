@@ -10,7 +10,9 @@
 
 namespace Command {
   using nlohmann::json;
-
+  /*
+   * FUCKING MAGIC
+   */
   int levensteinDistance(std::string aStr, std::string bStr){
     //minimize the amount of memory used
     std::string* a = &aStr;
@@ -44,24 +46,39 @@ namespace Command {
   }
   int getStringScore(std::string &text, std::string &query){
     int score = 0;
-
-    if(text.size() == 0 || query.size() == 0){
-      return score;
-    }
-    if(text == query){
-      score += 100;
-      return score;
+    std::vector<std::string> split_text = Utils::split(text, ' ');
+    std::vector<std::string> split_query = Utils::split(query, ' ');
+    for(std::string word: split_text){
+      for(std::string query_word: split_query){
+        Utils::toLower(word);
+        Utils::toLower(query_word);
+        if(word == query_word){
+          score += 100;
+        }
+        if(word.find(query_word) != std::string::npos){
+          score += 50;
+        }
+        if(std::abs((int)text.size() - (int)query.size()) < 3){
+          score += 1;
+        }
+      }
     }
     if(levensteinDistance(text, query) < 3){
       score += 30;
     }
     return score;
   }
+  void getPackageScore(packageResult &package, std::string &query){
+    int score = 0;
+    score += getStringScore(package.name, query) * 10;
+    score += getStringScore(package.description, query);
+    score += getStringScore(package.target_link, query);
+    package.score = score;
+  }
   std::vector<packageResult> calculatePackageScores(std::string query){
     std::vector<packageResult> results;
     json rawIndex = fetchIndex();
     Utils::toLower(query);
-    std::string searchString = "";
     for(json json: rawIndex){
       packageResult package{
           .name = json["name"],
@@ -75,21 +92,10 @@ namespace Command {
           : "",
           .score = 0
       };
-      searchString = 
-        package.name + " " 
-        //+ package.description + " " 
-        + package.target_link;
-      Utils::toLower(searchString);
 
-      std::cout << "Search String: " << searchString << std::endl;
+      getPackageScore(package, query);
 
-      std::vector<std::string> searchWords = Utils::split(searchString, ' ');
-      for(std::string word: searchWords){
-        if(word == ""){
-          continue;
-        }
-        package.score += getStringScore(word, query);
-      }
+
 
       results.push_back(package);
     }
