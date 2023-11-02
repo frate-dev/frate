@@ -84,11 +84,12 @@ namespace Utils{
     }
     return result;
   }
-  std::string toLower(std::string str){
-    for (char& c : str) {
-      c = tolower(c);
+  void toLower(std::string &str){
+    for (size_t i = 0; i < str.size(); i++) {
+      if(str[i] >= 'A' && str[i] <= 'Z'){
+        str[i] = tolower(str[i]);
+      }
     }
-    return str;
   }
   //"https://github.com/cmaker-dev/index/releases/latest/download/index.json"
   std::string fetchText(std::string url) {

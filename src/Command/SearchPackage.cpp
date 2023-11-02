@@ -42,80 +42,69 @@ namespace Command {
     delete[] curr;
     return result;
   }
-  int compareDescription(packageResult& package, std::string& query){
+  int getStringScore(std::string &text, std::string &query){
     int score = 0;
-    std::vector<std::string> queryTokens = Utils::split(query, ' ');
-    for(std::string token: queryTokens){
-      if(package.description.find(token) != std::string::npos){
-        score += 1;
-      }
+
+    if(text.size() == 0 || query.size() == 0){
+      return score;
+    }
+    if(text == query){
+      score += 100;
+      return score;
+    }
+    if(levensteinDistance(text, query) < 3){
+      score += 30;
     }
     return score;
   }
-  std::vector<packageResult> calculatePackageScores(std::vector<std::string> queryTokens){
+  std::vector<packageResult> calculatePackageScores(std::string query){
     std::vector<packageResult> results;
     json rawIndex = fetchIndex();
-    int lengthDiffAbs = 0;
-    for(std::string query: queryTokens){
-      for(json package: rawIndex){
-        //TODO: add description that can be searched
-        results.push_back(packageResult{
-            .name = package["name"],
-            .url = package["git"],
-            .versions = package["versions"],
-            .target_link = package.contains("target_link") 
-              ? package["target_link"]
-              : package["name"],
-            .description = package.contains("description")
-              ? package["description"]
-              : "",
-            .score = 0
-            });
-        //if it is an exact match
-        if(Utils::toLower(results.back().name) == Utils::toLower(query)){
-          results.back().score += 100;
-        }
-        //Check if the query is in the package name
-        if(Utils::toLower(results.back().name).find(Utils::toLower(query)) != std::string::npos){
-          results.back().score += 50;
-        }
-        if(levensteinDistance(Utils::toLower(results.back().name), Utils::toLower(query)) < 3){
-          results.back().score += 10;
-        }
+    Utils::toLower(query);
+    std::string searchString = "";
+    for(json json: rawIndex){
+      packageResult package{
+          .name = json["name"],
+          .url = json["git"],
+          .versions = json["versions"],
+          .target_link = json.contains("target_link") 
+          ? json["target_link"]
+          : json["name"],
+          .description = json.contains("description")
+          ? json["description"]
+          : "",
+          .score = 0
+      };
+      searchString = 
+        package.name + " " 
+        + package.description + " " 
+        + package.target_link;
+      Utils::toLower(searchString);
 
-        if(!results.back().description.empty() && results.back().score < 20){
-          results.back().score += compareDescription(results.back(), query);
-        }
+      std::cout << "Search String: " << searchString << std::endl;
 
-        lengthDiffAbs = std::abs((int)results.back().name.length() - (int)query.length());
-        if(results.back().score > 20){
-          results.back().score -= lengthDiffAbs;
+      std::vector<std::string> searchWords = Utils::split(searchString, ' ');
+      for(std::string word: searchWords){
+        if(word == ""){
+          continue;
         }
+        package.score += getStringScore(word, query);
       }
+
+      results.push_back(package);
     }
+
     std::sort(results.begin(), results.end(), [](packageResult a, packageResult b){
         return a.score > b.score;
         });
-    std::vector<packageResult> resultsUnique;
-
-    for(packageResult result: results){
-      if(std::any_of(resultsUnique.begin(), resultsUnique.end(), [&result](packageResult &r){
-            r.score += result.score;
-            return Utils::toLower(r.name) == Utils::toLower(result.name);
-            })){
-        continue;
-      }
-      resultsUnique.push_back(result);
-    }
-    return resultsUnique;
+    return results;
   }
 
   std::vector<packageResult> searchPackage(std::string query){
     std::cout << "Searching for package" << std::endl;
 
-    std::vector<std::string> queryTokens = Utils::split(query, ' ');
 
-    std::vector<packageResult> results = calculatePackageScores(queryTokens);
+    std::vector<packageResult> results = calculatePackageScores(query);
 
 
     std::cout << "Results: " << results.size() << std::endl;
