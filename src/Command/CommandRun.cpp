@@ -39,7 +39,7 @@ namespace Command {
     std::string command = file_name + ctx->project_name;
     success = system(command.c_str());
     if (success != 0) {
-      std::cout << "Error running project" << std::endl;
+      std::cout << "Error running project!" << std::endl;
       return false;
     }
 

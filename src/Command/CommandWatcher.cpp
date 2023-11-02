@@ -113,20 +113,28 @@ namespace Command {
 
     watcher([this]() {
 #ifdef DEBUG
-        std::vector<std::string> args_vec =  args->operator[]("args").as<std::vector<std::string>>();
-        std::string command_args = std::accumulate(
+        std::string command = "cmake ./build/ && ./build/make && ./build/" + ctx->build_dir + "/" + ctx->project_name;
+        if (args->count("args") != 0) {
+          std::cout << "No args provided" << std::endl;
+          std::vector<std::string> args_vec =  args->operator[]("args").as<std::vector<std::string>>();
+          std::string command_args = std::accumulate(
             args_vec.begin(), args_vec.end(), args_vec[0],
-            [](std::string a, std::string b) { return a + " " + b; }
-        );
-        const std::string command = "cmake ./build/ && make && ./build/" + ctx->build_dir + "/" + ctx->project_name + "  " +command_args;
-#else
-        std::vector<std::string> args_vec =  args->operator[]("args").as<std::vector<std::string>>();
-        std::string command_args = std::accumulate(
-            args_vec.begin(), args_vec.end(), args_vec[0],
-            [](std::string a, std::string b) { return a + " " + b; }
-        );
+            [](std::string a, std::string b) { return a + " " + b; });
 
-      const std::string command = "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name  + " " + command_args;
+           command = "cmake ./build/ && make && ./build/" + ctx->build_dir + "/" + ctx->project_name + "  " +command_args;
+
+        }
+
+#else
+        std::string command = "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name;
+        if (args->count("args") != 0) {
+          std::string command = "cmake . && make && ./ " + ctx->build_dir + "/" + ctx->project_name;
+          std::vector<std::string> args_vec =  args->operator[]("args").as<std::vector<std::string>>();
+          std::string command_args = std::accumulate(
+              args_vec.begin(), args_vec.end(), args_vec[0],
+              [](std::string a, std::string b) { return a + " " + b; }
+          );
+        }
 #endif
         int success = system(command.c_str());
         if (success != 0) {
