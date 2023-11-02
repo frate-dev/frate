@@ -15,7 +15,7 @@ namespace Command {
 
 bool createToml(std::shared_ptr<Context> ctx) {
   //Lucas did it again
-  std::shared_ptr<Generators::ConfigToml::ConfigToml>config_toml = std::make_shared<Generators::ConfigToml::ConfigToml>();
+  std::shared_ptr<Generators::ConfigToml::Config>config_toml = std::make_shared<Generators::ConfigToml::Config>();
   Generators::ConfigToml::readUserInput(ctx, config_toml);
   Generators::ConfigToml::writeConfig(ctx);
   return false;

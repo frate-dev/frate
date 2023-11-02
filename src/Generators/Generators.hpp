@@ -40,7 +40,7 @@ namespace Generators{
 
   namespace ConfigToml{
 
-    typedef struct ConfigToml{
+    typedef struct Config_s{
       std::string cmake_version;
       std::string project_name;
       std::string project_version;
@@ -52,9 +52,9 @@ namespace Generators{
       std::string lang;
       std::string lang_version;
       std::string authors_str;
-    } ConfigToml;
+    } Config;
 
-    bool readUserInput(std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml);
+    bool readUserInput(std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml);
     bool writeConfig(std::shared_ptr<Command::Context>& ctx);
 
     /*
@@ -64,7 +64,7 @@ namespace Generators{
      * @param config_toml: the config toml context
      * @return: true if the cmake version is valid
      */
-    bool validateCmakeVersion(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml);
+    bool validateCmakeVersion(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml);
 
     /*
      * Validates the project name
@@ -73,7 +73,7 @@ namespace Generators{
      * @param config_toml: the config toml context
      * @return: true if the project name is valid
      */
-    bool validateProjectName(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml);
+    bool validateProjectName(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml);
 
     /*
      * Validates the project version
@@ -82,7 +82,7 @@ namespace Generators{
      * @param config_toml: the config toml context
      * @return: true if the project version is valid
      */
-    bool validateProjectVersion(std::string prefix,  std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml);
+    bool validateProjectVersion(std::string prefix,  std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml);
 
     /*
      * Validates the language version
@@ -91,7 +91,7 @@ namespace Generators{
      * @param config_toml: the config toml context
      * @return: true if the language version is valid
      */
-    bool validateLanguageVersion(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml);
+    bool validateLanguageVersion(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml);
 
     /*
      * Validates the compiler 
@@ -100,7 +100,7 @@ namespace Generators{
      * @param config_toml: the config toml context
      * @return: true if the language is valid
      */
-    bool validateCompiler(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml);
+    bool validateCompiler(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml);
 
     /*
      * Validates the source directory
@@ -109,7 +109,7 @@ namespace Generators{
      * @param config_toml: the config toml context
      * @return: true if the source directory is valid
      */
-    bool validateSourceDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml);
+    bool validateSourceDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml);
 
     /*
      * Validates the build directory
@@ -118,7 +118,7 @@ namespace Generators{
      * @param config_toml: the config toml context
      * @return: true if the build directory is valid
      */
-    bool validateBuildDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml);
+    bool validateBuildDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml);
 
     /*
      * Reads the data from the user
@@ -126,8 +126,17 @@ namespace Generators{
      * @param config_toml: the config toml context
      * @return: true if the data is valid
      */
-    bool validateIncludeDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml);
+    bool validateIncludeDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml);
 
+
+    /*
+     * Validates the language
+     * @param prefix: the prefix of the message
+     * @param ctx: the context of the command
+     * @param config_toml: the config toml context
+     * @return: true if the language is valid
+     */
+    bool validateLang(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml);
   }
 
 }

@@ -50,6 +50,8 @@ FetchContent_MakeAvailable(termcolor)
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
   "src/**.c"
+  "src/**/**.cpp"
+  "src/**/**.c"
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
