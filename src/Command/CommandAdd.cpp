@@ -87,24 +87,29 @@ namespace Command {
     std::cout << "Installing " << searchResults[index].name << std::endl;
 
     //json versionJson = Utils::fetchJson("https://raw.githubusercontent.com/cmaker-dev/index/main/index/" + searchResults[index].name + "/info.json"); 
+    json versionJson = fetchIndex(); 
   
     std::vector<std::string> versions = searchResults[index].versions;
     std::string version = ""; 
 
-    for(size_t i = versions.size(); i > 0; i--){
-      std::cout << "[" << termcolor::green << i << termcolor::white << "]" << versions[i] << std::endl;
-      if (versions[i] ==  "master" || versions[i] == "main"  ||  versions[i] == "stable"){
-        version = versions[i];
+    for(size_t i = searchResults[index].versions.size(); i > -1; i--){
+      std::cout << "[" << termcolor::green << i << termcolor::white << "]" << searchResults[index].versions[i] << std::endl;
+      if (searchResults[index].versions[i] == "master" || searchResults[index].versions[i] == "main"  ||  searchResults[index].versions[i] == "stable"){
+        version = searchResults[index].versions[i];
       }
     }
 
-    
+    json packageInfo = json{{"name", searchResults[index].name}, {"url", searchResults[index].url}, {"versions", searchResults[index].versions}, {"target_link", searchResults[index].target_link}};
+
+    for(size_t i = 0; i < searchResults[index].versions.size(); i++){
+      std::cout << "[" << termcolor::green << i << termcolor::white << "]" << searchResults[index].versions[i] << std::endl;
+    }
     std::cout << "Select a version to install [" << termcolor::green <<  version << termcolor::white << "] : ";
     std::string versionInput;
     std::cin >> versionInput;
 
     int versionIndex = std::stoi(versionInput);
-    version = versions[versionIndex];
+    version = searchResults[index].versions[versionIndex];
   
     if(checkForOverlappingDependencies(ctx, searchResults[index].name)){
       std::cout << "Package already installed" << std::endl;

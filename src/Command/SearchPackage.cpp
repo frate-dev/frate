@@ -77,7 +77,7 @@ namespace Command {
       };
       searchString = 
         package.name + " " 
-        + package.description + " " 
+        //+ package.description + " " 
         + package.target_link;
       Utils::toLower(searchString);
 
