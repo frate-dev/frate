@@ -4,8 +4,8 @@
 
 
 # Configuration directories and files
-SourceDirectory: /home/deastl/repos/cmake-generator
-BuildDirectory: /home/deastl/repos/cmake-generator
+SourceDirectory: /home/deastl/repos/cpp/cmake-generator
+BuildDirectory: /home/deastl/repos/cpp/cmake-generator
 
 # Where to place the cost data store
 CostDataFile: 
@@ -27,7 +27,7 @@ SubmitInactivityTimeout:
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/usr/bin/cmake" "/home/deastl/repos/cmake-generator"
+ConfigureCommand: "/usr/bin/cmake" "/home/deastl/repos/cpp/cmake-generator"
 MakeCommand: /usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
 DefaultCTestConfigurationType: Release
 

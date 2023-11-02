@@ -29,5 +29,9 @@ namespace Tests::Generators{
   namespace TomlConfig{
   }
 }
+namespace Tests::Utils {
+
+
+}
 #endif
 

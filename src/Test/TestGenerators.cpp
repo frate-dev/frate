@@ -19,8 +19,8 @@ namespace Test::Generators {
 
       for(std::string version : versions){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->cmake_version = version;
         if(!::Generators::ConfigToml::validateCmakeVersion("Testing version " + version + "\n",ctx, cmake_context)){
           return false;
@@ -29,8 +29,8 @@ namespace Test::Generators {
 
       for(std::string version : failing_versions){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->cmake_version = version;
         if(::Generators::ConfigToml::validateCmakeVersion("Testing failing version " + version + "\n",ctx, cmake_context)){
           return false;
@@ -64,8 +64,8 @@ namespace Test::Generators {
 
       for(std::string name : mock_names){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->project_name = name;
         if(!::Generators::ConfigToml::validateProjectName("Test " + name + " \n",ctx, cmake_context)){
           return false;
@@ -74,8 +74,8 @@ namespace Test::Generators {
 
       for(std::string name : failing_names){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->project_name = name;
         if(::Generators::ConfigToml::validateProjectName("Test failing name " + name + " \n",ctx, cmake_context)){
           return false;
@@ -89,8 +89,8 @@ namespace Test::Generators {
 
       for(std::string version : passing_project_versions){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->project_version = version;
         if(!::Generators::ConfigToml::validateProjectVersion("Testing version " + version + "\n",ctx, cmake_context)){
           return false;
@@ -98,8 +98,8 @@ namespace Test::Generators {
       }
       for(std::string version : failing_project_versions){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->project_version = version;
         if(::Generators::ConfigToml::validateProjectVersion("Testing failing version " + version + "\n",ctx, cmake_context)){
           return false;
@@ -117,8 +117,8 @@ namespace Test::Generators {
 
       for(std::string version : passing_cpp_language_versions){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->lang_version = version;
         cmake_context->lang = "cpp";
         if(!::Generators::ConfigToml::validateLanguageVersion("Testing cpp language version " + version + "\n",ctx, cmake_context)){
@@ -127,8 +127,8 @@ namespace Test::Generators {
       }
       for(std::string version : failing_cpp_language_versions){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->lang_version = version;
         cmake_context->lang = "cpp";
         if(::Generators::ConfigToml::validateLanguageVersion("Testing failing cpp language version " + version + "\n",ctx, cmake_context)){
@@ -137,8 +137,8 @@ namespace Test::Generators {
       }
       for(std::string version : passing_c_language_versions){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->lang_version = version;
         cmake_context->lang = "c";
         if(!::Generators::ConfigToml::validateLanguageVersion("Testing c language version " + version + "\n",ctx, cmake_context)){
@@ -147,8 +147,8 @@ namespace Test::Generators {
       }
       for(std::string version : failing_c_language_versions){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->lang_version = version;
         cmake_context->lang = "c";
         if(::Generators::ConfigToml::validateLanguageVersion("Testing failing c language version " + version + "\n",ctx, cmake_context)){
@@ -167,8 +167,8 @@ namespace Test::Generators {
 
       for(std::string compiler : passing_c_compilers){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->compiler = compiler;
         cmake_context->lang = "c";
         if(!::Generators::ConfigToml::validateCompiler("Testing c compiler " + compiler + "\n",ctx, cmake_context)){
@@ -177,8 +177,8 @@ namespace Test::Generators {
       }
       for(std::string compiler : failing_c_compilers){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->compiler = compiler;
         cmake_context->lang = "c";
         if(::Generators::ConfigToml::validateCompiler("Testing failing c compiler " + compiler + "\n",ctx, cmake_context)){
@@ -187,8 +187,8 @@ namespace Test::Generators {
       }
       for(std::string compiler : passing_cpp_compilers){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->compiler = compiler;
         cmake_context->lang = "cpp";
         if(!::Generators::ConfigToml::validateCompiler("Testing cpp compiler " + compiler + "\n",ctx, cmake_context)){
@@ -197,8 +197,8 @@ namespace Test::Generators {
       }
       for(std::string compiler : failing_cpp_compilers){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
         cmake_context->compiler = compiler;
         cmake_context->lang = "cpp";
         if(::Generators::ConfigToml::validateCompiler("Testing failing cpp compiler " + compiler + "\n",ctx, cmake_context)){
@@ -215,8 +215,8 @@ namespace Test::Generators {
 
       for(std::string source_dir : passing_source_dirs){
         std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
-        std::shared_ptr<::Generators::Config::ConfigToml> cmake_context =
-          std::make_shared<::Generators::Config::ConfigToml>();
+        std::shared_ptr<::Generators::ConfigToml::Config> cmake_context =
+          std::make_shared<::Generators::ConfigToml::Config>();
 
         cmake_context->src_dir = source_dir;
         if(!::Generators::ConfigToml::validateSourceDir("Testing source dir " + source_dir + "\n",ctx, cmake_context)){

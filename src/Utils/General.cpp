@@ -79,16 +79,14 @@ namespace Utils{
         word = word + x;
       }
     }
-    if(result.size() == 0){
+    if(word.size() > 0){
       result.push_back(word);
     }
     return result;
   }
   void toLower(std::string &str){
     for (size_t i = 0; i < str.size(); i++) {
-      if(str[i] >= 'A' && str[i] <= 'Z'){
-        str[i] = tolower(str[i]);
-      }
+      str[i] = tolower(str[i]);
     }
   }
   //"https://github.com/cmaker-dev/index/releases/latest/download/index.json"
