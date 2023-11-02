@@ -128,7 +128,10 @@ namespace Command {
 
       const std::string command = "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name  + " " + command_args;
 #endif
-        system(command.c_str());
+        int success = system(command.c_str());
+        if (success != 0) {
+          std::cout << "Error running project" << std::endl;
+        }
 
         // Call your recompilation command or any other action you want
         },path);
