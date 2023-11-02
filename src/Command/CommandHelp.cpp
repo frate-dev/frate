@@ -10,7 +10,11 @@ namespace Command {
     if ((static_cast<std::string>(std::getenv("TERM")) == "xterm-kitty")){
       struct winsize w = {500, 500, 0, 0};
       ioctl(0, TIOCGWINSZ, &w);
-      system("kitty +kitten icat --align left ~/Downloads/logo.png");
+      int success = system("kitty +kitten icat --align left ~/Downloads/logo.png");
+      if (success != 0) {
+        std::cout << "Error printing logo" << std::endl;
+        return false;
+      }
     }
 
     std::cout << "usage: "<< termcolor::green << "cmaker"<< termcolor::reset <<" <sub-command>" << ENDL  
