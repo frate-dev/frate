@@ -1,5 +1,5 @@
-#pragma once
 #ifdef TEST
+#pragma once
 #include "../Command/Command.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <cxxopts.hpp>
@@ -31,6 +31,9 @@ namespace Tests::Generators{
 }
 namespace Tests::Utils {
 
+  bool testSplit();
+
+  bool testToLower();
 
 }
 #endif

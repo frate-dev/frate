@@ -1,3 +1,4 @@
+#ifdef TEST
 #include "../Utils/General.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <vector>
@@ -61,4 +62,6 @@ namespace Tests::Utils {
     REQUIRE(testToLower());
   }
 }
+#endif
+
 
