@@ -3,16 +3,21 @@
 #include <string>
 #include <iostream>
 #include <regex>
+#include <termcolor/termcolor.hpp>
 
 namespace Generators::ConfigToml {
-  /*
-   * Validates the cmake version
-   * @param prefix: the prefix of the message @param ctx: the context of the command
-   * @param config_toml: the config toml context
-   * @return: true if the version is valid
-   */
-  bool validateCmakeVersion(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
-    std::cout << prefix;
+using std::string;
+
+/*
+ * Validates the cmake version
+ * @param prefix: the prefix of the message @param ctx: the context of the
+ * command
+ * @param config_toml: the config toml context
+ * @return: true if the version is valid
+ */
+bool validateCmakeVersion(string prefix, std::shared_ptr<Command::Context> ctx,
+                          std::shared_ptr<ConfigToml> config_toml) {
+  std::cout << prefix;
 #ifndef TEST
     std::getline(std::cin, config_toml->cmake_version);
 #endif
@@ -33,7 +38,7 @@ namespace Generators::ConfigToml {
       ctx->cmake_version = config_toml->cmake_version == "" ? ctx->cmake_version : config_toml->cmake_version;
     
     return true;
-  }
+    }
 
   /*
    * Validates the project name
@@ -42,7 +47,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the project name is valid
    */
-  bool validateProjectName(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool validateProjectName(string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
     std::cout << prefix;
     #ifndef TEST
       std::getline(std::cin, config_toml->project_name);
@@ -73,7 +78,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the project version is valid
    */
-  bool validateProjectVersion(std::string prefix,  std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool validateProjectVersion(string prefix,  std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
     std::cout << prefix;
 #ifndef TEST
       std::getline(std::cin, config_toml->project_version);
@@ -105,25 +110,25 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the language version is valid
    */
-  bool validateLanguageVersion(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool validateLanguageVersion(string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
     std::cout << prefix;
 #ifndef TEST
       std::getline(std::cin, config_toml->lang_version);
 #endif
-    std::vector<std::string> valid_c_versions = {"89", "90", "94", "99", "11", "18"};
-    std::vector<std::string> valid_cpp_versions = {"98", "03", "11", "14", "17", "20","23"};
+    std::vector<string> valid_c_versions = {"89", "90", "94", "99", "11", "18"};
+    std::vector<string> valid_cpp_versions = {"98", "03", "11", "14", "17", "20","23"};
 
     //If the version is empty we're gonna set it
     if(config_toml->lang_version == "") {
       goto end;
     }
-    for(std::string version : valid_c_versions) {
+    for(string version : valid_c_versions) {
       if(config_toml->lang_version == version) {
         goto end;
         break;
       }
     }
-    for(std::string version : valid_cpp_versions) {
+    for(string version : valid_cpp_versions) {
       if(config_toml->lang_version == version) {
         goto end;
         break;
@@ -143,20 +148,32 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the language is valid
    */
-  bool validateCompiler(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
-    std::vector<std::string> supportedCppCompilers = {"g++", "clang++"};
-    std::vector<std::string> supportedCCompilers = {"gcc", "clang", "msvc", "icc", "tcc", "emcc"};
+  bool validateCompiler(string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+    std::vector<string> supportedCppCompilers = {"g++", "clang++"};
+    std::vector<string> supportedCCompilers = {"gcc", "clang", "msvc", "icc", "tcc", "emcc"};
     std::cout << prefix << ENDL;
-    if(config_toml->lang == "cpp" || config_toml->lang == "c++"){
+    if(ctx->lang == "cpp" || ctx->lang == "c++"){
+      ctx->compiler = supportedCppCompilers[0];
       std::cout << "  Supported Compilers: ( ";
-      for(std::string comp : supportedCppCompilers){
-        std::cout << comp << " ";
+      for(string comp : supportedCppCompilers){
+        if(comp == supportedCppCompilers[0]){
+          std::cout << " [ " << comp << " ] ";
+          continue;
+        }else{
+          std::cout << comp << " ";
+        }
       }
     }
     if(config_toml->lang == "c"){
+      ctx->compiler = supportedCCompilers[0];
       std::cout << "  Supported Compilers: ";
-      for(std::string comp : supportedCCompilers){
-        std::cout << comp << " ";
+      for(string comp : supportedCCompilers){
+        if(comp == supportedCCompilers[0]){
+          std::cout << " [ " << comp << " ] ";
+          continue;
+        }else{
+          std::cout << comp << " ";
+        }
       }
     }
     std::cout << "): ";
@@ -168,13 +185,13 @@ namespace Generators::ConfigToml {
       goto end;
     }
     if(config_toml->lang == "cpp" || config_toml->lang == "c++"){
-      for(std::string compiler : supportedCppCompilers){
+      for(string compiler : supportedCppCompilers){
         if(config_toml->compiler == compiler){
           goto end;
         }
       }
     }else if(config_toml->lang == "c"){
-      for(std::string compiler : supportedCCompilers){
+      for(string compiler : supportedCCompilers){
         if(config_toml->compiler == compiler){
           goto end;
         }
@@ -195,7 +212,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the source directory is valid
    */
-  bool validateSourceDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool validateSourceDir(string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
     std::cout << prefix;
 #ifndef TEST
       std::getline(std::cin, config_toml->src_dir);
@@ -231,7 +248,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the build directory is valid
    */
-  bool validateBuildDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) { 
+  bool validateBuildDir(string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) { 
     std::cout << prefix;
 #ifndef TEST
       std::getline(std::cin, config_toml->build_dir);
@@ -266,7 +283,7 @@ namespace Generators::ConfigToml {
    * @param config_toml: the config toml context
    * @return: true if the data is valid
    */
-  bool validateIncludeDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+  bool validateIncludeDir(string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
     std::cout << prefix;
 #ifndef TEST
       std::getline(std::cin, config_toml->include_dir);
@@ -291,11 +308,11 @@ namespace Generators::ConfigToml {
     return true;
   }
 
-  bool validateLang(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
-    std::vector<std::string> supportedLangs = {"cpp", "c"};
+  bool validateLang(string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
+    std::vector<string> supportedLangs = {"cpp", "c"};
     std::cout << prefix << ENDL;
     std::cout << "  Supported languages: ( ";
-    for(std::string lang : supportedLangs){
+    for(string lang : supportedLangs){
       std::cout << lang << " ";
     }
     std::cout << "): ";
@@ -306,7 +323,7 @@ namespace Generators::ConfigToml {
     if(config_toml->lang == "") {
       goto end;
     }
-    for(std::string lang : supportedLangs){
+    for(string lang : supportedLangs){
       if(config_toml->lang == lang){
         goto end;
       }
@@ -319,43 +336,50 @@ namespace Generators::ConfigToml {
 
 
   bool readUserInput(std::shared_ptr<Command::Context> ctx, std::shared_ptr<ConfigToml> config_toml) {
-
+    validateLang:
     if(!validateLang("📚Language->" + ctx->lang + " : ", ctx, config_toml)) {
-      std::cout << "Invalid language - retry" << std::endl;
-      readUserInput(ctx, config_toml);
+      std::cout << termcolor::red << "Invalid language - retry" << termcolor::reset << std::endl;
+      goto validateLang;
     }
+    validateProjectName:
     if (!validateProjectName("📖Project name->" + ctx->project_name + " : ", ctx, config_toml)) {
-      std::cout << "Invalid project name - retry" << std::endl;
-      readUserInput(ctx, config_toml);
+      std::cout << termcolor::red << "Invalid project name - retry" << termcolor::reset << std::endl;
+      goto validateProjectName;
     }
+    validateCmakeVersion:
     if (!validateCmakeVersion("🔨Cmake version->" + ctx->cmake_version + " : ", ctx, config_toml)) {
-      std::cout << "Invalid cmake version - retry" << std::endl;
-      readUserInput(ctx, config_toml);
+      std::cout << termcolor::red << "Invalid cmake version - retry" << termcolor::reset << std::endl;
+      goto validateCmakeVersion;
     }
-  
+    validateProjectVersion: 
     if (!validateProjectVersion("🗃️Version->" + ctx->project_version + " : ", ctx, config_toml)) {
-      std::cout << "Invalid project version - retry" << std::endl;
-      readUserInput(ctx, config_toml);
+      std::cout << termcolor::red << "Invalid project version - retry" << termcolor::reset << std::endl;
+      goto validateProjectVersion;
     }
+    validateLanguageVersion:
     if (!validateLanguageVersion("📰Language Standard->" + ctx->lang_version + " : ", ctx, config_toml)) {
-      std::cout << "Invalid language version - retry" << std::endl;
-      readUserInput(ctx, config_toml);
+      std::cout << termcolor::red << "Invalid language version - retry" << termcolor::reset << std::endl;
+      goto validateLanguageVersion;
     }
-    if (!validateCompiler("💽Compiler->" + ctx->compiler + " : ", ctx, config_toml)) {
-      std::cout << "Invalid compiler - retry" << std::endl;
-      readUserInput(ctx, config_toml);
+    validateCompiler:
+    if (!validateCompiler("💽Compiler->", ctx, config_toml)) {
+      std::cout << termcolor::red << "Invalid compiler - retry" << termcolor::reset << std::endl;
+      goto validateCompiler;
     }
+    validateSourceDir:
     if (!validateSourceDir("⛲Source Dir->" + ctx->src_dir + " : ", ctx, config_toml)) {
-      std::cout << "Invalid source directory - retry" << std::endl;
-      readUserInput(ctx, config_toml);
+      std::cout << termcolor::red << "Invalid source directory - retry" << termcolor::reset << std::endl;
+      goto validateSourceDir;
     }
+    validateBuildDir:
     if (!validateBuildDir("🛠️Build Dir->" + ctx->build_dir + " : ", ctx, config_toml)) {
-      std::cout << "Invalid build directory - retry" << std::endl;
-      readUserInput(ctx, config_toml);
+      std::cout << termcolor::red << "Invalid build directory - retry" << termcolor::reset << std::endl;
+      goto validateBuildDir;
     }
+    validateIncludeDir:
     if (!validateIncludeDir("🫃Include Dir->" + ctx->include_dir + " : ", ctx, config_toml)) {
-      std::cout << "Invalid include directory - retry" << std::endl;
-      readUserInput(ctx, config_toml);
+      std::cout << termcolor::red << "Invalid include directory - retry" << termcolor::reset << std::endl;
+      goto validateIncludeDir;
     }
     return true;
   }
@@ -402,7 +426,7 @@ namespace Generators::ConfigToml {
 
 
     std::ofstream file;
-    std::string file_name = "config.toml";
+    string file_name = "config.toml";
 #ifdef DEBUG
     file_name = "build/config.toml";
     std::cout << "Writing config.toml to " << ctx->project_path / file_name
@@ -417,4 +441,4 @@ namespace Generators::ConfigToml {
     return true;
   }
 
-}
+  } // namespace Generators::ConfigToml

@@ -22,9 +22,14 @@ bool createToml(std::shared_ptr<Context> ctx) {
 }
 
 bool createHelloWorldCpp(std::shared_ptr<Context> ctx) {
-  system("cd build;mkdir src");
+#ifdef DEBUG
+    system("cd build;mkdir src");
+#else
+    system("mkdir src");
+#endif
   std::ofstream file;
   std::string file_name = ctx->project_path / "src/main.cpp";
+  std::cout << file_name << std::endl;
   #ifdef DEBUG
       file_name = "build/src/main.cpp";
   #endif
@@ -37,7 +42,11 @@ bool createHelloWorldCpp(std::shared_ptr<Context> ctx) {
   return false;
 }
 bool createHelloWorldC(std::shared_ptr<Context> ctx) {
-  system("mkdir src");
+#ifdef DEBUG
+    system("cd build;mkdir src");
+#else
+    system("mkdir src");
+#endif
   std::ofstream file;
   std::string file_name = "src/main.c";
   #ifdef DEBUG
@@ -143,7 +152,6 @@ bool Interface::init() {
 
     this->LoadPackageToml();
     Generators::CMakeList::create(ctx);
-    createHelloWorldCpp(ctx);
   } else {
       createProject(this);
   }
