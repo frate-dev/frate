@@ -1,5 +1,4 @@
 #include "Command.hpp"
-#include <toml++/toml.hpp>
 #include <cstddef>
 #include <format>
 #include <iostream>

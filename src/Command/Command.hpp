@@ -1,7 +1,6 @@
 #pragma once
 #include <exception>
 #include <memory>
-#include <toml++/toml.hpp>
 #include <map>
 #include <string>
 #include <vector>
