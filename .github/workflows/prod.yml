@@ -2,17 +2,16 @@
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
 name: CMake on a single platform
 
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-#     Don't wanna release without manual action
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   RELEASE_VERSION: 0.1.0
-  PACKAGE_NAME: "cmaker-release-${{env.RELEASE_VERSION}}.${{github.run_number}}"
+  PACKAGE_NAME: cmaker-release-0.1.0.${{github.run_number}}
 
 jobs:
   build:

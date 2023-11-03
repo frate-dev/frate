@@ -1,5 +1,4 @@
-# This starter workflow is for a CMake project running on a single platform. There is a different starter workflow if you need cross-platform coverage.
-# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
+# yaml-language-server: https://json.schemastore.org/github-action.json
 name: CMake on a single platform
 
 on:
@@ -12,7 +11,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
   RELEASE_VERSION: 0.1.0
-  PACKAGE_NAME: cmaker-nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}
+  PACKAGE_NAME: nightly-0.1.0.${{github.run_number}}
 
 jobs:
   build:
