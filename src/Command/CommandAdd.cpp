@@ -129,7 +129,7 @@ namespace Command {
 
     });
     std::cout << "Writing config.toml" << std::endl;
-    Generators::ConfigToml::writeConfig(ctx);
+    Generators::ConfigJson::writeConfig(ctx);
     Generators::CMakeList::create(ctx);
 
     return true;

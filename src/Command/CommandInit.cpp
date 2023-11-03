@@ -15,9 +15,9 @@ namespace Command {
 
 bool createToml(std::shared_ptr<Context> ctx) {
   //Lucas did it again
-  std::shared_ptr<Generators::ConfigToml::Config>config_toml = std::make_shared<Generators::ConfigToml::Config>();
-  Generators::ConfigToml::readUserInput(ctx, config_toml);
-  Generators::ConfigToml::writeConfig(ctx);
+  std::shared_ptr<Generators::ConfigJson::Config>config_json = std::make_shared<Generators::ConfigJson::Config>();
+  Generators::ConfigJson::readUserInput(ctx, config_json);
+  Generators::ConfigJson::writeConfig(ctx);
   return false;
 }
 
@@ -57,7 +57,7 @@ bool createHelloWorldC(std::shared_ptr<Context> ctx) {
 
 bool createProject(Interface *inter){
   createToml(inter->ctx);
-  inter->LoadPackageToml();
+  inter->LoadPackageJson();
   Generators::CMakeList::create(inter->ctx);
   if(inter->ctx->lang == "cpp"){
     createHelloWorldCpp(inter->ctx);
@@ -105,7 +105,7 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
 
 
 bool Interface::init() {
-  std::string file_name = "config.toml";
+  std::string file_name = "config.json";
   std::string new_project_name = "";
   #ifdef DEBUG
     new_project_name = "DEBUG";
@@ -140,7 +140,7 @@ bool Interface::init() {
       exit(-1);
     }
 
-    this->LoadPackageToml();
+    this->LoadPackageJson();
     Generators::CMakeList::create(ctx);
   } else {
       createProject(this);

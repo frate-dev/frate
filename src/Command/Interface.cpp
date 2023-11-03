@@ -49,7 +49,7 @@ namespace Command {
         std::cout << "DEBUG MODE ENABLED\n";
     #endif
     if(command != "init"){
-      this->LoadPackageToml();
+      this->LoadPackageJson();
     }
 
 

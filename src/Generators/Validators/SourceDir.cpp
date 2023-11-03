@@ -7,39 +7,39 @@
 #include "../Generators.hpp"
 
 
-namespace Generators::ConfigToml{
+namespace Generators::ConfigJson{
   /*
    * Validates the source directory
    * @param prefix: the prefix of the message
    * @param ctx: the context of the command
-   * @param config_toml: the config toml context
+   * @param config_json: the config toml context
    * @return: true if the source directory is valid
    */
-  bool validateSourceDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml) {
+  bool validateSourceDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json) {
     std::cout << prefix;
 #ifndef TEST
-      std::getline(std::cin, config_toml->src_dir);
+      std::getline(std::cin, config_json->src_dir);
 #endif
     //If the source directory is empty we're gonna set it
-    if(config_toml->src_dir == "") {
+    if(config_json->src_dir == "") {
       goto end;
     }
-    if (config_toml->src_dir.size() > 255) {
+    if (config_json->src_dir.size() > 255) {
       return false;
     }
     //check if the source directory is valid
-    if (std::regex_match(config_toml->src_dir, std::regex("^[a-zA-Z0-9_-]+$"))) {
+    if (std::regex_match(config_json->src_dir, std::regex("^[a-zA-Z0-9_-]+$"))) {
       goto end;
     }
-    if (config_toml->src_dir == "src") {
+    if (config_json->src_dir == "src") {
       goto end;
     }
-    if (sizeof(config_toml->src_dir) > 255) {
+    if (sizeof(config_json->src_dir) > 255) {
       goto end;
     }
     return false;
     end:
-      ctx->src_dir = config_toml->src_dir == "" ? ctx->src_dir : config_toml->src_dir;
+      ctx->src_dir = config_json->src_dir == "" ? ctx->src_dir : config_json->src_dir;
     
     return true;
   }

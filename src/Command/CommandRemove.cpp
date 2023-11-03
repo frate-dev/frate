@@ -44,7 +44,7 @@ Usage remove dep:
         return false;
     });
 
-    Generators::ConfigToml::writeConfig(ctx);
+    Generators::ConfigJson::writeConfig(ctx);
     Generators::CMakeList::create(ctx);
     return true;
   }

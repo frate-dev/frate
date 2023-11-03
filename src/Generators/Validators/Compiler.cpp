@@ -7,15 +7,15 @@
 #include "../Generators.hpp"
 
 
-namespace Generators::ConfigToml{
+namespace Generators::ConfigJson{
   /*
    * Validates the compiler 
    * @param prefix: the prefix of the message
    * @param ctx: the context of the command
-   * @param config_toml: the config toml context
+   * @param config_json: the config toml context
    * @return: true if the language is valid
    */
-  bool validateCompiler(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_toml) {
+  bool validateCompiler(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json) {
     std::vector<std::string> supportedCppCompilers = {"g++", "clang++"};
     std::vector<std::string> supportedCCompilers = {"gcc", "clang", "msvc", "icc", "tcc", "emcc"};
     std::cout << prefix << ENDL;
@@ -31,7 +31,7 @@ namespace Generators::ConfigToml{
         }
       }
     }
-    if(config_toml->lang == "c"){
+    if(config_json->lang == "c"){
       ctx->compiler = supportedCCompilers[0];
       std::cout << "  Supported Compilers: ";
       for(std::string comp : supportedCCompilers){
@@ -45,21 +45,21 @@ namespace Generators::ConfigToml{
     }
     std::cout << "): ";
 #ifndef TEST
-      std::getline(std::cin, config_toml->compiler);
+      std::getline(std::cin, config_json->compiler);
 #endif
     //If the compiler is empty we're gonna set it
-    if(config_toml->compiler == "") {
+    if(config_json->compiler == "") {
       goto end;
     }
-    if(config_toml->lang == "cpp" || config_toml->lang == "c++"){
+    if(config_json->lang == "cpp" || config_json->lang == "c++"){
       for(std::string compiler : supportedCppCompilers){
-        if(config_toml->compiler == compiler){
+        if(config_json->compiler == compiler){
           goto end;
         }
       }
-    }else if(config_toml->lang == "c"){
+    }else if(config_json->lang == "c"){
       for(std::string compiler : supportedCCompilers){
-        if(config_toml->compiler == compiler){
+        if(config_json->compiler == compiler){
           goto end;
         }
       }
@@ -67,7 +67,7 @@ namespace Generators::ConfigToml{
 
     return false;
     end:
-      ctx->compiler = config_toml->compiler == "" ? ctx->compiler : config_toml->compiler;
+      ctx->compiler = config_json->compiler == "" ? ctx->compiler : config_json->compiler;
     
     return true;
   }

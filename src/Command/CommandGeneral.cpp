@@ -5,46 +5,39 @@
 #include <iostream>
 
 namespace Command {
-  bool Interface::LoadPackageToml() {
+  bool Interface::LoadPackageJson() {
+    using nlohmann::json;
     try {
-      std::string file_name = "config.toml";
-
-
-
-      auto data = toml::parse_file((ctx->project_path / file_name).string());
-      ctx->project_name = data["project"]["project_name"].value_or("");
-      for (auto &author : *data["project"]["authors"].as_array()) {
-        ctx->authors.push_back(author.value_or(""));
+      std::string file_name = "config.json";
+      std::fstream file;
+      file.open((ctx->project_path / file_name).string());
+      json data = json::parse(file);
+      ctx->project_name = data["project_name"].template get<std::string>();
+      ctx->authors = data["authors"].template get<std::vector<std::string>>();
+      ctx->src_dir = data["src_dir"].template get<std::string>();
+      ctx->build_dir = data["build_dir"].template get<std::string>();
+      ctx->compiler = data["compiler"].template get<std::string>();
+      ctx->cmake_version = data["cmake_version"].template get<std::string>();
+      ctx->git = data["git"].template get<std::string>();
+      ctx->lang = data["lang"].template get<std::string>();
+      ctx->include_dir = data["include_dir"].template get<std::string>();
+      ctx->lang_version = data["lang_version"].template get<std::string>();
+      ctx->project_version = data["project_version"].template get<std::string>();
+      for (json &dep: data["dependencies"]) {
+        Command::dependency _dep;
+        _dep.name = dep["name"].template get<std::string>();
+        _dep.url = dep["url"].template get<std::string>();
+        _dep.version = dep["version"].template get<std::string>();
+        _dep.target_link = dep["target_link"].template get<std::string>();
+        ctx->dependencies.push_back(_dep);
       }
-      ctx->src_dir = data["project"]["src_dir"].value_or("");
-      ctx->build_dir = data["project"]["build_dir"].value_or("");
-      ctx->compiler = data["project"]["compiler"].value_or("");
-      ctx->cmake_version = data["project"]["cmake_version"].value_or("");
-      ctx->git = data["project"]["git"].value_or("");
-      ctx->lang = data["project"]["lang"].value_or("");
-      ctx->include_dir =
-        data["project"]["include_dir"].value_or("");
-      ctx->lang_version =
-        data["project"]["lang_version"].value_or("");
-      ctx->project_version = data["project"]["project_version"].value_or("");
-      if (data.at_path("dependencies").is_table()) {
-        for (auto &dep : *data["dependencies"].as_table()) {
+      
 
-          Command::dependency _dep;
-          _dep.name = dep.first;
-          _dep.url =
-            data["dependencies"][dep.first].as_array()->at(0).value_or("");
-          _dep.version =
-            data["dependencies"][dep.first].as_array()->at(1).value_or("");
-          _dep.target_link = data["dependencies"][dep.first].as_array()->at(2).value_or("");
 
-          ctx->dependencies.push_back(_dep);
+      
 
-        }
-      }
-
-    } catch (const toml::parse_error &err) {
-      std::cout << "Error: Could not load config.toml" << std::endl;
+    } catch (json::exception &e) {
+      std::cout << "Error: Could not load config.json" << std::endl;
       return false;
     }
 

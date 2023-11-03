@@ -1,5 +1,4 @@
 #pragma once
-#include "nlohmann/json_fwd.hpp"
 #include <exception>
 #include <memory>
 #include <toml++/toml.hpp>
@@ -77,8 +76,21 @@ namespace Command {
   } dependency;
 
 
+  typedef struct BuildServer {
+    std::string name;
+    std::string ip;
+    std::string username;
+    std::string authMethod;
+    std::optional<std::string> password;
+    std::optional<std::string> key;
+    std::optional<std::string> path;
+    int port;
+  } BuildServer;
+
   typedef struct Context {
     std::string project_name;
+    std::string project_type;
+    std::string project_description;
     std::filesystem::path project_path;
     std::string git{"null"};
     std::string lang{"cpp"};
@@ -89,11 +101,42 @@ namespace Command {
     std::string src_dir{"src"};
     std::string include_dir{"include"};
     std::vector<dependency> dependencies;
+    std::vector<BuildServer> build_servers;
     std::string build_dir{"build"};
     dependency testing_lib;
     std::string project_version{"0.0.1"};
     std::vector<std::string> flags; 
     std::shared_ptr<cxxopts::ParseResult> args;
+    nlohmann::json toJson(){
+      using nlohmann::json;
+      std::vector<json> deps;
+      for (auto &dep : dependencies) {
+        json dep_json;
+        dep_json["name"] = dep.name;
+        dep_json["url"] = dep.url;
+        dep_json["version"] = dep.version;
+        dep_json["target_link"] = dep.target_link;
+        deps.push_back(dep_json);
+      }
+      json j;
+      j["project_name"] = project_name;
+      j["cmake_version"] = cmake_version;
+      j["project_version"] = project_version;
+      j["lang"] = lang;
+      j["lang_version"] = lang_version;
+      j["compiler"] = compiler;
+      j["src_dir"] = src_dir;
+      j["build_dir"] = build_dir;
+      j["include_dir"] = include_dir;
+      j["dependencies"] = deps;
+      j["flags"] = flags;
+      j["authors"] = authors;
+      j["project_path"] = project_path;
+      j["project_type"] = project_type;
+      j["project_description"] = project_description;
+      return  j;
+
+    };
   } Context;
   class Interface{
     private:
@@ -106,6 +149,8 @@ namespace Command {
       bool run();
       bool help();
       bool addFlag();
+      bool server();
+
       bool addAuthors();
       bool addDependency();
       bool ftp();
@@ -122,12 +167,13 @@ namespace Command {
       ~Interface();
       bool InitHeader();
       bool CreateCMakelists();
-      bool LoadPackageToml();
+      bool LoadPackageJson();
   };
   namespace OptionsInit{
       bool Init(Interface*);
       bool Add(Interface*);
       bool Remove(Interface*);
+      bool Server(Interface*);
       bool Update(Interface*);
       bool Main(Interface*);
       bool Watch(Interface*);

@@ -7,7 +7,7 @@
 #include "../Generators.hpp"
 
 
-namespace Generators::ConfigToml {
+namespace Generators::ConfigJson{
   /*
    * Validates the project version
    * @param prefix: the prefix of the message
