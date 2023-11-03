@@ -23,7 +23,7 @@
 ```
 gcc >= 13
 or
-clangd >= 18
+clang >= 18
 and
 cmake >= 3
 ```
