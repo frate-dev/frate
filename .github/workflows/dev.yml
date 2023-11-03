@@ -4,14 +4,15 @@ name: CMake on a single platform
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+  BUILD_TYPE: Debug
   RELEASE_VERSION: 0.1.0
+  PACKAGE_NAME: cmaker-nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}
 
 jobs:
   build:
@@ -28,16 +29,14 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -B ${{github.workspace}}/ -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-    - name: Build
+    - name: Build & Zip Distribution
       working-directory: ${{github.workspace}}
       # Build your program with the given configuration
-      run: make -j32
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: cmaker-artifact-${{github.run_number}}
-        path: ${{github.workspace}}/build/
+      run: | 
+        cd ${{github.workspace}}
+        make -j32
+        mkdir ./dist
+        tar -czf ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz ./build/
 
     - name: BuildTest
       working-directory: ${{github.workspace}}
@@ -49,15 +48,12 @@ jobs:
       working-directory: ${{github.workspace}}
       run: ./build/cmaker
       
-    - name: Build Release
-      working-directory: ${{github.workspace}}
-      run: cmake -DCMAKE_BUILD_TYPE=Release ./ && make -j32 && mkdir ./dist/ && tar -czf ./dist/cmaker-nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}.tar.gz ./build/
       
     - name: Upload artifacts
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.CI_TOKEN }}
-        file: ${{github.workspace}}/dist/cmaker-nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}.tar.gz
+        file: ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz
         asset_name: cmaker
         tag: nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}
         overwrite: false
@@ -65,5 +61,3 @@ jobs:
         make_latest: true
         release_name: "CMaker nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}"
         body: "CMaker nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}" 
-      
-
