@@ -36,7 +36,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(nlohmann_json)
 FetchContent_MakeAvailable(cxxopts)
-FetchContent_MakeAvailable(tomlplusplus)
 FetchContent_MakeAvailable(curl)
 FetchContent_MakeAvailable(termcolor)
 
@@ -102,7 +101,6 @@ endif()
 target_link_libraries(${PROJECT_NAME} curl)
 target_link_libraries(${PROJECT_NAME} cxxopts)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
-target_link_libraries(${PROJECT_NAME} tomlplusplus::tomlplusplus)
 target_link_libraries(${PROJECT_NAME} termcolor::termcolor)
 
 set(SOURCE_DIR src)
