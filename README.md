@@ -18,7 +18,7 @@
 - neovim
 - vscode *yuck*
 
-## Install binary for yourself
+## Build the binary from source
 ### Prerequisites
 ```
 gcc >= 13
