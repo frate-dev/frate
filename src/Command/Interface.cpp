@@ -37,12 +37,21 @@ namespace Command {
     //   this->help();
     // }
 
+#ifdef DEBUG
+      ctx->project_path = std::filesystem::current_path() / "build";
+#else
+      ctx->project_path = std::filesystem::current_path();
+#endif
 
     std::string command = this->args->operator[]("command").as<std::string>();
 
     #ifdef DEBUG
         std::cout << "DEBUG MODE ENABLED\n";
     #endif
+    if(command != "init"){
+      this->LoadPackageToml();
+    }
+
 
     using namespace cxxopts;
     if (command == "init"){
@@ -50,7 +59,6 @@ namespace Command {
       this->init();
     }
     else if (command == "run"){
-      this->LoadPackageToml();
       this->run();
     }
     else if (command == "help"){
@@ -62,23 +70,23 @@ namespace Command {
     }
     else if (command == "add"){
       OptionsInit::Add(this);
-      this->LoadPackageToml();
       this->add();
 
     }
     else if (command == "remove"){
       OptionsInit::Add(this);
-      this->LoadPackageToml();
       this->remove();
     }
     else if (command == "watch"){
       OptionsInit::Watch(this);
-      this->LoadPackageToml();
       this->watch();
     }
     else if (command == "update"){
       OptionsInit::Update(this);
       this->update();
+    }
+    else if (command == "clean"){
+      this->clean();
     }
     else{
       std::cout << "Invalid command try one of these" << ENDL;

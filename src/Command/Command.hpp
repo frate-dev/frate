@@ -110,6 +110,7 @@ namespace Command {
       bool addDependency();
       bool ftp();
       bool watch();
+      bool clean();
     public:
       std::shared_ptr<Context> ctx;
       bool parse();

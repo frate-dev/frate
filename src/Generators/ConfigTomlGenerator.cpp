@@ -104,11 +104,6 @@ namespace Generators::ConfigToml {
 
     std::ofstream file;
     std::string file_name = "config.toml";
-#ifdef DEBUG
-    file_name = "build/config.toml";
-    std::cout << "Writing config.toml to " << ctx->project_path / file_name
-      << std::endl;
-#endif
     file.open(ctx->project_path / file_name);
     file << table;
     file << '\n';

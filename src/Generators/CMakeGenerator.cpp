@@ -106,9 +106,6 @@ namespace Generators::CMakeList{
     std::ofstream file;
     std::string file_name = "CMakeLists.txt";
 
-#ifdef DEBUG
-    file_name = "build/CMakeLists.txt";
-#endif
     try{
       remove((ctx->project_path / file_name).c_str());
     }catch(...){

@@ -30,9 +30,6 @@ bool createHelloWorldCpp(std::shared_ptr<Context> ctx) {
   std::ofstream file;
   std::string file_name = ctx->project_path / "src/main.cpp";
   std::cout << file_name << std::endl;
-  #ifdef DEBUG
-      file_name = "build/src/main.cpp";
-  #endif
   file.open(ctx->project_path / file_name);
   file << "#include <iostream>\n"
           "int main(){\n"
@@ -49,9 +46,6 @@ bool createHelloWorldC(std::shared_ptr<Context> ctx) {
 #endif
   std::ofstream file;
   std::string file_name = "src/main.c";
-  #ifdef DEBUG
-      file_name = "build/src/main.c";
-  #endif
   file.open(ctx->project_path / file_name);
   file << "#include <stdio.h>\n"
           "int main(){\n"
@@ -101,9 +95,6 @@ bool defaultTomlCpp(std::shared_ptr<Context> ctx) {
   std::ofstream file;
   std::string file_name = "config.toml";
 
-  #ifdef DEBUG
-     file_name = "build/config.toml";
-  #endif
 
   file.open(ctx->project_path / file_name);
   file << table;
@@ -117,7 +108,6 @@ bool Interface::init() {
   std::string file_name = "config.toml";
   std::string new_project_name = "";
   #ifdef DEBUG
-    file_name = "build/config.toml";
     new_project_name = "DEBUG";
   #else
     new_project_name = Utils::getFolderName();
