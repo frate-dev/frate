@@ -22,7 +22,9 @@
 ### Prerequisites
 ```
 gcc >= 13
+or
 clangd >= 18
+and
 cmake >= 3
 ```
 
