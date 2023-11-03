@@ -11,7 +11,7 @@ namespace Generators::ConfigJson{
   /*
    * Reads the data from the user
    * @param ctx: the context of the command
-   * @param config_json: the config toml context
+   * @param config_json: the config json context
    * @return: true if the data is valid
    */
   bool validateIncludeDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json) {

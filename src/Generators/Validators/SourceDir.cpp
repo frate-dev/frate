@@ -12,7 +12,7 @@ namespace Generators::ConfigJson{
    * Validates the source directory
    * @param prefix: the prefix of the message
    * @param ctx: the context of the command
-   * @param config_json: the config toml context
+   * @param config_json: the config json context
    * @return: true if the source directory is valid
    */
   bool validateSourceDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json) {

@@ -26,7 +26,7 @@ namespace Tests::Generators{
     bool testBuildDir();
     bool testIncludeDir();
   }
-  namespace TomlConfig{
+  namespace JsonConfig{
   }
 }
 namespace Tests::Utils {

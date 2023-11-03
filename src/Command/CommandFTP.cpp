@@ -5,7 +5,7 @@ namespace Command{
   bool Interface::ftp() {
     bool test = this->LoadPackageJson();
     if(!test) {
-      std::cout << "Error: Could not load config.toml" << std::endl;
+      std::cout << "Error: Could not load config.json" << std::endl;
       return false;
     }
   #ifdef DEBUG

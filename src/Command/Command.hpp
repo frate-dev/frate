@@ -35,7 +35,7 @@ namespace Command {
     }
     // opening the file
     if (file) {
-      std::cout << "file config.toml exists" << std::endl;
+      std::cout << "file config.json exists" << std::endl;
       std::cout << "do you want to overwrite it?[y/n]:";
       std::string input;
       std::getline(std::cin, input);
@@ -180,12 +180,12 @@ namespace Command {
 
 
   /*
-   * Loads the config.toml file into the project context
+   * Loads the config.json file into the project context
    * @param a blank project context
    * @return bool -> finished successfully
    */
   [[deprecated("Old function, Command::Interface ")]]
-  bool loadPackageToml(std::shared_ptr<Context> ctx);
+  bool loadPackageJson(std::shared_ptr<Context> ctx);
   /*
    * Initializes the project
    * Prompts the user for information about the project
@@ -223,7 +223,7 @@ namespace Command {
   [[deprecated("Old function, Command::Interface ")]]
   bool help();
   /*
-   * adds a dependency to the config.toml
+   * adds a dependency to the config.json
    * @returns bool -> finished successfully
    */
   [[deprecated("Old function, Command::Interface ")]]
@@ -244,7 +244,7 @@ namespace Command {
 
   std::string downloadIndex();
   /*
-   *  adds  dependency to toml and regenerates the CMakeLists.txt
+   *  adds  dependency to json and regenerates the CMakeLists.txt
    *  @returns bool -> finished successfully
    */
   [[deprecated("Old function, Command::Interface ")]]

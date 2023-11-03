@@ -298,7 +298,7 @@ namespace Test::Generators {
       REQUIRE(CMakeLists::testIncludeDir());
     };
   };
-  namespace TomlConfig {
+  namespace JsonConfig{
 
   };
 }

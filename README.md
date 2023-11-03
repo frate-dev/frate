@@ -70,4 +70,4 @@ cmake-generator is a command line utility used to expedite building modern c/c++
 - [x] Simple dependency management
 - [ ] Multi platform builds
 - [ ] Existing cmake project migration
-- [ ] Extensible toml configuration
+- [ ] Extensible json configuration

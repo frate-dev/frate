@@ -71,4 +71,4 @@ namespace Generators::ConfigJson{
     return true;
   }
 
-} // namespace Generators::ConfigToml
+} // namespace Generators::ConfigJson

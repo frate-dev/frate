@@ -116,7 +116,7 @@ namespace Command {
       return false;
     }
 
-    std::cout << "Adding dependency to config.toml" << std::endl;
+    std::cout << "Adding dependency to config.json" << std::endl;
     ctx->dependencies.push_back({
 
       .name = searchResults[index].name,
@@ -128,7 +128,7 @@ namespace Command {
         : searchResults[index].target_link
 
     });
-    std::cout << "Writing config.toml" << std::endl;
+    std::cout << "Writing config.json" << std::endl;
     Generators::ConfigJson::writeConfig(ctx);
     Generators::CMakeList::create(ctx);
 

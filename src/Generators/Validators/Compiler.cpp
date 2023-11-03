@@ -12,7 +12,7 @@ namespace Generators::ConfigJson{
    * Validates the compiler 
    * @param prefix: the prefix of the message
    * @param ctx: the context of the command
-   * @param config_json: the config toml context
+   * @param config_json: the config json context
    * @return: true if the language is valid
    */
   bool validateCompiler(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json) {
