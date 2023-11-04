@@ -3,6 +3,7 @@
 #include <curl/easy.h>
 #include <nlohmann/json.hpp>
 #include "../Utils/General.hpp"
+#include "../Utils/CLI.hpp"
 #include "termcolor/termcolor.hpp"
 #include <termcolor/termcolor.hpp>
 
@@ -10,6 +11,9 @@
 
 namespace Command {
   using nlohmann::json;
+  using Utils::CLI::List;
+  using Utils::CLI::ListItem;
+
   /*
    * FUCKING MAGIC
    */
@@ -114,13 +118,13 @@ namespace Command {
 
 
     std::cout << "Results: " << results.size() << std::endl;
-    for(int i = results.size();i > -1; i--){
-      if(results[i].score > 10){
-        //Adjusting the indexes for the normies
-        std::cout << "[" << termcolor::green << i << termcolor::white << "]" << "[s:" << results[i].score << "] " << results[i].name << " - (" << termcolor::bright_blue << results[i].url << termcolor::white <<  ")" << std::endl;
-        std::cout << "    " << termcolor::cyan << results[i].description << termcolor::white << std::endl;
+    Utils::CLI::List *list = (new Utils::CLI::List())->Numbered()->ReverseIndexed();
+    for(packageResult result: results){
+      if(result.score > 10){
+        list->pushBack(ListItem(result.name + " (" + result.url + ")", result.description));
       }
     }
+    std::cout << list->Build() << std::endl;
 
     return results;
   }

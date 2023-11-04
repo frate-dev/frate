@@ -1,4 +1,5 @@
 #pragma once
+#include "nlohmann/json_fwd.hpp"
 #include <exception>
 #include <memory>
 #include <map>
@@ -74,7 +75,6 @@ namespace Command {
     std::string target_link;
   } dependency;
 
-
   typedef struct BuildServer {
     std::string name;
     std::string ip;
@@ -82,7 +82,6 @@ namespace Command {
     std::string authMethod;
     std::optional<std::string> password;
     std::optional<std::string> key;
-    std::optional<std::string> path;
     int port;
   } BuildServer;
 
@@ -106,36 +105,8 @@ namespace Command {
     std::string project_version{"0.0.1"};
     std::vector<std::string> flags; 
     std::shared_ptr<cxxopts::ParseResult> args;
-    nlohmann::json toJson(){
-      using nlohmann::json;
-      std::vector<json> deps;
-      for (auto &dep : dependencies) {
-        json dep_json;
-        dep_json["name"] = dep.name;
-        dep_json["url"] = dep.url;
-        dep_json["version"] = dep.version;
-        dep_json["target_link"] = dep.target_link;
-        deps.push_back(dep_json);
-      }
-      json j;
-      j["project_name"] = project_name;
-      j["cmake_version"] = cmake_version;
-      j["project_version"] = project_version;
-      j["lang"] = lang;
-      j["lang_version"] = lang_version;
-      j["compiler"] = compiler;
-      j["src_dir"] = src_dir;
-      j["build_dir"] = build_dir;
-      j["include_dir"] = include_dir;
-      j["dependencies"] = deps;
-      j["flags"] = flags;
-      j["authors"] = authors;
-      j["project_path"] = project_path;
-      j["project_type"] = project_type;
-      j["project_description"] = project_description;
-      return  j;
-
-    };
+    void fromJson(json j);
+    nlohmann::json toJson();
   } Context;
   class Interface{
     private:

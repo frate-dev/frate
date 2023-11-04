@@ -6,11 +6,14 @@
 #include <nlohmann/json.hpp>
 #include <string>
 #include "../Utils/General.hpp"
+#include "../Utils/CLI.hpp"
 #include <cmath>
 #include <termcolor/termcolor.hpp>
 
 namespace Command {
   using nlohmann::json;
+  using Utils::CLI::List;
+  using Utils::CLI::ListItem;
   bool Interface::add() {
     if (!(args->count("subcommand") > 0)) {
       std::cout << "Usage add:" << ENDL
@@ -82,7 +85,13 @@ namespace Command {
     std::cout << "Select a package to install: ";
     std::string input;
     std::cin >> input;
-    int index = std::stoi(input);
+    int index;
+    try{
+      index = std::stoi(input);
+    }catch(...){
+      std::cout << "Invalid input" << std::endl;
+      return false;
+    }
 
     std::cout << "Installing " << searchResults[index].name << std::endl;
 
@@ -91,7 +100,6 @@ namespace Command {
   
     std::vector<std::string> versions = searchResults[index].versions;
     std::string version = ""; 
-
     for(size_t i = searchResults[index].versions.size(); i > -1; i--){
       std::cout << "[" << termcolor::green << i << termcolor::white << "]" << searchResults[index].versions[i] << std::endl;
       if (searchResults[index].versions[i] == "master" || searchResults[index].versions[i] == "main"  ||  searchResults[index].versions[i] == "stable"){
@@ -100,15 +108,22 @@ namespace Command {
     }
 
     json packageInfo = json{{"name", searchResults[index].name}, {"url", searchResults[index].url}, {"versions", searchResults[index].versions}, {"target_link", searchResults[index].target_link}};
-
+    List* list = (new List())->Numbered()->ReverseIndexed();
     for(size_t i = 0; i < searchResults[index].versions.size(); i++){
-      std::cout << "[" << termcolor::green << i << termcolor::white << "]" << searchResults[index].versions[i] << std::endl;
+      list->pushBack(ListItem(searchResults[index].versions[i],""));
     }
+    std::cout << list->Build() << std::endl;
     std::cout << "Select a version to install [" << termcolor::green <<  version << termcolor::white << "] : ";
     std::string versionInput;
     std::cin >> versionInput;
 
-    int versionIndex = std::stoi(versionInput);
+    int versionIndex;
+    try{
+      versionIndex = std::stoi(versionInput);
+    }catch(...){
+      std::cout << "Invalid input" << std::endl;
+      return false;
+    }
     version = searchResults[index].versions[versionIndex];
   
     if(checkForOverlappingDependencies(ctx, searchResults[index].name)){
@@ -129,8 +144,12 @@ namespace Command {
 
     });
     std::cout << "Writing config.json" << std::endl;
-    Generators::ConfigJson::writeConfig(ctx);
-    Generators::CMakeList::create(ctx);
+    if(!Generators::ConfigJson::writeConfig(ctx)){
+      std::cout << "Failed to write config.json" << std::endl;
+    }
+    if(!Generators::CMakeList::create(ctx)){
+      std::cout << "Failed to write CMakeLists.txt" << std::endl;
+    }
 
     return true;
   }
