@@ -82,7 +82,13 @@ namespace Command {
     std::cout << "Select a package to install: ";
     std::string input;
     std::cin >> input;
-    int index = std::stoi(input);
+    int index;
+    try{
+      index = std::stoi(input);
+    }catch(...){
+      std::cout << "Invalid input" << std::endl;
+      return false;
+    }
 
     std::cout << "Installing " << searchResults[index].name << std::endl;
 
