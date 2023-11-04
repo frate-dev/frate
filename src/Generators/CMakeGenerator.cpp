@@ -17,12 +17,12 @@ namespace Generators::CMakeList{
       std::string FetchContent_Declare =
         std::format(
         R"V0G0N(
-        FetchContent_Declare(
-          {}
-          GIT_REPOSITORY "{}"
-          GIT_TAG "{}"
-        )
-        )V0G0N",
+FetchContent_Declare(
+  {}
+  GIT_REPOSITORY "{}"
+  GIT_TAG "{}"
+)
+    )V0G0N",
         dep.name, dep.url, dep.version);
 
       std::string FetchContent_MakeAvailable =
@@ -46,22 +46,22 @@ namespace Generators::CMakeList{
     cmake_context->project_name =
       std::format("project ({} VERSION {} LANGUAGES CXX)",
           ctx->project_name, ctx->project_version);
-    cmake_context->build_type = R"V0G0N(
-      if (CMAKE_BUILD_TYPE STREQUAL "Release")
-        message("Release mode")
-        set(RELEASE 1)
-      elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        message("Debug mode")
-        set(RELEASE 0)
-      elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
-        message("Test mode")
-        set(RELEASE 0)
-        set(TEST_MODE 1)
-      else()
-        message("Default mode")
-        set(RELEASE 0)
-      endif()
-      )V0G0N";
+    cmake_context->build_type = R"(
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+  message("Release mode")
+  set(RELEASE 1)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  message("Debug mode")
+  set(RELEASE 0)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
+  message("Test mode")
+  set(RELEASE 0)
+  set(TEST_MODE 1)
+else()
+  message("Default mode")
+  set(RELEASE 0)
+endif()
+      )";
     cmake_context->cxx_version =
       std::format("set(CMAKE_CXX_STANDARD {})", ctx->lang_version);
     cmake_context->compiler =
@@ -71,12 +71,12 @@ namespace Generators::CMakeList{
     cmake_context->fetch_content = "include(FetchContent)";
 
     cmake_context->files = R"V0G0N(
-      file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
-        "include/**.h"
-        "include/**.hpp"
-        "src/**.cpp"
-        "src/**.c"
-        )
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
+  "include/**.h"
+  "include/**.hpp"
+  "src/**.cpp"
+  "src/**.c"
+  )
       )V0G0N";
 
     cmake_context->include_fetch = "include(FetchContent)";
@@ -89,15 +89,15 @@ namespace Generators::CMakeList{
       std::format("add_executable({} ", ctx->project_name) + "${SOURCES})";
     cmake_context->testing = "ok";
     cmake_context->mode = R"V0G0N(
-      if(RELEASE EQUAL 1)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wextra -Wpedantic -Wall")
-        add_definitions(-DRELEASE)
-      else()
-        add_definitions(-DDEBUG)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
-        if(TEST_MODE EQUAL 1)
-        endif()
-      endif()
+if(RELEASE EQUAL 1)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wextra -Wpedantic -Wall")
+  add_definitions(-DRELEASE)
+else()
+  add_definitions(-DDEBUG)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
+  if(TEST_MODE EQUAL 1)
+  endif()
+endif()
       )V0G0N";
     cmake_context->set_build_dir = std::format(
         "set_target_properties({} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {})",
