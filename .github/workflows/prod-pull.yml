@@ -3,7 +3,7 @@
 name: CMake on a single platform
 
 on:
-  push:
+  pull_request:
     branches: [ "main" ]
 
 env:
@@ -27,19 +27,15 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Release ./
         make -j32
         mkdir ./dist/
+        
         tar -czf ./dist/${{env.PACKAGE_NAME}}.tar.gz ./build/
-      
-    - name: Upload artifacts
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.CI_TOKEN }}
-        file: ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz
-        asset_name: cmaker-release
-        tag: ${{env.PACKAGE_NAME}}
-        overwrite: false
-        prerelease: false
-        make_latest: true
-        release_name: "CMaker ${{env.RELEASE_VERSION}}.${{github.run_number}}"
-        body: "CMaker ${{env.RELEASE_VERSION}}.${{github.run_number}}" 
-      
+    - name: BuildTest
+      working-directory: ${{github.workspace}}
+      # Execute tests defined by the CMake configuration.
+      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+      run: cmake -DCMAKE_BUILD_TYPE=Test ./ && make -j32
+
+    - name: RunTest
+      working-directory: ${{github.workspace}}
+      run: ./build/cmaker
 
