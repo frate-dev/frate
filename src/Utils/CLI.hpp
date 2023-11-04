@@ -95,10 +95,12 @@ namespace Utils::CLI {
       std::string prompt;
       std::string color{Ansi::WHITE};
       std::string input;
+      T value;
       int max_length{0};
       std::function<bool(T)> validator;
       std::vector<T> options;
       void get_input();
+      bool is_in_options(T option);
       virtual bool has_options();
       virtual bool has_max_length();
       virtual bool has_validator();

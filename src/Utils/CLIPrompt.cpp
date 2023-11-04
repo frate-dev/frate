@@ -49,14 +49,79 @@ namespace Utils::CLI {
   template <typename T>
   void Prompt<T>::get_input(){
     std::cout << color << prompt << Ansi::RESET;
+    if(std::is_same<T, bool>::value){
+      std::cout << " [y/n] ";
+
+    }else if(has_options()){
+      for(int i = 0; i < options.size(); i++){
+        std::cout << "[ " << options[i] << " ]";
+      }
+    }
     std::getline(std::cin, input);
   };
   template <typename T>
-  void Prompt<T>::Run(){
+  bool Prompt<T>::is_in_options(T option){
+    for(int i = 0; i < options.size(); i++){
+      if(options[i] == option){
+        return true;
+      }
+    }
+    return false;
+  }
+  template <typename T>
+  T Prompt<T>::Get(){
+    if(value == nullptr){
+      std::cout << "Prompt has not been run yet" << std::endl;
+      return nullptr;
+    }
+    return value;
+  }
+  template <typename T>
+  bool Prompt<T>::Run(){
     get_input();
     if(has_max_length()){
       while(input.length() > max_length){
-        get_input();
+        std::cout << "Input too long" << std::endl;
+        return false;
+      }
+    }
+    //Checking to see if the input is one of the approved options
+    if(std::is_same<T, int>::value){
+      try{
+        value = std::stoi(input);
+      }catch(std::invalid_argument){
+        std::cout << "Invalid integer value" << std::endl;
+        return false;
+      }
+    }else if(std::is_same<T, float>::value){
+      try{
+        value = std::stof(input);
+      }catch(std::invalid_argument){
+        std::cout << "Invalid float value" << std::endl;
+        return false;
+      }
+    }else if(std::is_same<T, double>::value){
+      try{
+        value = std::stod(input);
+      }catch(std::invalid_argument){
+        std::cout << "Invalid double value" << std::endl;
+        return false;
+      }
+    }else if(std::is_same<T, bool>::value){
+      //If bool is the type we just need to check if the input is y or n
+      if(input != "y" && input != "n"){
+        std::cout << "Invalid input expected either y or n" << std::endl;
+        return false;
+      }
+      value = input == "y";
+    }else{
+      std::cout << "Invalid type for prompt" << std::endl;
+      return false;
+    }
+    if(has_validator()){
+      while(!validator(value)){
+        std::cout << "Invalid input: " << std::endl;
+        return false;
       }
     }
   }
