@@ -56,37 +56,55 @@ namespace Command {
     using namespace cxxopts;
     if (command == "init"){
       OptionsInit::Init(this);
-      this->init();
+      if(!this->init()){
+        std::cout << "Error: Could not initialize project" << ENDL;
+      }
     }
     else if (command == "run"){
-      this->run();
+      if(!this->run()){
+        std::cout << "Error: Could not run project" << ENDL;
+      }
     }
     else if (command == "help"){
-      this->help();
+      if(!this->help()){
+        std::cout << "Error: Could not display help" << ENDL;
+      }
     }
 
     else if (command == "ftp"){
-      this->ftp();
+      if(!this->ftp()){
+        std::cout << "Error: Could not ftp project" << ENDL;
+      }
     }
     else if (command == "add"){
       OptionsInit::Add(this);
-      this->add();
+      if(!this->add()){
+        std::cout << "Error: Could not add project" << ENDL;
+      }
 
     }
     else if (command == "remove"){
       OptionsInit::Add(this);
-      this->remove();
+      if(!this->remove()){
+        std::cout << "Error: Could not remove project" << ENDL;
+      }
     }
     else if (command == "watch"){
       OptionsInit::Watch(this);
-      this->watch();
+      if(!this->watch()){
+        std::cout << "Error: Could not watch project" << ENDL;
+      }
     }
     else if (command == "update"){
       OptionsInit::Update(this);
-      this->update();
+      if(!this->update()){
+        std::cout << "Error: Could not update project index" << ENDL;
+      }
     }
     else if (command == "clean"){
-      this->clean();
+      if(!this->clean()){
+        std::cout << "Error: Could not clean project" << ENDL;
+      }
     }
     else{
       std::cout << "Invalid command try one of these" << ENDL;

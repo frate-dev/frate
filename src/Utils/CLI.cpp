@@ -66,6 +66,7 @@ namespace Utils::CLI {
         push_line(i, items[i]);
       }
     }
+    stream << Ansi::RESET;
     return stream.str();
   }
   void List::pushFront(ListItem item){

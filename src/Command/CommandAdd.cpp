@@ -114,7 +114,13 @@ namespace Command {
     std::string versionInput;
     std::cin >> versionInput;
 
-    int versionIndex = std::stoi(versionInput);
+    int versionIndex;
+    try{
+      versionIndex = std::stoi(versionInput);
+    }catch(...){
+      std::cout << "Invalid input" << std::endl;
+      return false;
+    }
     version = searchResults[index].versions[versionIndex];
   
     if(checkForOverlappingDependencies(ctx, searchResults[index].name)){
@@ -135,8 +141,12 @@ namespace Command {
 
     });
     std::cout << "Writing config.json" << std::endl;
-    Generators::ConfigJson::writeConfig(ctx);
-    Generators::CMakeList::create(ctx);
+    if(!Generators::ConfigJson::writeConfig(ctx)){
+      std::cout << "Failed to write config.json" << std::endl;
+    }
+    if(!Generators::CMakeList::create(ctx)){
+      std::cout << "Failed to write CMakeLists.txt" << std::endl;
+    }
 
     return true;
   }
