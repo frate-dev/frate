@@ -69,34 +69,8 @@ bool createProject(Interface *inter){
 
 bool defaultJsonCpp(std::shared_ptr<Context> ctx) {
   using nlohmann::json;
-  std::string language = ctx->args->operator[]("language").as<std::string>();
-  std::string name = ctx->args->operator[]("name").as<std::string>();
-  json j; 
-  j["cmake_version"] = ctx->cmake_version;
-  j["project_version"] = ctx->project_version;
-  j["lang"] = ctx->lang;
-  j["lang_version"] = ctx->lang_version;
-  j["compiler"] = ctx->compiler;
-  j["src_dir"] = ctx->src_dir;
-  j["build_dir"] = ctx->build_dir;
-  j["include_dir"] = ctx->include_dir;
-  j["project_name"] = ctx->project_name;
-  j["authors"] = ctx->authors;
-  j["project_path"] = ctx->project_path;
-  j["project_type"] = ctx->project_type;
-  j["project_description"] = ctx->project_description;
-  j["flags"] = ctx->flags;
-  std::vector<json> deps;
-  for (auto &dep : ctx->dependencies) {
-    json dep_json;
-    dep_json["name"] = dep.name;
-    dep_json["url"] = dep.url;
-    dep_json["version"] = dep.version;
-    dep_json["target_link"] = dep.target_link;
-    deps.push_back(dep_json);
-  }
-  j["dependencies"] = deps;
-
+  
+  json j = ctx->toJson();
   std::cout << "📄 New json File: \n";
   std::cout << j << '\n';
 
