@@ -9,7 +9,6 @@
 
 
 namespace Utils::CLI {
-  //ansicolors
   namespace Ansi{
     const std::string RESET = "\033[0m";
     const std::string RED = "\033[31m";
@@ -89,8 +88,9 @@ namespace Utils::CLI {
         std::is_same<T, std::string>::value 
         || std::is_same<T, int>::value 
         || std::is_same<T, float>::value 
-        || std::is_same<T, double>::value, 
-        "Prompt<T> only supports std::string, int, float, and double");
+        || std::is_same<T, double>::value
+        || std::is_same<T, bool>::value,
+        "Prompt only supports std::string, int, float, and double, bool");
     private:
       std::string prompt;
       std::string color{Ansi::WHITE};
@@ -110,37 +110,38 @@ namespace Utils::CLI {
        * @param prompt the prompt to display
        * @param color the color of the prompt
        */
-      Prompt(std::string prompt, std::string color=Ansi::WHITE);
+      Prompt(std::string prompt);
+      Prompt* Message(std::string prompt);
       /*
        * Adds a vector of <T> options to the prompt
        * @param options the options to add
        * @return this
        */
-      Prompt<T>* Options(std::vector<T> options);
+      Prompt* Options(std::vector<T> options);
       /*
        * Adds an option to the prompt in the form of a <T> type
        * @param option the option to add
        * @return this
        */
-      Prompt<T>* AddOption(T option);
+      Prompt* AddOption(T option);
       /*
        * Sets the maximum length of the input
        * @param max_length the maximum length of the input
        * @return this
        */
-      Prompt<T>* MaxLength(int max_length);
+      Prompt* MaxLength(int max_length);
       /*
        * Sets the color of the prompt
        * @param color the color to set
        * @return this
        */
-      Prompt<T>* Color(std::string color);
+      Prompt* Color(std::string color);
       /*
        * Sets a validator for the input
        * @param validator a function that takes a T and returns a bool
        * @return this
        */
-      Prompt<T>* Validator(std::function<bool(T)> validator);
+      Prompt* Validator(std::function<bool(T)> validator);
       /*
        * Runs the prompt, asks for input and handles exceptions and validations
        * @return true if the prompt was successful
@@ -152,4 +153,9 @@ namespace Utils::CLI {
        */
       T Get();
   };
+  template class Prompt<std::string>;
+  template class Prompt<int>;
+  template class Prompt<float>;
+  template class Prompt<double>;
+  template class Prompt<bool>;
 }

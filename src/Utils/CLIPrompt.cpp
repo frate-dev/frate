@@ -2,11 +2,10 @@
 
 
 namespace Utils::CLI {
-
   template <typename T>
-  Prompt<T>::Prompt(std::string prompt, std::string color){
+  Prompt<T>::Prompt(std::string prompt){
     this->prompt = prompt;
-    this->color = color;
+    this->color = Ansi::WHITE;
   }
 
   template <typename T>
@@ -70,10 +69,6 @@ namespace Utils::CLI {
   }
   template <typename T>
   T Prompt<T>::Get(){
-    if(value == nullptr){
-      std::cout << "Prompt has not been run yet" << std::endl;
-      return nullptr;
-    }
     return value;
   }
   template <typename T>
@@ -89,21 +84,21 @@ namespace Utils::CLI {
     if(std::is_same<T, int>::value){
       try{
         value = std::stoi(input);
-      }catch(std::invalid_argument){
+      }catch(std::invalid_argument e){
         std::cout << "Invalid integer value" << std::endl;
         return false;
       }
     }else if(std::is_same<T, float>::value){
       try{
         value = std::stof(input);
-      }catch(std::invalid_argument){
+      }catch(std::invalid_argument e){
         std::cout << "Invalid float value" << std::endl;
         return false;
       }
     }else if(std::is_same<T, double>::value){
       try{
         value = std::stod(input);
-      }catch(std::invalid_argument){
+      }catch(std::invalid_argument e){
         std::cout << "Invalid double value" << std::endl;
         return false;
       }
@@ -118,12 +113,24 @@ namespace Utils::CLI {
       std::cout << "Invalid type for prompt" << std::endl;
       return false;
     }
+
+
     if(has_validator()){
       while(!validator(value)){
         std::cout << "Invalid input: " << std::endl;
         return false;
       }
     }
+
+    if(has_options() && !std::is_same<T, bool>::value){
+      if(!is_in_options(value)){
+        std::cout << "Invalid input: " << std::endl;
+        return false;
+      }
+    }
+
+
+    return true;
   }
 }
 
