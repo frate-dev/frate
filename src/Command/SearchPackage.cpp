@@ -121,7 +121,7 @@ namespace Command {
     Utils::CLI::List *list = (new Utils::CLI::List())->Numbered()->ReverseIndexed();
     for(packageResult result: results){
       if(result.score > 10){
-        list->pushBack(ListItem(result.name, result.description));
+        list->pushBack(ListItem(result.name + " (" + result.url + ")", result.description));
       }
     }
     std::cout << list->Build() << std::endl;

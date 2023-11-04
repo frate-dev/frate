@@ -6,11 +6,14 @@
 #include <nlohmann/json.hpp>
 #include <string>
 #include "../Utils/General.hpp"
+#include "../Utils/CLI.hpp"
 #include <cmath>
 #include <termcolor/termcolor.hpp>
 
 namespace Command {
   using nlohmann::json;
+  using Utils::CLI::List;
+  using Utils::CLI::ListItem;
   bool Interface::add() {
     if (!(args->count("subcommand") > 0)) {
       std::cout << "Usage add:" << ENDL
@@ -97,7 +100,6 @@ namespace Command {
   
     std::vector<std::string> versions = searchResults[index].versions;
     std::string version = ""; 
-
     for(size_t i = searchResults[index].versions.size(); i > -1; i--){
       std::cout << "[" << termcolor::green << i << termcolor::white << "]" << searchResults[index].versions[i] << std::endl;
       if (searchResults[index].versions[i] == "master" || searchResults[index].versions[i] == "main"  ||  searchResults[index].versions[i] == "stable"){
@@ -106,10 +108,11 @@ namespace Command {
     }
 
     json packageInfo = json{{"name", searchResults[index].name}, {"url", searchResults[index].url}, {"versions", searchResults[index].versions}, {"target_link", searchResults[index].target_link}};
-
+    List* list = (new List())->Numbered()->ReverseIndexed();
     for(size_t i = 0; i < searchResults[index].versions.size(); i++){
-      std::cout << "[" << termcolor::green << i << termcolor::white << "]" << searchResults[index].versions[i] << std::endl;
+      list->pushBack(ListItem(searchResults[index].versions[i],""));
     }
+    std::cout << list->Build() << std::endl;
     std::cout << "Select a version to install [" << termcolor::green <<  version << termcolor::white << "] : ";
     std::string versionInput;
     std::cin >> versionInput;
