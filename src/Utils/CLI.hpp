@@ -1,3 +1,4 @@
+#include <functional>
 #include <sstream>
 #include <string>
 #include <stdint.h>
@@ -23,7 +24,7 @@ namespace Utils::CLI {
   typedef struct ListItem {
     std::string primary;
     std::string subtext;
-    ListItem(std::string primary, std::string subtext);
+    ListItem(std::string primary, std::string subtext="");
   } ListItem;
   class List {
     private:
@@ -81,5 +82,72 @@ namespace Utils::CLI {
        * @param item the item to be added
        */
       void pushBack(ListItem item);
+  };
+  template <typename T>
+  class Prompt{
+    static_assert(
+        std::is_same<T, std::string>::value 
+        || std::is_same<T, int>::value 
+        || std::is_same<T, float>::value 
+        || std::is_same<T, double>::value, 
+        "Prompt<T> only supports std::string, int, float, and double");
+    private:
+      std::string prompt;
+      std::string color{Ansi::WHITE};
+      std::string input;
+      int max_length{0};
+      std::function<bool(T)> validator;
+      std::vector<T> options;
+      void get_input();
+      virtual bool has_options();
+      virtual bool has_max_length();
+      virtual bool has_validator();
+    public:
+      /*
+       * Create a prompt builder
+       * @param prompt the prompt to display
+       * @param color the color of the prompt
+       */
+      Prompt(std::string prompt, std::string color=Ansi::WHITE);
+      /*
+       * Adds a vector of <T> options to the prompt
+       * @param options the options to add
+       * @return this
+       */
+      Prompt<T>* Options(std::vector<T> options);
+      /*
+       * Adds an option to the prompt in the form of a <T> type
+       * @param option the option to add
+       * @return this
+       */
+      Prompt<T>* AddOption(T option);
+      /*
+       * Sets the maximum length of the input
+       * @param max_length the maximum length of the input
+       * @return this
+       */
+      Prompt<T>* MaxLength(int max_length);
+      /*
+       * Sets the color of the prompt
+       * @param color the color to set
+       * @return this
+       */
+      Prompt<T>* Color(std::string color);
+      /*
+       * Sets a validator for the input
+       * @param validator a function that takes a T and returns a bool
+       * @return this
+       */
+      Prompt<T>* Validator(std::function<bool(T)> validator);
+      /*
+       * Runs the prompt, asks for input and handles exceptions and validations
+       * @return true if the prompt was successful
+       */
+      bool Run();
+      /*
+       * Gets the realized value of the prompt
+       * @return the value of the prompt
+       */
+      T Get();
   };
 }

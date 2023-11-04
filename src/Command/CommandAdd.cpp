@@ -110,7 +110,7 @@ namespace Command {
     json packageInfo = json{{"name", searchResults[index].name}, {"url", searchResults[index].url}, {"versions", searchResults[index].versions}, {"target_link", searchResults[index].target_link}};
     List* list = (new List())->Numbered()->ReverseIndexed();
     for(size_t i = 0; i < searchResults[index].versions.size(); i++){
-      list->pushBack(ListItem(searchResults[index].versions[i],""));
+      list->pushBack(ListItem(searchResults[index].versions[i]));
     }
     std::cout << list->Build() << std::endl;
     std::cout << "Select a version to install [" << termcolor::green <<  version << termcolor::white << "] : ";

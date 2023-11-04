@@ -75,5 +75,4 @@ namespace Utils::CLI {
   void List::pushBack(ListItem item){
     items.push_back(item);
   }
-
 }

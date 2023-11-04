@@ -118,7 +118,9 @@ namespace Command {
 
 
     std::cout << "Results: " << results.size() << std::endl;
-    Utils::CLI::List *list = (new Utils::CLI::List())->Numbered()->ReverseIndexed();
+    Utils::CLI::List *list = (new Utils::CLI::List())->
+      Numbered()->
+      ReverseIndexed();
     for(packageResult result: results){
       if(result.score > 10){
         list->pushBack(ListItem(result.name + " (" + result.url + ")", result.description));

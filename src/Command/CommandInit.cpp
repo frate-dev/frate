@@ -67,7 +67,7 @@ bool createProject(Interface *inter){
 }
 
 
-bool defaultJsonCpp(std::shared_ptr<Context> ctx) {
+bool defaultJson(std::shared_ptr<Context> ctx) {
   using nlohmann::json;
   
   json j = ctx->toJson();
@@ -114,10 +114,10 @@ bool Interface::init() {
   if (args->operator[]("skip-init").as<bool>()) {
     std::string language = args->operator[]("language").as<std::string>();
     if (language == "cpp" || language == "c++"){
-      defaultJsonCpp(ctx);
+      defaultJson(ctx);
     }
     else if (language == "c") { 
-      //defaultJsonC(ctx, args);
+      defaultJson(ctx);
       std::cout << "C is not supported yet" << ENDL;
       exit(-1);
     }

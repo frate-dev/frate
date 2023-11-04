@@ -26,6 +26,11 @@ namespace Tests{
 
 
 namespace Tests::Command {
+  using ::Command::Context;
+  using ::Command::Interface;
+
+
+
 
 
 //  [[deprecated("This test is deprecated because it is not a unit test")]]  
