@@ -75,7 +75,6 @@ namespace Command {
     std::string target_link;
   } dependency;
 
-
   typedef struct BuildServer {
     std::string name;
     std::string ip;
@@ -83,7 +82,6 @@ namespace Command {
     std::string authMethod;
     std::optional<std::string> password;
     std::optional<std::string> key;
-    std::optional<std::string> path;
     int port;
   } BuildServer;
 

@@ -73,6 +73,10 @@ namespace Command {
       this->add();
 
     }
+    else if (command == "server"){
+      OptionsInit::Server(this);
+      this->server();
+    }
     else if (command == "remove"){
       OptionsInit::Add(this);
       this->remove();

@@ -22,7 +22,7 @@ namespace Command{
     return true;
   }
   bool getServerAuthMethod(std::string& authMethod){
-    std::cout << "Enter the authentication method of the server: ";
+    std::cout << "Enter the authentication method of the server[pem/password]: ";
     std::getline(std::cin, authMethod);
     return true;
   }
@@ -49,7 +49,9 @@ Usage server:
         )EOF" << std::endl;
     return true;
   }
-  bool serverAdd(Interface* inter){
+  bool serverAdd(std::vector<BuildServer> servers){
+
+    std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json";
     std::string name, address, port, username, authMethod, password, key;
     getServerName(name);
     getServerAddress(address);
@@ -59,17 +61,75 @@ Usage server:
     if (authMethod == "password") {
       getServerPassword(password);
     }
-    else if (authMethod == "key") {
+    else if (authMethod == "pem") {
       getServerKey(key);
     }
     else{
       std::cout << "Invalid authentication method" << std::endl;
       return false;
-    }
-    inter->ctx->build_servers.push_back(BuildServer(name, address, port, username, authMethod, password, key));
+    } 
+
+
+
+   BuildServer build_server = BuildServer(name, address, username, authMethod, password, key,  std::stoi(port));
+   servers.push_back(build_server);
+
+  std::vector<json> build_server_json;
+   for (auto& build_server: servers){
+     json build_server_json_tmp = {
+       {"name", build_server.name},
+       {"address", build_server.ip},
+       {"port", build_server.port},
+       {"username", build_server.username},
+       {"authMethod", build_server.authMethod},
+       {"password", build_server.password.value_or("")},
+       {"key", build_server.key.value_or("")}
+     }; 
+     build_server_json.push_back(build_server_json_tmp);
+   }
+    std::ofstream file;
+    file.open(build_servers);
+    file << build_server_json;
     return true;
   }
   bool Interface::server(){
+    std::fstream file;
+    std::string build_servers_dir= std::string(std::getenv("HOME"))  + "/.config/cmaker/";
+    if (!std::filesystem::exists(build_servers_dir)){
+      std::filesystem::create_directory(build_servers_dir);
+    }
+    std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json";
+    if (!std::filesystem::exists(build_servers)){
+      std::ofstream file(build_servers);
+      file << "[]";
+    }
+    file.open(build_servers);
+
+    std::vector<BuildServer> servers;
+    json server_list;
+    try{
+      server_list = json::parse(file);
+    }
+    catch(json::exception &e){
+      std::cout << "Error: Could not load build_server.json" << std::endl;
+      return false;
+    }
+
+
+
+    for (auto& server : server_list){
+        BuildServer  build_server = BuildServer(
+            server["name"].get<std::string>(),
+            server["address"].get<std::string>(), 
+            server["username"].get<std::string>(),
+            server["authMethod"].get<std::string>(),
+            server["password"].get<std::string>(),
+            server["key"].get<std::string>(),
+            server["port"].get<int>()
+        );
+        servers.push_back(build_server);
+      }
+
     
     if (this->args->count("subcommand") == 0) {
       serverHelp();
@@ -77,7 +137,7 @@ Usage server:
       return false;
     }
     if (this->args->operator[]("subcommand").as<std::string>() == "add") {
-      serverAdd(this);
+      serverAdd(servers);
     }
     else if (this->args->operator[]("subcommand").as<std::string>() == "remove") {
     }
