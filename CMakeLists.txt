@@ -107,3 +107,12 @@ set(SOURCE_DIR src)
 set(BUILD_DIR build)
 set_target_properties(cmaker PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
 install(TARGETS cmaker DESTINATION bin)
+install(FILES cmaker-completion.zsh
+        DESTINATION /usr/local/share/zsh/site-functions/
+        RENAME _cmaker)
+install(FILES cmaker-completion.bash
+        DESTINATION /etc/bash_completion.d/
+        RENAME cmaker)
+install(FILES cmaker-completion.fish
+    DESTINATION /usr/share/fish/vendor_completions.d
+    RENAME cmaker.fish)
