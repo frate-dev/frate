@@ -27,6 +27,7 @@ namespace Command {
       "\t run:   builds and runs your project" << ENDL
       "\t watch:   watches builds and runs your project on changes" << ENDL
       "\t add  [dep, lib, flags]: add library, dependency or flags to your project" << ENDL
+      "\t search <query>: search for a package" << ENDL
       "\t server: manages remote build servers for your projects" << ENDL
       "\t ftp:  deletes the entire project (F*ck this project)" << ENDL
       // RYANS LAST CODE BLOCK IN ENTIRE REPO MUST BE SAVED DO NOT TOUCH
