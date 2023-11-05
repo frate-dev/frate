@@ -5,7 +5,7 @@ namespace Command {
   /*
    * Welp reflection is a bitch aint it
    */
-    void Context::fromJson(json j){
+    void Project::fromJson(json j){
     #ifdef DEBUG
       project_path = std::filesystem::current_path() / "build";
     #else
@@ -33,7 +33,7 @@ namespace Command {
       }
       flags = j["flags"];
     }
-    nlohmann::json Context::toJson(){
+    nlohmann::json Project::toJson(){
       using nlohmann::json;
       std::vector<json> deps;
       for (auto &dep : dependencies) {

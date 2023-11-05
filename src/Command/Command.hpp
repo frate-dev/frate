@@ -84,7 +84,7 @@ namespace Command {
     int port;
   } BuildServer;
 
-  typedef struct Context {
+  typedef struct Context_s {
     std::string project_name;
     std::string project_type;
     std::string project_description;
@@ -107,7 +107,7 @@ namespace Command {
     std::shared_ptr<cxxopts::ParseResult> args;
     void fromJson(json j);
     nlohmann::json toJson();
-  } Context;
+  } Project;
   class Interface{
     private:
       //Commands;
@@ -128,7 +128,7 @@ namespace Command {
       bool watch();
       bool clean();
     public:
-      std::shared_ptr<Context> ctx;
+      std::shared_ptr<Project> pro;
       bool parse();
       std::shared_ptr<cxxopts::Options> options;
       std::shared_ptr<cxxopts::ParseResult> args;
@@ -157,7 +157,7 @@ namespace Command {
    * @return bool -> finished successfully
    */
   [[deprecated("Old function, Command::Interface ")]]
-  bool loadPackageJson(std::shared_ptr<Context> ctx);
+  bool loadPackageJson(std::shared_ptr<Project> pro);
   /*
    * Initializes the project
    * Prompts the user for information about the project
@@ -165,14 +165,14 @@ namespace Command {
    * @return bool -> finished successfully
    */
   [[deprecated("Old function, Command::Interface ")]]
-  bool init(std::shared_ptr<Context>, cxxopts::ParseResult &args);
+  bool init(std::shared_ptr<Project>, cxxopts::ParseResult &args);
   /*
    * Builds and runs the project
    * @param ctx the current project context
    * @return bool -> finished successfully
    */
   [[deprecated("Old function, Command::Interface ")]]
-  bool run(std::shared_ptr<Context>);
+  bool run(std::shared_ptr<Project>);
   /*
    * Fuck this project function
    * Deletes the project entirely
@@ -180,14 +180,14 @@ namespace Command {
    * @return bool -> finished successfully
    */
   [[deprecated("Old function, Command::Interface ")]]
-  bool ftp(std::shared_ptr<Context>);
+  bool ftp(std::shared_ptr<Project>);
   /*
    * Adds flags to build script
    * @param ctx project context
    * @return bool -> finished successfully
    */
   [[deprecated("Old function, Command::Interface ")]]
-  bool addFlag(std::shared_ptr<Context>, cxxopts::ParseResult &args);
+  bool addFlag(std::shared_ptr<Project>, cxxopts::ParseResult &args);
   /*
    * prints all commands and their function and parameters
    * @return bool -> finished successfully
@@ -199,15 +199,15 @@ namespace Command {
    * @returns bool -> finished successfully
    */
   [[deprecated("Old function, Command::Interface ")]]
-  bool addDependency(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args);
+  bool addDependency(std::shared_ptr<Project> pro, cxxopts::ParseResult &args);
   [[deprecated("Old function, Command::Interface ")]]
-  bool addAuthor(std::shared_ptr<Context>ctx, cxxopts::ParseResult &args);
+  bool addAuthor(std::shared_ptr<Project>ctx, cxxopts::ParseResult &args);
   /*
    * Generates cmake file for project based on the current project context
    * @returns bool -> finished successfully
    */
   [[deprecated("Old function, Command::Interface ")]]
-  bool createCMakelists(std::shared_ptr<Context>);
+  bool createCMakelists(std::shared_ptr<Project>);
   /*
    * What the fuck lucas
    */
@@ -220,27 +220,27 @@ namespace Command {
    *  @returns bool -> finished successfully
    */
   [[deprecated("Old function, Command::Interface ")]]
-  bool add(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args);
+  bool add(std::shared_ptr<Project> pro, cxxopts::ParseResult &args);
 
   json fetchIndex();
   void updateIndex();
 
   [[deprecated("Old function, Command::Interface ")]]
-  bool update(std::shared_ptr<Context> ctx, cxxopts::ParseResult &args);
+  bool update(std::shared_ptr<Project> pro, cxxopts::ParseResult &args);
 
   [[deprecated("Old function, Command::Interface ")]]
-  bool addLib(std::shared_ptr<Context>, cxxopts::ParseResult &args);
+  bool addLib(std::shared_ptr<Project>, cxxopts::ParseResult &args);
   [[deprecated("Old function, Command::Interface ")]]
-  bool update(std::shared_ptr<Context>, cxxopts::ParseResult &args);
+  bool update(std::shared_ptr<Project>, cxxopts::ParseResult &args);
 
   [[deprecated("Old function, Command::Interface ")]]
-  bool dev(std::shared_ptr<Context> ctx);
+  bool dev(std::shared_ptr<Project>);
 
 
   [[deprecated("Old function, Command::Interface ")]]
-  bool remove(std::shared_ptr<Context>ctx,  cxxopts::ParseResult &args);
+  bool remove(std::shared_ptr<Project>,  cxxopts::ParseResult &args);
   [[deprecated("Old function, Command::Interface ")]]
-  bool removeDep(std::shared_ptr<Context>  ctx, cxxopts::ParseResult &args);
+  bool removeDep(std::shared_ptr<Project>, cxxopts::ParseResult &args);
 
 
 

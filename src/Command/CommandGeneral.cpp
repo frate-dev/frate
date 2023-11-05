@@ -9,9 +9,9 @@ namespace Command {
     try {
       std::string file_name = "config.json";
       std::fstream file;
-      file.open((ctx->project_path / file_name).string());
+      file.open((pro->project_path / file_name).string());
       json data = json::parse(file);
-      ctx->fromJson(data);
+      pro->fromJson(data);
       //Simplfied this fucking code
     } catch (json::exception &e) {
       std::cout << "Error: Could not load config.json" << std::endl;

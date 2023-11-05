@@ -36,7 +36,7 @@ namespace Command {
     #ifdef DEBUG
       file_name = "./build/build/";
     #endif
-    std::string command = file_name + ctx->project_name;
+    std::string command = file_name + pro->project_name;
     success = system(command.c_str());
     if (success != 0) {
       std::cout << "Error running project!" << std::endl;

@@ -33,9 +33,9 @@ namespace Generators{
      * @param ctx: the context of the command
      * @return a vector of dependencies that will be later combined to build the cmake file
      */
-    void generateDeps(std::shared_ptr<Command::Context> ctx, std::shared_ptr<CMakeContext> cmake_context);
+    void generateDeps(std::shared_ptr<Command::Project> pro, std::shared_ptr<CMakeContext> cmake_context);
 
-    bool create(std::shared_ptr<Command::Context> ctx); 
+    bool create(std::shared_ptr<Command::Project> pro); 
   }
 
   namespace ConfigJson{
@@ -54,8 +54,8 @@ namespace Generators{
       std::string authors_str;
     } Config;
 
-    bool readUserInput(std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json);
-    bool writeConfig(std::shared_ptr<Command::Context>& ctx);
+    bool readUserInput(std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json);
+    bool writeConfig(std::shared_ptr<Command::Project>& ctx);
 
     /*
      * Validate cmakeVersion 
@@ -64,7 +64,7 @@ namespace Generators{
      * @param config_json: the config json context
      * @return: true if the cmake version is valid
      */
-    bool validateCmakeVersion(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json);
+    bool validateCmakeVersion(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json);
 
     /*
      * Validates the project name
@@ -73,7 +73,7 @@ namespace Generators{
      * @param config_json: the config json context
      * @return: true if the project name is valid
      */
-    bool validateProjectName(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json);
+    bool validateProjectName(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json);
 
     /*
      * Validates the project version
@@ -82,7 +82,7 @@ namespace Generators{
      * @param config_json: the config json context
      * @return: true if the project version is valid
      */
-    bool validateProjectVersion(std::string prefix,  std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json);
+    bool validateProjectVersion(std::string prefix,  std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json);
 
     /*
      * Validates the language version
@@ -91,7 +91,7 @@ namespace Generators{
      * @param config_json: the config json context
      * @return: true if the language version is valid
      */
-    bool validateLanguageVersion(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json);
+    bool validateLanguageVersion(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json);
 
     /*
      * Validates the compiler 
@@ -100,7 +100,7 @@ namespace Generators{
      * @param config_json: the config json context
      * @return: true if the language is valid
      */
-    bool validateCompiler(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json);
+    bool validateCompiler(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json);
 
     /*
      * Validates the source directory
@@ -109,7 +109,7 @@ namespace Generators{
      * @param config_json: the config json context
      * @return: true if the source directory is valid
      */
-    bool validateSourceDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json);
+    bool validateSourceDir(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json);
 
     /*
      * Validates the build directory
@@ -118,7 +118,7 @@ namespace Generators{
      * @param config_json: the config json context
      * @return: true if the build directory is valid
      */
-    bool validateBuildDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json);
+    bool validateBuildDir(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json);
 
     /*
      * Reads the data from the user
@@ -126,7 +126,7 @@ namespace Generators{
      * @param config_json: the config json context
      * @return: true if the data is valid
      */
-    bool validateIncludeDir(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json);
+    bool validateIncludeDir(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json);
 
 
     /*
@@ -136,7 +136,7 @@ namespace Generators{
      * @param config_json: the config json context
      * @return: true if the language is valid
      */
-    bool validateLang(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json);
+    bool validateLang(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json);
   }
 
 }

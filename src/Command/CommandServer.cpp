@@ -157,7 +157,7 @@ Usage server:
     Utils::TableFormat table;
     table.width = 20;
     table << "Name" << "Address" << "Port" << "Username" << "AuthMethod" << ENDL;
-    table << ctx->build_server.name << ctx->build_server.ip << ctx->build_server.port << ctx->build_server.username << ctx->build_server.authMethod << ENDL;
+    table << pro->build_server.name << pro->build_server.ip << pro->build_server.port << pro->build_server.username << pro->build_server.authMethod << ENDL;
     return true;
 
   }
@@ -192,7 +192,7 @@ Usage server:
     try{
       json current_build_server_json = json::parse(std::ifstream(current_build_server));
       if (!current_build_server_json["name"].is_null()) {
-        ctx->build_server = BuildServer(
+        pro->build_server = BuildServer(
           current_build_server_json["name"].get<std::string>(),
           current_build_server_json["address"].get<std::string>(), 
           current_build_server_json["username"].get<std::string>(),

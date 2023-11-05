@@ -14,7 +14,7 @@ namespace Generators::ConfigJson{
    * @param config_json: the config json context
    * @return: true if the project name is valid
    */
-  bool validateProjectName(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json) {
+  bool validateProjectName(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json) {
     std::cout << prefix;
     #ifndef TEST
       std::getline(std::cin, config_json->project_name);
@@ -33,7 +33,7 @@ namespace Generators::ConfigJson{
 
     return false;
     end:
-      ctx->project_name = config_json->project_name == "" ? ctx->project_name : config_json->project_name;
+      pro->project_name = config_json->project_name == "" ? pro->project_name : config_json->project_name;
 
     return true;
   }

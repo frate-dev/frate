@@ -26,7 +26,7 @@ namespace Tests{
 
 
 namespace Tests::Command {
-  using ::Command::Context;
+  using ::Command::Project;
   using ::Command::Interface;
 
 

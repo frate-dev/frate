@@ -113,7 +113,7 @@ namespace Command {
 
     watcher([this]() {
 #ifdef DEBUG
-        std::string command = "cmake ./build/ && ./build/make && ./build/" + ctx->build_dir + "/" + ctx->project_name;
+        std::string command = "cmake ./build/ && ./build/make && ./build/" + pro->build_dir + "/" + pro->project_name;
         if (args->count("args") != 0) {
           std::vector<std::string> args_vec =  args->operator[]("args").as<std::vector<std::string>>();
           std::string command_args = std::accumulate(
@@ -121,11 +121,11 @@ namespace Command {
             [](std::string a, std::string b) { return a + " " + b; }
           );
 
-           command = "cmake ./build/ && make && ./build/" + ctx->build_dir + "/" + ctx->project_name + "  " + command_args;
+           command = "cmake ./build/ && make && ./build/" + pro->build_dir + "/" + pro->project_name + "  " + command_args;
         }
 
 #else
-        std::string command = "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name;
+        std::string command = "cmake . && make && ./" + pro->build_dir + "/" + pro->project_name;
         if (args->count("args") != 0) {
           std::cout << "estamos aqui" << std::endl;
           std::vector<std::string> args_vec =  args->operator[]("args").as<std::vector<std::string>>();
@@ -140,7 +140,7 @@ namespace Command {
           }
 
           std::cout << "command_args: " << command_args << std::endl;
-          command = "cmake . && make && ./" + ctx->build_dir + "/" + ctx->project_name + "  " + command_args;
+          command = "cmake . && make && ./" + pro->build_dir + "/" + pro->project_name + "  " + command_args;
         }
 #endif
         std::cout << "Running command: " << command << std::endl;
@@ -152,7 +152,7 @@ namespace Command {
         std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "current_build_server.json";
         json current_build_server_json = json::parse(std::ifstream(current_build_server));
         if (!current_build_server_json["name"].is_null()) {
-          ctx->build_server = BuildServer(
+          pro->build_server = BuildServer(
             current_build_server_json["name"].get<std::string>(),
             current_build_server_json["address"].get<std::string>(), 
             current_build_server_json["username"].get<std::string>(),

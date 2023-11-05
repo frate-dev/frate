@@ -36,26 +36,26 @@ namespace Command {
   bool Interface::addFlag() {
     if (args->count("subcommand") == 0) {
       for (auto flag : args->operator[]("subcommand").as<std::vector<std::string>>()) {
-        ctx->flags.push_back(flag);
+        pro->flags.push_back(flag);
       }
     }
     return true;
   }
 
   bool Interface::addAuthors(){
-    if (ctx->args->count("args") == 0) {
-      for (auto author : ctx->args->operator[]("args").as<std::vector<std::string>>()) {
-        ctx->authors.push_back(author);
+    if (pro->args->count("args") == 0) {
+      for (auto author : pro->args->operator[]("args").as<std::vector<std::string>>()) {
+        pro->authors.push_back(author);
       }
     }
     return true;
   }
 
-  bool checkForOverlappingDependencies(std::shared_ptr<Context> ctx, std::string name){
-    if(ctx->dependencies.size() == 0){
+  bool checkForOverlappingDependencies(std::shared_ptr<Project> pro, std::string name){
+    if(pro->dependencies.size() == 0){
       return false;
     }
-    for(dependency dep: ctx->dependencies){
+    for(dependency dep: pro->dependencies){
       if(dep.name == name){
         return true;
       }
@@ -126,13 +126,13 @@ namespace Command {
     }
     version = searchResults[index].versions[versionIndex];
   
-    if(checkForOverlappingDependencies(ctx, searchResults[index].name)){
+    if(checkForOverlappingDependencies(pro, searchResults[index].name)){
       std::cout << "Package already installed" << std::endl;
       return false;
     }
 
     std::cout << "Adding dependency to config.json" << std::endl;
-    ctx->dependencies.push_back({
+    pro->dependencies.push_back({
 
       .name = searchResults[index].name,
       .url = searchResults[index].url,
@@ -144,10 +144,10 @@ namespace Command {
 
     });
     std::cout << "Writing config.json" << std::endl;
-    if(!Generators::ConfigJson::writeConfig(ctx)){
+    if(!Generators::ConfigJson::writeConfig(pro)){
       std::cout << "Failed to write config.json" << std::endl;
     }
-    if(!Generators::CMakeList::create(ctx)){
+    if(!Generators::CMakeList::create(pro)){
       std::cout << "Failed to write CMakeLists.txt" << std::endl;
     }
 

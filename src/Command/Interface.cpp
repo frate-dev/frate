@@ -27,11 +27,11 @@ namespace Command {
     this->argc = argc;
     this->argv = argv;
 
-    this->ctx = std::make_shared<Context>();
+    this->pro = std::make_shared<Project>();
     OptionsInit::Main(this);
     this->parse();
     //After the parse we can set the context args
-    this->ctx->args = this->args;
+    this->pro->args = this->args;
 
     // if(!this->args->count("command")){
     //   this->help();
@@ -45,9 +45,9 @@ namespace Command {
     }
 
 #ifdef DEBUG
-      ctx->project_path = std::filesystem::current_path() / "build";
+      pro->project_path = std::filesystem::current_path() / "build";
 #else
-      ctx->project_path = std::filesystem::current_path();
+      pro->project_path = std::filesystem::current_path();
 #endif
 
 

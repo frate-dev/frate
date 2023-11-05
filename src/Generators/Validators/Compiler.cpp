@@ -15,12 +15,12 @@ namespace Generators::ConfigJson{
    * @param config_json: the config json context
    * @return: true if the language is valid
    */
-  bool validateCompiler(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json) {
+  bool validateCompiler(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json) {
     std::vector<std::string> supportedCppCompilers = {"g++", "clang++"};
     std::vector<std::string> supportedCCompilers = {"gcc", "clang", "msvc", "icc", "tcc", "emcc"};
     std::cout << prefix << ENDL;
-    if(ctx->lang == "cpp" || ctx->lang == "c++"){
-      ctx->compiler = supportedCppCompilers[0];
+    if(pro->lang == "cpp" || pro->lang == "c++"){
+      pro->compiler = supportedCppCompilers[0];
       std::cout << "  Supported Compilers: ( ";
       for(std::string comp : supportedCppCompilers){
         if(comp == supportedCppCompilers[0]){
@@ -32,7 +32,7 @@ namespace Generators::ConfigJson{
       }
     }
     if(config_json->lang == "c"){
-      ctx->compiler = supportedCCompilers[0];
+      pro->compiler = supportedCCompilers[0];
       std::cout << "  Supported Compilers: ";
       for(std::string comp : supportedCCompilers){
         if(comp == supportedCCompilers[0]){
@@ -67,7 +67,7 @@ namespace Generators::ConfigJson{
 
     return false;
     end:
-      ctx->compiler = config_json->compiler == "" ? ctx->compiler : config_json->compiler;
+      pro->compiler = config_json->compiler == "" ? pro->compiler : config_json->compiler;
     
     return true;
   }

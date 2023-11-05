@@ -35,7 +35,7 @@ Usage remove dep:
       std::cout << "args:" << name << std::endl;
     }
     std::cout << "removing dependencies" << std::endl;
-    std::erase_if(ctx->dependencies, [&name_to_remove](auto &dep) {
+    std::erase_if(pro->dependencies, [&name_to_remove](auto &dep) {
         for (std::string name : name_to_remove) {
           if (dep.name == name) {
             return true;
@@ -44,8 +44,8 @@ Usage remove dep:
         return false;
     });
 
-    Generators::ConfigJson::writeConfig(ctx);
-    Generators::CMakeList::create(ctx);
+    Generators::ConfigJson::writeConfig(pro);
+    Generators::CMakeList::create(pro);
     return true;
   }
 } // namespace Command
