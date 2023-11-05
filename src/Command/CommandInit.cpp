@@ -63,6 +63,13 @@ bool createProject(Interface *inter){
   }else if(inter->pro->lang == "c"){
     createHelloWorldC(inter->pro);
   }
+#ifndef DEBUG
+  Generators::GitIgnore::create(pro);
+  int gitinit = std::system(("cd "+pro->project_path.string()+";git init").c_str());
+  if(gitinit != 0){
+    std::cout << termcolor::red << "We had problems initializing your project with git" << termcolor::reset << ENDL;
+  }
+#endif
   return false;
 }
 
@@ -125,7 +132,9 @@ bool Interface::init() {
 
     this->LoadPackageJson();
     Generators::CMakeList::create(pro);
-    Generators::GitIgnore::create(pro);
+#ifndef DEBUG
+      Generators::GitIgnore::create(pro);
+#endif
     
     int gitinit = std::system(("cd "+pro->project_path.string()+";git init").c_str());
     if(gitinit != 0){
