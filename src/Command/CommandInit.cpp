@@ -100,7 +100,7 @@ bool Interface::init() {
   }
 
   pro->project_name = new_project_name;
-
+  //TODO: Stop using this shit
   file_exists(file_name);
   if(pro->project_path.empty()){
     pro->project_path = std::filesystem::current_path();
@@ -118,12 +118,19 @@ bool Interface::init() {
     }
     else if (language == "c") { 
       defaultJson(pro);
+      //TODO: c support is there no need to exitt failing
       std::cout << "C is not supported yet" << ENDL;
       exit(-1);
     }
 
     this->LoadPackageJson();
     Generators::CMakeList::create(pro);
+    Generators::GitIgnore::create(pro);
+    
+    int gitinit = std::system(("cd "+pro->project_path.string()+";git init").c_str());
+    if(gitinit != 0){
+      std::cout << termcolor::red << "We had problems initializing your project with git" << termcolor::reset << ENDL;
+    }
   } else {
       createProject(this);
   }

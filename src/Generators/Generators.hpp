@@ -3,6 +3,9 @@
 #include <format>
 #include "../Command/Command.hpp"
 namespace Generators{
+  namespace GitIgnore{
+    bool create(std::shared_ptr<Command::Project> pro);
+  }
   namespace CMakeList{
     typedef struct Dep {
       std::string fetch_declare;
