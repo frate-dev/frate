@@ -4,6 +4,7 @@ build/*
 .cache/*
 .cmake
 Makefile
+DartConfiguration.txt
 config.toml
 CMakeFiles
 CMakeCache.txt
