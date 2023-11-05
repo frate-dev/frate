@@ -5,7 +5,7 @@ namespace Utils::CLI {
   template <typename T>
   Prompt<T>::Prompt(std::string prompt){
     this->prompt = prompt;
-    this->color = Ansi::WHITE;
+    this->color = Ansi::GREEN;
   }
 
   template <typename T>
@@ -47,20 +47,22 @@ namespace Utils::CLI {
   }
   template <typename T>
   void Prompt<T>::get_input(){
-    std::cout << color << prompt << Ansi::RESET;
     if(std::is_same<T, bool>::value){
-      std::cout << " [y/n] ";
+    std::cout << color << prompt << Ansi::RESET;
+      std::cout << "[y/n]";
 
     }else if(has_options()){
-      for(int i = 0; i < options.size(); i++){
-        std::cout << "[ " << options[i] << " ]";
+      std::cout << color << prompt << Ansi::RESET << "\n";
+      for(size_t i = 0; i < options.size(); i++){
+        std::cout << "[ " << options[i] << " ]" << "\n";
       }
+      std::cout << ">";
     }
     std::getline(std::cin, input);
   };
   template <typename T>
   bool Prompt<T>::is_in_options(T option){
-    for(int i = 0; i < options.size(); i++){
+    for(size_t i = 0; i < options.size(); i++){
       if(options[i] == option){
         return true;
       }

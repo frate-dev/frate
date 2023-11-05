@@ -1,4 +1,8 @@
 /usr/local/bin/cmaker
+/usr/local/share/zsh/site-functions/_cmaker
+/etc/bash_completion.d/cmaker
+/usr/share/fish/vendor_completions.d/cmaker.fish
+/usr/local/share/man/man1/cmaker.1
 /usr/local/lib/libcurl.so.4.8.0
 /usr/local/lib/libcurl.so.4
 /usr/local/lib/libcurl.so

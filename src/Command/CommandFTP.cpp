@@ -18,6 +18,7 @@ namespace Command{
       std::cout << "Aborting..." << std::endl;
       return false;
     }
+
     
   #ifdef DEBUG
     system("rm -rf ./build/*");
