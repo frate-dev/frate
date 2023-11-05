@@ -123,6 +123,7 @@ namespace Command {
       bool update();
       bool run();
       bool help();
+      bool search();
       bool addFlag();
       bool server();
       bool setBuildServer(std::vector<BuildServer> servers);

@@ -81,6 +81,11 @@ namespace Command {
         std::cout << "Error: Could not add project" << ENDL;
       }
 
+    }else if(command == "search"){
+      OptionsInit::Search(this);
+      if(!this->search()){
+        std::cout << "Error: Could not search project" << ENDL;
+      }
     }
     else if (command == "server"){
       OptionsInit::Server(this);
