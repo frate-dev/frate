@@ -65,7 +65,7 @@ namespace Generators::ConfigJson{
     std::ofstream file;
     std::string file_name = "config.json";
     file.open(ctx->project_path / file_name);
-    file << ctx->toJson();
+    file << ctx->toJson().dump(2);
     file << '\n';
     file.close();
     return true;

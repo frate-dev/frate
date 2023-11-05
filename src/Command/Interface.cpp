@@ -35,15 +35,7 @@ namespace Command {
 
     // if(!this->args->count("command")){
     //   this->help();
-    // }
-
-#ifdef DEBUG
-      ctx->project_path = std::filesystem::current_path() / "build";
-#else
-      ctx->project_path = std::filesystem::current_path();
-#endif
-
-    std::string command = this->args->operator[]("command").as<std::string>();
+     std::string command = this->args->operator[]("command").as<std::string>();
 
     #ifdef DEBUG
         std::cout << "DEBUG MODE ENABLED\n";
@@ -51,6 +43,14 @@ namespace Command {
     if(command != "init"){
       this->LoadPackageJson();
     }
+
+#ifdef DEBUG
+      ctx->project_path = std::filesystem::current_path() / "build";
+#else
+      ctx->project_path = std::filesystem::current_path();
+#endif
+
+
 
     using namespace cxxopts;
     if (command == "init"){
