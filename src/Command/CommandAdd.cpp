@@ -22,34 +22,44 @@ namespace Command {
         "\tlib:  adds a library" << std::endl;
       return false;
     }
+
       std::string subcommand = args->operator[]("subcommand").as<std::string>();
       if (subcommand == "dep") {
         this->addDependency();
       }
+
       if (subcommand == "flag") {
         this->addFlag();
       }
 
+
     return true;
   }
+
 
   bool Interface::addFlag() {
     if (args->count("subcommand") == 0) {
       for (auto flag : args->operator[]("subcommand").as<std::vector<std::string>>()) {
         pro->flags.push_back(flag);
       }
+
     }
+
     return true;
   }
+
 
   bool Interface::addAuthors(){
     if (pro->args->count("args") == 0) {
       for (auto author : pro->args->operator[]("args").as<std::vector<std::string>>()) {
         pro->authors.push_back(author);
       }
+
     }
+
     return true;
   }
+
 
   bool checkForOverlappingDependencies(std::shared_ptr<Project> pro, std::string name){
     if(pro->dependencies.size() == 0){
@@ -59,14 +69,18 @@ namespace Command {
       if(dep.name == name){
         return true;
       }
+
     }
+
     return false;
   }
+
 
   bool searchVersions(){
     std::cout << "Getting versions" << std::endl;
     return true;
   }
+
 
   bool Interface::addDependency() {
     if (args->count("args") == 0) {
@@ -76,22 +90,26 @@ namespace Command {
         "\tcmake add dep [args] " << std::endl;
       return false;
     }
+
     std::string query = args->operator[]("args").as<std::vector<std::string>>()[0];
     std::vector<Package> searchResults = searchPackage(query);
     if(searchResults.size() == 0){
       std::cout << "No results found" << std::endl;
       return false;
     }
+
     std::cout << "Select a package to install: ";
     std::string input;
     std::cin >> input;
     int index;
     try{
       index = std::stoi(input);
-    }catch(...){
+    }
+catch(...){
       std::cout << "Invalid input" << std::endl;
       return false;
     }
+
 
     std::cout << "Installing " << searchResults[index].name << std::endl;
 
@@ -105,13 +123,21 @@ namespace Command {
       if (searchResults[index].versions[i] == "master" || searchResults[index].versions[i] == "main"  ||  searchResults[index].versions[i] == "stable"){
         version = searchResults[index].versions[i];
       }
+
     }
 
-    json packageInfo = json{{"name", searchResults[index].name}, {"url", searchResults[index].url}, {"versions", searchResults[index].versions}, {"target_link", searchResults[index].target_link}};
+
+    json packageInfo = json{{"name", searchResults[index].name}
+, {"url", searchResults[index].url}
+, {"versions", searchResults[index].versions}
+, {"target_link", searchResults[index].target_link}
+}
+;
     List* list = (new List())->Numbered()->ReverseIndexed();
     for(size_t i = 0; i < searchResults[index].versions.size(); i++){
       list->pushBack(ListItem(searchResults[index].versions[i]));
     }
+
     std::cout << list->Build() << std::endl;
     std::cout << "Select a version to install [" << termcolor::green <<  version << termcolor::white << "] : ";
     std::string versionInput;
@@ -120,16 +146,19 @@ namespace Command {
     int versionIndex;
     try{
       versionIndex = std::stoi(versionInput);
-    }catch(...){
+    }
+catch(...){
       std::cout << "Invalid input" << std::endl;
       return false;
     }
+
     version = searchResults[index].versions[versionIndex];
   
     if(checkForOverlappingDependencies(pro, searchResults[index].name)){
       std::cout << "Package already installed" << std::endl;
       return false;
     }
+
 
     std::cout << "Adding dependency to config.json" << std::endl;
     pro->dependencies.push_back({
@@ -142,15 +171,20 @@ namespace Command {
         ? searchResults[index].name
         : searchResults[index].target_link
 
-    });
+    }
+);
     std::cout << "Writing config.json" << std::endl;
     if(!Generators::ConfigJson::writeConfig(pro)){
       std::cout << "Failed to write config.json" << std::endl;
     }
+
     if(!Generators::CMakeList::create(pro)){
       std::cout << "Failed to write CMakeLists.txt" << std::endl;
     }
 
+
     return true;
   }
-} // namespace Command
+
+}
+ // namespace Command
