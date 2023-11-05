@@ -119,11 +119,19 @@ namespace Utils::CLI {
     return value;
   }
   template <typename T>
+  Prompt<T>* Prompt<T>::ExitOnFailure(){
+    this->exit_on_failure = true;
+    return this;
+  }
+  template <typename T>
   bool Prompt<T>::Run(){
     get_input();
     if(has_max_length()){
       while(input.length() > max_length){
         std::cout << "Input too long" << std::endl;
+        if(exit_on_failure){
+          exit(1);
+        }
         return false;
       }
     }
@@ -134,6 +142,9 @@ namespace Utils::CLI {
     if(has_validator()){
       while(!validator(value)){
         std::cout << "Invalid input: " << std::endl;
+        if(exit_on_failure){
+          exit(1);
+        }
         return false;
       }
     }
@@ -141,6 +152,9 @@ namespace Utils::CLI {
     if(has_options() && !std::is_same<T, bool>::value){
       if(!is_in_options(value)){
         std::cout << "Invalid input: " << std::endl;
+        if(exit_on_failure){
+          exit(1);
+        }
         return false;
       }
     }

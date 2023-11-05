@@ -9,12 +9,15 @@
 #include <fstream>
 #include <iostream>
 #include <cxxopts.hpp>
+#include "../Utils/CLI.hpp"
 
 
 #define ENDL "\n"
 
 namespace Command {
   using nlohmann::json;
+  using Utils::CLI::Prompt;
+  using namespace Utils::CLI::Ansi;
   [[deprecated("I DON'T KNOW WHAT THIS FUCKING DOES")]]
   bool handleCppProject();
   [[deprecated("WE ARE A BIG PROJECT MUST HAVE DEPRECATED STUFF")]]
@@ -35,15 +38,15 @@ namespace Command {
     }
     // opening the file
     if (file) {
-      std::cout << "file config.json exists" << std::endl;
-      std::cout << "do you want to overwrite it?[y/n]:";
-      std::string input;
-      std::getline(std::cin, input);
-      if (input != "y"){
+      
+      Prompt<bool> *prompt = new Prompt<bool>("file config.json already exists\n Are you sure you would like to overwrite it?");
+      prompt->Color(RED)->ExitOnFailure()->Run();
+      if(prompt->Get()){
+        file.close();
+        return true;
+      }else{
         exit(1);
       }
-      file.close();
-      return true;
     }
     return false;
   }
@@ -129,6 +132,8 @@ namespace Command {
       bool ftp();
       bool watch();
       bool clean();
+      //TODO: setup register comamnd
+      bool registerCommand(std::string name, std::vector<std::string> subcommands, std::function<bool()> func);
     public:
       std::shared_ptr<Project> pro;
       bool parse();
@@ -144,6 +149,7 @@ namespace Command {
   };
   namespace OptionsInit{
       bool Init(Interface*);
+      bool Search(Interface*);
       bool Add(Interface*);
       bool Remove(Interface*);
       bool Server(Interface*);

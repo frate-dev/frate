@@ -1,3 +1,4 @@
+#pragma once
 #include <functional>
 #include <sstream>
 #include <string>
@@ -99,6 +100,7 @@ namespace Utils::CLI {
       std::string input;
       T value;
       int max_length{0};
+      bool exit_on_failure{false};
       std::function<bool(T)> validator;
       std::vector<T> options;
       void get_input();
@@ -149,6 +151,7 @@ namespace Utils::CLI {
        * Runs the prompt, asks for input and handles exceptions and validations
        * @return true if the prompt was successful
        */
+      Prompt* ExitOnFailure();
       bool Run();
       /*
        * Gets the realized value of the prompt
