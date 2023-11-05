@@ -149,6 +149,19 @@ namespace Command {
           std::cout << "Error running project" << std::endl;
         }
 
+        std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "current_build_server.json";
+        json current_build_server_json = json::parse(std::ifstream(current_build_server));
+        if (!current_build_server_json["name"].is_null()) {
+          ctx->build_server = BuildServer(
+            current_build_server_json["name"].get<std::string>(),
+            current_build_server_json["address"].get<std::string>(), 
+            current_build_server_json["username"].get<std::string>(),
+            current_build_server_json["authMethod"].get<std::string>(),
+            current_build_server_json["password"].get<std::string>(),
+            current_build_server_json["key"].get<std::string>(),
+            current_build_server_json["port"].get<int>()
+          );
+        }
         // Call your recompilation command or any other action you want
         },path);
     return true;

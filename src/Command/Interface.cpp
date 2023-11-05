@@ -52,7 +52,6 @@ namespace Command {
       this->LoadPackageJson();
     }
 
-
     using namespace cxxopts;
     if (command == "init"){
       OptionsInit::Init(this);

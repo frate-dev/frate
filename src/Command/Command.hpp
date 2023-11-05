@@ -89,6 +89,7 @@ namespace Command {
     std::string project_name;
     std::string project_type;
     std::string project_description;
+    BuildServer  build_server;
     std::filesystem::path project_path;
     std::string git{"null"};
     std::string lang{"cpp"};
@@ -120,7 +121,8 @@ namespace Command {
       bool help();
       bool addFlag();
       bool server();
-
+      bool setBuildServer(std::vector<BuildServer> servers);
+      bool getBuildServer();
       bool addAuthors();
       bool addDependency();
       bool ftp();

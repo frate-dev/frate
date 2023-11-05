@@ -28,19 +28,17 @@ FetchContent_Declare(
   GIT_REPOSITORY "https://github.com/curl/curl.git"
   GIT_TAG "curl-8_3_0"
 )
+
 FetchContent_Declare(
   termcolor
   GIT_REPOSITORY "https://github.com/ikalnytskyi/termcolor.git"
   GIT_TAG "v2.1.0"
-  )
+)
 
 FetchContent_MakeAvailable(nlohmann_json)
 FetchContent_MakeAvailable(cxxopts)
 FetchContent_MakeAvailable(curl)
 FetchContent_MakeAvailable(termcolor)
-
-
-
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
