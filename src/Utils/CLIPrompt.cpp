@@ -1,5 +1,5 @@
 #include "CLI.hpp"
-
+#include <string>
 
 namespace Utils::CLI {
   template <typename T>
@@ -45,6 +45,49 @@ namespace Utils::CLI {
   bool Prompt<T>::has_validator(){
     return validator != nullptr;
   }
+  template <>
+  bool Prompt<int>::yoink(){
+    try{
+      value = std::stoi(input);
+    }catch(std::invalid_argument e){
+      return false;
+    }
+    return true;
+  }
+  template <>
+  bool Prompt<float>::yoink(){
+    try{
+      value = std::stof(input);
+    }catch(std::invalid_argument e){
+      return false;
+    }
+    return true;
+  }
+  template <>
+  bool Prompt<double>::yoink(){
+    try{
+      value = std::stod(input);
+    }catch(std::invalid_argument e){
+      return false;
+    }
+    return true;
+  }
+  template <>
+  bool Prompt<std::string>::yoink(){
+    value = input;
+    return true;
+  }
+  template <>
+  bool Prompt<bool>::yoink(){
+    if(input == "y" || input == "Y"){
+      value = true;
+      return true;
+    }else if(input == "n" || input == "N"){
+      value = false;
+      return true;
+    }
+    return false;
+  }
   template <typename T>
   void Prompt<T>::get_input(){
     if(std::is_same<T, bool>::value){
@@ -82,41 +125,10 @@ namespace Utils::CLI {
         return false;
       }
     }
-    //Checking to see if the input is one of the approved options
-    if(std::is_same<T, int>::value){
-      try{
-        value = std::stoi(input);
-      }catch(std::invalid_argument e){
-        std::cout << "Invalid integer value" << std::endl;
-        return false;
-      }
-    }else if(std::is_same<T, float>::value){
-      try{
-        value = std::stof(input);
-      }catch(std::invalid_argument e){
-        std::cout << "Invalid float value" << std::endl;
-        return false;
-      }
-    }else if(std::is_same<T, double>::value){
-      try{
-        value = std::stod(input);
-      }catch(std::invalid_argument e){
-        std::cout << "Invalid double value" << std::endl;
-        return false;
-      }
-    }else if(std::is_same<T, bool>::value){
-      //If bool is the type we just need to check if the input is y or n
-      if(input != "y" && input != "n"){
-        std::cout << "Invalid input expected either y or n" << std::endl;
-        return false;
-      }
-      value = input == "y";
-    }else{
-      std::cout << "Invalid type for prompt" << std::endl;
+    if(!Prompt<T>::yoink()){
+      std::cout << "Invalid input for type " << std::endl;
       return false;
     }
-
-
     if(has_validator()){
       while(!validator(value)){
         std::cout << "Invalid input: " << std::endl;
@@ -130,8 +142,6 @@ namespace Utils::CLI {
         return false;
       }
     }
-
-
     return true;
   }
 }

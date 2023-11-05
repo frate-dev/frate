@@ -19,6 +19,10 @@ namespace Utils::CLI {
     primary_color = Ansi::WHITE;
     subtext_color = Ansi::BLUE;
   }
+  List::List(std::string _title){
+    title = _title;
+    List();
+  }
   List::~List(){
   }
   List* List::IndexColor(std::string color){

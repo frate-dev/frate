@@ -30,6 +30,7 @@ namespace Utils::CLI {
       std::string index_color;
       std::string primary_color;
       std::string subtext_color;
+      std::string title;
       bool reversed_index;
       bool numbered;
       std::vector<ListItem> items;
@@ -38,6 +39,7 @@ namespace Utils::CLI {
       std::stringstream stream;
 
       List();
+      List(std::string title);
       ~List();
       /*
        * Sets the color of the index
@@ -85,7 +87,7 @@ namespace Utils::CLI {
   template <typename T>
   class Prompt{
     static_assert(
-        std::is_same<T, std::string>::value 
+        std::is_same<T,std::string>::value 
         || std::is_same<T, int>::value 
         || std::is_same<T, float>::value 
         || std::is_same<T, double>::value
@@ -101,6 +103,7 @@ namespace Utils::CLI {
       std::vector<T> options;
       void get_input();
       bool is_in_options(T option);
+      bool yoink();
       virtual bool has_options();
       virtual bool has_max_length();
       virtual bool has_validator();
