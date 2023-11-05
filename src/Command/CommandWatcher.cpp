@@ -112,7 +112,7 @@ namespace Command {
 #endif
 
     watcher([this]() {
-#ifdef DEBUG
+  #ifdef DEBUG
         std::string command = "cmake ./build/ && ./build/make && ./build/" + pro->build_dir + "/" + pro->project_name;
         if (args->count("args") != 0) {
           std::vector<std::string> args_vec =  args->operator[]("args").as<std::vector<std::string>>();
@@ -124,7 +124,7 @@ namespace Command {
            command = "cmake ./build/ && make && ./build/" + pro->build_dir + "/" + pro->project_name + "  " + command_args;
         }
 
-#else
+  #else
         std::string command = "cmake . && make && ./" + pro->build_dir + "/" + pro->project_name;
         if (args->count("args") != 0) {
           std::cout << "estamos aqui" << std::endl;
@@ -142,7 +142,7 @@ namespace Command {
           std::cout << "command_args: " << command_args << std::endl;
           command = "cmake . && make && ./" + pro->build_dir + "/" + pro->project_name + "  " + command_args;
         }
-#endif
+  #endif
         std::cout << "Running command: " << command << std::endl;
         int success = system(command.c_str());
         if (success != 0) {
