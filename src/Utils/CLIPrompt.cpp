@@ -100,6 +100,8 @@ namespace Utils::CLI {
         std::cout << "[ " << options[i] << " ]" << "\n";
       }
       std::cout << ">";
+    }else{
+      std::cout << color << prompt << Ansi::RESET;
     }
     std::getline(std::cin, input);
   };

@@ -19,6 +19,15 @@ namespace Command{
       return false;
     }
 
+    Prompt<int> *prompt2 = new Prompt<int>("Enter the port number");
+    prompt2->Validator([](int port) -> bool {
+      return port > 0 && port < 65535;
+    });
+    prompt2->Run();
+    int port = prompt2->Get();
+
+    std::cout << "Starting FTP server on port " << port << std::endl;
+
 
 
     
