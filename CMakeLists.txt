@@ -116,3 +116,10 @@ install(FILES cmaker-completion.bash
 install(FILES cmaker-completion.fish
     DESTINATION /usr/share/fish/vendor_completions.d
     RENAME cmaker.fish)
+
+if(NOT DEFINED MAN_INSTALL_DIR)
+  set(MAN_INSTALL_DIR "share/man/man1")
+endif()
+
+add_custom_target(man ALL DEPENDS docs/man/cmaker.1)
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/docs/man/cmaker.1" DESTINATION "${MAN_INSTALL_DIR}")
