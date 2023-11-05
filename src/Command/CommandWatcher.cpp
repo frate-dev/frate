@@ -1,6 +1,7 @@
 #include "Command.hpp"
 #include <functional>
 #include <iostream>
+#ifdef __linux__
 #include <sys/epoll.h>
 #include <sys/inotify.h>
 
@@ -153,6 +154,7 @@ namespace Command {
         json current_build_server_json = json::parse(std::ifstream(current_build_server));
         if (!current_build_server_json["name"].is_null()) {
           pro->build_server = BuildServer(
+
             current_build_server_json["name"].get<std::string>(),
             current_build_server_json["address"].get<std::string>(), 
             current_build_server_json["username"].get<std::string>(),
@@ -160,11 +162,13 @@ namespace Command {
             current_build_server_json["password"].get<std::string>(),
             current_build_server_json["key"].get<std::string>(),
             current_build_server_json["port"].get<int>()
+
           );
         }
+
         // Call your recompilation command or any other action you want
         },path);
     return true;
   }
 } // namespace Command
-
+#endif
