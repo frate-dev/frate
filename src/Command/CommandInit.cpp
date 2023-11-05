@@ -64,8 +64,8 @@ bool createProject(Interface *inter){
     createHelloWorldC(inter->pro);
   }
 #ifndef DEBUG
-  Generators::GitIgnore::create(pro);
-  int gitinit = std::system(("cd "+pro->project_path.string()+";git init").c_str());
+  Generators::GitIgnore::create(inter->pro);
+  int gitinit = std::system(("cd "+inter->pro->project_path.string()+";git init").c_str());
   if(gitinit != 0){
     std::cout << termcolor::red << "We had problems initializing your project with git" << termcolor::reset << ENDL;
   }

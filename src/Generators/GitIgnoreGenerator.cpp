@@ -4,6 +4,20 @@
 
 
 namespace Generators::GitIgnore{
+
+bool write_gitignore(std::string gitignore, std::filesystem::path gitignore_path) {
+    try{
+      std::ofstream file;
+      file.open(gitignore_path);
+      file << gitignore;
+      file.close();
+    }catch(std::exception &e){
+      std::cout << "Failed to create gitignore" << std::endl;
+      return false;
+    }
+    return true;
+}
+
   using namespace Utils::CLI;
   bool create(std::shared_ptr<Command::Project> pro){
     std::filesystem::path gitignore_path = pro->project_path / ".gitignore";
@@ -41,29 +55,13 @@ compile_commands.json
       Prompt<bool> *prompt = new Prompt<bool>("Do you want to overwrite it?");
       prompt->Color(Ansi::RED)->ExitOnFailure()->Run();
       if(prompt->Get()){
-        try{
-          std::ofstream file;
-          file.open(gitignore_path);
-          file << gitignore;
-          file.close();
-        }catch(std::exception &e){
-          std::cout << "Failed to create gitignore" << std::endl;
-          return false;
-        }
+      write_gitignore(gitignore, gitignore_path);
         return true;
       }else{
         return false;
       }
     }else{
-      try{
-        std::ofstream file;
-        file.open(gitignore_path);
-        file << gitignore;
-        file.close();
-      }catch(std::exception &e){
-        std::cout << "Failed to create gitignore" << std::endl;
-        return false;
-      }
+      write_gitignore(gitignore, gitignore_path);
     }
 
     return true;
