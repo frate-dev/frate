@@ -24,7 +24,7 @@ namespace Command {
       project_type = j["project_type"];
       project_description = j["project_description"];
       for (auto &dep : j["dependencies"]) {
-        dependency d;
+        Dependency d;
         d.name = dep["name"];
         d.url = dep["url"];
         d.version = dep["version"];

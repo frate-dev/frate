@@ -55,7 +55,7 @@ namespace Command {
     if(pro->dependencies.size() == 0){
       return false;
     }
-    for(dependency dep: pro->dependencies){
+    for(Dependency dep: pro->dependencies){
       if(dep.name == name){
         return true;
       }
@@ -77,7 +77,7 @@ namespace Command {
       return false;
     }
     std::string query = args->operator[]("args").as<std::vector<std::string>>()[0];
-    std::vector<packageResult> searchResults = searchPackage(query);
+    std::vector<Package> searchResults = searchPackage(query);
     if(searchResults.size() == 0){
       std::cout << "No results found" << std::endl;
       return false;

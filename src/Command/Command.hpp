@@ -58,23 +58,25 @@ namespace Command {
   ParseResult removeOptions(int argc, char** argv);
   ParseResult updateOptions(int argc, char** argv);
 
-  typedef struct packageResult {
+  typedef struct Package_s {
     std::string name;
     std::string url;
     std::vector<std::string> versions;
     std::string target_link;
     std::string description;
     int score;
-  } packageResult;
+    json toJson();
+    void fromJson(json j);
+  } Package;
 
-  typedef struct dependency {
+  typedef struct Dependency_s {
     std::string name;
     std::string url;
     std::string version;
     std::string target_link;
-  } dependency;
+  } Dependency;
 
-  typedef struct BuildServer {
+  typedef struct BuildServer_s {
     std::string name;
     std::string ip;
     std::string username;
@@ -84,7 +86,7 @@ namespace Command {
     int port;
   } BuildServer;
 
-  typedef struct Context_s {
+  typedef struct Project_s {
     std::string project_name;
     std::string project_type;
     std::string project_description;
@@ -98,10 +100,10 @@ namespace Command {
     std::vector<std::string> authors;
     std::string src_dir{"src"};
     std::string include_dir{"include"};
-    std::vector<dependency> dependencies;
+    std::vector<Dependency> dependencies;
     std::vector<BuildServer> build_servers;
     std::string build_dir{"build"};
-    dependency testing_lib;
+    Dependency testing_lib;
     std::string project_version{"0.0.1"};
     std::vector<std::string> flags; 
     std::shared_ptr<cxxopts::ParseResult> args;
@@ -212,7 +214,7 @@ namespace Command {
    * What the fuck lucas
    */
 
-  std::vector<packageResult> searchPackage(std::string query);
+  std::vector<Package> searchPackage(std::string query);
 
   std::string downloadIndex();
   /*
