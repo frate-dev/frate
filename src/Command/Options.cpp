@@ -85,7 +85,7 @@ namespace Command {
       ("o,ours", "watches cmaker source", cxxopts::value<bool>())
 #endif
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
-      ("b,build-server", "Build server to use", cxxopts::value<std::string>())
+      ("b,remote-build", "Build server to use", cxxopts::value<bool>()->default_value("false"))
       ("c,args", "command to pass to dev", cxxopts::value<std::vector<std::string>>())
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("true"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"));
@@ -100,7 +100,6 @@ namespace Command {
 #endif
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
-      ("c,args", "command to pass to dev", cxxopts::value<std::vector<std::string>>())
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("true"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"));
     return interface->parse();

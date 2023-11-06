@@ -39,18 +39,21 @@ namespace Command{
     username = username_promp->Get();
     return true;
   }
+
   bool getServerAuthMethod(std::string& authMethod){
     Prompt<std::string> *authMethod_promp = new Prompt<std::string>("Enter the authentication method of the server[pem/password]: ");
     authMethod_promp->Run();
     authMethod = authMethod_promp->Get();
     return true;
   }
+  
   bool getServerPassword(std::string& password){
     Prompt<std::string> *password_promp = new Prompt<std::string>("Enter the password of the server: ");
     password_promp->Run();
     password = password_promp->Get();
     return true;
   }
+
   bool getServerKey(std::string& key){
     Prompt<std::string> *key_promp = new Prompt<std::string>("Enter path the ssh key for the server: ");
     key_promp->Run();
@@ -137,7 +140,7 @@ Usage server:
    servers.push_back(build_server);
 
   std::vector<json> build_server_json;
-   for (auto& build_server: servers){
+   for (BuildServer& build_server: servers){
      json build_server_json_tmp = {
        {"name", build_server.name},
        {"address", build_server.ip},
@@ -212,7 +215,7 @@ Usage server:
 
 
 
-    for (auto& server : server_list){
+    for (json& server : server_list){
         BuildServer  build_server = BuildServer(
             server["name"].get<std::string>(),
             server["address"].get<std::string>(), 

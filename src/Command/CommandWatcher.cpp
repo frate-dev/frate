@@ -131,25 +131,52 @@ namespace Command {
 
   #else
         std::string command = "cmake . && make && ./" + pro->build_dir + "/" + pro->project_name;
-        std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "current_build_server.json";
-        json current_build_server_json = json::parse(std::ifstream(current_build_server));
-        if (!current_build_server_json["name"].is_null()) {
-          pro->build_server = BuildServer(
 
-            current_build_server_json["name"].get<std::string>(),
-            current_build_server_json["address"].get<std::string>(), 
-            current_build_server_json["username"].get<std::string>(),
-            current_build_server_json["authMethod"].get<std::string>(),
-            current_build_server_json["password"].get<std::string>(),
-            current_build_server_json["key"].get<std::string>(),
-            current_build_server_json["port"].get<int>()
+        bool  build_server=args->operator[]("remote-build").as<bool>();
+        if (build_server == true) {
+          std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "current_build_server.json";
+          json current_build_server_json = json::parse(std::ifstream(current_build_server));
+          if (!current_build_server_json["name"].is_null()) {
+            pro->build_server = BuildServer(
+              current_build_server_json["name"].get<std::string>(),
+              current_build_server_json["address"].get<std::string>(), 
+              current_build_server_json["username"].get<std::string>(),
+              current_build_server_json["authMethod"].get<std::string>(),
+              current_build_server_json["password"].get<std::string>(),
+              current_build_server_json["key"].get<std::string>(),
+              current_build_server_json["port"].get<int>()
+            );
+          }
+          command = "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " + std::to_string(pro->build_server.port)  + "' --progress . " 
+            + pro->build_server.username + "@" + pro->build_server.ip 
+            +  ":/tmp/cmaker && ssh -p " + std::to_string(pro->build_server.port)  + " " +  pro->build_server.username + "@" + pro->build_server.ip  
+            + "  'cd /tmp/cmaker && cmake . && make && ./build/" + pro->project_name + "'"; 
 
-          );
         }
-        command = "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " + std::to_string(pro->build_server.port)  + "' --progress . " 
-          + pro->build_server.username + "@" + pro->build_server.ip 
-          +  ":/tmp/cmaker && ssh -p " + std::to_string(pro->build_server.port)  + " " +  pro->build_server.username + "@" + pro->build_server.ip  
-          + "  'cd /tmp/cmaker && cmake . && make && ./build/new'"; 
+//        else{
+//          std::string build_servers = std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_servers.json";
+//          json build_servers_json = json::parse(std::ifstream(build_servers));
+//          std::string build_server =  args->operator[]("server").as<std::string>();
+//          for (auto &bserver: build_servers_json){
+//            if (bserver["name"].get<std::string>() == build_server){
+//              pro->build_server = BuildServer(
+//                bserver["name"].get<std::string>(),
+//                bserver["address"].get<std::string>(), 
+//                bserver["username"].get<std::string>(),
+//                bserver["authMethod"].get<std::string>(),
+//                bserver["password"].get<std::string>(),
+//                bserver["key"].get<std::string>(),
+//                bserver["port"].get<int>()
+//
+//              );
+//              command = "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " + std::to_string(pro->build_server.port)  + "' --progress . " 
+//                + pro->build_server.username + "@" + pro->build_server.ip 
+//                +  ":/tmp/cmaker && ssh -p " + std::to_string(pro->build_server.port)  + " " +  pro->build_server.username + "@" + pro->build_server.ip  
+//                + "  'cd /tmp/cmaker && cmake . && make && ./build/" + pro->project_name + "'"; 
+//              break;
+//            }
+//          }
+//        }
         if (args->count("args") != 0) {
           std::cout << "estamos aqui" << std::endl;
           std::vector<std::string> args_vec =  args->operator[]("args").as<std::vector<std::string>>();
