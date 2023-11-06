@@ -17,7 +17,7 @@ namespace Command{
     return true;
   }
 
-  bool getServerPort(std::string& port){
+  bool getServerPort(int& port){
     Prompt<int> *port_promp = new Prompt<int>("Enter the port of the server: ");
     port_promp->Run();
     port = port_promp->Get();
@@ -113,7 +113,8 @@ Usage server:
   bool serverAdd(std::vector<BuildServer> servers){
 
     std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json";
-    std::string name, address, port, username, authMethod, password, key;
+    std::string name, address,  username, authMethod, password, key;
+    int port;
     getServerName(name);
     getServerAddress(address);
     getServerPort(port);
@@ -132,7 +133,7 @@ Usage server:
 
 
 
-   BuildServer build_server = BuildServer(name, address, username, authMethod, password, key,  std::stoi(port));
+   BuildServer build_server = BuildServer(name, address, username, authMethod, password, key,  port);
    servers.push_back(build_server);
 
   std::vector<json> build_server_json;

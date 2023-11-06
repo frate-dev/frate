@@ -96,7 +96,7 @@ else()
   endif()
 endif()
 
-target_link_libraries(${PROJECT_NAME} curl)
+target_link_libraries(${PROJECT_NAME} libcurl)
 target_link_libraries(${PROJECT_NAME} cxxopts)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
 target_link_libraries(${PROJECT_NAME} termcolor::termcolor)

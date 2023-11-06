@@ -26,6 +26,9 @@ bool write_gitignore(std::string gitignore, std::filesystem::path gitignore_path
 CMakeLists.txt.user
 CMakeFiles/
 CMakeCache.txt
+Makefile
+_deps/
+CMakeCache.txt
 cmake_install.cmake
 install_manifest.txt
 compile_commands.json
