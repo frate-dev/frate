@@ -143,7 +143,6 @@ bool Interface::init() {
   } else {
       createProject(this);
   }
-
   return true;
 }
 

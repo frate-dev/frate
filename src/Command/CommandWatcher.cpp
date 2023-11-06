@@ -128,6 +128,27 @@ namespace Command {
            //command = "cmake ./build/ && make && ./build/" + pro->build_dir + "/" + pro->project_name + "  " + command_args;
             
         }
+        bool  build_server=args->operator[]("remote-build").as<bool>();
+        if (build_server == true) {
+          std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "current_build_server.json";
+          json current_build_server_json = json::parse(std::ifstream(current_build_server));
+          if (!current_build_server_json["name"].is_null()) {
+            pro->build_server = BuildServer(
+              current_build_server_json["name"].get<std::string>(),
+              current_build_server_json["address"].get<std::string>(), 
+              current_build_server_json["username"].get<std::string>(),
+              current_build_server_json["authMethod"].get<std::string>(),
+              current_build_server_json["password"].get<std::string>(),
+              current_build_server_json["key"].get<std::string>(),
+              current_build_server_json["port"].get<int>()
+            );
+          }
+          command = "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " + std::to_string(pro->build_server.port)  + "' --progress . " 
+            + pro->build_server.username + "@" + pro->build_server.ip 
+            +  ":/tmp/cmaker && ssh -p " + std::to_string(pro->build_server.port)  + " " +  pro->build_server.username + "@" + pro->build_server.ip  
+            + "  'cd /tmp/cmaker && cmake . && make && ./build/" + pro->project_name + "'"; 
+
+        }
 
   #else
         std::string command = "cmake . && make && ./" + pro->build_dir + "/" + pro->project_name;
@@ -161,8 +182,6 @@ namespace Command {
 //            if (bserver["name"].get<std::string>() == build_server){
 //              pro->build_server = BuildServer(
 //                bserver["name"].get<std::string>(),
-//                bserver["address"].get<std::string>(), 
-//                bserver["username"].get<std::string>(),
 //                bserver["authMethod"].get<std::string>(),
 //                bserver["password"].get<std::string>(),
 //                bserver["key"].get<std::string>(),

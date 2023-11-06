@@ -100,7 +100,6 @@ target_link_libraries(${PROJECT_NAME} libcurl)
 target_link_libraries(${PROJECT_NAME} cxxopts)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
 target_link_libraries(${PROJECT_NAME} termcolor::termcolor)
-
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
 set_target_properties(cmaker PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)

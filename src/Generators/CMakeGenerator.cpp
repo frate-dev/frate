@@ -1,5 +1,6 @@
 #include "Generators.hpp"
 #include <memory>
+#include <inja.hpp>
 #include <vector>
 #include <format>
 #include "../Command/Command.hpp"
