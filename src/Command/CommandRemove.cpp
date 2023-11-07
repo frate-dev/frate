@@ -45,7 +45,7 @@ Usage remove dep:
     });
 
     Generators::ConfigJson::writeConfig(pro);
-    Generators::CMakeList::create(pro);
+    Generators::CMakeList::createCMakeListsExecutable(pro);
     return true;
   }
 } // namespace Command

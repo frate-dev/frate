@@ -39,6 +39,7 @@ namespace Generators{
     void generateDeps(std::shared_ptr<Command::Project> pro, std::shared_ptr<CMakeContext> cmake_context);
 
     bool create(std::shared_ptr<Command::Project> pro); 
+    bool createCMakeListsExecutable(std::shared_ptr<Command::Project> pro);
   }
 
   namespace ConfigJson{

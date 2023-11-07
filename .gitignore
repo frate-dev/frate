@@ -1,5 +1,6 @@
 install_manifest.txt
 build/*
+build
 .cache
 .cache/*
 .cmake

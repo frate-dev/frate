@@ -57,7 +57,8 @@ bool createHelloWorldC(std::shared_ptr<Project> pro) {
 bool createProject(Interface *inter){
   createJson(inter->pro);
   inter->LoadPackageJson();
-  Generators::CMakeList::create(inter->pro);
+  //Generators::CMakeList::create(inter->pro);
+  Generators::CMakeList::createCMakeListsExecutable(inter->pro);
   if(inter->pro->lang == "cpp"){
     createHelloWorldCpp(inter->pro);
   }else if(inter->pro->lang == "c"){
@@ -135,7 +136,7 @@ bool Interface::init() {
     }
 
     this->LoadPackageJson();
-    Generators::CMakeList::create(pro);
+    Generators::CMakeList::createCMakeListsExecutable(pro);
 #ifndef DEBUG
       Generators::GitIgnore::create(pro);
 #endif

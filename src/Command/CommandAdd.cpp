@@ -178,7 +178,7 @@ catch(...){
       std::cout << "Failed to write config.json" << std::endl;
     }
 
-    if(!Generators::CMakeList::create(pro)){
+    if(!Generators::CMakeList::createCMakeListsExecutable(pro)){
       std::cout << "Failed to write CMakeLists.txt" << std::endl;
     }
 
