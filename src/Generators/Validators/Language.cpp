@@ -14,7 +14,7 @@ namespace Generators::ConfigJson{
    * @param config_json: the config json context
    * @return: true if the language is valid
    */
-  bool validateLang(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json) {
+  bool validateLang(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json) {
     std::vector<std::string> supportedLangs = {"cpp", "c"};
     std::cout << prefix << ENDL;
     std::cout << "  Supported languages: ( ";
@@ -36,7 +36,7 @@ namespace Generators::ConfigJson{
     }
     return false;
     end:
-      ctx->lang = config_json->lang == "" ? ctx->lang : config_json->lang;
+      pro->lang = config_json->lang == "" ? pro->lang : config_json->lang;
     return true;
   }
 }

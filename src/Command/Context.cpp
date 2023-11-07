@@ -5,7 +5,7 @@ namespace Command {
   /*
    * Welp reflection is a bitch aint it
    */
-    void Context::fromJson(json j){
+    void Project::fromJson(json j){
     #ifdef DEBUG
       project_path = std::filesystem::current_path() / "build";
     #else
@@ -14,6 +14,7 @@ namespace Command {
       project_name = j["project_name"];
       cmake_version = j["cmake_version"];
       project_version = j["project_version"];
+      project_type = j["project_type"];
       lang = j["lang"];
       lang_version = j["lang_version"];
       compiler = j["compiler"];
@@ -24,7 +25,7 @@ namespace Command {
       project_type = j["project_type"];
       project_description = j["project_description"];
       for (auto &dep : j["dependencies"]) {
-        dependency d;
+        Dependency d;
         d.name = dep["name"];
         d.url = dep["url"];
         d.version = dep["version"];
@@ -33,7 +34,7 @@ namespace Command {
       }
       flags = j["flags"];
     }
-    nlohmann::json Context::toJson(){
+    nlohmann::json Project::toJson(){
       using nlohmann::json;
       std::vector<json> deps;
       for (auto &dep : dependencies) {
@@ -46,6 +47,7 @@ namespace Command {
       }
       json j;
       j["project_name"] = project_name;
+      j["project_type"] = project_type;
       j["cmake_version"] = cmake_version;
       j["project_version"] = project_version;
       j["lang"] = lang;

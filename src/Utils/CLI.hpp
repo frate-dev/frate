@@ -1,3 +1,5 @@
+#pragma once
+#include <functional>
 #include <sstream>
 #include <string>
 #include <stdint.h>
@@ -8,7 +10,6 @@
 
 
 namespace Utils::CLI {
-  //ansicolors
   namespace Ansi{
     const std::string RESET = "\033[0m";
     const std::string RED = "\033[31m";
@@ -23,13 +24,14 @@ namespace Utils::CLI {
   typedef struct ListItem {
     std::string primary;
     std::string subtext;
-    ListItem(std::string primary, std::string subtext);
+    ListItem(std::string primary, std::string subtext="");
   } ListItem;
   class List {
     private:
       std::string index_color;
       std::string primary_color;
       std::string subtext_color;
+      std::string title;
       bool reversed_index;
       bool numbered;
       std::vector<ListItem> items;
@@ -38,6 +40,7 @@ namespace Utils::CLI {
       std::stringstream stream;
 
       List();
+      List(std::string title);
       ~List();
       /*
        * Sets the color of the index
@@ -82,4 +85,83 @@ namespace Utils::CLI {
        */
       void pushBack(ListItem item);
   };
+  template <typename T>
+  class Prompt{
+    static_assert(
+        std::is_same<T,std::string>::value 
+        || std::is_same<T, int>::value 
+        || std::is_same<T, float>::value 
+        || std::is_same<T, double>::value
+        || std::is_same<T, bool>::value,
+        "Prompt only supports std::string, int, float, and double, bool");
+    private:
+      std::string prompt;
+      std::string color{Ansi::WHITE};
+      std::string input;
+      T value;
+      int max_length{0};
+      bool exit_on_failure{false};
+      std::function<bool(T)> validator;
+      std::vector<T> options;
+      void get_input();
+      bool is_in_options(T option);
+      bool yoink();
+      virtual bool has_options();
+      virtual bool has_max_length();
+      virtual bool has_validator();
+    public:
+      /*
+       * Create a prompt builder
+       * @param prompt the prompt to display
+       * @param color the color of the prompt
+       */
+      Prompt(std::string prompt);
+      Prompt* Message(std::string prompt);
+      /*
+       * Adds a vector of <T> options to the prompt
+       * @param options the options to add
+       * @return this
+       */
+      Prompt* Options(std::vector<T> options);
+      /*
+       * Adds an option to the prompt in the form of a <T> type
+       * @param option the option to add
+       * @return this
+       */
+      Prompt* AddOption(T option);
+      /*
+       * Sets the maximum length of the input
+       * @param max_length the maximum length of the input
+       * @return this
+       */
+      Prompt* MaxLength(int max_length);
+      /*
+       * Sets the color of the prompt
+       * @param color the color to set
+       * @return this
+       */
+      Prompt* Color(std::string color);
+      /*
+       * Sets a validator for the input
+       * @param validator a function that takes a T and returns a bool
+       * @return this
+       */
+      Prompt* Validator(std::function<bool(T)> validator);
+      /*
+       * Runs the prompt, asks for input and handles exceptions and validations
+       * @return true if the prompt was successful
+       */
+      Prompt* ExitOnFailure();
+      bool Run();
+      /*
+       * Gets the realized value of the prompt
+       * @return the value of the prompt
+       */
+      T Get();
+  };
+  template class Prompt<std::string>;
+  template class Prompt<int>;
+  template class Prompt<float>;
+  template class Prompt<double>;
+  template class Prompt<bool>;
 }

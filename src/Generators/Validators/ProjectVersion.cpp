@@ -15,7 +15,7 @@ namespace Generators::ConfigJson{
    * @param config_json: the config json context
    * @return: true if the project version is valid
    */
-  bool validateProjectVersion(std::string prefix,  std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json) {
+  bool validateProjectVersion(std::string prefix,  std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json) {
     std::cout << prefix;
 #ifndef TEST
       std::getline(std::cin, config_json->project_version);
@@ -34,7 +34,7 @@ namespace Generators::ConfigJson{
     return false;
     //If the version is empty we're gonna set it
     end:
-      ctx->project_version = config_json->project_version == "" ? ctx->project_version : config_json->project_version;
+      pro->project_version = config_json->project_version == "" ? pro->project_version : config_json->project_version;
     
     return true;
 

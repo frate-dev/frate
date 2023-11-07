@@ -1,39 +1,63 @@
 #include "Command.hpp"
 #include "../Utils/General.hpp"
+#include "../Utils/CLI.hpp"
+
 namespace Command{
+  using namespace Utils::CLI;
   bool getServerName(std::string& name){
-    std::cout << "Enter the name of the server: ";
-    std::getline(std::cin, name);
+    Prompt<std::string> *name_promp = new Prompt<std::string>("Enter the name of the server: ");
+    name_promp->Run();
+    name = name_promp->Get();
     return true;
   }
   bool getServerAddress(std::string& address){
-    std::cout << "Enter the address of the server: ";
-    std::getline(std::cin, address);
+    Prompt<std::string> *address_promp = new Prompt<std::string>("Enter the address of the server: ");
+    address_promp->Run();
+    address = address_promp->Get();
     return true;
   }
-  bool getServerPort(std::string& port){
-    std::cout << "Enter the port of the server: ";
-    std::getline(std::cin, port);
+
+  bool getServerPort(int& port){
+    Prompt<int> *port_promp = new Prompt<int>("Enter the port of the server: ");
+    port_promp->Run();
+    port = port_promp->Get();
     return true;
   }
+
   bool getServerUsername(std::string& username){
-    std::cout << "Enter the username of the server: ";
-    std::getline(std::cin, username);
+    Prompt<std::string> *username_promp = new Prompt<std::string>("Enter the username of the server: ");
+    username_promp->Validator([](std::string username){
+      if (username == ""){
+        return false;
+      }
+      else if (username.length() > 256){
+        return false;
+      }
+      return true;
+    });
+    username_promp->Run();
+    username = username_promp->Get();
     return true;
   }
+
   bool getServerAuthMethod(std::string& authMethod){
-    std::cout << "Enter the authentication method of the server[pem/password]: ";
-    std::getline(std::cin, authMethod);
+    Prompt<std::string> *authMethod_promp = new Prompt<std::string>("Enter the authentication method of the server[pem/password]: ");
+    authMethod_promp->Run();
+    authMethod = authMethod_promp->Get();
     return true;
   }
+  
   bool getServerPassword(std::string& password){
-    std::cout << "Enter the password of the server: ";
-    std::getline(std::cin, password);
+    Prompt<std::string> *password_promp = new Prompt<std::string>("Enter the password of the server: ");
+    password_promp->Run();
+    password = password_promp->Get();
     return true;
   }
+
   bool getServerKey(std::string& key){
-    std::cout << "Enter path the ssh key for the server: ";
-    std::getline(std::cin, key);
+    Prompt<std::string> *key_promp = new Prompt<std::string>("Enter path the ssh key for the server: ");
+    key_promp->Run();
+    key = key_promp->Get();
     return true;
   }
 
@@ -49,10 +73,51 @@ Usage server:
         )EOF" << std::endl;
     return true;
   }
+  bool serverList(std::vector<BuildServer> servers){
+    //TODO put this in  the constructor
+    Utils::TableFormat table;
+    table.width = 20;
+    table << "Name"  << "Address" << "Port" << "Username" <<  "AuthMethod" << ENDL;
+    for (auto& server: servers){
+      table << server.name << server.ip << server.port << server.username << server.authMethod << ENDL;
+    }
+            
+    return true;
+  }
+
+  bool Interface::setBuildServer( std::vector<BuildServer> servers){
+    std::string name;
+    getServerName(name);
+    for (auto& server: servers){
+      std::cout << "server.name:" << server.name << std::endl;
+      std::cout << "name:" << name << std::endl;
+      if (server.name == name){
+        
+        std::cout << "Found server" << std::endl;
+        std::ofstream file;
+        file.open(std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "current_build_server.json");
+        json current_build_server = {
+          {"name", server.name},
+          {"address", server.ip},
+          {"port", server.port},
+          {"username", server.username},
+          {"authMethod", server.authMethod},
+          {"password", server.password.value_or("")},
+          {"key", server.key.value_or("")}
+        };
+        file << current_build_server;
+        return true;
+      }
+    }
+    std::cout << "Could not find server" << std::endl;
+    return false;
+  }
+
   bool serverAdd(std::vector<BuildServer> servers){
 
     std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json";
-    std::string name, address, port, username, authMethod, password, key;
+    std::string name, address,  username, authMethod, password, key;
+    int port;
     getServerName(name);
     getServerAddress(address);
     getServerPort(port);
@@ -71,11 +136,11 @@ Usage server:
 
 
 
-   BuildServer build_server = BuildServer(name, address, username, authMethod, password, key,  std::stoi(port));
+   BuildServer build_server = BuildServer(name, address, username, authMethod, password, key,  port);
    servers.push_back(build_server);
 
   std::vector<json> build_server_json;
-   for (auto& build_server: servers){
+   for (BuildServer& build_server: servers){
      json build_server_json_tmp = {
        {"name", build_server.name},
        {"address", build_server.ip},
@@ -92,6 +157,15 @@ Usage server:
     file << build_server_json;
     return true;
   }
+  bool  Interface::getBuildServer(){
+    Utils::TableFormat table;
+    table.width = 20;
+    table << "Name" << "Address" << "Port" << "Username" << "AuthMethod" << ENDL;
+    table << pro->build_server.name << pro->build_server.ip << pro->build_server.port << pro->build_server.username << pro->build_server.authMethod << ENDL;
+    return true;
+
+  }
+
   bool Interface::server(){
     std::fstream file;
     std::string build_servers_dir= std::string(std::getenv("HOME"))  + "/.config/cmaker/";
@@ -99,9 +173,14 @@ Usage server:
       std::filesystem::create_directory(build_servers_dir);
     }
     std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json";
+    std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "current_build_server.json";
     if (!std::filesystem::exists(build_servers)){
       std::ofstream file(build_servers);
       file << "[]";
+    }
+    if (!std::filesystem::exists(current_build_server)){
+      std::ofstream file(current_build_server);
+      file << "{}";
     }
     file.open(build_servers);
 
@@ -114,10 +193,29 @@ Usage server:
       std::cout << "Error: Could not load build_server.json" << std::endl;
       return false;
     }
+    try{
+      json current_build_server_json = json::parse(std::ifstream(current_build_server));
+      if (!current_build_server_json["name"].is_null()) {
+        pro->build_server = BuildServer(
+          current_build_server_json["name"].get<std::string>(),
+          current_build_server_json["address"].get<std::string>(), 
+          current_build_server_json["username"].get<std::string>(),
+          current_build_server_json["authMethod"].get<std::string>(),
+          current_build_server_json["password"].get<std::string>(),
+          current_build_server_json["key"].get<std::string>(),
+          current_build_server_json["port"].get<int>()
+        );
+      }
+
+    }
+    catch(json::exception &e){
+      std::cout << "Error: Could not load current_build_server.json" << std::endl;
+      return false;
+    }
 
 
 
-    for (auto& server : server_list){
+    for (json& server : server_list){
         BuildServer  build_server = BuildServer(
             server["name"].get<std::string>(),
             server["address"].get<std::string>(), 
@@ -142,10 +240,13 @@ Usage server:
     else if (this->args->operator[]("subcommand").as<std::string>() == "remove") {
     }
     else if (this->args->operator[]("subcommand").as<std::string>() == "list") {
+      serverList(servers);
     }
     else if (this->args->operator[]("subcommand").as<std::string>() == "set") {
+      setBuildServer(servers);
     }
     else if (this->args->operator[]("subcommand").as<std::string>() == "get") {
+      getBuildServer();
     }
     else{
       serverHelp();

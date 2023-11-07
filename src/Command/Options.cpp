@@ -20,6 +20,17 @@ namespace Command {
     return inter->parse();
   }
 
+  bool OptionsInit::Search(Interface* inter){
+    inter->InitHeader();
+    inter->options->parse_positional({"command","query"});
+
+    inter->options->add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("query", "Arguments to pass to the command", cxxopts::value<std::string>())
+      ("h,help", "Print usage");
+    return inter->parse();
+  }
+
 
   bool OptionsInit::Init(Interface* inter) {
     inter->InitHeader();
@@ -30,7 +41,8 @@ namespace Command {
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
       ("name", "Name of the project", cxxopts::value<std::string>()->default_value("false"))
-      ("language", "Language of the project", cxxopts::value<std::string>()->default_value("cpp"));
+      ("t,type", "Type of the project", cxxopts::value<std::string>()->default_value(ProjectType::EXECUTABLE))
+      ("l,language", "Language of the project", cxxopts::value<std::string>()->default_value("cpp"));
     return inter->parse();
   }
   bool OptionsInit::Add(Interface* inter) {
@@ -74,6 +86,7 @@ namespace Command {
       ("o,ours", "watches cmaker source", cxxopts::value<bool>())
 #endif
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("b,remote-build", "Build server to use", cxxopts::value<bool>()->default_value("false"))
       ("c,args", "command to pass to dev", cxxopts::value<std::vector<std::string>>())
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("true"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"));
@@ -88,7 +101,6 @@ namespace Command {
 #endif
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
-      ("c,args", "command to pass to dev", cxxopts::value<std::vector<std::string>>())
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("true"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"));
     return interface->parse();

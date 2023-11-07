@@ -14,7 +14,7 @@ namespace Generators::ConfigJson{
    * @param config_json: the config json context
    * @return: true if the language version is valid
    */
-  bool validateLanguageVersion(std::string prefix, std::shared_ptr<Command::Context> ctx, std::shared_ptr<Config> config_json) {
+  bool validateLanguageVersion(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json) {
     std::cout << prefix;
 #ifndef TEST
       std::getline(std::cin, config_json->lang_version);
@@ -40,7 +40,7 @@ namespace Generators::ConfigJson{
     }
     return false;
     end:
-      ctx->lang_version = config_json->lang_version == "" ? ctx->lang_version : config_json->lang_version;
+      pro->lang_version = config_json->lang_version == "" ? pro->lang_version : config_json->lang_version;
     
     return true;
   }

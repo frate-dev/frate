@@ -1,5 +1,6 @@
 #include "Generators.hpp"
 #include <memory>
+#include <inja.hpp>
 #include <vector>
 #include <format>
 #include "../Command/Command.hpp"
@@ -12,8 +13,8 @@ namespace Generators::CMakeList{
    * @param ctx: the context of the command
    * @return a vector of dependencies that will be later combined to build the cmake file
    */
-  void generateDeps(std::shared_ptr<Command::Context> ctx, std::shared_ptr<CMakeContext> cmake_context){
-    for (auto dep : ctx->dependencies) {
+  void generateDeps(std::shared_ptr<Command::Project> pro, std::shared_ptr<CMakeContext> cmake_context){
+    for (auto dep : pro->dependencies) {
       std::string FetchContent_Declare =
         std::format(
         R"V0G0N(
@@ -29,7 +30,7 @@ FetchContent_Declare(
         std::format("FetchContent_MakeAvailable({})", dep.name);
 
       std::string target_link_libraries = std::format(
-          "target_link_libraries({} {})", ctx->project_name, dep.target_link);
+          "target_link_libraries({} {})", pro->project_name, dep.target_link);
       Dep dependency =
         Dep{FetchContent_Declare, FetchContent_MakeAvailable,
           target_link_libraries};
@@ -39,13 +40,13 @@ FetchContent_Declare(
       cmake_context->dependencies.push_back(dependency);
     }
   }
-  bool create(std::shared_ptr<Command::Context> ctx) {
+  bool create(std::shared_ptr<Command::Project> pro) {
     std::shared_ptr<CMakeContext> cmake_context = std::make_shared<CMakeContext>();
     cmake_context->cmake_minimum_required =
-      std::format("cmake_minimum_required(VERSION {})", ctx->cmake_version);
+      std::format("cmake_minimum_required(VERSION {})", pro->cmake_version);
     cmake_context->project_name =
       std::format("project ({} VERSION {} LANGUAGES CXX)",
-          ctx->project_name, ctx->project_version);
+          pro->project_name, pro->project_version);
     cmake_context->build_type = R"(
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
   message("Release mode")
@@ -63,11 +64,11 @@ else()
 endif()
       )";
     cmake_context->cxx_version =
-      std::format("set(CMAKE_CXX_STANDARD {})", ctx->lang_version);
+      std::format("set(CMAKE_CXX_STANDARD {})", pro->lang_version);
     cmake_context->compiler =
-      std::format("set(CMAKE_CXX_COMPILER {})\n", ctx->compiler);
-    cmake_context->source_dir = std::format("set(SOURCE_DIR {})", ctx->src_dir);
-    cmake_context->build_dir = std::format("set(BUILD_DIR {})", ctx->build_dir);
+      std::format("set(CMAKE_CXX_COMPILER {})\n", pro->compiler);
+    cmake_context->source_dir = std::format("set(SOURCE_DIR {})", pro->src_dir);
+    cmake_context->build_dir = std::format("set(BUILD_DIR {})", pro->build_dir);
     cmake_context->fetch_content = "include(FetchContent)";
 
     cmake_context->files = R"V0G0N(
@@ -81,12 +82,12 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
 
     cmake_context->include_fetch = "include(FetchContent)";
 
-    generateDeps(ctx, cmake_context);
+    generateDeps(pro, cmake_context);
 
     cmake_context->include_dir =
-      std::format("include_directories({})", ctx->include_dir);
+      std::format("include_directories({})", pro->include_dir);
     cmake_context->add_executable =
-      std::format("add_executable({} ", ctx->project_name) + "${SOURCES})";
+      std::format("add_executable({} ", pro->project_name) + "${SOURCES})";
     cmake_context->testing = "ok";
     cmake_context->mode = R"V0G0N(
 if(RELEASE EQUAL 1)
@@ -101,20 +102,20 @@ endif()
       )V0G0N";
     cmake_context->set_build_dir = std::format(
         "set_target_properties({} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {})",
-        ctx->project_name, ctx->build_dir);
+        pro->project_name, pro->build_dir);
 
     std::ofstream file;
     std::string file_name = "CMakeLists.txt";
 
     try{
-      remove((ctx->project_path / file_name).c_str());
+      remove((pro->project_path / file_name).c_str());
     }catch(...){
       std::cout << "Error while removing file: " << file_name << std::endl;
       return false;
     }
 
     try{
-      file.open(ctx->project_path / file_name);
+      file.open(pro->project_path / file_name);
     }catch(...){
       std::cout << "Error while opening file: " << file_name << std::endl;
       return false;

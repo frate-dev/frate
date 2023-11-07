@@ -27,23 +27,15 @@ namespace Command {
     this->argc = argc;
     this->argv = argv;
 
-    this->ctx = std::make_shared<Context>();
+    this->pro = std::make_shared<Project>();
     OptionsInit::Main(this);
     this->parse();
     //After the parse we can set the context args
-    this->ctx->args = this->args;
+    this->pro->args = this->args;
 
     // if(!this->args->count("command")){
     //   this->help();
-    // }
-
-#ifdef DEBUG
-      ctx->project_path = std::filesystem::current_path() / "build";
-#else
-      ctx->project_path = std::filesystem::current_path();
-#endif
-
-    std::string command = this->args->operator[]("command").as<std::string>();
+     std::string command = this->args->operator[]("command").as<std::string>();
 
     #ifdef DEBUG
         std::cout << "DEBUG MODE ENABLED\n";
@@ -51,6 +43,13 @@ namespace Command {
     if(command != "init"){
       this->LoadPackageJson();
     }
+
+#ifdef DEBUG
+      pro->project_path = std::filesystem::current_path() / "build";
+#else
+      pro->project_path = std::filesystem::current_path();
+#endif
+
 
 
     using namespace cxxopts;
@@ -82,6 +81,11 @@ namespace Command {
         std::cout << "Error: Could not add project" << ENDL;
       }
 
+    }else if(command == "search"){
+      OptionsInit::Search(this);
+      if(!this->search()){
+        std::cout << "Error: Could not search project" << ENDL;
+      }
     }
     else if (command == "server"){
       OptionsInit::Server(this);

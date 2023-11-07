@@ -1,9 +1,11 @@
 install_manifest.txt
 build/*
+build
 .cache
 .cache/*
 .cmake
 Makefile
+DartConfiguration.txt
 config.toml
 CMakeFiles
 CMakeCache.txt

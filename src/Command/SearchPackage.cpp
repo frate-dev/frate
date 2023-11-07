@@ -1,6 +1,4 @@
 #include "Command.hpp"
-#include <curl/curl.h>
-#include <curl/easy.h>
 #include <nlohmann/json.hpp>
 #include "../Utils/General.hpp"
 #include "../Utils/CLI.hpp"
@@ -72,19 +70,19 @@ namespace Command {
     }
     return score;
   }
-  void getPackageScore(packageResult &package, std::string &query){
+  void getPackageScore(Package &package, std::string &query){
     int score = 0;
     score += getStringScore(package.name, query) * 10;
     score += getStringScore(package.description, query);
     score += getStringScore(package.target_link, query);
     package.score = score;
   }
-  std::vector<packageResult> calculatePackageScores(std::string query){
-    std::vector<packageResult> results;
+  std::vector<Package> calculatePackageScores(std::string query){
+    std::vector<Package> results;
     json rawIndex = fetchIndex();
     Utils::toLower(query);
     for(json json: rawIndex){
-      packageResult package{
+      Package package{
           .name = json["name"],
           .url = json["git"],
           .versions = json["versions"],
@@ -104,22 +102,24 @@ namespace Command {
       results.push_back(package);
     }
 
-    std::sort(results.begin(), results.end(), [](packageResult a, packageResult b){
+    std::sort(results.begin(), results.end(), [](Package a, Package b){
         return a.score > b.score;
         });
     return results;
   }
 
-  std::vector<packageResult> searchPackage(std::string query){
+  std::vector<Package> searchPackage(std::string query){
     std::cout << "Searching for package" << std::endl;
 
 
-    std::vector<packageResult> results = calculatePackageScores(query);
+    std::vector<Package> results = calculatePackageScores(query);
 
 
     std::cout << "Results: " << results.size() << std::endl;
-    Utils::CLI::List *list = (new Utils::CLI::List())->Numbered()->ReverseIndexed();
-    for(packageResult result: results){
+    List *list = (new Utils::CLI::List())->
+      Numbered()->
+      ReverseIndexed();
+    for(Package result: results){
       if(result.score > 10){
         list->pushBack(ListItem(result.name + " (" + result.url + ")", result.description));
       }

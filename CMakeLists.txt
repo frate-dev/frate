@@ -28,19 +28,17 @@ FetchContent_Declare(
   GIT_REPOSITORY "https://github.com/curl/curl.git"
   GIT_TAG "curl-8_3_0"
 )
+
 FetchContent_Declare(
   termcolor
   GIT_REPOSITORY "https://github.com/ikalnytskyi/termcolor.git"
   GIT_TAG "v2.1.0"
-  )
+)
 
 FetchContent_MakeAvailable(nlohmann_json)
 FetchContent_MakeAvailable(cxxopts)
 FetchContent_MakeAvailable(curl)
 FetchContent_MakeAvailable(termcolor)
-
-
-
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
@@ -98,12 +96,27 @@ else()
   endif()
 endif()
 
-target_link_libraries(${PROJECT_NAME} curl)
+target_link_libraries(${PROJECT_NAME} libcurl)
 target_link_libraries(${PROJECT_NAME} cxxopts)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
 target_link_libraries(${PROJECT_NAME} termcolor::termcolor)
-
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
 set_target_properties(cmaker PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
 install(TARGETS cmaker DESTINATION bin)
+install(FILES ./completions/cmaker-completion.zsh
+        DESTINATION /usr/local/share/zsh/site-functions/
+        RENAME _cmaker)
+install(FILES ./completions/cmaker-completion.bash
+        DESTINATION /etc/bash_completion.d/
+        RENAME cmaker)
+install(FILES ./completions/cmaker-completion.fish
+    DESTINATION /usr/share/fish/vendor_completions.d
+    RENAME cmaker.fish)
+
+if(NOT DEFINED MAN_INSTALL_DIR)
+  set(MAN_INSTALL_DIR "share/man/man1")
+endif()
+
+add_custom_target(man ALL DEPENDS docs/man/cmaker.1)
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/docs/man/cmaker.1" DESTINATION "${MAN_INSTALL_DIR}")
