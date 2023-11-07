@@ -132,7 +132,6 @@ namespace Command {
     std::cout << "Installing " << chosen_package.name << std::endl;
 
     //json versionJson = Utils::fetchJson("https://raw.githubusercontent.com/cmaker-dev/index/main/index/" + searchResults[index].name + "/info.json"); 
-    json versionJson = fetchIndex(); 
   
     std::string version = ""; 
     std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
