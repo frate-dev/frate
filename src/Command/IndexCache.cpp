@@ -60,8 +60,6 @@ namespace Command{
         return p;
       }
     }
-    Package p;
-    p.name = "";
-    return p;
+    return Package{.name="", .versions={}};
   }
 }

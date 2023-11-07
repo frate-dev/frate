@@ -61,7 +61,7 @@ namespace Command {
   }
 
 
-  bool checkForOverlappingDependencies(std::shared_ptr<Project> pro, std::string name){
+  bool checkForOverlappingDependencies(std::shared_ptr<Project> pro, std::string &name){
     if(pro->dependencies.size() == 0){
       return false;
     }
@@ -74,7 +74,7 @@ namespace Command {
 
     return false;
   }
-  Package promptPackageSearchResults(std::string query){
+  Package promptPackageSearchResults(std::string &query){
 
     std::vector<Package> searchResults = searchPackage(query);
     if(searchResults.size() == 0){
@@ -98,7 +98,28 @@ namespace Command {
     
     return searchResults[index];
   }
+  
+  std::string promptForVersion(Package &chosen_package){
 
+    List* list = (new List())->Numbered()->ReverseIndexed();
+    for(size_t i = 0; i < chosen_package.versions.size(); i++){
+      list->pushBack(ListItem(chosen_package.versions[i]));
+    }
+
+    std::cout << list->Build() << std::endl;
+
+    Prompt<int> *prompt = new Prompt<int>("Select a version to install: ");
+
+    for(size_t i = 0; i < chosen_package.versions.size(); i++){
+      prompt->AddOption(i);
+    }
+
+    prompt->ExitOnFailure()->Run();
+
+
+    return chosen_package.versions[prompt->Get()];
+
+  }
 
 
   bool Interface::addDependency() {
@@ -126,6 +147,10 @@ namespace Command {
       chosen_package = promptPackageSearchResults(query);
     }else{
       chosen_package = getExactPackage(query);
+      if(chosen_package.name == ""){
+        std::cout << "No package found" << std::endl;
+        return false;
+      }
     }
 
 
@@ -144,24 +169,15 @@ namespace Command {
 // , {"target_link", searchResults[index].target_link}
 // }
 // ;
-    List* list = (new List())->Numbered()->ReverseIndexed();
-    for(size_t i = 0; i < chosen_package.versions.size(); i++){
-      list->pushBack(ListItem(chosen_package.versions[i]));
+    if(!latest){
+      version = promptForVersion(chosen_package);
+    }else{
+      if(chosen_package.versions.size() == 0){
+        std::cout << "No versions found" << std::endl;
+        return false;
+      }
+      version = chosen_package.versions[0];
     }
-
-    std::cout << list->Build() << std::endl;
-
-    Prompt<int> *prompt = new Prompt<int>("Select a version to install: ");
-
-    for(size_t i = 0; i < chosen_package.versions.size(); i++){
-      prompt->AddOption(i);
-    }
-
-    prompt->ExitOnFailure()->Run();
-
-
-    version = chosen_package.versions[prompt->Get()];
-  
     if(checkForOverlappingDependencies(pro, chosen_package.name)){
       std::cout << "Package already installed" << std::endl;
       return false;
