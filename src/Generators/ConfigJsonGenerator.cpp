@@ -13,7 +13,6 @@ namespace Generators::ConfigJson{
       std::cout << termcolor::red << "Invalid language - retry" << termcolor::reset << std::endl;
       
     }
-    
     while (!validateProjectName("📖Project name->" + pro->project_name + " : ", pro, config_json)) {
       std::cout << termcolor::red << "Invalid project name - retry" << termcolor::reset << std::endl;
       

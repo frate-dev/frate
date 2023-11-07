@@ -27,7 +27,7 @@ namespace Command {
       for (auto &dep : j["dependencies"]) {
         Dependency d;
         d.name = dep["name"];
-        d.url = dep["url"];
+        d.git = dep["url"];
         d.version = dep["version"];
         d.target_link = dep["target_link"];
         dependencies.push_back(d);
@@ -40,7 +40,7 @@ namespace Command {
       for (auto &dep : dependencies) {
         json dep_json;
         dep_json["name"] = dep.name;
-        dep_json["url"] = dep.url;
+        dep_json["url"] = dep.git;
         dep_json["version"] = dep.version;
         dep_json["target_link"] = dep.target_link;
         deps.push_back(dep_json);

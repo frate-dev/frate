@@ -100,6 +100,7 @@ namespace Utils::CLI {
       std::string input;
       T value;
       int max_length{0};
+      bool print_valid_options{false};
       bool exit_on_failure{false};
       std::function<bool(T)> validator;
       std::vector<T> options;
@@ -152,6 +153,13 @@ namespace Utils::CLI {
        * @return true if the prompt was successful
        */
       Prompt* ExitOnFailure();
+      /*
+       * Prints the valid options on run
+       */
+      Prompt* PrintValidOptions();
+      /*
+       * runs the prompt
+       */
       bool Run();
       /*
        * Gets the realized value of the prompt

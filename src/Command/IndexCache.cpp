@@ -50,4 +50,18 @@ namespace Command{
     json data = Utils::fetchJson(indexUrl);
     indexFile << data.dump(2);
   }
+  Package getExactPackage(std::string package_name){
+    json index = fetchIndex();
+    for(auto package : index){
+      if(package["name"] == package_name){
+        Package p;
+        p.name = package["name"];
+        p.versions = package["versions"];
+        return p;
+      }
+    }
+    Package p;
+    p.name = "";
+    return p;
+  }
 }

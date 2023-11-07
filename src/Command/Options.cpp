@@ -53,6 +53,8 @@ namespace Command {
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
+      ("e,exact", "Exact package", cxxopts::value<bool>()->default_value("false"))
+      ("l,latest", "Latest package", cxxopts::value<bool>()->default_value("false"))
       ("args", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>());
     inter->options->help();
     return inter->parse();

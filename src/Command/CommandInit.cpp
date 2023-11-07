@@ -110,7 +110,10 @@ bool Interface::init() {
 
   if(args->operator[]("type").count() > 0){
     pro->project_type = args->operator[]("type").as<std::string>();
-    std::cout << "type: " << pro->project_type << ENDL;
+    if(!ProjectType::validate(pro->project_type)){
+      std::cout << termcolor::red << "Invalid project type" << termcolor::reset << ENDL;
+      exit(1);
+    }
   }
   //TODO: Stop using this shit
   file_exists(file_name);

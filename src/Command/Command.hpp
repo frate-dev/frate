@@ -60,22 +60,29 @@ namespace Command {
   ParseResult addOptions(int argc, char** argv);
   ParseResult removeOptions(int argc, char** argv);
   ParseResult updateOptions(int argc, char** argv);
-
+  /*
+   * Package structure from index
+   * @param name the name of the package
+   * @param url the url of the package
+   * @param versions the versions of the package
+   * @param target_link the target link of the package
+   * @param description the description of the package
+   * @param score the score of the package, used for sorting
+   */
   typedef struct Package_s {
     std::string name;
-    std::string url;
+    std::string git;
     std::vector<std::string> versions;
     std::string target_link;
     std::string description;
     int score;
-    //TODO: implement this
     json toJson();
     void fromJson(json j);
   } Package;//Deez nuts
 
   typedef struct Dependency_s {
     std::string name;
-    std::string url;
+    std::string git;
     std::string version;
     std::string target_link;
   } Dependency;
@@ -95,6 +102,9 @@ namespace Command {
     const std::string HEADER_ONLY = "header_only";
     const std::string STATIC_LIBRARY = "static_library";
     const std::string SHARED_LIBRARY = "shared_library";
+    constexpr bool validate(std::string type) {
+      return type == EXECUTABLE || type == HEADER_ONLY || type == STATIC_LIBRARY || type == SHARED_LIBRARY;
+    }
   };
   typedef struct Project_s {
     std::string project_name;
@@ -229,6 +239,8 @@ namespace Command {
    */
 
   std::vector<Package> searchPackage(std::string query);
+
+  Package getExactPackage(std::string query);
 
   std::string downloadIndex();
   /*
