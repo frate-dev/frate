@@ -1,6 +1,4 @@
 #include "Command.hpp"
-#include <curl/curl.h>
-#include <curl/easy.h>
 #include <nlohmann/json.hpp>
 #include "../Utils/General.hpp"
 #include "../Utils/CLI.hpp"
@@ -118,7 +116,7 @@ namespace Command {
 
 
     std::cout << "Results: " << results.size() << std::endl;
-    Utils::CLI::List *list = (new Utils::CLI::List())->
+    List *list = (new Utils::CLI::List())->
       Numbered()->
       ReverseIndexed();
     for(Package result: results){

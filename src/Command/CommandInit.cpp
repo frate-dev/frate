@@ -105,8 +105,12 @@ bool Interface::init() {
   if(args->operator[]("name").count() > 0){
     new_project_name = args->operator[]("name").as<std::string>();
   }
-
   pro->project_name = new_project_name;
+
+  if(args->operator[]("type").count() > 0){
+    pro->project_type = args->operator[]("type").as<std::string>();
+    std::cout << "type: " << pro->project_type << ENDL;
+  }
   //TODO: Stop using this shit
   file_exists(file_name);
   if(pro->project_path.empty()){

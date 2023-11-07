@@ -41,7 +41,8 @@ namespace Command {
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
       ("name", "Name of the project", cxxopts::value<std::string>()->default_value("false"))
-      ("language", "Language of the project", cxxopts::value<std::string>()->default_value("cpp"));
+      ("t,type", "Type of the project", cxxopts::value<std::string>()->default_value(ProjectType::EXECUTABLE))
+      ("l,language", "Language of the project", cxxopts::value<std::string>()->default_value("cpp"));
     return inter->parse();
   }
   bool OptionsInit::Add(Interface* inter) {

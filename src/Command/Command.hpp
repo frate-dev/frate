@@ -68,9 +68,10 @@ namespace Command {
     std::string target_link;
     std::string description;
     int score;
+    //TODO: implement this
     json toJson();
     void fromJson(json j);
-  } Package;
+  } Package;//Deez nuts
 
   typedef struct Dependency_s {
     std::string name;
@@ -89,11 +90,17 @@ namespace Command {
     int port;
   } BuildServer;
 
+  namespace ProjectType {
+    const std::string EXECUTABLE = "executable";
+    const std::string HEADER_ONLY = "header_only";
+    const std::string STATIC_LIBRARY = "static_library";
+    const std::string SHARED_LIBRARY = "shared_library";
+  };
   typedef struct Project_s {
     std::string project_name;
-    std::string project_type;
     std::string project_description;
-    BuildServer  build_server;
+    std::string project_type = ProjectType::EXECUTABLE;
+    BuildServer build_server;
     std::filesystem::path project_path;
     std::string git{"null"};
     std::string lang{"cpp"};

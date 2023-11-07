@@ -14,6 +14,7 @@ namespace Command {
       project_name = j["project_name"];
       cmake_version = j["cmake_version"];
       project_version = j["project_version"];
+      project_type = j["project_type"];
       lang = j["lang"];
       lang_version = j["lang_version"];
       compiler = j["compiler"];
@@ -46,6 +47,7 @@ namespace Command {
       }
       json j;
       j["project_name"] = project_name;
+      j["project_type"] = project_type;
       j["cmake_version"] = cmake_version;
       j["project_version"] = project_version;
       j["lang"] = lang;
