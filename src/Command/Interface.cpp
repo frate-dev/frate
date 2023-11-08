@@ -40,15 +40,16 @@ namespace Command {
     #ifdef DEBUG
         std::cout << "DEBUG MODE ENABLED\n";
     #endif
+    #ifdef DEBUG
+        pro->project_path = std::filesystem::current_path() / "build";
+    #else
+        pro->project_path = std::filesystem::current_path();
+    #endif
     if(command != "init"){
-      this->LoadPackageJson();
+      if(!this->LoadPackageJson()){
+        exit(0);
+      }
     }
-
-#ifdef DEBUG
-      pro->project_path = std::filesystem::current_path() / "build";
-#else
-      pro->project_path = std::filesystem::current_path();
-#endif
 
 
 

@@ -29,12 +29,17 @@ bool createHelloWorldCpp(std::shared_ptr<Project> pro) {
   std::ofstream file;
   std::string file_name = pro->project_path / "src/main.cpp";
   std::cout << file_name << std::endl;
-  file.open(pro->project_path / file_name);
-  file << "#include <iostream>\n"
-          "int main(){\n"
-          "\tstd::cout << \"Hello World\" << std::endl;\n"
-          "\treturn 0;\n"
-          "}\n";
+  try{
+    file.open(pro->project_path / file_name);
+    file << "#include <iostream>\n"
+      "int main(){\n"
+      "\tstd::cout << \"Hello World\" << std::endl;\n"
+      "\treturn 0;\n"
+      "}\n";
+  }catch(std::exception &e){
+    std::cout << e.what() << std::endl;
+  }
+  file.close();
   return false;
 }
 bool createHelloWorldC(std::shared_ptr<Project> pro) {
@@ -45,12 +50,17 @@ bool createHelloWorldC(std::shared_ptr<Project> pro) {
 #endif
   std::ofstream file;
   std::string file_name = "src/main.c";
-  file.open(pro->project_path / file_name);
-  file << "#include <stdio.h>\n"
-          "int main(){\n"
-          "\tprintf(\"Hello World\");\n"
-          "\treturn 0;\n"
-          "}\n";
+  try{
+    file.open(pro->project_path / file_name);
+    file << "#include <stdio.h>\n"
+      "int main(){\n"
+      "\tprintf(\"Hello World\");\n"
+      "\treturn 0;\n"
+      "}\n";
+  }catch(std::exception &e){
+    std::cout << e.what() << std::endl;
+  }
+  file.close();
   return false;
 }
 
@@ -98,7 +108,7 @@ bool Interface::init() {
   std::string file_name = "config.json";
   std::string new_project_name = "";
   #ifdef DEBUG
-    new_project_name = "DEBUG";
+    new_project_name = "debug-cmaker";
   #else
     new_project_name = Utils::getFolderName();
   #endif
@@ -129,9 +139,11 @@ bool Interface::init() {
   if (args->operator[]("skip-init").as<bool>()) {
     std::string language = args->operator[]("language").as<std::string>();
     if (language == "cpp" || language == "c++"){
+      createHelloWorldCpp(pro);
       defaultJson(pro);
     }
     else if (language == "c") { 
+      createHelloWorldC(pro);
       defaultJson(pro);
       //TODO: c support is there no need to exitt failing
       std::cout << "C is not supported yet" << ENDL;

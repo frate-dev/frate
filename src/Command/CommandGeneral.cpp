@@ -8,8 +8,7 @@ namespace Command {
     using nlohmann::json;
     try {
       std::string file_name = "config.json";
-      std::fstream file;
-      file.open((pro->project_path / file_name).string());
+      std::fstream file((pro->project_path / file_name).string());
       json data = json::parse(file);
       pro->fromJson(data);
       //Simplfied this fucking code

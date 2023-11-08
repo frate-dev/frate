@@ -4,13 +4,14 @@
 
 namespace Command {
   bool Interface::run(){
+    std::cout << "Running project: " << pro->project_name << std::endl;
     #ifdef DEBUG
       int success = system("mkdir -p build/build/");
       if (success != 0) {
         std::cout << "Error creating build directory" << std::endl;
         return false;
       }
-      success = system("cd build && cmake  . && make  && cd ..");
+      success = system("cd build ;cmake . ;make");
       if (success != 0) {
         std::cout << "Error building project" << std::endl;
         return false;
@@ -32,11 +33,7 @@ namespace Command {
         return false;
       }
     #endif
-    std::string file_name = "./build/";
-    #ifdef DEBUG
-      file_name = "./build/build/";
-    #endif
-    std::string command = file_name + pro->project_name;
+    std::string command = std::string(pro->project_path) + "/build/" + pro->project_name;
     success = system(command.c_str());
     if (success != 0) {
       std::cout << "Error running project!" << std::endl;
