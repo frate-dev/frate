@@ -27,7 +27,7 @@ include(FetchContent)
 ##for dep in dependencies
 FetchContent_Declare(
   {{  dep.name }}
-  GIT_REPOSITORY {{ dep.git }}
+  GIT_REPOSITORY {{ dep.url }}
   GIT_TAG {{ dep.version }}
 )
 FetchContent_MakeAvailable({{ dep.name }})
@@ -57,6 +57,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
 elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
   message("Debug mode")
   set(RELEASE 0)
+  set(DEBUG 1)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
   message("Test mode")
   set(RELEASE 0)
@@ -71,8 +72,10 @@ set(BUILD_DIR {{ build_dir }})
 set_target_properties({{project_name}} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {{build_dir}})
 if (RELEASE EQUAL 1)
   message("Release mode")
-elseif (RELEASE EQUAL 0)
+elseif (DEBUG EQUAL 0)
   message("Debug mode")
+else if(TEST_MODE EQUAL 1)
+  message("Test mode")
 endif()
 
 ##for dep in dependencies
@@ -96,7 +99,7 @@ install(TARGETS {{project_name}} DESTINATION bin)
     std::cout << "Error while opening file: " << file_name << std::endl;
     return false;
   }
-  std::cout << CMakeListsExecutable << std::endl;
+  //std::cout << CMakeListsExecutable << std::endl;
   file << CMakeListsExecutable;
   return true;
   }

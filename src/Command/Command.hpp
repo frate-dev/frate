@@ -106,6 +106,11 @@ namespace Command {
       return type == EXECUTABLE || type == HEADER_ONLY || type == STATIC_LIBRARY || type == SHARED_LIBRARY;
     }
   };
+  typedef struct Mode{
+    std::string name;
+    std::string flags;
+    std::vector<Dependency> dependencies;
+  } Mode;
   typedef struct Project_s {
     std::string project_name;
     std::string project_description;
@@ -117,6 +122,7 @@ namespace Command {
     std::string cmake_version{"3.10"};
     std::string lang_version{"20"};
     std::string compiler{"g++"};
+    std::vector<Mode> modes;
     std::vector<std::string> authors;
     std::string src_dir{"src"};
     std::string include_dir{"include"};
@@ -148,6 +154,8 @@ namespace Command {
       bool addAuthors();
       bool addDependency();
       bool ftp();
+      bool modes();
+//      bool mode();
       bool watch();
       bool clean();
       //TODO: setup register comamnd
@@ -173,6 +181,8 @@ namespace Command {
       bool Server(Interface*);
       bool Update(Interface*);
       bool Main(Interface*);
+      bool Modes(Interface*);
+      bool Mode(Interface*);
       bool Watch(Interface*);
   };
 
