@@ -57,6 +57,8 @@ namespace Command{
         Package p;
         p.name = package["name"];
         p.versions = package["versions"];
+        p.git = package["git"];
+        p.description = package["description"];
         return p;
       }
     }

@@ -40,7 +40,7 @@ namespace Command {
       for (auto &dep : dependencies) {
         json dep_json;
         dep_json["name"] = dep.name;
-        dep_json["url"] = dep.git;
+        dep_json["git"] = dep.git;
         dep_json["version"] = dep.version;
         dep_json["target_link"] = dep.target_link;
         deps.push_back(dep_json);
