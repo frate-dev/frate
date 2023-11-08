@@ -11,7 +11,7 @@ namespace Generators::CMakeList {
 cmake_minimum_required( VERSION {{ cmake_version }} )
 project(
   {{ project_name }}
-  VERSION {{ cmake_version }}
+  VERSION {{ project_version }}
   {%if lang == "cpp"%}
   LANGUAGES CXX
 )
