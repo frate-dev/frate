@@ -27,7 +27,7 @@ namespace Command {
       for (auto &dep : j["dependencies"]) {
         Dependency d;
         d.name = dep["name"];
-        d.git = dep["url"];
+        d.git = dep["git"];
         d.version = dep["version"];
         d.target_link = dep["target_link"];
         dependencies.push_back(d);

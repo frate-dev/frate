@@ -27,7 +27,7 @@ include(FetchContent)
 ##for dep in dependencies
 FetchContent_Declare(
   {{  dep.name }}
-  GIT_REPOSITORY {{ dep.url }}
+  GIT_REPOSITORY {{ dep.git }}
   GIT_TAG {{ dep.version }}
 )
 FetchContent_MakeAvailable({{ dep.name }})
