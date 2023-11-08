@@ -22,7 +22,6 @@ project(
   {%endif%}
 
 set(CMAKE_CXX_STANDARD {{ lang_version }})
-set(CMAKE_CXX_COMPILER {{  compiler }})
 include(FetchContent)
 ##for dep in dependencies
 FetchContent_Declare(
