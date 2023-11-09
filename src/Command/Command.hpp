@@ -116,6 +116,9 @@ namespace Command {
     std::string project_description;
     std::string project_type = ProjectType::EXECUTABLE;
     BuildServer build_server;
+    /*
+     * This is the project path, it will be set to the current working directory and in debug mode if willl set the path to ./build/
+     */
     std::filesystem::path project_path;
     std::string git{"null"};
     std::string lang{"cpp"};
