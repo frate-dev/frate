@@ -215,5 +215,4 @@ namespace Command {
 
     return true;
   }
-
 } // namespace Command

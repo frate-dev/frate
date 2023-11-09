@@ -73,7 +73,7 @@ namespace Command {
 #ifdef DEBUG
       for(auto filetoken:std::filesystem::recursive_directory_iterator(path)){
 #else
-      for(auto filetoken:std::fileUtils::hSystem::recursive_directory_iterator(path)){
+      for(auto filetoken:std::filesystem::recursive_directory_iterator(path)){
 #endif
           if(std::filesystem::is_directory(filetoken.path())){
             dirs.push_back(filetoken.path());
@@ -115,6 +115,7 @@ namespace Command {
 
     watcher([this]() {
   #ifdef DEBUG
+        //TODO: please use project path
         std::string command = "cmake ./build/ && ./build/make && ./build/" + pro->build_dir + "/" + pro->project_name;
         if (args->count("args") != 0) {
           std::vector<std::string> args_vec =  args->operator[]("args").as<std::vector<std::string>>();

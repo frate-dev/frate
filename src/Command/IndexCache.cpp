@@ -20,8 +20,14 @@ namespace Command{
     }else{
       std::ofstream indexFile; 
       std::cout << "Creating a new index file" << ENDL;
-      Utils::hSystem("mkdir -p ~/.local/cmaker");
-      Utils::hSystem("touch ~/.local/cmaker/index.json");
+      if(Utils::hSystem("mkdir -p ~/.local/cmaker") != 0){
+        std::cout << "Failed to create index file" << ENDL;
+        exit(-1);
+      }
+      if(Utils::hSystem("touch ~/.local/cmaker/index.json") != 0){
+        std::cout << "Failed to create index file" << ENDL;
+        exit(-1);
+      }
       index = Utils::fetchJson(indexUrl);
       std::cout << "god dee index" << ENDL;
       indexFile = std::ofstream(indexFileName);
