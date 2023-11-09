@@ -26,11 +26,10 @@ namespace Command {
   }
 
   bool createHelloWorldCpp(std::shared_ptr<Project> pro) {
-#ifdef DEBUG
-    Utils::hSystem("cd build;mkdir src");
-#else
-    Utils::hSystem("mkdir src");
-#endif
+    if(Utils::hSystem("cd " + pro->project_path.string() + ";mkdir src") != 0){
+      std::cout << "Error creating src directory" << std::endl;
+      return false;
+    }
     std::ofstream file;
     std::string file_name = pro->project_path / "src/main.cpp";
     std::cout << file_name << std::endl;
@@ -49,11 +48,10 @@ namespace Command {
     return true;
   }
   bool createHelloWorldC(std::shared_ptr<Project> pro) {
-#ifdef DEBUG
-    Utils::hSystem("cd build;mkdir src");
-#else
-    Utils::hSystem("mkdir src");
-#endif
+    if(Utils::hSystem("cd " + pro->project_path.string() + ";mkdir src") != 0 ){
+      std::cout << "Error creating src directory" << std::endl;
+      return false;
+    }
     std::ofstream file;
     std::string file_name = "src/main.c";
     try{
