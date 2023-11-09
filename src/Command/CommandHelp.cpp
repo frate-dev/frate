@@ -10,7 +10,7 @@ namespace Command {
     if ((static_cast<std::string>(std::getenv("TERM")) == "xterm-kitty")){
       struct winsize w = {500, 500, 0, 0};
       ioctl(0, TIOCGWINSZ, &w);
-      int success = system("kitty +kitten icat --align left ~/Downloads/logo.png");
+      int success = Utils::hSystem("kitty +kitten icat --align left ~/Downloads/logo.png");
       if (success != 0) {
         std::cout << "Error printing logo" << std::endl;
         return false;
