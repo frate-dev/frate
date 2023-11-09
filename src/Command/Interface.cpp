@@ -47,7 +47,6 @@ namespace Command {
     #endif
     if(command != "init"){
       if(!this->LoadPackageJson()){
-        exit(0);
       }
     }
 
