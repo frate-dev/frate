@@ -4,6 +4,7 @@
 #ifdef __linux__
 #include <sys/epoll.h>
 #include <sys/inotify.h>
+#include "../Utils/General.hpp"
 
 namespace Command {
 
@@ -72,7 +73,7 @@ namespace Command {
 #ifdef DEBUG
       for(auto filetoken:std::filesystem::recursive_directory_iterator(path)){
 #else
-      for(auto filetoken:std::filesystem::recursive_directory_iterator(path)){
+      for(auto filetoken:std::fileUtils::hSystem::recursive_directory_iterator(path)){
 #endif
           if(std::filesystem::is_directory(filetoken.path())){
             dirs.push_back(filetoken.path());
@@ -215,7 +216,7 @@ namespace Command {
         }
   #endif
         std::cout << "Running command: " << command << std::endl;
-        int success = system(command.c_str());
+        int success = Utils::hSystem(command.c_str());
         if (success != 0) {
           std::cout << "Error running project" << std::endl;
         }

@@ -1,8 +1,9 @@
-#include <filesystem>
+#include "General.hpp"
 #include <iostream>
 #include <vector>
 #include <nlohmann/json.hpp>
 #include <curl/curl.h>
+
 namespace Utils{
 
   struct CurlResponse {
@@ -121,6 +122,14 @@ namespace Utils{
       std::cout << "At: " << e.byte << std::endl;
       std::cout << "Text: " << responseStr << std::endl;
       exit(-1);
+    }
+  }
+  int hSystem(std::string cmd){
+    int return_code = std::system(cmd.c_str());
+    if(WIFEXITED(return_code)){
+      return WEXITSTATUS(return_code);
+    }else{
+      return -1;
     }
   }
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Command.hpp"
 #include "../Utils/CLI.hpp"
+#include "../Utils/General.hpp"
 
 namespace Command{
   using Utils::CLI::Prompt;
@@ -13,15 +14,16 @@ namespace Command{
       std::cout << "Aborting..." << std::endl;
       return false;
     }
-
-
-
-
-    
   #ifdef DEBUG
-    system("rm -rf ./build/*");
+    if(Utils::hSystem("rm -rf ./build/*") != 0){
+      std::cout << "Error deleting build directory" << std::endl;
+      return false;
+    }
    #else
-      system("rm -rf ./*");
+      if(Utils::hSystem("rm -rf ./*") != 0){
+        std::cout << "Error deleting project directory" << std::endl;
+        return false;
+      }
     #endif // DEBUG
     return true;
   }

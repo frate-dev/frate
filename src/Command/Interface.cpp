@@ -45,6 +45,8 @@ namespace Command {
     #else
         pro->project_path = std::filesystem::current_path();
     #endif
+
+    std::cout << "Project Path: " << pro->project_path << ENDL;
     if(command != "init"){
       if(!this->LoadPackageJson()){
       }
