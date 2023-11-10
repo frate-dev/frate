@@ -1,7 +1,9 @@
 #include "Command.hpp"
 
 namespace Command {
-//  bool Interface::mode(){
-//    return true;
-//  }
+  bool Interface::mode(){
+    std::cout << "Running mode: " << std::endl;
+
+    return true;
+  }
 };

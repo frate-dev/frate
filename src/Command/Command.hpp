@@ -162,7 +162,7 @@ namespace Command {
       bool addDependency();
       bool ftp();
       bool modes();
-//      bool mode();
+      bool mode();
       bool watch();
       bool clean();
       //TODO: setup register comamnd
