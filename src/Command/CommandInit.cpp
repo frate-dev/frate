@@ -209,7 +209,6 @@ namespace Command {
       //TODO: shared library
     }
 
-    Generators::GitIgnore::create(pro);
     gitInit(this);
 
 
