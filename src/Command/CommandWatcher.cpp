@@ -153,7 +153,7 @@ namespace Command {
         }
 
   #else
-        std::string command = "cmake . && make && ./" + pro->build_dir + "/" + pro->project_name;
+        std::string command = "cmake . && make  && ./" + pro->build_dir + "/" + pro->project_name;
 
         bool  build_server=args->operator[]("remote-build").as<bool>();
         if (build_server == true) {
@@ -173,7 +173,7 @@ namespace Command {
           command = "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " + std::to_string(pro->build_server.port)  + "' --progress . " 
             + pro->build_server.username + "@" + pro->build_server.ip 
             +  ":/tmp/cmaker && ssh -p " + std::to_string(pro->build_server.port)  + " " +  pro->build_server.username + "@" + pro->build_server.ip  
-            + "  'cd /tmp/cmaker && cmake . && make && ./build/" + pro->project_name + "'"; 
+            + "  'cd /tmp/cmaker && cmake . && make -j ${nproc} && ./build/" + pro->project_name + "'"; 
 
         }
 //        else{

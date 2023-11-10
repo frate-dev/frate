@@ -45,6 +45,13 @@ namespace Command {
         dep_json["target_link"] = dep.target_link;
         deps.push_back(dep_json);
       }
+      std::vector<json> modes_json;
+      for (auto &mode : modes) {
+        json mode_json;
+        mode_json["name"] = mode.name;
+        mode_json["flags"] = mode.flags;
+        modes_json.push_back(mode_json);
+      }
       json j;
       j["project_name"] = project_name;
       j["project_type"] = project_type;
@@ -56,6 +63,7 @@ namespace Command {
       j["src_dir"] = src_dir;
       j["build_dir"] = build_dir;
       j["include_dir"] = include_dir;
+      j["modes"] = modes_json;
       j["dependencies"] = deps;
       j["flags"] = flags;
       j["authors"] = authors;

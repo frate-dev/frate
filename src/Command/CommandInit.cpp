@@ -36,6 +36,7 @@ namespace Command {
     try{
       file.open(pro->project_path / file_name);
       file << "#include <iostream>\n"
+        "\n"
         "int main(){\n"
         "\tstd::cout << \"Hello World\" << std::endl;\n"
         "\treturn 0;\n"
@@ -57,6 +58,7 @@ namespace Command {
     try{
       file.open(pro->project_path / file_name);
       file << "#include <stdio.h>\n"
+        "\n"
         "int main(){\n"
         "\tprintf(\"Hello World\");\n"
         "\treturn 0;\n"

@@ -17,6 +17,7 @@ namespace Command {
      * Creating build directory and building project
      */
     int success = Utils::hSystem(mkdir_build_dir);
+
     if (success != 0) {
       std::cout << "Error creating build directory" << std::endl;
       return false;

@@ -99,6 +99,12 @@ namespace Command {
         std::cout << "Error: Could not remove project" << ENDL;
       }
     }
+    else if (command == "modes"){
+      OptionsInit::Modes(this);
+      if(!this->modes()){
+        std::cout << "Error: Could not manage modes" << ENDL;
+      } 
+    }
     else if (command == "watch"){
       OptionsInit::Watch(this);
       if(!this->watch()){

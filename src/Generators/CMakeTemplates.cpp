@@ -49,38 +49,22 @@ if(NOT DEFINED RELEASE)
 endif()
 
 add_executable({{project_name}} ${SOURCES})
+##for mode in modes
+if (CMAKE_BUILD_TYPE STREQUAL "{{ mode.name }}")
+  add_definitions(-D{{ mode.name }})
 
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-  message("Release mode")
-  set(RELEASE 1)
-elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  message("Debug mode")
-  set(RELEASE 0)
-  set(DEBUG 1)
-elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
-  message("Test mode")
-  set(RELEASE 0)
-  set(TEST_MODE 1)
-else()
-  message("Default mode")
-  set(RELEASE 0)
+  set_target_properties({{project_name}} PROPERTIES COMPILE_FLAGS "{{ mode.flags }}")
 endif()
-
-
+##endfor
 set(BUILD_DIR {{ build_dir }})
 set_target_properties({{project_name}} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {{build_dir}})
-if (RELEASE EQUAL 1)
-  message("Release mode")
-elseif(DEBUG EQUAL 0)
-  message("Debug mode")
-elseif(TEST_MODE EQUAL 1)
-  message("Test mode")
-endif()
+
 
 ##for dep in dependencies
 target_link_libraries({{project_name}} {{dep.target_link}})
 ##endfor
 install(TARGETS {{project_name}} DESTINATION bin)
+
 )EOF", pro->toJson());
   std::ofstream file;
   std::string file_name = "CMakeLists.txt";
@@ -103,3 +87,7 @@ install(TARGETS {{project_name}} DESTINATION bin)
   return true;
   }
 }
+
+
+
+

@@ -1,9 +1,11 @@
 #include "Command.hpp"
+#include "../Generators/Generators.hpp"
 
 namespace  Command{
   bool getModeName(Mode &mode){
     Prompt<std::string> *name = new Prompt<std::string>("Name: ");
-    mode.name = name->Run();
+    name->Run();
+    mode.name = name->Get();
     return true;
   }
 
@@ -12,6 +14,15 @@ namespace  Command{
     Mode mode;
     getModeName(mode);
     interface->pro->modes.push_back(mode);
+    
+    std::cout << "Writing config.json" << std::endl;
+    if(!Generators::ConfigJson::writeConfig(interface->pro)){
+      std::cout << "Failed to write config.json" << std::endl;
+    }
+
+    if(!Generators::CMakeList::createCMakeListsExecutable(interface->pro)){
+      std::cout << "Failed to write CMakeLists.txt" << std::endl;
+    }
     return true;
   }
   bool modesRemove(Interface* interface){

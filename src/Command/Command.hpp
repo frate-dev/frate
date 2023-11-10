@@ -109,7 +109,7 @@ namespace Command {
   typedef struct Mode{
     std::string name;
     std::string flags;
-    std::vector<Dependency> dependencies;
+    std::vector<Dependency> dependencies{};
   } Mode;
   typedef struct Project_s {
     std::string project_name;
@@ -125,7 +125,11 @@ namespace Command {
     std::string cmake_version{"3.10"};
     std::string lang_version{"20"};
     std::string compiler{"g++"};
-    std::vector<Mode> modes;
+    std::vector<Mode> modes{
+      Mode{.name = "Release", .flags= "-O2 "}, 
+      Mode{.name= "Debug", .flags= "-g"},
+      Mode{.name= "Test", .flags= "-g"}
+    };
     std::vector<std::string> authors;
     std::string src_dir{"src"};
     std::string include_dir{"include"};
