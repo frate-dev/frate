@@ -48,8 +48,7 @@ namespace Command {
     return true;
   }
 
-
-  bool Interface::addAuthors(){
+bool Interface::addAuthors(){
     if (pro->args->count("args") == 0) {
       for (auto author : pro->args->operator[]("args").as<std::vector<std::string>>()) {
         pro->authors.push_back(author);
@@ -61,11 +60,11 @@ namespace Command {
   }
 
 
-  bool checkForOverlappingDependencies(std::shared_ptr<Project> pro, std::string name){
-    if(pro->dependencies.size() == 0){
+  bool checkForOverlappingDependencies(std::vector<Dependency> deps, std::string &name){
+    if(deps.size() == 0){
       return false;
     }
-    for(Dependency dep: pro->dependencies){
+    for(Dependency dep: deps){
       if(dep.name == name){
         return true;
       }
@@ -74,15 +73,76 @@ namespace Command {
 
     return false;
   }
+  Package promptPackageSearchResults(std::string &query){
+
+    std::vector<Package> searchResults = searchPackage(query);
+
+    if(searchResults.size() == 1){
+      std::cout << "Installing " << searchResults[0].name << std::endl;
+      return searchResults[0];
+    }
+
+    if(searchResults.size() == 0){
+      std::cout << "No results found" << std::endl;
+      exit(0);
+    }
+
+    List *packageList = (new Utils::CLI::List())->
+      Numbered()->
+      ReverseIndexed();
+    for(Package result: searchResults){
+      packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
+    }
+    std::cout << packageList->Build() << std::endl;
+    Prompt<int> *prompt = new Prompt<int>("Select a package to install: ");
+    for(size_t i = 0; i < searchResults.size(); i++){
+      prompt->AddOption(i);
+    }
+    prompt->Run();
+    int index = prompt->Get();
+    
+    return searchResults[index];
+  }
+  
+  std::string promptForVersion(Package &chosen_package){
+
+    List* list = (new List())->Numbered()->ReverseIndexed();
+    for(size_t i = 0; i < chosen_package.versions.size(); i++){
+      list->pushBack(ListItem(chosen_package.versions[i]));
+    }
+
+    std::cout << list->Build() << std::endl;
+
+    Prompt<int> *prompt = new Prompt<int>("Select a version to install: ");
+
+    for(size_t i = 0; i < chosen_package.versions.size(); i++){
+      prompt->AddOption(i);
+    }
+
+    prompt->ExitOnFailure()->Run();
 
 
-  bool searchVersions(){
-    std::cout << "Getting versions" << std::endl;
-    return true;
+    return chosen_package.versions[prompt->Get()];
+
+  }
+
+  Package getDependency(std::string query, std::vector<Dependency> deps){
+    Package chosen_package;
+    chosen_package = promptPackageSearchResults(query);
+    std::string version = "";
+    std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
+    version = promptForVersion(chosen_package);
+    chosen_package.selected_version = version;
+    if(checkForOverlappingDependencies(deps, chosen_package.name)){
+      std::cout << "Package already installed" << std::endl;
+      exit(0);
+    }
+    return chosen_package;
   }
 
 
   bool Interface::addDependency() {
+    bool latest = false;
     if (args->count("args") == 0) {
       std::cout << 
         "Usage add dep:" << ENDL
@@ -91,88 +151,48 @@ namespace Command {
       return false;
     }
 
+    if(args->operator[]("latest").as<bool>()){
+      latest = true;
+    }
+
     std::string query = args->operator[]("args").as<std::vector<std::string>>()[0];
-    std::vector<Package> searchResults = searchPackage(query);
-    if(searchResults.size() == 0){
-      std::cout << "No results found" << std::endl;
-      return false;
-    }
+    
+    
+    Package chosen_package = promptPackageSearchResults(query);
 
-    std::cout << "Select a package to install: ";
-    std::string input;
-    std::cin >> input;
-    int index;
-    try{
-      index = std::stoi(input);
-    }
-catch(...){
-      std::cout << "Invalid input" << std::endl;
-      return false;
-    }
+    std::cout << "Installing " << chosen_package.name << std::endl;
 
-
-    std::cout << "Installing " << searchResults[index].name << std::endl;
-
-    //json versionJson = Utils::fetchJson("https://raw.githubusercontent.com/cmaker-dev/index/main/index/" + searchResults[index].name + "/info.json"); 
-    json versionJson = fetchIndex(); 
   
-    std::vector<std::string> versions = searchResults[index].versions;
     std::string version = ""; 
-    for(size_t i = searchResults[index].versions.size(); i > -1; i--){
-      std::cout << "[" << termcolor::green << i << termcolor::white << "]" << searchResults[index].versions[i] << std::endl;
-      if (searchResults[index].versions[i] == "master" || searchResults[index].versions[i] == "main"  ||  searchResults[index].versions[i] == "stable"){
-        version = searchResults[index].versions[i];
+    std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
+    std::vector<std::string> versions = chosen_package.versions;
+
+    if(!latest){
+      version = promptForVersion(chosen_package);
+    }else{
+      if(chosen_package.versions.size() == 0){
+        std::cout << "No versions found" << std::endl;
+        return false;
       }
-
+      version = chosen_package.versions[0];
     }
-
-
-    json packageInfo = json{{"name", searchResults[index].name}
-, {"url", searchResults[index].url}
-, {"versions", searchResults[index].versions}
-, {"target_link", searchResults[index].target_link}
-}
-;
-    List* list = (new List())->Numbered()->ReverseIndexed();
-    for(size_t i = 0; i < searchResults[index].versions.size(); i++){
-      list->pushBack(ListItem(searchResults[index].versions[i]));
-    }
-
-    std::cout << list->Build() << std::endl;
-    std::cout << "Select a version to install [" << termcolor::green <<  version << termcolor::white << "] : ";
-    std::string versionInput;
-    std::cin >> versionInput;
-
-    int versionIndex;
-    try{
-      versionIndex = std::stoi(versionInput);
-    }
-catch(...){
-      std::cout << "Invalid input" << std::endl;
-      return false;
-    }
-
-    version = searchResults[index].versions[versionIndex];
-  
-    if(checkForOverlappingDependencies(pro, searchResults[index].name)){
+    if(checkForOverlappingDependencies(pro->dependencies, chosen_package.name)){
       std::cout << "Package already installed" << std::endl;
       return false;
     }
 
 
     std::cout << "Adding dependency to config.json" << std::endl;
+    //Reflecing the package to dependency
+    //TODO: Stop this shit
     pro->dependencies.push_back({
+      .name = chosen_package.name,
+      .git = chosen_package.git,
+      .version = version,
+      .target_link = chosen_package.target_link
+    });
 
-      .name = searchResults[index].name,
-      .url = searchResults[index].url,
-      .version = searchResults[index].versions[versionIndex],
-      //TODO: Change target link to be the actual link
-      .target_link = searchResults[index].target_link == "" 
-        ? searchResults[index].name
-        : searchResults[index].target_link
 
-    }
-);
     std::cout << "Writing config.json" << std::endl;
     if(!Generators::ConfigJson::writeConfig(pro)){
       std::cout << "Failed to write config.json" << std::endl;

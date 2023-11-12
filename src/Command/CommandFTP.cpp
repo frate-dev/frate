@@ -1,16 +1,12 @@
 #include <iostream>
 #include "Command.hpp"
 #include "../Utils/CLI.hpp"
+#include "../Utils/General.hpp"
 
 namespace Command{
   using Utils::CLI::Prompt;
   using namespace Utils::CLI::Ansi;
   bool Interface::ftp() {
-    bool test = this->LoadPackageJson();
-    if(!test) {
-      std::cout << "Error: Could not load config.json" << std::endl;
-      return false;
-    }
 
     Prompt<bool> *prompt = new Prompt<bool>("Are you sure you would like to delete the entire project?");
     prompt->Color(RED)->Run();
@@ -18,15 +14,16 @@ namespace Command{
       std::cout << "Aborting..." << std::endl;
       return false;
     }
-
-
-
-
-    
   #ifdef DEBUG
-    system("rm -rf ./build/*");
+    if(Utils::hSystem("rm -rf ./build/*") != 0){
+      std::cout << "Error deleting build directory" << std::endl;
+      return false;
+    }
    #else
-      system("rm -rf ./*");
+      if(Utils::hSystem("rm -rf ./*") != 0){
+        std::cout << "Error deleting project directory" << std::endl;
+        return false;
+      }
     #endif // DEBUG
     return true;
   }

@@ -6,13 +6,13 @@
 #include "../Command/Command.hpp"
 
 
-
 namespace Generators::CMakeList{
   /*
    * Generate the dependencies for the project
    * @param ctx: the context of the command
    * @return a vector of dependencies that will be later combined to build the cmake file
    */
+  [[deprecated("Fuck this shit")]]
   void generateDeps(std::shared_ptr<Command::Project> pro, std::shared_ptr<CMakeContext> cmake_context){
     for (auto dep : pro->dependencies) {
       std::string FetchContent_Declare =
@@ -24,7 +24,7 @@ FetchContent_Declare(
   GIT_TAG "{}"
 )
     )V0G0N",
-        dep.name, dep.url, dep.version);
+        dep.name, dep.git, dep.version);
 
       std::string FetchContent_MakeAvailable =
         std::format("FetchContent_MakeAvailable({})", dep.name);

@@ -4,6 +4,7 @@
 #ifdef __linux__
 #include <sys/epoll.h>
 #include <sys/inotify.h>
+#include "../Utils/General.hpp"
 
 namespace Command {
 
@@ -114,6 +115,7 @@ namespace Command {
 
     watcher([this]() {
   #ifdef DEBUG
+        //TODO: please use project path
         std::string command = "cmake ./build/ && ./build/make && ./build/" + pro->build_dir + "/" + pro->project_name;
         if (args->count("args") != 0) {
           std::vector<std::string> args_vec =  args->operator[]("args").as<std::vector<std::string>>();
@@ -151,7 +153,7 @@ namespace Command {
         }
 
   #else
-        std::string command = "cmake . && make && ./" + pro->build_dir + "/" + pro->project_name;
+        std::string command = "cmake . && make  && ./" + pro->build_dir + "/" + pro->project_name;
 
         bool  build_server=args->operator[]("remote-build").as<bool>();
         if (build_server == true) {
@@ -171,7 +173,7 @@ namespace Command {
           command = "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " + std::to_string(pro->build_server.port)  + "' --progress . " 
             + pro->build_server.username + "@" + pro->build_server.ip 
             +  ":/tmp/cmaker && ssh -p " + std::to_string(pro->build_server.port)  + " " +  pro->build_server.username + "@" + pro->build_server.ip  
-            + "  'cd /tmp/cmaker && cmake . && make && ./build/" + pro->project_name + "'"; 
+            + "  'cd /tmp/cmaker && cmake . && make -j ${nproc} && ./build/" + pro->project_name + "'"; 
 
         }
 //        else{
@@ -215,7 +217,7 @@ namespace Command {
         }
   #endif
         std::cout << "Running command: " << command << std::endl;
-        int success = system(command.c_str());
+        int success = Utils::hSystem(command.c_str());
         if (success != 0) {
           std::cout << "Error running project" << std::endl;
         }

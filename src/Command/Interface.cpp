@@ -40,15 +40,17 @@ namespace Command {
     #ifdef DEBUG
         std::cout << "DEBUG MODE ENABLED\n";
     #endif
-    if(command != "init"){
-      this->LoadPackageJson();
-    }
+    #ifdef DEBUG
+        pro->project_path = std::filesystem::current_path() / "build";
+    #else
+        pro->project_path = std::filesystem::current_path();
+    #endif
 
-#ifdef DEBUG
-      pro->project_path = std::filesystem::current_path() / "build";
-#else
-      pro->project_path = std::filesystem::current_path();
-#endif
+    std::cout << "Project Path: " << pro->project_path << ENDL;
+    if(command != "init"){
+      if(!this->LoadPackageJson()){
+      }
+    }
 
 
 
@@ -97,6 +99,18 @@ namespace Command {
         std::cout << "Error: Could not remove project" << ENDL;
       }
     }
+    else if (command == "modes"){
+      OptionsInit::Modes(this);
+      if(!this->modes()){
+        std::cout << "Error: Could not manage modes" << ENDL;
+      } 
+    }
+    else if (command == "mode"){
+      OptionsInit::Mode(this);
+      if(!this->mode()){
+        std::cout << "Error: Could not manage mode" << ENDL;
+      }
+    }
     else if (command == "watch"){
       OptionsInit::Watch(this);
       if(!this->watch()){
@@ -110,6 +124,7 @@ namespace Command {
       }
     }
     else if (command == "clean"){
+      OptionsInit::Clean(this);
       if(!this->clean()){
         std::cout << "Error: Could not clean project" << ENDL;
       }

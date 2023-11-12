@@ -27,7 +27,7 @@ namespace Command {
       for (auto &dep : j["dependencies"]) {
         Dependency d;
         d.name = dep["name"];
-        d.url = dep["url"];
+        d.git = dep["git"];
         d.version = dep["version"];
         d.target_link = dep["target_link"];
         dependencies.push_back(d);
@@ -40,10 +40,28 @@ namespace Command {
       for (auto &dep : dependencies) {
         json dep_json;
         dep_json["name"] = dep.name;
-        dep_json["url"] = dep.url;
+        dep_json["git"] = dep.git;
         dep_json["version"] = dep.version;
         dep_json["target_link"] = dep.target_link;
         deps.push_back(dep_json);
+      }
+      std::vector<json> modes_json;
+      for (auto &mode : modes) {
+        json mode_json;
+        json mode_deps = json::array();
+        for (Dependency dep: mode.dependencies) {
+          json dep_json;
+          dep_json["name"] = dep.name;
+          dep_json["git"] = dep.git;
+          dep_json["version"] = dep.version;
+          dep_json["target_link"] = dep.target_link;
+          mode_deps.push_back(dep_json);
+        }
+
+        mode_json["name"] = mode.name;
+        mode_json["flags"] = mode.flags;
+        mode_json["dependencies"] = mode_deps;
+        modes_json.push_back(mode_json);
       }
       json j;
       j["project_name"] = project_name;
@@ -56,6 +74,7 @@ namespace Command {
       j["src_dir"] = src_dir;
       j["build_dir"] = build_dir;
       j["include_dir"] = include_dir;
+      j["modes"] = modes_json;
       j["dependencies"] = deps;
       j["flags"] = flags;
       j["authors"] = authors;

@@ -1,52 +1,50 @@
 #include <iostream>
 #include "Command.hpp"
 #include <string>
+#include "../Utils/General.hpp"
 
 namespace Command {
   bool Interface::run(){
-    #ifdef DEBUG
-      int success = system("mkdir -p build/build/");
-      if (success != 0) {
-        std::cout << "Error creating build directory" << std::endl;
-        return false;
-      }
-      success = system("cd build && cmake  . && make  && cd ..");
-      if (success != 0) {
-        std::cout << "Error building project" << std::endl;
-        return false;
-      }
-    #else
-      int success = system("mkdir -p build");
-      if (success != 0) {
-        std::cout << "Error creating build directory" << std::endl;
-        return false;
-      }
-      system("cmake  . ");
-      if (success != 0) {
-        std::cout << "Error building project cmake" << std::endl;
-        return false;
-      }
-      system("make");
-      if (success != 0) {
-        std::cout << "Error building project make" << std::endl;
-        return false;
-      }
-    #endif
-    std::string file_name = "./build/";
-    #ifdef DEBUG
-      file_name = "./build/build/";
-    #endif
-    std::string command = file_name + pro->project_name;
-    success = system(command.c_str());
+    std::cout << "Running project: " << pro->project_name << std::endl;
+
+    const std::string work_dir_cmd = "cd " + pro->project_path.string();
+    const std::string mkdir_build_dir = work_dir_cmd + ";mkdir -p build";
+    const std::string cmake_cmd = work_dir_cmd + ";cmake .";
+    const std::string make_cmd = work_dir_cmd + ";make";
+    const std::string run_cmd = work_dir_cmd + ";./build/" + pro->project_name;
+
+    /*
+     * Creating build directory and building project
+     */
+    int success = Utils::hSystem(mkdir_build_dir);
+
     if (success != 0) {
-      std::cout << "Error running project!" << std::endl;
+      std::cout << "Error creating build directory" << std::endl;
       return false;
     }
 
+    success = Utils::hSystem(cmake_cmd);
+    if (success != 0) {
+      std::cout << "Error running cmake" << std::endl;
+      return false;
+    }
+
+    success = Utils::hSystem(make_cmd);
+    if (success != 0) {
+      std::cout << "Error running make" << std::endl;
+      return false;
+    }
+
+    /*
+     * Running project
+     */
+
+    success = Utils::hSystem(run_cmd);
     if (success != 0) {
       std::cout << "Error running project" << std::endl;
       return false;
     }
+
     return true;
   }
 }

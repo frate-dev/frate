@@ -96,8 +96,10 @@ namespace Utils::CLI {
 
     }else if(has_options()){
       std::cout << color << prompt << Ansi::RESET << "\n";
-      for(size_t i = 0; i < options.size(); i++){
-        std::cout << "[ " << options[i] << " ]" << "\n";
+      if(print_valid_options){
+        for(size_t i = 0; i < options.size(); i++){
+          std::cout << "[ " << options[i] << " ]" << "\n";
+        }
       }
       std::cout << ">";
     }else{
@@ -121,6 +123,11 @@ namespace Utils::CLI {
   template <typename T>
   Prompt<T>* Prompt<T>::ExitOnFailure(){
     this->exit_on_failure = true;
+    return this;
+  }
+  template <typename T>
+  Prompt<T>* Prompt<T>::PrintValidOptions(){
+    print_valid_options = true;
     return this;
   }
   template <typename T>

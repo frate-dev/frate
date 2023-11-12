@@ -13,7 +13,6 @@ namespace Generators::ConfigJson{
       std::cout << termcolor::red << "Invalid language - retry" << termcolor::reset << std::endl;
       
     }
-    
     while (!validateProjectName("📖Project name->" + pro->project_name + " : ", pro, config_json)) {
       std::cout << termcolor::red << "Invalid project name - retry" << termcolor::reset << std::endl;
       
@@ -21,8 +20,11 @@ namespace Generators::ConfigJson{
     
     while (!validateCmakeVersion("🔨Cmake version->" + pro->cmake_version + " : ", pro, config_json)) {
       std::cout << termcolor::red << "Invalid cmake version - retry" << termcolor::reset << std::endl;
-      
     }
+//    while  (!defaultModes("🔧Default modes->" + pro->default_modes + " : ", pro, config_json)) {
+//      std::cout << termcolor::red << "Invalid default modes - retry" << termcolor::reset << std::endl;
+//      
+//    }
 
     while (!validateProjectVersion("🗃️Version->" + pro->project_version + " : ", pro, config_json)) {
       std::cout << termcolor::red << "Invalid project version - retry" << termcolor::reset << std::endl;
@@ -60,7 +62,7 @@ namespace Generators::ConfigJson{
     std::ofstream file;
     std::string file_name = "config.json";
     file.open(pro->project_path / file_name);
-    file << pro->toJson();
+    file << pro->toJson().dump(2);
     file << '\n';
     file.close();
     return true;

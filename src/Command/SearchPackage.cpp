@@ -3,6 +3,7 @@
 #include "../Utils/General.hpp"
 #include "../Utils/CLI.hpp"
 #include "termcolor/termcolor.hpp"
+#include <numeric>
 #include <termcolor/termcolor.hpp>
 
 
@@ -77,28 +78,17 @@ namespace Command {
     score += getStringScore(package.target_link, query);
     package.score = score;
   }
-  std::vector<Package> calculatePackageScores(std::string query){
+  std::vector<Package> calculatePackageScores(std::string &query){
     std::vector<Package> results;
     json rawIndex = fetchIndex();
     Utils::toLower(query);
+    
+
     for(json json: rawIndex){
-      Package package{
-          .name = json["name"],
-          .url = json["git"],
-          .versions = json["versions"],
-          .target_link = json.contains("target_link") 
-          ? json["target_link"]
-          : json["name"],
-          .description = json.contains("description")
-          ? json["description"]
-          : "",
-          .score = 0
-      };
+      Package package;
+      package.fromJson(json);
 
       getPackageScore(package, query);
-
-
-
       results.push_back(package);
     }
 
@@ -107,26 +97,27 @@ namespace Command {
         });
     return results;
   }
-
+  
   std::vector<Package> searchPackage(std::string query){
-    std::cout << "Searching for package" << std::endl;
 
+    
+    auto [found, package] = getExactPackage(query);
+    if(found){
+      return std::vector<Package>{package};
+    }
 
     std::vector<Package> results = calculatePackageScores(query);
 
+    int totalScore = std::accumulate(
+        results.begin(), results.end(), 0, [](int a, Package b){
+        return a + b.score;
+      });
+    int averageScore = totalScore / results.size();
 
-    std::cout << "Results: " << results.size() << std::endl;
-    List *list = (new Utils::CLI::List())->
-      Numbered()->
-      ReverseIndexed();
-    for(Package result: results){
-      if(result.score > 10){
-        list->pushBack(ListItem(result.name + " (" + result.url + ")", result.description));
-      }
-    }
-    std::cout << list->Build() << std::endl;
 
-    return results;
+
+    auto filterResults = results | std::views::filter([&averageScore](Package package){return package.score > 2 * averageScore;});
+    return std::vector<Package>(filterResults.begin(), filterResults.end());
   }
 
 }

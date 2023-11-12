@@ -1,11 +1,10 @@
 install_manifest.txt
-build/*
-build
-.cache
-.cache/*
+CPM_modules
+CPM_modules/*
 .cmake
 Makefile
-DartConfiguration.txt
+build/*
+DartConfiguration.tcl
 config.toml
 CMakeFiles
 CMakeCache.txt
@@ -14,6 +13,6 @@ libCommand.a
 .vscode/*
 compile_commands.json
 .cache/*
-_deps/*
+_deps/
 compile_commands.json
 generated-includes/
