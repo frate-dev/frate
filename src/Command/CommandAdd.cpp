@@ -48,8 +48,7 @@ namespace Command {
     return true;
   }
 
-
-  bool Interface::addAuthors(){
+bool Interface::addAuthors(){
     if (pro->args->count("args") == 0) {
       for (auto author : pro->args->operator[]("args").as<std::vector<std::string>>()) {
         pro->authors.push_back(author);
@@ -61,11 +60,11 @@ namespace Command {
   }
 
 
-  bool checkForOverlappingDependencies(std::shared_ptr<Project> pro, std::string &name){
-    if(pro->dependencies.size() == 0){
+  bool checkForOverlappingDependencies(std::vector<Dependency> deps, std::string &name){
+    if(deps.size() == 0){
       return false;
     }
-    for(Dependency dep: pro->dependencies){
+    for(Dependency dep: deps){
       if(dep.name == name){
         return true;
       }
@@ -121,6 +120,20 @@ namespace Command {
 
   }
 
+  Package getDependency(std::string query, std::vector<Dependency> deps){
+    Package chosen_package;
+    chosen_package = promptPackageSearchResults(query);
+    std::string version = "";
+    std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
+    version = promptForVersion(chosen_package);
+    chosen_package.selected_version = version;
+    if(checkForOverlappingDependencies(deps, chosen_package.name)){
+      std::cout << "Package already installed" << std::endl;
+      exit(0);
+    }
+    return chosen_package;
+  }
+
 
   bool Interface::addDependency() {
     bool exact = false;
@@ -153,22 +166,13 @@ namespace Command {
       }
     }
 
-
     std::cout << "Installing " << chosen_package.name << std::endl;
 
-    //json versionJson = Utils::fetchJson("https://raw.githubusercontent.com/cmaker-dev/index/main/index/" + searchResults[index].name + "/info.json"); 
   
     std::string version = ""; 
     std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
     std::vector<std::string> versions = chosen_package.versions;
 
-// WHY IS THIS STILL HERE?
-//     json packageInfo = json{{"name", searchResults[index].name}
-// , {"url", searchResults[index].git}
-// , {"versions", searchResults[index].versions}
-// , {"target_link", searchResults[index].target_link}
-// }
-// ;
     if(!latest){
       version = promptForVersion(chosen_package);
     }else{
@@ -178,7 +182,7 @@ namespace Command {
       }
       version = chosen_package.versions[0];
     }
-    if(checkForOverlappingDependencies(pro, chosen_package.name)){
+    if(checkForOverlappingDependencies(pro->dependencies, chosen_package.name)){
       std::cout << "Package already installed" << std::endl;
       return false;
     }

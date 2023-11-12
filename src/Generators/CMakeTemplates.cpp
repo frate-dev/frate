@@ -1,12 +1,25 @@
 #include <string>
 #include <nlohmann/json.hpp>
 #include "../Command/Command.hpp"
+#include "../Utils/General.hpp"
 #include <inja.hpp>
 
 namespace Generators::CMakeList {
   bool createCMakeListsExecutable(std::shared_ptr<Command::Project> pro){
   std::cout << "Creating CMakeLists.txt" << std::endl;
   std::cout << pro->toJson() << std::endl;
+
+  std::string CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
+  std::ofstream CPMFile;
+  try{
+    if(!std::filesystem::exists(pro->project_path / "cmake"))
+      std::filesystem::create_directory(pro->project_path / "cmake");
+    CPMFile.open(pro->project_path / "cmake/CPM.cmake");
+  }catch(...){
+    std::cout << "Error while opening file: CPM.cmake" << std::endl;
+    return false;
+  }
+  CPMFile << CPM;
   std::string CMakeListsExecutable = inja::render(R"EOF(
 cmake_minimum_required( VERSION {{ cmake_version }} )
 project(
@@ -22,14 +35,26 @@ project(
   {%endif%}
 
 set(CMAKE_CXX_STANDARD {{ lang_version }})
+include(cmake/CPM.cmake)
+
+CPMAddPackage(
+  NAME Ccache.cmake
+  GITHUB_REPOSITORY TheLartians/Ccache.cmake
+  VERSION 1.2
+)
 include(FetchContent)
 ##for dep in dependencies
-FetchContent_Declare(
-  {{  dep.name }}
+#FetchContent_Declare(
+#  {{  dep.name }}
+#  GIT_REPOSITORY {{ dep.git }}
+#  GIT_TAG {{ dep.version }}
+#)
+CPMAddPackage(
+  NAME {{ dep.name }}
   GIT_REPOSITORY {{ dep.git }}
   GIT_TAG {{ dep.version }}
 )
-FetchContent_MakeAvailable({{ dep.name }})
+#FetchContent_MakeAvailable({{ dep.name }})
 ##endfor
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}

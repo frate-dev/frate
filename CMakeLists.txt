@@ -9,36 +9,34 @@ project (
 set(CMAKE_CXX_STANDARD 20)
 
 set(BUILD_CURL_EXE OFF)
-include(FetchContent)
-
-FetchContent_Declare(
-  cxxopts 
-  GIT_REPOSITORY "https://github.com/jarro2783/cxxopts.git"
-  GIT_TAG "origin/master"
+include (cmake/CPM.cmake)
+CPMUsePackageLock(package-lock.cmake)
+CPMAddPackage(
+  NAME Ccache.cmake
+  GITHUB_REPOSITORY TheLartians/Ccache.cmake
+  VERSION 1.2
+)
+CPMAddPackage(
+  NAME termcolor
+  GITHUB_REPOSITORY ikalnytskyi/termcolor
+  GIT_TAG v2.1.0
 )
 
-FetchContent_Declare(
-  nlohmann_json
-  GIT_REPOSITORY "https://github.com/nlohmann/json.git"
-  GIT_TAG "origin/master"
+CPMAddPackage(
+  NAME cxxopts
+  GITHUB_REPOSITORY jarro2783/cxxopts
+  GIT_TAG origin/master
 )
-
-FetchContent_Declare(
-  curl
-  GIT_REPOSITORY "https://github.com/curl/curl.git"
-  GIT_TAG "curl-8_3_0"
+CPMAddPackage(
+  NAME nlohmann_json
+  GITHUB_REPOSITORY nlohmann/json
+  GIT_TAG origin/master
 )
-
-FetchContent_Declare(
-  termcolor
-  GIT_REPOSITORY "https://github.com/ikalnytskyi/termcolor.git"
-  GIT_TAG "v2.1.0"
+CPMAddPackage(
+  NAME curl
+  GITHUB_REPOSITORY curl/curl
+  GIT_TAG curl-8_3_0
 )
-
-FetchContent_MakeAvailable(nlohmann_json)
-FetchContent_MakeAvailable(cxxopts)
-FetchContent_MakeAvailable(curl)
-FetchContent_MakeAvailable(termcolor)
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
@@ -82,17 +80,15 @@ else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
   if(TEST_MODE EQUAL 1)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
-    FetchContent_Declare(
-      Catch2
-      GIT_REPOSITORY "https://github.com/catchorg/Catch2.git"
-      GIT_TAG "origin/devel"
-      )
-    FetchContent_MakeAvailable(Catch2)
+    CPMAddPackage(
+      NAME Catch2
+      GITHUB_REPOSITORY catchorg/Catch2
+      VERSION 2.13.4
+    )
     add_definitions(-DTEST) #test mode
     target_link_libraries(cmaker Catch2::Catch2) #test mode fuck you cmake
     include(CTest)
     include(Catch)
-
   endif()
 endif()
 

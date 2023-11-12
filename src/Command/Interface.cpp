@@ -105,6 +105,12 @@ namespace Command {
         std::cout << "Error: Could not manage modes" << ENDL;
       } 
     }
+    else if (command == "mode"){
+      OptionsInit::Mode(this);
+      if(!this->mode()){
+        std::cout << "Error: Could not manage mode" << ENDL;
+      }
+    }
     else if (command == "watch"){
       OptionsInit::Watch(this);
       if(!this->watch()){
