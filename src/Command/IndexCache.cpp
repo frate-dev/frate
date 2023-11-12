@@ -62,7 +62,7 @@ namespace Command{
     json data = Utils::fetchJson(indexUrl);
     indexFile << data.dump(2);
   }
-  Package getExactPackage(std::string package_name){
+  std::pair<bool,Package> getExactPackage(std::string package_name){
     json index = fetchIndex();
     for(auto package : index){
       if(package["name"] == package_name){
@@ -71,9 +71,9 @@ namespace Command{
         p.versions = package["versions"];
         p.git = package["git"];
         p.description = package["description"];
-        return p;
+        return std::pair<bool,Package>{true,p};
       }
     }
-    return Package{.name="", .versions={}};
+    return std::pair<bool,Package>{false,Package{}};
   }
 }

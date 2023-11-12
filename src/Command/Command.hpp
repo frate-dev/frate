@@ -257,7 +257,7 @@ namespace Command {
 
   std::vector<Package> searchPackage(std::string query);
 
-  Package getExactPackage(std::string query);
+  std::pair<bool,Package> getExactPackage(std::string query);
 
   std::string downloadIndex();
   /*
