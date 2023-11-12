@@ -36,6 +36,23 @@ namespace Command {
     Generators::CMakeList::createCMakeListsExecutable(inter->pro);
     return true;
   }
+  bool removeDependencies(Interface* inter, std::string mode){
+    std::vector<std::string> dependencies = inter->args->operator[]("arguments").as<std::vector<std::string>>();
+    for (auto dep : dependencies) {
+      for(Mode &m : inter->pro->modes){
+        if(m.name == mode){
+          for(auto it = m.dependencies.begin(); it != m.dependencies.end(); it++){
+            if(it->name == dep){
+              m.dependencies.erase(it);
+            }
+          }
+        }
+      }
+    }
+    Generators::ConfigJson::writeConfig(inter->pro);
+    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
+    return true;
+  }
   bool Interface::mode(){
     std::cout << "Running mode: " << std::endl;
     std::string mode = args->operator[]("mode").as<std::string>();
@@ -52,6 +69,11 @@ namespace Command {
             }
             if(subaction == "deps"){
               return addDependencies(this, mode);
+            }
+          }
+          if(action == "remove"){
+            if(subaction == "deps"){
+              return removeDependencies(this, mode);
             }
           }
         }
