@@ -70,6 +70,17 @@ namespace Command {
       ("args", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>());
     return inter->parse();
   }
+  bool OptionsInit::Clean(Interface *inter){
+
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand", "args"});
+    inter->options->add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
+      ("args", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>())
+      ("c,cache", "Cleans build and cache", cxxopts::value<bool>()->default_value("false"));
+    return inter->parse();
+  }
   bool OptionsInit::Update(Interface *interface) {
     interface->InitHeader();
     interface->options->parse_positional({"command", "subcommand"});

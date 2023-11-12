@@ -192,6 +192,7 @@ namespace Command {
       bool Modes(Interface*);
       bool Mode(Interface*);
       bool Watch(Interface*);
+      bool Clean(Interface*);
   };
 
 

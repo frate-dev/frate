@@ -124,6 +124,7 @@ namespace Command {
       }
     }
     else if (command == "clean"){
+      OptionsInit::Clean(this);
       if(!this->clean()){
         std::cout << "Error: Could not clean project" << ENDL;
       }
