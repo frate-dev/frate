@@ -48,8 +48,19 @@ namespace Command {
       std::vector<json> modes_json;
       for (auto &mode : modes) {
         json mode_json;
+        json mode_deps = json::array();
+        for (Dependency dep: mode.dependencies) {
+          json dep_json;
+          dep_json["name"] = dep.name;
+          dep_json["git"] = dep.git;
+          dep_json["version"] = dep.version;
+          dep_json["target_link"] = dep.target_link;
+          mode_deps.push_back(dep_json);
+        }
+
         mode_json["name"] = mode.name;
         mode_json["flags"] = mode.flags;
+        mode_json["dependencies"] = mode_deps;
         modes_json.push_back(mode_json);
       }
       json j;

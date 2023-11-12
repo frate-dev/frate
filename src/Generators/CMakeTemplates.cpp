@@ -52,8 +52,7 @@ include(FetchContent)
 CPMAddPackage(
   NAME {{ dep.name }}
   GIT_REPOSITORY {{ dep.git }}
-  GIT_TAG {{ dep.version }}
-)
+  GIT_TAG {{ dep.version }})
 #FetchContent_MakeAvailable({{ dep.name }})
 ##endfor
 
@@ -77,8 +76,14 @@ add_executable({{project_name}} ${SOURCES})
 ##for mode in modes
 if (CMAKE_BUILD_TYPE STREQUAL "{{ mode.name }}")
   add_definitions(-D{{ mode.name }})
-
-  set_target_properties({{project_name}} PROPERTIES COMPILE_FLAGS "{{ mode.flags }}")
+  {% for dep in mode.dependencies %}
+  CPMAddPackage(
+    NAME {{ dep.name }}
+    GIT_REPOSITORY {{ dep.git }}
+    GIT_TAG {{ dep.version }}
+  )
+  {% endfor %}
+  set_target_properties({{project_name}} PROPERTIES COMPILE_FLAGS "{% for flag in mode.flags %} {{ flag }} {% endfor %}")
 endif()
 ##endfor
 set(BUILD_DIR {{ build_dir }})

@@ -142,7 +142,6 @@ bool Interface::addAuthors(){
 
 
   bool Interface::addDependency() {
-    bool exact = false;
     bool latest = false;
     if (args->count("args") == 0) {
       std::cout << 
@@ -151,9 +150,7 @@ bool Interface::addAuthors(){
         "\tcmake add dep [args] " << std::endl;
       return false;
     }
-    if(args->operator[]("exact").as<bool>()){
-      exact = true;
-    }
+
     if(args->operator[]("latest").as<bool>()){
       latest = true;
     }

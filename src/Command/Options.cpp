@@ -122,12 +122,13 @@ namespace Command {
   }
   bool OptionsInit::Mode(Interface *interface) {
     interface->InitHeader();
-    interface->options->parse_positional({"command", "mode", "action", "args"});
+    interface->options->parse_positional({"command", "mode", "action", "subaction", "arguments"});
     interface->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("mode", "mode to modify", cxxopts::value<std::string>())("h,help", "Print usage")
       ("action", "action to perform", cxxopts::value<std::string>())
-      ("args", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>())
+      ("subaction", "action to perform", cxxopts::value<std::string>())
+      ("arguments", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>())
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("true"))
       ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"));
     return interface->parse();

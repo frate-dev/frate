@@ -7,6 +7,8 @@ project (
 )
 
 set(CMAKE_CXX_STANDARD 20)
+set(-DUSE_CCACHE=YES -DCCACHE_OPTIONS="CCACHE_CPP2=true;CCACHE_SLOPPINESS=clang_index_store")
+
 
 set(BUILD_CURL_EXE OFF)
 include (cmake/CPM.cmake)
@@ -37,7 +39,6 @@ CPMAddPackage(
   GITHUB_REPOSITORY curl/curl
   GIT_TAG curl-8_3_0
 )
-
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
   "src/**.c"
@@ -55,41 +56,25 @@ if(NOT DEFINED RELEASE)
   set(RELEASE 0)
 endif()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-  message("Release mode")
-  set(RELEASE 1)
-elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  message("Debug mode")
-  set(RELEASE 0)
-elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
-  message("Test mode")
-  set(RELEASE 0)
-  set(TEST_MODE 1)
-else()
-  message("Default mode")
-  set(RELEASE 0)
-endif()
-
 add_executable(cmaker ${SOURCES}) #test mode
 
-if(RELEASE EQUAL 1)
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  message("Release mode")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wextra -Wpedantic -Wall")
   add_definitions(-DRELEASE)
-else()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  message("Debug mode")
   add_definitions(-DDEBUG)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
-  if(TEST_MODE EQUAL 1)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
-    CPMAddPackage(
-      NAME Catch2
-      GITHUB_REPOSITORY catchorg/Catch2
-      VERSION 2.13.4
-    )
-    add_definitions(-DTEST) #test mode
-    target_link_libraries(cmaker Catch2::Catch2) #test mode fuck you cmake
-    include(CTest)
-    include(Catch)
-  endif()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
+  message("Test mode")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
+  CPMAddPackage("gh:catchorg/Catch2@3.4.0")
+  add_definitions(-DTEST -DDEBUG) #test mode
+  target_link_libraries(cmaker Catch2::Catch2WithMain) #test mode fuck you cmake
+else()
+  add_definitions(-DDEBUG)
+  message("Default mode")
 endif()
 
 target_link_libraries(${PROJECT_NAME} libcurl)

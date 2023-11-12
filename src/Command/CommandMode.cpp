@@ -1,8 +1,9 @@
 #include "Command.hpp"
+#include "../Generators/Generators.hpp"
 
 namespace Command {
   bool addFlags(Interface* inter, std::string mode){
-    std::vector<std::string> flags = inter->pro->args->operator[]("args").as<std::vector<std::string>>();
+    std::vector<std::string> flags = inter->args->operator[]("args").as<std::vector<std::string>>();
     for(auto m : inter->pro->modes){
       if(m.name == mode){
         for(std::string f : flags){
@@ -15,10 +16,11 @@ namespace Command {
   }
   bool addDependencies(Interface* inter, std::string mode){
 
-    std::vector<std::string> dependencies = inter->pro->args->operator[]("args").as<std::vector<std::string>>();
+    std::vector<std::string> dependencies = inter->args->operator[]("arguments").as<std::vector<std::string>>();
+
     for (auto dep : dependencies) {
       Package new_package = getDependency(dep, inter->pro->dependencies);      
-      for(auto m : inter->pro->modes){
+      for(Mode &m : inter->pro->modes){
         if(m.name == mode){
           m.dependencies.push_back({
               .name = new_package.name,
@@ -29,10 +31,9 @@ namespace Command {
           );
         }
       }
-
-
     }
-
+    Generators::ConfigJson::writeConfig(inter->pro);
+    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
     return true;
   }
   bool Interface::mode(){
@@ -41,13 +42,17 @@ namespace Command {
     for(auto m : pro->modes){
       if(m.name == mode){
         std::cout << "Found mode: " << mode << std::endl;
+        // are we gonna get some action???
         if(args->count("action")){
           std::string action = args->operator[]("action").as<std::string>();
-          if(action == "add-flags"){
-            return addFlags(this, mode);
-          }
-          if(action == "add-dep"){
-            return addDependencies(this, mode);
+          std::string subaction = args->operator[]("subaction").as<std::string>();
+          if(action == "add"){
+            if(subaction == "flags"){
+              return addFlags(this, mode);
+            }
+            if(subaction == "deps"){
+              return addDependencies(this, mode);
+            }
           }
         }
       }
