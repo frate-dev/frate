@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
     return (numFailed < 0xff ? numFailed : 0xff);
   #else
 
-
+  //TODO: Get some path checking in this bitch
   new Command::Interface(argc,argv);
 
   #endif

@@ -175,6 +175,7 @@ namespace Command {
       std::shared_ptr<cxxopts::ParseResult> args;
       char** argv;
       int argc;
+      bool confirm_all = false;
       Interface(int argc, char **argv);
       ~Interface();
       bool InitHeader();

@@ -11,35 +11,44 @@
 #include "../Utils/General.hpp"
 
 namespace Command {
+using Utils::CLI::Prompt;
+using Utils::CLI::Ansi::RED;
 
-
-  bool createJson(std::shared_ptr<Project> pro) {
-    //Lucas did it again
-    std::shared_ptr<Generators::ConfigJson::Config>config_json = std::make_shared<Generators::ConfigJson::Config>();
-    if(!Generators::ConfigJson::readUserInput(pro, config_json)){
-      return false;
-    }
-    if(!Generators::ConfigJson::writeConfig(pro)){
-      return false;
-    }
-    return true;
+bool createJson(std::shared_ptr<Project> pro) {
+  // Lucas did it again
+  std::shared_ptr<Generators::ConfigJson::Config> config_json =
+      std::make_shared<Generators::ConfigJson::Config>();
+  if (!Generators::ConfigJson::readUserInput(pro, config_json)) {
+    return false;
+  }
+  if (!Generators::ConfigJson::writeConfig(pro)) {
+    return false;
+  }
+  return true;
   }
 
   bool createHelloWorldCpp(std::shared_ptr<Project> pro) {
-    if(Utils::hSystem("cd " + pro->project_path.string() + ";mkdir src") != 0){
-      std::cout << "Error creating src directory" << std::endl;
-      return false;
+    //directory checks
+    if(std::filesystem::exists(pro->project_path / pro->src_dir)){
+      Prompt<bool> *overwrite_prompt = new Prompt<bool>("src directory already exists, overwrite?");
+      overwrite_prompt->Color(RED);
+      overwrite_prompt->Run();
+      if(!overwrite_prompt->Get()){
+        return false;
+      }
     }
-    std::ofstream file;
-    if (std::filesystem::exists(pro->project_path / "src"/ "main.cpp")){
-      std::cout << "src/main.cpp already exists" << std::endl;
-      return false;
-    }
-    std::string file_name = pro->project_path / "src/main.cpp";
-    std::cout << file_name << std::endl;
+    //Create src directory
     try{
-      file.open(pro->project_path / file_name);
-      file << "#include <iostream>\n"
+      std::filesystem::create_directory(pro->project_path / pro->src_dir);
+    }catch(std::exception &e){
+      std::cout << e.what() << std::endl;
+      return false;
+    }
+    std::ofstream file_stream;
+    std::string file_path = pro->project_path / pro->src_dir / "main.cpp";
+    try{
+      file_stream.open(file_path);
+      file_stream << "#include <iostream>\n"
         "\n"
         "int main(){\n"
         "\tstd::cout << \"Hello World\" << std::endl;\n"
@@ -49,23 +58,30 @@ namespace Command {
       std::cout << e.what() << std::endl;
       return false;
     }
-    file.close();
+    file_stream.close();
     return true;
   }
   bool createHelloWorldC(std::shared_ptr<Project> pro) {
-    if(Utils::hSystem("cd " + pro->project_path.string() + ";mkdir src") != 0 ){
-      std::cout << "Error creating src directory" << std::endl;
-      return false;
+    if(std::filesystem::exists(pro->project_path / pro->src_dir)){
+      Prompt<bool> *overwrite_prompt = new Prompt<bool>("src directory already exists, overwrite?");
+      overwrite_prompt->Run();
+      overwrite_prompt->Color(RED);
+      if(!overwrite_prompt->Get()){
+        return false;
+      }
     }
-    if(std::filesystem::exists(pro->project_path / "src"/ "main.c")){
-      std::cout << "src/main.c already exists" << std::endl;
-      return false;
-    }
-    std::ofstream file;
-    std::string file_name = "src/main.c";
+    //Create src directory
     try{
-      file.open(pro->project_path / file_name);
-      file << "#include <stdio.h>\n"
+      std::filesystem::create_directory(pro->project_path / pro->src_dir);
+    }catch(std::exception &e){
+      std::cout << e.what() << std::endl;
+      return false;
+    }
+    std::ofstream file_stream;
+    std::string file_path = pro->project_path / pro->src_dir / "main.c";
+    try{
+      file_stream.open(file_path);
+      file_stream << "#include <stdio.h>\n"
         "\n"
         "int main(){\n"
         "\tprintf(\"Hello World\");\n"
@@ -75,13 +91,14 @@ namespace Command {
       std::cout << e.what() << std::endl;
       return false;
     }
-    file.close();
+    file_stream.close();
     return true;
   }
 
   void gitInit(Interface *inter){
     #ifndef DEBUG
       Generators::GitIgnore::create(inter->pro);
+      //TODO: make this work on windows
       int gitinit = Utils::hSystem("cd "+inter->pro->project_path.string()+";git init");
       if(gitinit != 0){
         std::cout << "git init failed" << std::endl;
@@ -92,7 +109,6 @@ namespace Command {
   bool createProjectWizard(Interface *inter){
     createJson(inter->pro);
     inter->LoadPackageJson();
-    //Generators::CMakeList::create(inter->pro);
     Generators::CMakeList::createCMakeListsExecutable(inter->pro);
     if(inter->pro->lang == "cpp"){
       if(!createHelloWorldCpp(inter->pro)){
@@ -224,4 +240,4 @@ namespace Command {
 
     return true;
   }
-} // namespace Command
+  } // namespace Command

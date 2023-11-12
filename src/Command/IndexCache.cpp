@@ -40,6 +40,7 @@ namespace Command{
   /*
    * Very similar to the fetch index function but this one will always update the index
    * TODO: Add a check to see if the index is up to date
+   * TODO: Add this to the interface caching the index in memory
    */
   void updateIndex(){
     std::ofstream indexFile;
