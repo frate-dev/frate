@@ -20,6 +20,7 @@
 
 ## Build the binary from source
 ### Prerequisites
+
 ```
 gcc >= 13
 or
