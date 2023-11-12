@@ -76,6 +76,12 @@ bool Interface::addAuthors(){
   Package promptPackageSearchResults(std::string &query){
 
     std::vector<Package> searchResults = searchPackage(query);
+
+    if(searchResults.size() == 1){
+      std::cout << "Installing " << searchResults[0].name << std::endl;
+      return searchResults[0];
+    }
+
     if(searchResults.size() == 0){
       std::cout << "No results found" << std::endl;
       exit(0);
@@ -155,16 +161,7 @@ bool Interface::addAuthors(){
     std::string query = args->operator[]("args").as<std::vector<std::string>>()[0];
     
     
-    Package chosen_package;
-    if(!exact){
-      chosen_package = promptPackageSearchResults(query);
-    }else{
-      chosen_package = getExactPackage(query);
-      if(chosen_package.name == ""){
-        std::cout << "No package found" << std::endl;
-        return false;
-      }
-    }
+    Package chosen_package = promptPackageSearchResults(query);
 
     std::cout << "Installing " << chosen_package.name << std::endl;
 
