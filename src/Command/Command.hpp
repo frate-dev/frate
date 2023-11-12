@@ -75,6 +75,7 @@ namespace Command {
     std::vector<std::string> versions;
     std::string target_link;
     std::string description;
+    std::string selected_version;
     int score;
     json toJson();
     void fromJson(json j);
@@ -108,7 +109,7 @@ namespace Command {
   };
   typedef struct Mode{
     std::string name;
-    std::string flags;
+    std::vector<std::string> flags;
     std::vector<Dependency> dependencies{};
   } Mode;
   typedef struct Project_s {
@@ -126,9 +127,9 @@ namespace Command {
     std::string lang_version{"20"};
     std::string compiler{"g++"};
     std::vector<Mode> modes{
-      Mode{.name = "Release", .flags= "-O2 "}, 
-      Mode{.name= "Debug", .flags= "-g"},
-      Mode{.name= "Test", .flags= "-g"}
+      Mode{.name = "Release", .flags={"-O2 "}}, 
+      Mode{.name= "Debug", .flags= {"-g"}},
+      Mode{.name= "Test", .flags={"-g"}}
     };
     std::vector<std::string> authors;
     std::string src_dir{"src"};
@@ -258,6 +259,8 @@ namespace Command {
   std::vector<Package> searchPackage(std::string query);
 
   Package getExactPackage(std::string query);
+
+  Package getDependency(std::string query, std::vector<Dependency> deps);
 
   std::string downloadIndex();
   /*

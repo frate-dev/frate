@@ -31,6 +31,10 @@ namespace Command {
       return false;
     }
     std::ofstream file;
+    if (std::filesystem::exists(pro->project_path / "src"/ "main.cpp")){
+      std::cout << "src/main.cpp already exists" << std::endl;
+      return false;
+    }
     std::string file_name = pro->project_path / "src/main.cpp";
     std::cout << file_name << std::endl;
     try{
@@ -51,6 +55,10 @@ namespace Command {
   bool createHelloWorldC(std::shared_ptr<Project> pro) {
     if(Utils::hSystem("cd " + pro->project_path.string() + ";mkdir src") != 0 ){
       std::cout << "Error creating src directory" << std::endl;
+      return false;
+    }
+    if(std::filesystem::exists(pro->project_path / "src"/ "main.c")){
+      std::cout << "src/main.c already exists" << std::endl;
       return false;
     }
     std::ofstream file;
