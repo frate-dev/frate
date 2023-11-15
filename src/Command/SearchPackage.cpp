@@ -74,6 +74,7 @@ namespace Command {
   void getPackageScore(Package &package, std::string &query){
     int score = 0;
     score += getStringScore(package.name, query) * 10;
+    score += package.stars / 100;
     score += getStringScore(package.description, query);
     score += getStringScore(package.target_link, query);
     package.score = score;
@@ -112,11 +113,15 @@ namespace Command {
         results.begin(), results.end(), 0, [](int a, Package b){
         return a + b.score;
       });
+
     int averageScore = totalScore / results.size();
 
 
 
-    auto filterResults = results | std::views::filter([&averageScore](Package package){return package.score > 2 * averageScore;});
+    auto filterResults = results | std::views::filter(
+        [&averageScore](Package package){
+          return package.score > 2 * averageScore;
+        });
     return std::vector<Package>(filterResults.begin(), filterResults.end());
   }
 

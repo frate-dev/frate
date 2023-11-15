@@ -72,10 +72,21 @@ namespace Command {
   typedef struct Package_s {
     std::string name;
     std::string git;
+    std::string git_short;
+    std::string git_prefixed;
     std::vector<std::string> versions;
     std::string target_link;
     std::string description;
     std::string selected_version;
+    std::string git_description;
+    std::string language;
+    std::string license;
+    std::string owner;
+    std::string owner_type;
+    int stars;
+    int forks;
+    int open_issues;
+    int watchers;
     int score;
     json toJson();
     void fromJson(json j);

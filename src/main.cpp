@@ -15,6 +15,7 @@
 #endif
 int main(int argc, char **argv) {
 
+
   // LUCAS MAKE SURE YOU INITIALIZE YOUR FUCKING STRUCT YOU TWAT
   //std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
   #ifdef TEST
