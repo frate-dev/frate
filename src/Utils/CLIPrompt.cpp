@@ -1,4 +1,5 @@
 #include "CLI.hpp"
+#include <exception>
 #include <string>
 
 namespace Utils::CLI {
@@ -49,7 +50,7 @@ namespace Utils::CLI {
   bool Prompt<int>::yoink(){
     try{
       value = std::stoi(input);
-    }catch(std::invalid_argument e){
+    }catch(std::exception& e){
       return false;
     }
     return true;
@@ -58,7 +59,7 @@ namespace Utils::CLI {
   bool Prompt<float>::yoink(){
     try{
       value = std::stof(input);
-    }catch(std::invalid_argument e){
+    }catch(std::exception& e){
       return false;
     }
     return true;
@@ -67,7 +68,7 @@ namespace Utils::CLI {
   bool Prompt<double>::yoink(){
     try{
       value = std::stod(input);
-    }catch(std::invalid_argument e){
+    }catch(std::exception& e){
       return false;
     }
     return true;

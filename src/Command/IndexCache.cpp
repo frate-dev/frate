@@ -32,7 +32,7 @@ namespace Command{
 
       try {
         create_directories(string(std::getenv("HOME")) + "/.local/cmaker");
-      }catch(std::exception e){
+      }catch(std::exception& e){
         std::cout << "Failed to create index file" << ENDL;
         exit(-1);
       }
@@ -59,7 +59,7 @@ namespace Command{
       //Checks if the index file exists
       indexFile = std::ofstream(indexFileName);
 
-    }catch(std::exception e){
+    }catch(std::exception& e){
 
       std::cout << "Creating a new index file" << ENDL;
 
@@ -67,7 +67,7 @@ namespace Command{
 
         create_directories(string(std::getenv("HOME")) + "/.local/cmaker");
 
-      }catch(std::exception e){
+      }catch(std::exception& e){
 
         std::cout << "Failed to create index file" << ENDL;
         exit(-1);

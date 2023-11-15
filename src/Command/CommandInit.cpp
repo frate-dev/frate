@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cxxopts.hpp>
 #include <algorithm>
+#include <locale>
 #include <ranges>
 #include <format>
 #include <fstream>
@@ -94,7 +95,6 @@ bool createJson(std::shared_ptr<Project> pro) {
     file_stream.close();
     return true;
   }
-
   void gitInit(Interface *inter){
     #ifndef DEBUG
       Generators::GitIgnore::create(inter->pro);

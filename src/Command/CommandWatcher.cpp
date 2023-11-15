@@ -52,7 +52,7 @@ void watcher(const std::function<void()> &changeCallback, std::string path) {
   ev.data.fd = inotify_fd;
   // TODO: Add recursive directory watching
 
-  size_t watch_desc = inotify_add_watch(inotify_fd, path.c_str(),
+  int watch_desc = inotify_add_watch(inotify_fd, path.c_str(),
                                         IN_MODIFY | IN_CREATE | IN_DELETE);
   if (watch_desc < 0) {
     std::cout << "Error adding watch" << std::endl;

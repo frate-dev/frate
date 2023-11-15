@@ -33,6 +33,14 @@ namespace Command {
     //After the parse we can set the context args
     this->pro->args = this->args;
 
+    if(this->args->count("yes")){
+      this->skip_prompts = true;
+      std::cout << "Skipping prompts" << ENDL;
+    }
+    else{
+      this->skip_prompts = false;
+    }
+
     // if(!this->args->count("command")){
     //   this->help();
      std::string command = this->args->operator[]("command").as<std::string>();
@@ -53,19 +61,22 @@ namespace Command {
     }
 
 
-
     using namespace cxxopts;
-    if (command == "new" || command == "n"){
+
+
+    if (command == "init"){
       OptionsInit::Init(this);
       if(!this->init()){
         std::cout << "Error: Could not initialize project" << ENDL;
       }
     }
+
     else if (command == "run"){
       if(!this->run()){
         std::cout << "Error: Could not run project" << ENDL;
       }
     }
+
     else if (command == "help"){
       if(!this->help()){
         std::cout << "Error: Could not display help" << ENDL;
@@ -77,23 +88,24 @@ namespace Command {
         std::cout << "Error: Could not ftp project" << ENDL;
       }
     }
+
     else if (command == "add"){
       OptionsInit::Add(this);
       if(!this->add()){
         std::cout << "Error: Could not add project" << ENDL;
       }
-
-    }
-    else if(command == "search"){
+    }else if(command == "search"){
       OptionsInit::Search(this);
       if(!this->search()){
         std::cout << "Error: Could not search project" << ENDL;
       }
     }
+
     else if (command == "server"){
       OptionsInit::Server(this);
       this->server();
     }
+
     else if (command == "remove"){
       OptionsInit::Remove(this);
       if(!this->remove()){
@@ -106,28 +118,33 @@ namespace Command {
         std::cout << "Error: Could not watch project" << ENDL;
       }
     }
+
     else if (command == "update"){
       OptionsInit::Update(this);
       if(!this->update()){
         std::cout << "Error: Could not update project index" << ENDL;
       }
     }
+
     else if (command == "clean"){
       OptionsInit::Clean(this);
       if(!this->clean()){
         std::cout << "Error: Could not clean project" << ENDL;
       }
     }
+
     else if (command == "toolchain"){
       if(!this->toolchains()){
         std::cout << "Error: Could not manage toolchains" << ENDL;
       }
     }
+
     else{
       std::cout << "Invalid command try one of these" << ENDL;
       this->help();
 
     }
+
   }
   Interface::~Interface(){
   }

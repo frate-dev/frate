@@ -183,6 +183,7 @@ namespace Command {
       bool registerCommand(std::string name, std::vector<std::string> subcommands, std::function<bool()> func);
     public:
       std::shared_ptr<Project> pro;
+      bool skip_prompts{false};
       bool parse();
       std::shared_ptr<cxxopts::Options> options;
       std::shared_ptr<cxxopts::ParseResult> args;
