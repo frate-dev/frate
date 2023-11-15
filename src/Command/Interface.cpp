@@ -55,7 +55,7 @@ namespace Command {
 
 
     using namespace cxxopts;
-    if (command == "init"){
+    if (command == "new" || command == "n"){
       OptionsInit::Init(this);
       if(!this->init()){
         std::cout << "Error: Could not initialize project" << ENDL;
@@ -83,7 +83,8 @@ namespace Command {
         std::cout << "Error: Could not add project" << ENDL;
       }
 
-    }else if(command == "search"){
+    }
+    else if(command == "search"){
       OptionsInit::Search(this);
       if(!this->search()){
         std::cout << "Error: Could not search project" << ENDL;
@@ -94,21 +95,9 @@ namespace Command {
       this->server();
     }
     else if (command == "remove"){
-      OptionsInit::Add(this);
+      OptionsInit::Remove(this);
       if(!this->remove()){
         std::cout << "Error: Could not remove project" << ENDL;
-      }
-    }
-    else if (command == "modes"){
-      OptionsInit::Modes(this);
-      if(!this->modes()){
-        std::cout << "Error: Could not manage modes" << ENDL;
-      } 
-    }
-    else if (command == "mode"){
-      OptionsInit::Mode(this);
-      if(!this->mode()){
-        std::cout << "Error: Could not manage mode" << ENDL;
       }
     }
     else if (command == "watch"){
@@ -127,6 +116,11 @@ namespace Command {
       OptionsInit::Clean(this);
       if(!this->clean()){
         std::cout << "Error: Could not clean project" << ENDL;
+      }
+    }
+    else if (command == "toolchain"){
+      if(!this->toolchains()){
+        std::cout << "Error: Could not manage toolchains" << ENDL;
       }
     }
     else{

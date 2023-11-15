@@ -43,11 +43,11 @@ namespace  Command{
   }
   bool Interface::modes(){
     this->LoadPackageJson();
-    if(!args->count("subcommand")){
+    if(!args->count("subsubcommand")){
       this->help();
       return false;
     }
-    std::string subcommand = args->operator[]("subcommand").as<std::string>();
+    std::string subcommand = args->operator[]("subsubcommand").as<std::string>();
     if(subcommand == "add"){
       return modesAdd(this);
     }

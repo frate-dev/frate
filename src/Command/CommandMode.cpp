@@ -61,18 +61,18 @@ namespace Command {
         std::cout << "Found mode: " << mode << std::endl;
         // are we gonna get some action???
         if(args->count("action")){
+          std::string command = args->operator[]("command").as<std::string>();
           std::string action = args->operator[]("action").as<std::string>();
-          std::string subaction = args->operator[]("subaction").as<std::string>();
-          if(action == "add"){
-            if(subaction == "flags"){
+          if(command == "add"){
+            if(action == "flags"){
               return addFlags(this, mode);
             }
-            if(subaction == "deps"){
+            if(action == "deps"){
               return addDependencies(this, mode);
             }
           }
-          if(action == "remove"){
-            if(subaction == "deps"){
+          if(command == "remove"){
+            if(action == "deps"){
               return removeDependencies(this, mode);
             }
           }

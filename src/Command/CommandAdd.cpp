@@ -25,11 +25,20 @@ namespace Command {
 
       std::string subcommand = args->operator[]("subcommand").as<std::string>();
       if (subcommand == "dep") {
+        OptionsInit::Dependencies(this);
         this->addDependency();
       }
 
       if (subcommand == "flag") {
         this->addFlag();
+      }
+      if (subcommand == "modes") {
+        OptionsInit::Modes(this);
+        this->modes();
+      }
+      if (subcommand ==  "mode"){
+        OptionsInit::Mode(this);
+        this->mode();
       }
 
 
@@ -48,14 +57,12 @@ namespace Command {
     return true;
   }
 
-bool Interface::addAuthors(){
+  bool Interface::addAuthors(){
     if (pro->args->count("args") == 0) {
       for (auto author : pro->args->operator[]("args").as<std::vector<std::string>>()) {
         pro->authors.push_back(author);
       }
-
     }
-
     return true;
   }
 
@@ -143,6 +150,7 @@ bool Interface::addAuthors(){
 
   bool Interface::addDependency() {
     bool latest = false;
+    //TODO: Add support for multiple dependencies
     if (args->count("args") == 0) {
       std::cout << 
         "Usage add dep:" << ENDL
@@ -205,6 +213,7 @@ bool Interface::addAuthors(){
 
     return true;
   }
+
 
 }
  // namespace Command

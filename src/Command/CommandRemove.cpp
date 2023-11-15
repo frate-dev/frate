@@ -5,8 +5,15 @@ namespace Command {
     args->count("subcommand");
     if (args->count("subcommand") != 0) {
       std::string subcommand = args->operator[]("subcommand").as<std::string>();
+      for (auto arg : args->operator[]("args").as<std::vector<std::string>>()) {
+        std::cout << arg << std::endl;
+      }
       if (subcommand == "dep") {
         this->removeDep();
+      }
+      if (subcommand == "mode") {
+        OptionsInit::Mode(this);
+        this->mode();
       }
     }else{
     std::cout <<  R"EOF(

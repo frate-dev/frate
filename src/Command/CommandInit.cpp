@@ -148,6 +148,18 @@ bool createJson(std::shared_ptr<Project> pro) {
 
 
   bool Interface::init() {
+#ifdef RELEASE
+    if(!args->count("subcommand")){
+      this->help();
+      return false;
+    }
+    std::string directory = args->operator[]("subcommand").as<std::string>();
+    if (directory != "."){
+      std::filesystem::create_directories(directory);
+      std::filesystem::current_path(directory);
+      pro->project_path = std::filesystem::current_path();
+    }
+#endif
     std::string file_name = "config.json";
     std::string project_name = "";
     bool skip_init = false;

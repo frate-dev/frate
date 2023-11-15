@@ -32,6 +32,20 @@ namespace Command {
         d.target_link = dep["target_link"];
         dependencies.push_back(d);
       }
+      for (auto &mode: j["modes"]){
+        Mode m;
+        m.name = mode["name"];
+        m.flags = mode["flags"];
+        for (auto &dep : mode["dependencies"]) {
+          Dependency d;
+          d.name = dep["name"];
+          d.git = dep["git"];
+          d.version = dep["version"];
+          d.target_link = dep["target_link"];
+          m.dependencies.push_back(d);
+        }
+        modes.push_back(m);
+      }
       flags = j["flags"];
     }
     nlohmann::json Project::toJson(){

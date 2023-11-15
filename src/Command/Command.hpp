@@ -152,6 +152,7 @@ namespace Command {
     std::string project_version{"0.0.1"};
     std::vector<std::string> flags; 
     std::shared_ptr<cxxopts::ParseResult> args;
+    std::vector<std::string> toolchains;
     void fromJson(json j);
     nlohmann::json toJson();
   } Project;
@@ -176,6 +177,7 @@ namespace Command {
       bool modes();
       bool mode();
       bool watch();
+      bool toolchains();
       bool clean();
       //TODO: setup register comamnd
       bool registerCommand(std::string name, std::vector<std::string> subcommands, std::function<bool()> func);
@@ -199,12 +201,14 @@ namespace Command {
       bool Add(Interface*);
       bool Remove(Interface*);
       bool Server(Interface*);
+      bool Dependencies(Interface*);
       bool Update(Interface*);
       bool Main(Interface*);
       bool Modes(Interface*);
       bool Mode(Interface*);
       bool Watch(Interface*);
       bool Clean(Interface*);
+      bool Toolchains(Interface*);
   };
 
 
