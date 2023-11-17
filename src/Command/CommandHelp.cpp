@@ -2,8 +2,8 @@
 #include <string>
 #include <cstdbool>
 #include <sys/ioctl.h>
-#include "Command.hpp"
-#include "../Utils/General.hpp"
+#include <CMaker/Command.hpp>
+#include <CMaker/Utils/General.hpp>
 #include <termcolor/termcolor.hpp>
 
 namespace Command {

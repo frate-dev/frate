@@ -1,4 +1,4 @@
-#include <CMaker/Command/Command.hpp>
+#include <CMaker/Command.hpp>
 #include <CMaker/Utils/General.hpp>
 #include <CMaker/Utils/CLI.hpp>
 

@@ -1,4 +1,4 @@
-#include <CMaker/Command/Command.hpp>
+#include <CMaker/Command.hpp>
 #include <nlohmann/json.hpp>
 #include <CMaker/Utils/General.hpp>
 #include <iostream>

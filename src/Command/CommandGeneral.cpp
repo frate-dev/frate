@@ -1,4 +1,4 @@
-#include "Command.hpp"
+#include <CMaker/Command.hpp>
 #include <cstddef>
 #include <format>
 #include <iostream>

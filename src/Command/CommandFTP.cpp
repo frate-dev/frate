@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Command.hpp"
-#include "../Utils/CLI.hpp"
-#include "../Utils/General.hpp"
+#include <CMaker/Command.hpp>
+#include <CMaker/Utils/CLI.hpp>
+#include <CMaker/Utils/General.hpp>
 
 namespace Command{
   using std::filesystem::directory_iterator;

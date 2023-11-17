@@ -1,5 +1,5 @@
 #pragma once
-#include "Command.hpp"
+#include "../Command.hpp"
 
 namespace Command::ModeCommands {
   bool addFlags(Interface* inter, std::string mode);

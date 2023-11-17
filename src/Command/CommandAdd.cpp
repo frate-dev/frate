@@ -1,20 +1,19 @@
-#include "CMaker/Generators/Generators.hpp"
-#include "CMaker/Command.hpp"
-#include "Author/Author.hpp"
+#include <CMaker/Generators/Generators.hpp>
+#include <CMaker/Command.hpp>
+#include <CMaker/Command/Author.hpp>
 #include <algorithm>
 #include <cxxopts.hpp>
 #include <iostream>
 #include <nlohmann/json.hpp>
-#include "Package/Package.hpp"
+#include <CMaker/Command/Package.hpp>
 #include <string>
-#include "../Utils/General.hpp"
-#include "../Utils/CLI.hpp"
+#include <CMaker/Utils/General.hpp>
+#include <CMaker/Utils/CLI.hpp>
 #include <cmath>
 #include <termcolor/termcolor.hpp>
 
 namespace Command {
   using nlohmann::json;
-  using Utils::CLI::List;
   using Utils::CLI::ListItem;
 
   bool addFlag(Interface *inter) {
