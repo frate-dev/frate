@@ -1,9 +1,14 @@
 #include <CMaker/Command.hpp>
+#include <CMaker/Command/Package.hpp>
 
 
 namespace Command {
   bool Interface::search(){
     std::string query;
+    std::string target;
+    if(args->operator[]("subcommand").count() > 0){
+      target = args->operator[]("subcommand").as<std::string>();
+    }
     if(args->operator[]("query").count() > 0){
       query = args->operator[]("query").as<std::string>();
     }else{
@@ -11,7 +16,9 @@ namespace Command {
       std::cout << "Usage: cmaker search <query>" << ENDL;
       return false;
     }
-    searchPackage(query);
+    if(target == "package" || target == "p"){
+      return Packages::search(this, query);
+    }
     return true;
   }
 }

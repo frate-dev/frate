@@ -24,7 +24,10 @@ namespace Command::ModeCommands {
   bool addPackages(Interface* inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep_str : dependencies) {
-      Package new_package = Packages::get(dep_str, inter->pro->dependencies);
+      auto [found,new_package] = Packages::get(dep_str, inter->pro->dependencies);
+      if(!found){
+        return false;
+      }
       for(Mode &m : inter->pro->modes){
         if(m.name == mode){
           m.dependencies.push_back(new_package);

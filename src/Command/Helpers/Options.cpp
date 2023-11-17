@@ -23,11 +23,12 @@ namespace Command {
   }
 
   bool OptionsInit::Search(Interface* inter){
-    inter->options->parse_positional({"command","query"});
+    inter->InitHeader();
+    inter->options->parse_positional({"command","subcommand"});
     inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
-      ("query", "Arguments to pass to the command", cxxopts::value<std::string>())
-      ("h,help", "Print usage");
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
+      ("query", "Arguments to pass to the command", cxxopts::value<std::string>());
     return inter->parse();
   }
 
