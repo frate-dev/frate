@@ -17,7 +17,7 @@ namespace Command {
       return false;
     }
     if(target == "package" || target == "p"){
-      return Packages::search(this, query);
+      auto [found,Package] = Packages::searchPrompt(query);
     }
     return true;
   }

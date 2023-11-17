@@ -27,8 +27,9 @@ namespace Command::Packages {
   bool add(Interface* inter);
   bool remove(Interface *inter);
 
-  std::vector<Package> search(std::string& query);
 
-  bool search(Interface* inter, std::string& query);
+  std::pair<bool,Package> searchPrompt(std::string& query);
+
+  std::vector<Package> search(std::string& query);
 
 }

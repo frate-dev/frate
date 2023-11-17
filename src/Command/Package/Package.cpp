@@ -38,8 +38,6 @@ namespace Command::Packages {
   }
 
   std::vector<Package> search(std::string& query){
-
-
     auto [found, package] = get(query);
     if(found){
       return std::vector<Package>{package};
@@ -61,12 +59,15 @@ namespace Command::Packages {
     return std::vector<Package>(filterResults.begin(), filterResults.end());
   }
   
-  bool search(Interface* inter, std::string& query){
+  std::pair<bool,Package> searchPrompt(std::string& query){
     std::vector<Package> results = search(query);
     if(results.size() == 0){
-      std::cout << "No results found" << ENDL;
-      return false;
+      return std::pair<bool,Package>(false, Package());
     }
+    if(results.size() == 1){
+      return std::pair<bool,Package>(true, results[0]);
+    }
+
     List *packageList = (new Utils::CLI::List())->
       Numbered()->
       ReverseIndexed();
@@ -74,7 +75,14 @@ namespace Command::Packages {
       packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
     }
     std::cout << packageList->Build() << std::endl;
-    return true;
+    Prompt<int> *prompt = new Prompt<int>("Select a package to install: ");
+    for(size_t i = 0; i < results.size(); i++){
+      prompt->AddOption(i);
+    }
+    prompt->Run();
+    int index = prompt->Get();
+
+    return std::pair<bool,Package>(true, results[index]);
   }
 
   bool checkForOverlappingDependencies(std::vector<Package> deps,
