@@ -11,7 +11,7 @@
 
 #ifdef TEST
   #include <catch2/catch_session.hpp>
-  #include "Test/Test.hpp"
+  #include <CMaker/Test/Test.hpp>
 #endif
 int main(int argc, char **argv) {
 
