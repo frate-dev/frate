@@ -1,5 +1,6 @@
 #include "Command.hpp"
 #include "../Generators/Generators.hpp"
+#include "Package/Package.hpp"
 
 namespace Command {
   bool addFlags(Interface* inter, std::string mode){
@@ -18,17 +19,11 @@ namespace Command {
 
     std::vector<std::string> dependencies = inter->args->operator[]("arguments").as<std::vector<std::string>>();
 
-    for (auto dep : dependencies) {
-      Package new_package = getDependency(dep, inter->pro->dependencies);      
+    for (std::string dep_str : dependencies) {
+      Package new_package = Packages::get(dep_str, inter->pro->dependencies);
       for(Mode &m : inter->pro->modes){
         if(m.name == mode){
-          m.dependencies.push_back({
-              .name = new_package.name,
-              .git = new_package.git,
-              .version = new_package.selected_version,
-              .target_link = new_package.target_link,
-              }
-          );
+          m.dependencies.push_back(new_package);
         }
       }
     }

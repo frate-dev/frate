@@ -92,12 +92,6 @@ namespace Command {
     void fromJson(json j);
   } Package;//Deez nuts
 
-  typedef struct Dependency_s {
-    std::string name;
-    std::string git;
-    std::string version;
-    std::string target_link;
-  } Dependency;
 
   typedef struct RemoteServer{
     std::string name;
@@ -121,7 +115,7 @@ namespace Command {
   typedef struct Mode{
     std::string name;
     std::vector<std::string> flags;
-    std::vector<Dependency> dependencies{};
+    std::vector<Package> dependencies{};
   } Mode;
   typedef struct Project_s {
     std::string project_name;
@@ -145,10 +139,10 @@ namespace Command {
     std::vector<std::string> authors;
     std::string src_dir{"src"};
     std::string include_dir{"include"};
-    std::vector<Dependency> dependencies;
     std::vector<RemoteServer> build_servers;
+    std::vector<Package> dependencies;
     std::string build_dir{"build"};
-    Dependency testing_lib;
+    Package testing_lib;
     std::string project_version{"0.0.1"};
     std::vector<std::string> flags; 
     std::shared_ptr<cxxopts::ParseResult> args;
@@ -209,7 +203,7 @@ namespace Command {
 
   std::pair<bool,Package> getExactPackage(std::string query);
 
-  Package getDependency(std::string query, std::vector<Dependency> deps);
+  //Package getDependency(std::string query, std::vector<Package> deps);
 
   std::string downloadIndex();
   json fetchIndex();
