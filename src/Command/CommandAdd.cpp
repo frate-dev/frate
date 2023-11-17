@@ -52,7 +52,7 @@ namespace Command {
   bool Interface::add() {
     if (!(args->count("subcommand") > 0)) {
       std::cout << "Usage add:" << ENDL
-        "\tdep: adds a dependency" << ENDL
+        "\tp, package: adds a package to  your project" << ENDL
         "\tflag: adds a flag" << ENDL
         "\tlib:  adds a library" << std::endl;
       return false;

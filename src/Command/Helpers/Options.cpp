@@ -37,7 +37,7 @@ namespace Command {
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
-      ("subcommand", "Subcommand to run", cxxopts::value<std::vector<std::string>>())("h,help", "Print usage")
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
       ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
       ("name", "Name of the project", cxxopts::value<std::string>()->default_value("false"))
       ("t,type", "Type of the project", cxxopts::value<std::string>()->default_value(ProjectType::EXECUTABLE))
