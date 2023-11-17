@@ -95,8 +95,8 @@ bool checkForOverlappingDependencies(std::vector<Package> deps,
     if (inter->args->count("args") == 0) {
       std::cout << 
         "Usage add dep:" << ENDL
-        "\t[inter->args]: the dependencies to inter->project" << ENDL
-        "\tcmake add packages [package names] " << std::endl;
+        "\t[inter->args]: the dependencies to project" << ENDL
+        "\tcmake add dep [inter->args] " << std::endl;
       return false;
     }
     if (inter->args->count("mode") != 0){

@@ -1,5 +1,6 @@
-#include "../Generators/Generators.hpp"
-#include "Command.hpp"
+#include "CMaker/Generators/Generators.hpp"
+#include "CMaker/Command.hpp"
+#include "Author/Author.hpp"
 #include <algorithm>
 #include <cxxopts.hpp>
 #include <iostream>
@@ -25,14 +26,6 @@ namespace Command {
     return true;
   }
 
-  bool addAuthors(Interface *inter){
-    if (inter->pro->args->count("args") == 0) {
-      for (auto author : inter->pro->args->operator[]("args").as<std::vector<std::string>>()) {
-        inter->pro->authors.push_back(author);
-      }
-    }
-    return true;
-  }
 
 
   bool getModeName(Mode &mode){
@@ -70,13 +63,15 @@ namespace Command {
       OptionsInit::Dependencies(this);
       Packages::add(this);
     }
-
-    if (subcommand == "flag") {
+    else if (subcommand == "flag") {
       addFlag(this);
     }
-    if (subcommand == "modes") {
+    else if (subcommand == "modes") {
       OptionsInit::Modes(this);
       buildTypeAdd(this);
+    }
+    else if (subcommand == "author") {
+      Author::add(this);
     }
 
     return true;

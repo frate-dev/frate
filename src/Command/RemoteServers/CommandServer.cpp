@@ -1,7 +1,6 @@
-#include "../Command.hpp"
-#include "RemoteServers.hpp"
-#include "../../Utils/General.hpp"
-#include "../../Utils/CLI.hpp"
+#include <CMaker/Command/Command.hpp>
+#include <CMaker/Utils/General.hpp>
+#include <CMaker/Utils/CLI.hpp>
 
 namespace Command{
   namespace RemoteServers{

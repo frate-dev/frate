@@ -94,20 +94,21 @@ namespace Command {
       if(!this->add()){
         std::cout << "Error: Could not add project" << ENDL;
       }
-    }else if(command == "search"){
+    }
+
+    else if(command == "search"){
       OptionsInit::Search(this);
       if(!this->search()){
         std::cout << "Error: Could not search project" << ENDL;
       }
     }
 
-
-
     else if (command == "remove"){
       OptionsInit::Remove(this);
       if(!this->remove()){
         std::cout << "Error: Could not remove project" << ENDL;
       }
+
     }
     else if (command == "watch"){
       OptionsInit::Watch(this);
@@ -129,7 +130,6 @@ namespace Command {
         std::cout << "Error: Could not clean project" << ENDL;
       }
     }
-
 
     else{
       std::cout << "Invalid command try one of these" << ENDL;

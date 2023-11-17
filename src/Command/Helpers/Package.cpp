@@ -43,7 +43,6 @@ namespace Command {
       this->target_link = data["target_link"];
     }
 
-
     this->git = data["git"];
     this->git_short = data["git_short"];
     this->git_prefixed = data["git_prefixed"];

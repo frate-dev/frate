@@ -9,7 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <cxxopts.hpp>
-#include "../Utils/CLI.hpp"
+#include "CMaker/Utils/CLI.hpp"
 
 
 #define ENDL "\n"
@@ -18,10 +18,6 @@ namespace Command {
   using nlohmann::json;
   using Utils::CLI::Prompt;
   using namespace Utils::CLI::Ansi;
-  [[deprecated("I DON'T KNOW WHAT THIS FUCKING DOES")]]
-  bool handleCppProject();
-  [[deprecated("WE ARE A BIG PROJECT MUST HAVE DEPRECATED STUFF")]]
-  bool handleCProject();
 
   /*
    * Checks if the file exists
@@ -166,6 +162,7 @@ namespace Command {
       bool watch();
       bool toolchains();
       bool clean();
+      bool build();
       //TODO: setup register comamnd
       bool registerCommand(std::string name, std::vector<std::string> subcommands, std::function<bool()> func);
     public:
@@ -183,6 +180,11 @@ namespace Command {
       bool CreateCMakelists();
       bool LoadPackageJson();
   };
+  typedef struct Info_s {
+    std::string name;
+    std::string description;
+    std::vector<std::string> valid_flags;
+  } Info;
   namespace OptionsInit{
       bool Init(Interface*);
       bool Search(Interface*);
@@ -196,12 +198,14 @@ namespace Command {
       bool Mode(Interface*);
       bool Watch(Interface*);
       bool Clean(Interface*);
+      bool Build(Interface*);
   };
   std::vector<Package> searchPackage(std::string query);
 
   std::pair<bool,Package> getExactPackage(std::string query);
 
   //Package getDependency(std::string query, std::vector<Package> deps);
+
 
   std::string downloadIndex();
   json fetchIndex();
