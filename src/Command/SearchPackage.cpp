@@ -3,7 +3,6 @@
 #include "../Utils/General.hpp"
 #include "../Utils/CLI.hpp"
 #include "termcolor/termcolor.hpp"
-#include <execution>
 #include <numeric>
 #include <termcolor/termcolor.hpp>
 
@@ -91,7 +90,7 @@ namespace Command {
       results.push_back(package);
     }
 
-    std::sort(std::execution::par, results.begin(), results.end(), [](Package a, Package b){
+    std::sort(results.begin(), results.end(), [](Package a, Package b){
         return a.score > b.score;
     });
     return results;
