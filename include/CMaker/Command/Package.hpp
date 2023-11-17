@@ -32,4 +32,8 @@ namespace Command::Packages {
 
   std::vector<Package> search(std::string& query);
 
+  std::vector<Package> search(std::string& query);
+
+  bool search(Interface* inter, std::string& query);
+
 }

@@ -8,9 +8,6 @@ namespace Command::Packages {
   using Generators::CMakeList::createCMakeListsExecutable;
   using Generators::ConfigJson::writeConfig;
   using namespace Utils::CLI;
-
-
-  using namespace Utils::CLI;
   std::vector<Package> calculatePackageScores(std::string &query){
     std::vector<Package> results;
     json rawIndex = fetchIndex();
