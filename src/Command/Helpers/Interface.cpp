@@ -63,8 +63,8 @@ namespace Command {
 
     using namespace cxxopts;
 
-
-    if (command == "init"){
+    if (command == "new" || command == "n"){
+      std::cout << "got here" << ENDL;
       OptionsInit::Init(this);
       if(!this->init()){
         std::cout << "Error: Could not initialize project" << ENDL;

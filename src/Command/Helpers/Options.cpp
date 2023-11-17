@@ -24,7 +24,6 @@ namespace Command {
 
   bool OptionsInit::Search(Interface* inter){
     inter->options->parse_positional({"command","query"});
-
     inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("query", "Arguments to pass to the command", cxxopts::value<std::string>())
@@ -34,6 +33,7 @@ namespace Command {
 
 
   bool OptionsInit::Init(Interface* inter) {
+    inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
@@ -45,6 +45,7 @@ namespace Command {
     return inter->parse();
   }
   bool OptionsInit::Add(Interface* inter) {
+    inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->allow_unrecognised_options().add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
@@ -55,6 +56,7 @@ namespace Command {
   //TODO: add
   //
   bool OptionsInit::Dependencies(Interface* inter) {
+    inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
     inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
@@ -67,6 +69,7 @@ namespace Command {
     return inter->parse();
   }
   bool OptionsInit::Remove(Interface *inter) {
+    inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
     inter->options->allow_unrecognised_options().add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
@@ -75,6 +78,7 @@ namespace Command {
     return inter->parse();
   }
   bool OptionsInit::Clean(Interface *inter){
+    inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
     inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
@@ -83,63 +87,59 @@ namespace Command {
       ("c,cache", "Cleans build and cache", cxxopts::value<bool>()->default_value("false"));
     return inter->parse();
   }
-  bool OptionsInit::Update(Interface *interface) {
-    interface->options->parse_positional({"command", "subcommand"});
-    interface->options->add_options()
+  bool OptionsInit::Update(Interface *inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand"});
+    inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
-    return interface->parse();
+    return inter->parse();
   }
-  bool OptionsInit::Watch(Interface *interface) {
-    interface->options->parse_positional({"command"});
-    interface->options->add_options()
-#ifdef DEBUG
-      ("o,ours", "watches cmaker source", cxxopts::value<bool>())
-#endif
+  bool OptionsInit::Watch(Interface *inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command"});
+    inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("r,remote-build", "Build server to use", cxxopts::value<bool>()->default_value("false"))
       ("c,args", "command to pass to dev", cxxopts::value<std::vector<std::string>>());
-    return interface->parse();
+    return inter->parse();
   }
-  bool OptionsInit::Server(Interface *interface) {
-    interface->options->parse_positional({"command", "subcommand"});
-    interface->options->add_options()
-#ifdef DEBUG
-      ("o,ours", "watches cmaker source", cxxopts::value<bool>())
-#endif
+  bool OptionsInit::Server(Interface *inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand"});
+    inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
-    return interface->parse();
+    return inter->parse();
   }
-  bool OptionsInit::Modes(Interface *interface) {
-    interface->options->parse_positional({"command", "subcommand", "subsubcommand"});
-    interface->options->add_options()
-#ifdef DEBUG
-      ("o,ours", "watches cmaker source", cxxopts::value<bool>())
-#endif
+  bool OptionsInit::Modes(Interface *inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand", "subsubcommand"});
+    inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
       ("subsubcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
-    return interface->parse();
+    return inter->parse();
   }
-  bool OptionsInit::Mode(Interface *interface) {
-    interface->options->parse_positional({"command", "subcommand", "mode", "action",  "arguments"});
-    interface->options->add_options()
+  bool OptionsInit::Mode(Interface *inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand", "mode", "action",  "arguments"});
+    inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "SubCommand to run", cxxopts::value<std::string>()->default_value("help"))
       ("mode", "mode to modify", cxxopts::value<std::string>())("h,help", "Print usage")
       ("action", "action to perform", cxxopts::value<std::string>())
       ("subaction", "action to perform", cxxopts::value<std::string>())
       ("arguments", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>());
-    return interface->parse();
+    return inter->parse();
   }
-  bool OptionsInit::Build(Interface* interface){
-    interface->options->parse_positional({"command"});
-
-    interface->options->add_options()
+  bool OptionsInit::Build(Interface* inter){
+    inter->InitHeader();
+    inter->options->parse_positional({"command"});
+    inter->options->add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("m,mode", "Architecture to build", cxxopts::value<std::string>())
       ("t,target", "Target to build", cxxopts::value<std::string>());
-    return interface->parse();
+    return inter->parse();
   }
 } // namespace Command
