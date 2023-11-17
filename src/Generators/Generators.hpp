@@ -36,7 +36,6 @@ namespace Generators{
      * @param ctx: the context of the command
      * @return a vector of dependencies that will be later combined to build the cmake file
      */
-    void generateDeps(std::shared_ptr<Command::Project> pro, std::shared_ptr<CMakeContext> cmake_context);
 
     bool create(std::shared_ptr<Command::Project> pro); 
     bool createCMakeListsExecutable(std::shared_ptr<Command::Project> pro);

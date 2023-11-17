@@ -101,10 +101,7 @@ namespace Command {
       }
     }
 
-    else if (command == "server"){
-      OptionsInit::Server(this);
-      this->server();
-    }
+
 
     else if (command == "remove"){
       OptionsInit::Remove(this);

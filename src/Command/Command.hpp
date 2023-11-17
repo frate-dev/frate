@@ -99,7 +99,7 @@ namespace Command {
     std::string target_link;
   } Dependency;
 
-  typedef struct BuildServer_s {
+  typedef struct RemoteServer{
     std::string name;
     std::string ip;
     std::string username;
@@ -107,7 +107,7 @@ namespace Command {
     std::optional<std::string> password;
     std::optional<std::string> key;
     int port;
-  } BuildServer;
+  } RemoteServer;
 
   namespace ProjectType {
     const std::string EXECUTABLE = "executable";
@@ -127,7 +127,7 @@ namespace Command {
     std::string project_name;
     std::string project_description;
     std::string project_type = ProjectType::EXECUTABLE;
-    BuildServer build_server;
+    RemoteServer build_server;
     /*
      * This is the project path, it will be set to the current working directory and in debug mode if willl set the path to ./build/
      */
@@ -146,7 +146,7 @@ namespace Command {
     std::string src_dir{"src"};
     std::string include_dir{"include"};
     std::vector<Dependency> dependencies;
-    std::vector<BuildServer> build_servers;
+    std::vector<RemoteServer> build_servers;
     std::string build_dir{"build"};
     Dependency testing_lib;
     std::string project_version{"0.0.1"};
@@ -166,8 +166,7 @@ namespace Command {
       bool run();
       bool help();
       bool search();
-      bool server();
-      bool setBuildServer(std::vector<BuildServer> servers);
+      bool setRemoteServer(std::vector<RemoteServer> servers);
       bool getBuildServer();
       bool ftp();
       bool mode();
@@ -215,5 +214,4 @@ namespace Command {
   std::string downloadIndex();
   json fetchIndex();
   void updateIndex();
-
 }

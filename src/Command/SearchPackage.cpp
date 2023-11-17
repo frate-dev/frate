@@ -3,6 +3,7 @@
 #include "../Utils/General.hpp"
 #include "../Utils/CLI.hpp"
 #include "termcolor/termcolor.hpp"
+#include <execution>
 #include <numeric>
 #include <termcolor/termcolor.hpp>
 
@@ -50,20 +51,17 @@ namespace Command {
   int getStringScore(std::string &text, std::string &query){
     int score = 0;
     std::vector<std::string> split_text = Utils::split(text, ' ');
-    std::vector<std::string> split_query = Utils::split(query, ' ');
     for(std::string word: split_text){
-      for(std::string query_word: split_query){
-        Utils::toLower(word);
-        Utils::toLower(query_word);
-        if(word == query_word){
-          score += 100;
-        }
-        if(word.find(query_word) != std::string::npos){
-          score += 50;
-        }
-        if(std::abs((int)text.size() - (int)query.size()) < 3){
-          score += 1;
-        }
+      Utils::toLower(word);
+      Utils::toLower(query);
+      if(word == query){
+        score += 100;
+      }
+      if(word.find(query) != std::string::npos){
+        score += 50;
+      }
+      if(std::abs((int)text.size() - (int)query.size()) < 3){
+        score += 1;
       }
     }
     if(levensteinDistance(text, query) < 3){
@@ -93,7 +91,7 @@ namespace Command {
       results.push_back(package);
     }
 
-    std::sort(results.begin(), results.end(), [](Package a, Package b){
+    std::sort(std::execution::par, results.begin(), results.end(), [](Package a, Package b){
         return a.score > b.score;
         });
     return results;
