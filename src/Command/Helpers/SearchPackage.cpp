@@ -1,7 +1,7 @@
-#include "Command.hpp"
+#include "../Command.hpp"
 #include <nlohmann/json.hpp>
-#include "../Utils/General.hpp"
-#include "../Utils/CLI.hpp"
+#include "../../Utils/General.hpp"
+#include "../../Utils/CLI.hpp"
 #include "termcolor/termcolor.hpp"
 #include <numeric>
 #include <termcolor/termcolor.hpp>
@@ -113,13 +113,10 @@ namespace Command {
 
     int averageScore = totalScore / results.size();
 
-
-
     auto filterResults = results | std::views::filter(
         [&averageScore](Package package){
           return package.score > 2 * averageScore;
         });
     return std::vector<Package>(filterResults.begin(), filterResults.end());
   }
-
 }

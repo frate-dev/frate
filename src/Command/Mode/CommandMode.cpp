@@ -5,8 +5,9 @@
 
 namespace Command::ModeCommands {
   bool addFlags(Interface* inter, std::string mode){
-    std::vector<std::string> flags = inter->args->operator[]("args").as<std::vector<std::string>>();
-    for(auto m : inter->pro->modes){
+    //std::vector<std::string> flags = inter->args->operator[]("args").as<std::vector<std::string>>();
+    std::vector<std::string>  flags = inter->args->unmatched();
+    for(Mode m : inter->pro->modes){
       if(m.name == mode){
         for(std::string f : flags){
           m.flags.push_back(f);
@@ -20,9 +21,7 @@ namespace Command::ModeCommands {
   }
 
   bool addPackages(Interface* inter, std::string mode){
-
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
-
     for (std::string dep_str : dependencies) {
       Package new_package = Packages::get(dep_str, inter->pro->dependencies);
       for(Mode &m : inter->pro->modes){
@@ -37,7 +36,7 @@ namespace Command::ModeCommands {
   }
   bool removePackages(Interface* inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
-    for (auto dep : dependencies) {
+    for (std::string dep : dependencies) {
       for(Mode &m : inter->pro->modes){
         if(m.name == mode){
           for(auto it = m.dependencies.begin(); it != m.dependencies.end(); it++){

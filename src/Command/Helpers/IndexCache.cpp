@@ -1,6 +1,6 @@
-#include "Command.hpp"
+#include "../Command.hpp"
 #include <nlohmann/json.hpp>
-#include "../Utils/General.hpp"
+#include "../../Utils/General.hpp"
 
 namespace Command{
   using nlohmann::json;
