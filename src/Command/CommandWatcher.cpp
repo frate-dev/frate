@@ -172,7 +172,7 @@ bool Interface::watch() {
           json current_build_server_json =
               json::parse(std::ifstream(current_build_server));
           if (!current_build_server_json["name"].is_null()) {
-            pro->build_server = BuildServer(
+            pro->build_server = RemoteServer(
                 current_build_server_json["name"].get<std::string>(),
                 current_build_server_json["address"].get<std::string>(),
                 current_build_server_json["username"].get<std::string>(),
