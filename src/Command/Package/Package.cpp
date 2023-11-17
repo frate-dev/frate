@@ -1,7 +1,7 @@
-#include "Package.hpp"
-#include "../../Utils/CLI.hpp"
-#include "../../Generators/Generators.hpp"
-#include "../Mode/CommandMode.hpp"
+#include <CMaker/Command/Package.hpp>
+#include <CMaker/Utils/CLI.hpp>
+#include <CMaker/Generators.hpp>
+#include <CMaker/Command/CommandMode.hpp>
 
 namespace Command::Packages {
 using Generators::CMakeList::createCMakeListsExecutable;

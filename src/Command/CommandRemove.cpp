@@ -1,6 +1,6 @@
-#include "../Generators/Generators.hpp"
-#include "Command.hpp"
-#include "Mode/CommandMode.hpp"
+#include <CMaker/Generators.hpp>
+#include <CMaker/Command.hpp>
+#include <CMaker/Command/CommandMode.hpp>
 namespace Command {
 
   bool removeDep(Interface *inter) {
@@ -75,4 +75,4 @@ Usage remove:
 
     return true;
   }
-} // namespace Command
+} // namespace Comman

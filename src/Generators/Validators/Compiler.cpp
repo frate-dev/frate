@@ -7,7 +7,6 @@
 #include <CMaker/Generators.hpp> 
 
 
-
 namespace Generators::ConfigJson{
   /*
    * Validates the compiler 

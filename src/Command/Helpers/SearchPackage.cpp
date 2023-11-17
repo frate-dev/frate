@@ -1,7 +1,7 @@
-#include "../Command.hpp"
+#include <CMaker/Command.hpp>
 #include <nlohmann/json.hpp>
-#include "../../Utils/General.hpp"
-#include "../../Utils/CLI.hpp"
+#include <CMaker/Utils/General.hpp>
+#include <CMaker/Utils/CLI.hpp>
 #include "termcolor/termcolor.hpp"
 #include <numeric>
 #include <termcolor/termcolor.hpp>

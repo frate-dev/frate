@@ -1,4 +1,4 @@
-#include "../Command.hpp"
+#include <CMaker/Command.hpp>
 #include "cxxopts.hpp"
 #include <memory>
 
@@ -82,14 +82,13 @@ namespace Command {
         std::cout << "Error: Could not display help" << ENDL;
       }
     }
-
     else if (command == "ftp"){
       if(!this->ftp()){
         std::cout << "Error: Could not ftp project" << ENDL;
       }
     }
 
-    else if (command == "add"){
+    else if(command == "add"){
       OptionsInit::Add(this);
       if(!this->add()){
         std::cout << "Error: Could not add project" << ENDL;
@@ -110,6 +109,7 @@ namespace Command {
       }
 
     }
+
     else if (command == "watch"){
       OptionsInit::Watch(this);
       if(!this->watch()){

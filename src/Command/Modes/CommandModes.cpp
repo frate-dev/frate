@@ -1,5 +1,5 @@
 #include <CMaker/Command.hpp>
-#include <CMaker/Generators/Generators.hpp>
+#include <CMaker/Generators.hpp>
 #include <sys/socket.h>
 
 namespace  Command::Modes{

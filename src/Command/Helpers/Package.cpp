@@ -1,4 +1,4 @@
-#include "../Command.hpp"
+#include <CMaker/Command.hpp>
 #include "nlohmann/json_fwd.hpp"
 
 namespace Command {

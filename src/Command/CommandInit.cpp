@@ -8,8 +8,8 @@
 #include <fstream>
 #include <iostream> 
 #include <string>
-#include "../Generators/Generators.hpp"
-#include "../Utils/General.hpp"
+#include <CMaker/Generators.hpp>
+#include <CMaker/Utils/General.hpp>
 
 namespace Command {
 using Utils::CLI::Prompt;

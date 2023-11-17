@@ -1,7 +1,7 @@
-#include "../Command.hpp"
-#include "../../Generators/Generators.hpp"
-#include "../Package/Package.hpp"
-#include "CommandMode.hpp"
+#include <CMaker/Command.hpp>
+#include <CMaker/Generators.hpp>
+#include <CMaker/Command/Package.hpp>
+#include <CMaker/Command/CommandMode.hpp>
 
 namespace Command::ModeCommands {
   bool addFlags(Interface* inter, std::string mode){

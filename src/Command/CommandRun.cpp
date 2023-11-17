@@ -1,8 +1,8 @@
 #include <filesystem>
 #include <iostream>
-#include "Command.hpp"
+#include <CMaker/Command.hpp>
 #include <string>
-#include "../Utils/General.hpp"
+#include <CMaker/Utils/General.hpp>
 
 namespace Command {
 using std::filesystem::create_directories;

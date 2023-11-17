@@ -5,6 +5,7 @@
 #include <CMaker/Command.hpp> 
 #include <CMaker/Generators.hpp> 
 
+
 namespace Generators::ConfigJson{
   /*
    * Validates the cmake version

@@ -1,4 +1,4 @@
-#include "Command.hpp"
+#include <CMaker/Command.hpp>
 namespace Command{
   bool modesList(Interface* interface){
     for(auto mode : interface->pro->modes){
