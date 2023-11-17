@@ -162,19 +162,14 @@ namespace Command {
       bool init();
       bool add();
       bool remove();
-      bool removeDep();
       bool update();
       bool run();
       bool help();
       bool search();
-      bool addFlag();
       bool server();
       bool setBuildServer(std::vector<BuildServer> servers);
       bool getBuildServer();
-      bool addAuthors();
-      bool addDependency();
       bool ftp();
-      bool modes();
       bool mode();
       bool watch();
       bool toolchains();
@@ -211,69 +206,6 @@ namespace Command {
       bool Clean(Interface*);
       bool Toolchains(Interface*);
   };
-
-
-  /*
-   * Loads the config.json file into the project context
-   * @param a blank project context
-   * @return bool -> finished successfully
-   */
-  [[deprecated("Old function, Command::Interface ")]]
-  bool loadPackageJson(std::shared_ptr<Project> pro);
-  /*
-   * Initializes the project
-   * Prompts the user for information about the project
-   * @param ctx the current project context
-   * @return bool -> finished successfully
-   */
-  [[deprecated("Old function, Command::Interface ")]]
-  bool init(std::shared_ptr<Project>, cxxopts::ParseResult &args);
-  /*
-   * Builds and runs the project
-   * @param ctx the current project context
-   * @return bool -> finished successfully
-   */
-  [[deprecated("Old function, Command::Interface ")]]
-  bool run(std::shared_ptr<Project>);
-  /*
-   * Fuck this project function
-   * Deletes the project entirely
-   * @param ctx the current project context
-   * @return bool -> finished successfully
-   */
-  [[deprecated("Old function, Command::Interface ")]]
-  bool ftp(std::shared_ptr<Project>);
-  /*
-   * Adds flags to build script
-   * @param ctx project context
-   * @return bool -> finished successfully
-   */
-  [[deprecated("Old function, Command::Interface ")]]
-  bool addFlag(std::shared_ptr<Project>, cxxopts::ParseResult &args);
-  /*
-   * prints all commands and their function and parameters
-   * @return bool -> finished successfully
-   */
-  [[deprecated("Old function, Command::Interface ")]]
-  bool help();
-  /*
-   * adds a dependency to the config.json
-   * @returns bool -> finished successfully
-   */
-  [[deprecated("Old function, Command::Interface ")]]
-  bool addDependency(std::shared_ptr<Project> pro, cxxopts::ParseResult &args);
-  [[deprecated("Old function, Command::Interface ")]]
-  bool addAuthor(std::shared_ptr<Project>ctx, cxxopts::ParseResult &args);
-  /*
-   * Generates cmake file for project based on the current project context
-   * @returns bool -> finished successfully
-   */
-  [[deprecated("Old function, Command::Interface ")]]
-  bool createCMakelists(std::shared_ptr<Project>);
-  /*
-   * What the fuck lucas
-   */
-
   std::vector<Package> searchPackage(std::string query);
 
   std::pair<bool,Package> getExactPackage(std::string query);
@@ -281,33 +213,7 @@ namespace Command {
   Package getDependency(std::string query, std::vector<Dependency> deps);
 
   std::string downloadIndex();
-  /*
-   *  adds  dependency to json and regenerates the CMakeLists.txt
-   *  @returns bool -> finished successfully
-   */
-  [[deprecated("Old function, Command::Interface ")]]
-  bool add(std::shared_ptr<Project> pro, cxxopts::ParseResult &args);
-
   json fetchIndex();
   void updateIndex();
-
-  [[deprecated("Old function, Command::Interface ")]]
-  bool update(std::shared_ptr<Project> pro, cxxopts::ParseResult &args);
-
-  [[deprecated("Old function, Command::Interface ")]]
-  bool addLib(std::shared_ptr<Project>, cxxopts::ParseResult &args);
-  [[deprecated("Old function, Command::Interface ")]]
-  bool update(std::shared_ptr<Project>, cxxopts::ParseResult &args);
-
-  [[deprecated("Old function, Command::Interface ")]]
-  bool dev(std::shared_ptr<Project>);
-
-
-  [[deprecated("Old function, Command::Interface ")]]
-  bool remove(std::shared_ptr<Project>,  cxxopts::ParseResult &args);
-  [[deprecated("Old function, Command::Interface ")]]
-  bool removeDep(std::shared_ptr<Project>, cxxopts::ParseResult &args);
-
-
 
 }

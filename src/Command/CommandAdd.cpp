@@ -14,42 +14,13 @@ namespace Command {
   using nlohmann::json;
   using Utils::CLI::List;
   using Utils::CLI::ListItem;
-  bool Interface::add() {
-    if (!(args->count("subcommand") > 0)) {
-      std::cout << "Usage add:" << ENDL
-        "\tdep: adds a dependency" << ENDL
-        "\tflag: adds a flag" << ENDL
-        "\tlib:  adds a library" << std::endl;
-      return false;
-    }
-
-      std::string subcommand = args->operator[]("subcommand").as<std::string>();
-      if (subcommand == "dep") {
-        OptionsInit::Dependencies(this);
-        this->addDependency();
-      }
-
-      if (subcommand == "flag") {
-        this->addFlag();
-      }
-      if (subcommand == "modes") {
-        OptionsInit::Modes(this);
-        this->modes();
-      }
-      if (subcommand ==  "mode"){
-        OptionsInit::Mode(this);
-        this->mode();
-      }
 
 
-    return true;
-  }
 
-
-  bool Interface::addFlag() {
-    if (args->count("subcommand") == 0) {
-      for (auto flag : args->operator[]("subcommand").as<std::vector<std::string>>()) {
-        pro->flags.push_back(flag);
+  bool addFlag(Interface *inter) {
+    if (inter->args->count("subcommand") == 0) {
+      for (auto flag : inter->args->operator[]("subcommand").as<std::vector<std::string>>()) {
+        inter->pro->flags.push_back(flag);
       }
 
     }
@@ -57,10 +28,10 @@ namespace Command {
     return true;
   }
 
-  bool Interface::addAuthors(){
-    if (pro->args->count("args") == 0) {
-      for (auto author : pro->args->operator[]("args").as<std::vector<std::string>>()) {
-        pro->authors.push_back(author);
+  bool addAuthors(Interface *inter){
+    if (inter->pro->args->count("args") == 0) {
+      for (auto author : inter->pro->args->operator[]("args").as<std::vector<std::string>>()) {
+        inter->pro->authors.push_back(author);
       }
     }
     return true;
@@ -148,72 +119,118 @@ namespace Command {
   }
 
 
-  bool Interface::addDependency() {
+  bool addDependency(Interface* inter) {
     bool latest = false;
     //TODO: Add support for multiple dependencies
-    if (args->count("args") == 0) {
+    if (inter->args->count("inter->args") == 0) {
       std::cout << 
         "Usage add dep:" << ENDL
-        "\t[args]: the dependencies to project" << ENDL
-        "\tcmake add dep [args] " << std::endl;
+        "\t[inter->args]: the dependencies to inter->project" << ENDL
+        "\tcmake add dep [inter->args] " << std::endl;
       return false;
     }
 
-    if(args->operator[]("latest").as<bool>()){
+    if(inter->args->operator[]("latest").as<bool>()){
       latest = true;
     }
 
-    std::string query = args->operator[]("args").as<std::vector<std::string>>()[0];
+    std::vector<std::string> package_names = inter->args->operator[]("inter->args").as<std::vector<std::string>>();
+    for (std::string package_name : package_names) { 
+      
+      Package chosen_package = promptPackageSearchResults(package_name);
+
+      std::cout << "Installing " << chosen_package.name << std::endl;
+
     
-    
-    Package chosen_package = promptPackageSearchResults(query);
+      std::string version = ""; 
+      std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
+      std::vector<std::string> versions = chosen_package.versions;
 
-    std::cout << "Installing " << chosen_package.name << std::endl;
-
-  
-    std::string version = ""; 
-    std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
-    std::vector<std::string> versions = chosen_package.versions;
-
-    if(!latest){
-      version = promptForVersion(chosen_package);
-    }else{
-      if(chosen_package.versions.size() == 0){
-        std::cout << "No versions found" << std::endl;
+      if(!latest){
+        version = promptForVersion(chosen_package);
+      }else{
+        if(chosen_package.versions.size() == 0){
+          std::cout << "No versions found" << std::endl;
+          return false;
+        }
+        version = chosen_package.versions[0];
+      }
+      if(checkForOverlappingDependencies(inter->pro->dependencies, chosen_package.name)){
+        std::cout << "Package already installed" << std::endl;
         return false;
       }
-      version = chosen_package.versions[0];
+
+
+      std::cout << "Adding dependency to config.json" << std::endl;
+      //Reflecing the package to dependency
+      //TODO: Stop this shit
+      inter->pro->dependencies.push_back({
+        .name = chosen_package.name,
+        .git = chosen_package.git,
+        .version = version,
+        .target_link = chosen_package.target_link
+      });
+
+
+      std::cout << "Writing config.json" << std::endl;
+      if(!Generators::ConfigJson::writeConfig(inter->pro)){
+        std::cout << "Failed to write config.json" << std::endl;
+      }
+
+      if(!Generators::CMakeList::createCMakeListsExecutable(inter->pro)){
+        std::cout << "Failed to write CMakeLists.txt" << std::endl;
+      }
     }
-    if(checkForOverlappingDependencies(pro->dependencies, chosen_package.name)){
-      std::cout << "Package already installed" << std::endl;
-      return false;
-    }
-
-
-    std::cout << "Adding dependency to config.json" << std::endl;
-    //Reflecing the package to dependency
-    //TODO: Stop this shit
-    pro->dependencies.push_back({
-      .name = chosen_package.name,
-      .git = chosen_package.git,
-      .version = version,
-      .target_link = chosen_package.target_link
-    });
-
-
-    std::cout << "Writing config.json" << std::endl;
-    if(!Generators::ConfigJson::writeConfig(pro)){
-      std::cout << "Failed to write config.json" << std::endl;
-    }
-
-    if(!Generators::CMakeList::createCMakeListsExecutable(pro)){
-      std::cout << "Failed to write CMakeLists.txt" << std::endl;
-    }
-
 
     return true;
   }
+  bool getModeName(Mode &mode){
+    Prompt<std::string> *name = new Prompt<std::string>("Name: ");
+    name->Run();
+    mode.name = name->Get();
+    return true;
+  }
+  bool buildTypeAdd(Interface* interface){
+    std::cout << "Adding mode" << std::endl; 
+    Mode mode;
+    getModeName(mode);
+    interface->pro->modes.push_back(mode);
+    
+    std::cout << "Writing config.json" << std::endl;
+    if(!Generators::ConfigJson::writeConfig(interface->pro)){
+      std::cout << "Failed to write config.json" << std::endl;
+    }
 
+    if(!Generators::CMakeList::createCMakeListsExecutable(interface->pro)){
+      std::cout << "Failed to write CMakeLists.txt" << std::endl;
+    }
+    return true;
+  }
+  bool Interface::add() {
+    if (!(args->count("subcommand") > 0)) {
+      std::cout << "Usage add:" << ENDL
+        "\tdep: adds a dependency" << ENDL
+        "\tflag: adds a flag" << ENDL
+        "\tlib:  adds a library" << std::endl;
+      return false;
+    }
+    std::string subcommand = args->operator[]("subcommand").as<std::string>();
+    if (subcommand == "packages" || subcommand == "p") {
+      OptionsInit::Dependencies(this);
+      addDependency(this);
+    }
 
+    if (subcommand == "flag") {
+      addFlag(this);
+    }
+    if (subcommand == "modes") {
+      OptionsInit::Modes(this);
+      buildTypeAdd(this);
+    }
+    if (subcommand ==  "mode"){
+      OptionsInit::Mode(this);
+      this->mode();
+    }
+    return true;
+  }
 }
- // namespace Command

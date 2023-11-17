@@ -1,6 +1,36 @@
 #include "../Generators/Generators.hpp"
 #include "Command.hpp"
 namespace Command {
+
+  bool removeDep(Interface *inter) {
+
+    if (inter->args->count("args") == 0) {
+      std::cout << R"EOF(
+Usage remove dep:
+   [inter->args]: the dependencies to remove
+   cmake remove dep [inter->args] 
+
+        )EOF" << std::endl;
+      return false;
+    }
+    std::vector<std::string> name_to_remove = inter->args->operator[]("inter->args").as<std::vector<std::string>>();
+    for (std::string name : name_to_remove) {
+      std::cout << "inter->args:" << name << std::endl;
+    }
+    std::cout << "removing dependencies" << std::endl;
+    std::erase_if(inter->pro->dependencies, [&name_to_remove](auto &dep) {
+        for (std::string name : name_to_remove) {
+          if (dep.name == name) {
+            return true;
+          }
+        }
+        return false;
+    });
+
+    Generators::ConfigJson::writeConfig(inter->pro);
+    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
+    return true;
+  }
   bool Interface::remove() {
     args->count("subcommand");
     if (args->count("subcommand") != 0) {
@@ -9,7 +39,7 @@ namespace Command {
         std::cout << arg << std::endl;
       }
       if (subcommand == "dep") {
-        this->removeDep();
+        removeDep(this);
       }
       if (subcommand == "mode") {
         OptionsInit::Mode(this);
@@ -24,35 +54,6 @@ Usage remove:
         )EOF" << std::endl;
     }
 
-    return true;
-  }
-  bool Interface::removeDep() {
-
-    if (args->count("args") == 0) {
-      std::cout << R"EOF(
-Usage remove dep:
-   [args]: the dependencies to remove
-   cmake remove dep [args] 
-
-        )EOF" << std::endl;
-      return false;
-    }
-    std::vector<std::string> name_to_remove = args->operator[]("args").as<std::vector<std::string>>();
-    for (std::string name : name_to_remove) {
-      std::cout << "args:" << name << std::endl;
-    }
-    std::cout << "removing dependencies" << std::endl;
-    std::erase_if(pro->dependencies, [&name_to_remove](auto &dep) {
-        for (std::string name : name_to_remove) {
-          if (dep.name == name) {
-            return true;
-          }
-        }
-        return false;
-    });
-
-    Generators::ConfigJson::writeConfig(pro);
-    Generators::CMakeList::createCMakeListsExecutable(pro);
     return true;
   }
 } // namespace Command
