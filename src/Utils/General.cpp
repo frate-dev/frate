@@ -1,4 +1,4 @@
-#include "General.hpp"
+#include <CMaker/Generators.hpp>
 #include <iostream>
 #include <vector>
 #include <nlohmann/json.hpp>

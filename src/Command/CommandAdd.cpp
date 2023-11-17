@@ -1,4 +1,4 @@
-#include <CMaker/Generators/Generators.hpp>
+#include <CMaker/Generators.hpp>
 #include <CMaker/Command.hpp>
 #include <CMaker/Command/Author.hpp>
 #include <algorithm>

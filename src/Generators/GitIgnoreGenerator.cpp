@@ -1,4 +1,4 @@
-#include <CMaker/Generators/Generators.hpp>
+#include <CMaker/Generators.hpp>
 #include <format>
 #include <CMaker/Utils/CLI.hpp>
 

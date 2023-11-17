@@ -2,8 +2,9 @@
 #include <string>
 #include <regex>
 #include <memory>
-#include "../../Command/Command.hpp"
-#include "../Generators.hpp"
+#include <CMaker/Command.hpp> 
+#include <CMaker/Generators.hpp> 
+
 
 
 namespace Generators::ConfigJson{

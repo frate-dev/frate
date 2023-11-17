@@ -2,11 +2,11 @@
 #include <cstdio>
 #include <filesystem>
 #include <catch2/catch_test_macros.hpp>
-#include "../Command/Command.hpp"
+#include <CMaker/Command.hpp>
 #include <cxxopts.hpp>
 #include <memory>
 #include <string>
-#include "Test.hpp"
+#include <CMaker/Test/Test.hpp>
 
 namespace Tests{
   std::string genBase64String(int random_string_length) {

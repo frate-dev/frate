@@ -1,10 +1,10 @@
-#include "Command.hpp"
+#include <CMaker/Command.hpp>
 #include <functional>
 #include <iostream>
-#ifdef __linux__
-#include "../Utils/General.hpp"
-#include <sys/epoll.h>
 #include <ranges>
+#include <CMaker/Utils/General.hpp>
+#ifdef __linux__
+#include <sys/epoll.h>
 #include <sys/inotify.h>
 
 namespace Command {

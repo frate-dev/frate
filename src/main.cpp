@@ -1,4 +1,4 @@
-#include "Command/Command.hpp"
+#include <CMaker/Command.hpp>
 #include <vector>
 #include <string>
 // LUCAS PAY ATTENTION TO IF THE HEADER IS .hpp OR .h
