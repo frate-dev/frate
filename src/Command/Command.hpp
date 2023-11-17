@@ -197,7 +197,6 @@ namespace Command {
       bool Mode(Interface*);
       bool Watch(Interface*);
       bool Clean(Interface*);
-      bool Toolchains(Interface*);
   };
   std::vector<Package> searchPackage(std::string query);
 

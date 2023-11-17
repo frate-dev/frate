@@ -130,11 +130,6 @@ namespace Command {
       }
     }
 
-    else if (command == "toolchain"){
-      if(!this->toolchains()){
-        std::cout << "Error: Could not manage toolchains" << ENDL;
-      }
-    }
 
     else{
       std::cout << "Invalid command try one of these" << ENDL;

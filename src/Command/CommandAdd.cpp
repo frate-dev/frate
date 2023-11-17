@@ -4,6 +4,7 @@
 #include <cxxopts.hpp>
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include "Package/Package.hpp"
 #include <string>
 #include "../Utils/General.hpp"
 #include "../Utils/CLI.hpp"
@@ -71,7 +72,7 @@ namespace Command {
     std::string subcommand = args->operator[]("subcommand").as<std::string>();
     if (subcommand == "packages" || subcommand == "p") {
       OptionsInit::Dependencies(this);
-      addDependency(this);
+      Packages::add(this);
     }
 
     if (subcommand == "flag") {
