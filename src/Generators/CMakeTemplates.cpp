@@ -1,6 +1,6 @@
 #include <string>
 #include <nlohmann/json.hpp>
-#include "../Command/Command.hpp"
+#include <CMaker/Command.hpp>
 #include "../Utils/General.hpp"
 #include <inja.hpp>
 
