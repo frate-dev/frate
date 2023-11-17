@@ -1,5 +1,4 @@
-#include "../Command.hpp"
-
+#include <CMaker/Command.hpp>
 
 namespace Command::Packages {
 
@@ -21,9 +20,15 @@ namespace Command::Packages {
 
   std::string promptForVersion(Package &chosen_package);
 
-  Package get(std::string query, std::vector<Package> deps);
+  std::pair<bool,Package> get(std::string query, std::vector<Package> deps);
+
+  std::pair<bool,Package> get(std::string query);
 
   bool add(Interface* inter);
   bool remove(Interface *inter);
+
+  std::vector<Package> search(std::string& query);
+
+  bool search(Interface* inter, std::string& query);
 
 }

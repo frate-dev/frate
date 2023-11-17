@@ -19,43 +19,8 @@ namespace Command {
   using Utils::CLI::Prompt;
   using namespace Utils::CLI::Ansi;
 
-  /*
-   * Checks if the file exists
-   * @param name the name of the file
-   * @return bool -> file exists
-   */
-  inline bool file_exists(const std::string& name) {
-    std::ifstream file;
-    try{
-      file.open(name);
-    }catch(std::exception &e){
-      std::cout << "failed to open file: " << name << ENDL;
-      exit(0);
-    }
-    // opening the file
-    if (file) {
-      
-      Prompt<bool> *prompt = new Prompt<bool>("file config.json already exists\n Are you sure you would like to overwrite it?");
-      prompt->Color(RED)->ExitOnFailure()->Run();
-      if(prompt->Get()){
-        file.close();
-        return true;
-      }else{
-        exit(1);
-      }
-    }
-    return false;
-  }
-  /*
-   * Initializes the options for the command line parser
-   * @param new options object
-   */
   using namespace cxxopts;
-  ParseResult mainOptions(int argc, char** argv);
-  ParseResult initOptions(int argc, char** argv);
-  ParseResult addOptions(int argc, char** argv);
-  ParseResult removeOptions(int argc, char** argv);
-  ParseResult updateOptions(int argc, char** argv);
+
   /*
    * Package structure from index
    * @param name the name of the package
@@ -88,7 +53,6 @@ namespace Command {
     void fromJson(json j);
   } Package;//Deez nuts
 
-
   typedef struct RemoteServer{
     std::string name;
     std::string ip;
@@ -98,7 +62,6 @@ namespace Command {
     std::optional<std::string> key;
     int port;
   } RemoteServer;
-
   namespace ProjectType {
     const std::string EXECUTABLE = "executable";
     const std::string HEADER_ONLY = "header_only";
@@ -108,11 +71,13 @@ namespace Command {
       return type == EXECUTABLE || type == HEADER_ONLY || type == STATIC_LIBRARY || type == SHARED_LIBRARY;
     }
   };
+
   typedef struct Mode{
     std::string name;
     std::vector<std::string> flags;
     std::vector<Package> dependencies{};
   } Mode;
+
   typedef struct Project_s {
     std::string project_name;
     std::string project_description;
@@ -146,6 +111,7 @@ namespace Command {
     void fromJson(json j);
     nlohmann::json toJson();
   } Project;
+
   class Interface{
     private:
       //Commands;
@@ -180,11 +146,13 @@ namespace Command {
       bool CreateCMakelists();
       bool LoadPackageJson();
   };
+
   typedef struct Info_s {
     std::string name;
     std::string description;
     std::vector<std::string> valid_flags;
   } Info;
+
   namespace OptionsInit{
       bool Init(Interface*);
       bool Search(Interface*);
@@ -200,14 +168,11 @@ namespace Command {
       bool Clean(Interface*);
       bool Build(Interface*);
   };
-  std::vector<Package> searchPackage(std::string query);
-
-  std::pair<bool,Package> getExactPackage(std::string query);
-
-  //Package getDependency(std::string query, std::vector<Package> deps);
-
 
   std::string downloadIndex();
+
   json fetchIndex();
+
   void updateIndex();
+
 }
