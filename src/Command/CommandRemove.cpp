@@ -13,7 +13,7 @@ Usage remove dep:
         )EOF" << std::endl;
       return false;
     }
-    std::vector<std::string> name_to_remove = inter->args->operator[]("inter->args").as<std::vector<std::string>>();
+    std::vector<std::string> name_to_remove = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string name : name_to_remove) {
       std::cout << "inter->args:" << name << std::endl;
     }
@@ -31,6 +31,11 @@ Usage remove dep:
     Generators::CMakeList::createCMakeListsExecutable(inter->pro);
     return true;
   }
+  bool removeFlag(Interface *inter) {
+    if (inter->args->count("args") == 0) {
+    }
+    return true;
+  }
   bool Interface::remove() {
     args->count("subcommand");
     if (args->count("subcommand") != 0) {
@@ -41,10 +46,21 @@ Usage remove dep:
       if (subcommand == "dep") {
         removeDep(this);
       }
-      if (subcommand == "mode") {
-        OptionsInit::Mode(this);
-        this->mode();
+      else if (subcommand == "mode") {
+        // OptionsInit::Mode(this);
+        // this->mode();
+      }else if(subcommand == "lib"){
+        //TODO: remove lib, we don't have a lib in the project sruct
+      }else if(subcommand == "flag"){
+        //TODO: remove flag
+      }else if(subcommand == "toolchain"){
+        //TODO: remove toolchain
+      }else if(subcommand == "author"){
+        //TODO: remove author
+      }else if(subcommand == "license"){
+        //TODO: remove license
       }
+
     }else{
     std::cout <<  R"EOF(
 Usage remove:
