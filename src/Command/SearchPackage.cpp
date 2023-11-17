@@ -93,7 +93,7 @@ namespace Command {
 
     std::sort(std::execution::par, results.begin(), results.end(), [](Package a, Package b){
         return a.score > b.score;
-        });
+    });
     return results;
   }
   

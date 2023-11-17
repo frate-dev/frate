@@ -163,7 +163,6 @@ namespace Command {
       bool setRemoteServer(std::vector<RemoteServer> servers);
       bool getBuildServer();
       bool ftp();
-      bool mode();
       bool watch();
       bool toolchains();
       bool clean();

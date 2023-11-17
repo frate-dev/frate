@@ -1,6 +1,7 @@
 #include "Package.hpp"
 #include "../../Utils/CLI.hpp"
 #include "../../Generators/Generators.hpp"
+#include "../Mode/CommandMode.hpp"
 
 namespace Command::Packages {
 using Generators::CMakeList::createCMakeListsExecutable;
@@ -91,19 +92,21 @@ bool checkForOverlappingDependencies(std::vector<Package> deps,
   bool add(Interface* inter) {
     bool latest = false;
     //TODO: Add support for multiple dependencies
-    if (inter->args->count("inter->args") == 0) {
+    if (inter->args->count("args") == 0) {
       std::cout << 
         "Usage add dep:" << ENDL
         "\t[inter->args]: the dependencies to inter->project" << ENDL
-        "\tcmake add dep [inter->args] " << std::endl;
+        "\tcmake add packages [package names] " << std::endl;
       return false;
     }
-
+    if (inter->args->count("mode") != 0){
+      return ModeCommands::addPackages(inter, inter->args->operator[]("mode").as<std::string>());
+    }
     if(inter->args->operator[]("latest").as<bool>()){
       latest = true;
     }
 
-    std::vector<std::string> package_names = inter->args->operator[]("inter->args").as<std::vector<std::string>>();
+    std::vector<std::string> package_names = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string package_name : package_names) { 
       
       Package chosen_package = promptSearchResults(package_name);

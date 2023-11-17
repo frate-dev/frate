@@ -1,5 +1,6 @@
 #include "../Generators/Generators.hpp"
 #include "Command.hpp"
+#include "Mode/CommandMode.hpp"
 namespace Command {
 
   bool removeDep(Interface *inter) {
@@ -7,15 +8,15 @@ namespace Command {
     if (inter->args->count("args") == 0) {
       std::cout << R"EOF(
 Usage remove dep:
-   [inter->args]: the dependencies to remove
-   cmake remove dep [inter->args] 
+   [args]: the dependencies to remove
+   cmake remove dep [args] 
 
         )EOF" << std::endl;
       return false;
     }
     std::vector<std::string> name_to_remove = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string name : name_to_remove) {
-      std::cout << "inter->args:" << name << std::endl;
+      std::cout << "name:" << name << std::endl;
     }
     std::cout << "removing dependencies" << std::endl;
     std::erase_if(inter->pro->dependencies, [&name_to_remove](auto &dep) {
@@ -47,7 +48,9 @@ Usage remove dep:
         removeDep(this);
       }
       else if (subcommand == "mode") {
-        // OptionsInit::Mode(this);
+
+        OptionsInit::Mode(this);
+        ModeCommands::removePackages(this, this->args->operator[]("mode").as<std::string>());
         // this->mode();
       }else if(subcommand == "lib"){
         //TODO: remove lib, we don't have a lib in the project sruct

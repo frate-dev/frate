@@ -16,16 +16,12 @@ namespace Command {
   using Utils::CLI::List;
   using Utils::CLI::ListItem;
 
-
-
   bool addFlag(Interface *inter) {
     if (inter->args->count("subcommand") == 0) {
       for (auto flag : inter->args->operator[]("subcommand").as<std::vector<std::string>>()) {
         inter->pro->flags.push_back(flag);
       }
-
     }
-
     return true;
   }
 
@@ -82,10 +78,7 @@ namespace Command {
       OptionsInit::Modes(this);
       buildTypeAdd(this);
     }
-    if (subcommand ==  "mode"){
-      OptionsInit::Mode(this);
-      this->mode();
-    }
+
     return true;
   }
 }
