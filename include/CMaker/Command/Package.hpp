@@ -24,5 +24,6 @@ namespace Command::Packages {
   Package get(std::string query, std::vector<Package> deps);
 
   bool add(Interface* inter);
+  bool remove(Interface *inter);
 
 }

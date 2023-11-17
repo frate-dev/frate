@@ -40,11 +40,10 @@ namespace Command::ModeCommands {
     for (std::string dep : dependencies) {
       for(Mode &m : inter->pro->modes){
         if(m.name == mode){
-          for(auto it = m.dependencies.begin(); it != m.dependencies.end(); it++){
-            if(it->name == dep){
-              m.dependencies.erase(it);
-            }
-          }
+          std::erase_if(m.dependencies, [&dep](auto &d) {
+              return d.name == dep;
+          });
+
         }
       }
     }

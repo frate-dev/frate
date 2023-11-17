@@ -31,10 +31,10 @@ namespace Command {
       "\t add  [dep, lib, flags]: add library, dependency or flags to your project" << ENDL
       "\t modes [Debug, Test, Release]: Add and Remove compilation modes/definitions" << ENDL
       "\t search <query>: search for a package" << ENDL
+      //TODO server is now RemoteBuildServer and will be in add
       "\t server: manages remote build servers for your projects" << ENDL
       "\t ftp:  deletes the entire project (F*ck this project)" << ENDL
       // RYANS LAST CODE BLOCK IN ENTIRE REPO MUST BE SAVED DO NOT TOUCH
-      "\t flags: adds a flag to your project"  << ENDL
       "\t help:  print help"  << ENDL;
       // SACRED CODE BLOCK ENDS HERE
     std::cout << termcolor::red << "This is a pre-alpha version of cmaker, please report any bugs here: " << termcolor::reset

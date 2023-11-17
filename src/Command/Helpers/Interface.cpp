@@ -102,7 +102,7 @@ namespace Command {
       }
     }
 
-    else if (command == "remove"){
+    else if (command == "remove" || command == "rm"){
       OptionsInit::Remove(this);
       if(!this->remove()){
         std::cout << "Error: Could not remove project" << ENDL;

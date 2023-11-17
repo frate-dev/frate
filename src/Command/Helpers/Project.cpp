@@ -32,6 +32,7 @@ namespace Command {
         d.target_link = dep["target_link"];
         dependencies.push_back(d);
       }
+      std::vector<Mode> temp_modes;
       for (auto &mode: j["modes"]){
         Mode m;
         m.name = mode["name"];
@@ -44,8 +45,9 @@ namespace Command {
           d.target_link = dep["target_link"];
           m.dependencies.push_back(d);
         }
-        modes.push_back(m);
+        temp_modes.push_back(m);
       }
+      modes = temp_modes;
       flags = j["flags"];
     }
     nlohmann::json Project::toJson(){

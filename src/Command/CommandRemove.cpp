@@ -1,37 +1,10 @@
 #include <CMaker/Generators.hpp>
 #include <CMaker/Command.hpp>
 #include <CMaker/Command/CommandMode.hpp>
+#include <CMaker/Command/Package.hpp>
 namespace Command {
 
-  bool removeDep(Interface *inter) {
-
-    if (inter->args->count("args") == 0) {
-      std::cout << R"EOF(
-Usage remove dep:
-   [args]: the dependencies to remove
-   cmake remove dep [args] 
-
-        )EOF" << std::endl;
-      return false;
-    }
-    std::vector<std::string> name_to_remove = inter->args->operator[]("args").as<std::vector<std::string>>();
-    for (std::string name : name_to_remove) {
-      std::cout << "name:" << name << std::endl;
-    }
-    std::cout << "removing dependencies" << std::endl;
-    std::erase_if(inter->pro->dependencies, [&name_to_remove](auto &dep) {
-        for (std::string name : name_to_remove) {
-          if (dep.name == name) {
-            return true;
-          }
-        }
-        return false;
-    });
-
-    Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
-    return true;
-  }
+ 
   bool removeFlag(Interface *inter) {
     if (inter->args->count("args") == 0) {
     }
@@ -44,8 +17,8 @@ Usage remove dep:
       for (auto arg : args->operator[]("args").as<std::vector<std::string>>()) {
         std::cout << arg << std::endl;
       }
-      if (subcommand == "dep") {
-        removeDep(this);
+      if (subcommand == "package" || subcommand == "p") {
+        Packages::remove(this);
       }
       else if (subcommand == "mode") {
 

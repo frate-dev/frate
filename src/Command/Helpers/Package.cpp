@@ -13,8 +13,7 @@ namespace Command {
     data["git"] = this->git;
     data["git_short"] = this->git_short;
     data["git_prefixed"] = this->git_prefixed;
-    data["selected_version"] = this->selected_version;
-    data["git_description"] = this->git_description;
+    data["selected_version"] = this->selected_version; data["git_description"] = this->git_description;
     data["language"] = this->language;
     data["license"] = this->license;
     data["owner"] = this->owner;

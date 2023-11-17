@@ -69,7 +69,10 @@ namespace Command {
       OptionsInit::Modes(this);
       buildTypeAdd(this);
     }
+    //TODO add Remote server
+    //TODO add toolchain
     else if (subcommand == "author") {
+      //TODO implement author
       Author::add(this);
     }
 
