@@ -1,20 +1,23 @@
 #include <CMaker/Command.hpp>
 #include "cxxopts.hpp"
+#include <initializer_list>
 #include <memory>
 
-
 namespace Command {
+using std::function;
+using std::initializer_list;
 
-  bool OptionsInit::Main(Interface* inter) {
-    inter->InitHeader();
-    inter->options->parse_positional({"command"});
-    inter->options->allow_unrecognised_options().add_options()
-      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
-      ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
-      ("y,yes", "skip all y/n prompts", cxxopts::value<bool>()->default_value("false"))
-      ("h,help", "Print usage");
-
-    return inter->parse();
+bool OptionsInit::Main(Interface *inter) {
+  inter->InitHeader();
+  inter->options->parse_positional({"command"});
+  inter->options->allow_unrecognised_options().add_options()(
+      "command", "Command to run",
+      cxxopts::value<std::string>()->default_value("help"))(
+      "v,verbose", "Verbose output",
+      cxxopts::value<bool>()->default_value("false"))(
+      "y,confim-all", "skip all y/n prompts",
+      cxxopts::value<bool>()->default_value("false"))("h,help", "Print usage");
+  return inter->parse();
   }
 
   bool Interface::parse(){
@@ -26,6 +29,13 @@ namespace Command {
       return false;
     }
   }
+
+  bool Interface::registerCommand(initializer_list<std::string> aliases,
+                                  initializer_list<std::string> flags,
+                                  function<bool()> func) {
+    commands.push_back(Handler(aliases, flags, func));
+    return true;
+  }
   bool Interface::InitHeader(){
     try{
       this->options = std::make_shared<cxxopts::Options>("CMaker", "A CMake project generator, we suffer so you don't have to!");
@@ -35,6 +45,7 @@ namespace Command {
     }
     return true;
   }
+
   Interface::Interface(int argc, char** argv){
     this->argc = argc;
     this->argv = argv;
@@ -67,14 +78,14 @@ namespace Command {
     #endif
 
     std::cout << "Project Path: " << pro->project_path << ENDL;
-    if(command != "init"){
+    if(command != "new" && command != "n"){
       if(!this->LoadPackageJson()){
       }
     }
 
 
     using namespace cxxopts;
-
+    
     if (command == "new" || command == "n"){
       std::cout << "got here" << ENDL;
       OptionsInit::Init(this);
@@ -94,6 +105,7 @@ namespace Command {
         std::cout << "Error: Could not display help" << ENDL;
       }
     }
+
     else if (command == "ftp"){
       if(!this->ftp()){
         std::cout << "Error: Could not ftp project" << ENDL;
@@ -159,4 +171,5 @@ namespace Command {
   }
   Interface::~Interface(){
   }
-}
+
+  } // namespace Command

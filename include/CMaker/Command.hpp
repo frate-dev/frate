@@ -1,6 +1,7 @@
 #pragma once
 #include "nlohmann/json_fwd.hpp"
 #include <exception>
+#include <initializer_list>
 #include <memory>
 #include <string>
 #include <vector>
@@ -112,6 +113,12 @@ namespace Command {
     nlohmann::json toJson();
   } Project;
 
+  typedef struct Handler_s {
+    std::initializer_list<std::string> alisas;
+    std::initializer_list<std::string> flags;
+    std::function<bool()> callback;
+  } Handler;
+
   class Interface{
     private:
       //Commands;
@@ -133,9 +140,14 @@ namespace Command {
       bool build();
       bool list();
       //TODO: setup register comamnd
-      bool registerCommand(std::string name, std::vector<std::string> subcommands, std::function<bool()> func);
+      bool registerCommand(
+          std::initializer_list<std::string> alisas,
+          std::initializer_list<std::string> flags,
+          std::function<bool()> callback
+          );
     public:
       std::shared_ptr<Project> pro;
+      std::vector<Handler> commands;
       bool skip_prompts{false};
       bool parse();
       std::shared_ptr<cxxopts::Options> options;
