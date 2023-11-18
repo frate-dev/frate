@@ -1,4 +1,4 @@
-#include "Command.hpp"
+#include <CMaker/Command.hpp>
 
 
 namespace Command {
@@ -25,13 +25,29 @@ namespace Command {
       project_type = j["project_type"];
       project_description = j["project_description"];
       for (auto &dep : j["dependencies"]) {
-        Dependency d;
+        Package d;
         d.name = dep["name"];
         d.git = dep["git"];
-        d.version = dep["version"];
+        d.selected_version = dep["version"];
         d.target_link = dep["target_link"];
         dependencies.push_back(d);
       }
+      std::vector<Mode> temp_modes;
+      for (auto &mode: j["modes"]){
+        Mode m;
+        m.name = mode["name"];
+        m.flags = mode["flags"];
+        for (auto &dep : mode["dependencies"]) {
+          Package d;
+          d.name = dep["name"];
+          d.git = dep["git"];
+          d.selected_version = dep["version"];
+          d.target_link = dep["target_link"];
+          m.dependencies.push_back(d);
+        }
+        temp_modes.push_back(m);
+      }
+      modes = temp_modes;
       flags = j["flags"];
     }
     nlohmann::json Project::toJson(){
@@ -41,7 +57,7 @@ namespace Command {
         json dep_json;
         dep_json["name"] = dep.name;
         dep_json["git"] = dep.git;
-        dep_json["version"] = dep.version;
+        dep_json["version"] = dep.selected_version;
         dep_json["target_link"] = dep.target_link;
         deps.push_back(dep_json);
       }
@@ -49,11 +65,11 @@ namespace Command {
       for (auto &mode : modes) {
         json mode_json;
         json mode_deps = json::array();
-        for (Dependency dep: mode.dependencies) {
+        for (Package dep: mode.dependencies) {
           json dep_json;
           dep_json["name"] = dep.name;
           dep_json["git"] = dep.git;
-          dep_json["version"] = dep.version;
+          dep_json["version"] = dep.selected_version;
           dep_json["target_link"] = dep.target_link;
           mode_deps.push_back(dep_json);
         }

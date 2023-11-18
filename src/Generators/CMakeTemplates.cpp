@@ -1,7 +1,7 @@
 #include <string>
 #include <nlohmann/json.hpp>
-#include "../Command/Command.hpp"
-#include "../Utils/General.hpp"
+#include <CMaker/Command.hpp>
+#include <CMaker/Utils/General.hpp>
 #include <inja.hpp>
 
 namespace Generators::CMakeList {
@@ -64,6 +64,7 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
 )
 
 message("Sources: ${SOURCES}")
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} {% for flag in dep.flags %} {{ flag }} {% endfor %}")
 
 include_directories($CMAKE_SOURCE_DIR/{{ include_dir }})
 set(HEADER_DIR $CMAKE_SOURCE_DIR/{{ include_dir }})
@@ -83,7 +84,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "{{ mode.name }}")
     GIT_TAG {{ dep.version }}
   )
   {% endfor %}
-  set_target_properties({{project_name}} PROPERTIES COMPILE_FLAGS "{% for flag in mode.flags %} {{ flag }} {% endfor %}")
+  set_target_properties({{project_name}} PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} {% for flag in mode.flags %} {{ flag }} {% endfor %}")
 endif()
 ##endfor
 set(BUILD_DIR {{ build_dir }})

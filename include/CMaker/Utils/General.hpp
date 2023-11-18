@@ -48,4 +48,9 @@ namespace Utils {
           return *this;
       }
   };
+  /*
+   * FUCKING MAGIC
+   */
+  int levensteinDistance(std::string aStr, std::string bStr);
+  int getStringScore(std::string &text, std::string &query);
 }

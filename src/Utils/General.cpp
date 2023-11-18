@@ -1,4 +1,4 @@
-#include "General.hpp"
+#include <CMaker/Generators.hpp>
 #include <iostream>
 #include <vector>
 #include <nlohmann/json.hpp>
@@ -117,9 +117,9 @@ namespace Utils{
     try {
       return json::parse(responseStr);
     } catch (json::parse_error& e) {
-      std::cout << "Failed to parse index.json" << std::endl;
-      std::cout << "Error: " << e.what() << std::endl;
       std::cout << "At: " << e.byte << std::endl;
+      std::cout << "Error: " << e.what() << std::endl;
+      std::cout << "Failed to parse index.json" << std::endl;
       std::cout << "Text: " << responseStr << std::endl;
       exit(-1);
     }
@@ -131,5 +131,60 @@ namespace Utils{
     }else{
       return -1;
     }
+  }
+  /*
+   * FUCKING MAGIC
+   */
+  int levensteinDistance(std::string aStr, std::string bStr){
+    //minimize the amount of memory used
+    std::string* a = &aStr;
+    std::string* b = &bStr;
+    if(aStr.length() > bStr.length()){
+      a = &bStr;
+      b = &aStr;
+    }
+    int aLen = a->length();
+    int bLen = b->length();
+    int* curr = new int[aLen + 1];
+    int* prev = new int[aLen + 1];
+    for(int i = 0; i <= aLen; i++){
+      prev[i] = i;
+    }
+
+    for(int i = 1; i <= bLen; i++){
+      curr[0] = i;
+      for(int j = 1; j <= aLen; j++){
+        int cost = (*a)[j - 1] == (*b)[i - 1] ? 0 : 1;
+        curr[j] = std::min(std::min(curr[j - 1] + 1, prev[j] + 1), prev[j - 1] + cost);
+      }
+      int* temp = prev;
+      prev = curr;
+      curr = temp;
+    }
+    int result = prev[aLen];
+    delete[] prev;
+    delete[] curr;
+    return result;
+  }
+  int getStringScore(std::string &text, std::string &query){
+    int score = 0;
+    std::vector<std::string> split_text = Utils::split(text, ' ');
+    for(std::string word: split_text){
+      Utils::toLower(word);
+      Utils::toLower(query);
+      if(word == query){
+        score += 100;
+      }
+      if(word.find(query) != std::string::npos){
+        score += 50;
+      }
+      if(std::abs((int)text.size() - (int)query.size()) < 3){
+        score += 1;
+      }
+    }
+    if(Utils::levensteinDistance(text, query) < 3){
+      score += 30;
+    }
+    return score;
   }
 }

@@ -1,4 +1,4 @@
-#include "CLI.hpp"
+#include <CMaker/Utils/CLI.hpp>
 #include <sstream>
 #include <string>
 #include <stdint.h>
@@ -66,7 +66,7 @@ namespace Utils::CLI {
         push_line(i, items[i]);
       }
     }else{
-      for(int i = 0; i < items.size(); i++){
+      for(size_t i = 0; i < items.size(); i++){
         push_line(i, items[i]);
       }
     }

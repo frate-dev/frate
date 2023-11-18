@@ -1,0 +1,53 @@
+{
+  "authors": [],
+  "build_dir": "build",
+  "cmake_version": "3.10",
+  "compiler": "g++",
+  "dependencies": [
+    {
+      "git": "https://github.com/libsdl-org/SDL.git",
+      "name": "SDL2",
+      "target_link": "",
+      "version": "release-2.28.4"
+    },
+    {
+      "git": "https://github.com/catchorg/Catch2",
+      "name": "catch2",
+      "target_link": "",
+      "version": "v3.4.0"
+    }
+  ],
+  "flags": [],
+  "include_dir": "include",
+  "lang": "cpp",
+  "lang_version": "20",
+  "modes": [
+    {
+      "dependencies": [],
+      "flags": [
+        "-O2 "
+      ],
+      "name": "Release"
+    },
+    {
+      "dependencies": [],
+      "flags": [
+        "-g"
+      ],
+      "name": "Debug"
+    },
+    {
+      "dependencies": [],
+      "flags": [
+        "-g"
+      ],
+      "name": "Test"
+    }
+  ],
+  "project_description": "",
+  "project_name": "",
+  "project_path": "/home/lucas/wrk/cmaker",
+  "project_type": "executable",
+  "project_version": "0.0.1",
+  "src_dir": "src"
+}

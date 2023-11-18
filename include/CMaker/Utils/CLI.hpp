@@ -99,7 +99,7 @@ namespace Utils::CLI {
       std::string color{Ansi::WHITE};
       std::string input;
       T value;
-      int max_length{0};
+      size_t max_length{0};
       bool print_valid_options{false};
       bool exit_on_failure{false};
       std::function<bool(T)> validator;

@@ -1,45 +1,42 @@
-#include "Command.hpp"
+#include <CMaker/Command.hpp>
 #include <filesystem>
 
+namespace Command {
+using namespace std::filesystem;
 
-namespace Command{
-  bool cleanCache(std::shared_ptr<Project> pro){
-    const std::vector<std::filesystem::path> files_to_delete = {
+bool cleanCache(std::shared_ptr<Project> pro) {
+  const std::vector<path> files_to_delete = {
       pro->project_path / "CMakeCache.txt",
       pro->project_path / "install_manifest.txt",
       pro->project_path / "cmake_install.cmake",
-      pro->project_path / "Makefile"
-    };
-    const std::vector<std::filesystem::path> dirs_to_delete = {
-      pro->project_path / "CMakeFiles/",
-      pro->project_path / "_deps/"
-    };
+      pro->project_path / "Makefile"};
+  const std::vector<std::filesystem::path> dirs_to_delete = {
+      pro->project_path / "CMakeFiles/", pro->project_path / "_deps/"};
 
-    for(auto& file: files_to_delete){
-      if(std::filesystem::exists(file)){
-        try{
-          std::cout << "Deleting: " << file << std::endl;
-          std::filesystem::remove(file);
-        } catch(std::exception& e){
-          std::cout << e.what() << std::endl;
-          return false;
-        }
+  for (auto &file : files_to_delete) {
+    if (exists(file)) {
+      try {
+        std::cout << "Deleting: " << file << std::endl;
+        std::filesystem::remove(file);
+      } catch (std::exception &e) {
+        std::cout << e.what() << std::endl;
+        return false;
       }
     }
-    for(auto& dir: dirs_to_delete){
-      if(std::filesystem::exists(dir)){
-        try{
-          std::cout << "Deleting: " << dir << std::endl;
-          std::filesystem::remove_all(dir);
-        } catch(std::exception& e){
-          std::cout << e.what() << std::endl;
-          return false;
-        }
+  }
+  for (auto &dir : dirs_to_delete) {
+    if (exists(dir)) {
+      try {
+        std::cout << "Deleting: " << dir << std::endl;
+        remove_all(dir);
+      } catch (std::exception &e) {
+        std::cout << e.what() << std::endl;
+        return false;
       }
     }
+  }
 
-
-    return true;
+  return true;
   }
 
 
@@ -59,11 +56,11 @@ namespace Command{
 
     //TODO: delete cache files and deps
     std::cout << "Cleaning: " << std::endl;
-    if(std::filesystem::exists(pro->project_path / "build")){
-      for(auto& p: std::filesystem::directory_iterator(pro->project_path / "build")){
+    if(exists(pro->project_path / "build")){
+      for (directory_entry p : directory_iterator(pro->project_path / "build")) {
         std::cout << "Deleting" << p.path() << std::endl;
         if(p.is_directory()){
-          std::filesystem::remove_all(p.path());
+          remove_all(p.path());
         } else {
           std::filesystem::remove(p.path());
         }
@@ -74,4 +71,4 @@ namespace Command{
 
     return true;
   }
-}
+  } // namespace Command

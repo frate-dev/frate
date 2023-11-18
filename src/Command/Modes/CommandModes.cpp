@@ -1,20 +1,20 @@
-#include "Command.hpp"
-#include "../Generators/Generators.hpp"
+#include <CMaker/Command.hpp>
+#include <CMaker/Generators.hpp>
+#include <sys/socket.h>
 
-namespace  Command{
+namespace  Command::Modes{
   bool getModeName(Mode &mode){
     Prompt<std::string> *name = new Prompt<std::string>("Name: ");
     name->Run();
     mode.name = name->Get();
     return true;
   }
-
-  bool modesAdd(Interface* interface){
+  bool add(Interface* interface){
     std::cout << "Adding mode" << std::endl; 
     Mode mode;
     getModeName(mode);
     interface->pro->modes.push_back(mode);
-    
+
     std::cout << "Writing config.json" << std::endl;
     if(!Generators::ConfigJson::writeConfig(interface->pro)){
       std::cout << "Failed to write config.json" << std::endl;
@@ -25,37 +25,20 @@ namespace  Command{
     }
     return true;
   }
-  bool modesRemove(Interface* interface){
+  bool remove(Interface* interface){
     std::cout << "Removing mode" << std::endl;
     Prompt<std::string> *name = new Prompt<std::string>("Name: ");
     name->Run();
     std::string mode_name = name->Get();
+
     std::erase_if(interface->pro->modes, [&mode_name](Mode &mode){
-            return mode.name == mode_name;
-    });
+        return mode.name == mode_name;
+        });
     return true;
   }
-  bool modesList(Interface* interface){
+  bool list(Interface* interface){
     for(auto mode : interface->pro->modes){
       std::cout << mode.name << std::endl;
-    }
-    return true;
-  }
-  bool Interface::modes(){
-    this->LoadPackageJson();
-    if(!args->count("subcommand")){
-      this->help();
-      return false;
-    }
-    std::string subcommand = args->operator[]("subcommand").as<std::string>();
-    if(subcommand == "add"){
-      return modesAdd(this);
-    }
-    if(subcommand == "remove"){
-      return modesRemove(this);
-    }
-    if (subcommand == "list"){
-      return modesList(this);
     }
     return true;
   }

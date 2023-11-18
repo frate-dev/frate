@@ -1,4 +1,4 @@
-#include "Command/Command.hpp"
+#include <CMaker/Command.hpp>
 #include <vector>
 #include <string>
 // LUCAS PAY ATTENTION TO IF THE HEADER IS .hpp OR .h
@@ -11,9 +11,10 @@
 
 #ifdef TEST
   #include <catch2/catch_session.hpp>
-  #include "Test/Test.hpp"
+  #include <CMaker/Test/Test.hpp>
 #endif
 int main(int argc, char **argv) {
+
 
   // LUCAS MAKE SURE YOU INITIALIZE YOUR FUCKING STRUCT YOU TWAT
   //std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
@@ -26,7 +27,7 @@ int main(int argc, char **argv) {
     return (numFailed < 0xff ? numFailed : 0xff);
   #else
 
-
+  //TODO: Get some path checking in this bitch
   new Command::Interface(argc,argv);
 
   #endif
