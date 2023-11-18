@@ -102,6 +102,13 @@ namespace Command {
       }
     }
 
+    else if(command == "list"){
+      OptionsInit::List(this);
+      if(!this->list()){
+        std::cout << "Error: Could not list project" << ENDL;
+      }
+    }
+
     else if (command == "remove" || command == "rm"){
       OptionsInit::Remove(this);
       if(!this->remove()){

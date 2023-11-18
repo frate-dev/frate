@@ -129,6 +129,7 @@ namespace Command {
       bool toolchains();
       bool clean();
       bool build();
+      bool list();
       //TODO: setup register comamnd
       bool registerCommand(std::string name, std::vector<std::string> subcommands, std::function<bool()> func);
     public:
@@ -168,6 +169,7 @@ namespace Command {
       bool Watch(Interface*);
       bool Clean(Interface*);
       bool Build(Interface*);
+      bool List(Interface*);
   };
 
   std::string downloadIndex();

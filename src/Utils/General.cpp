@@ -117,9 +117,9 @@ namespace Utils{
     try {
       return json::parse(responseStr);
     } catch (json::parse_error& e) {
-      std::cout << "Failed to parse index.json" << std::endl;
-      std::cout << "Error: " << e.what() << std::endl;
       std::cout << "At: " << e.byte << std::endl;
+      std::cout << "Error: " << e.what() << std::endl;
+      std::cout << "Failed to parse index.json" << std::endl;
       std::cout << "Text: " << responseStr << std::endl;
       exit(-1);
     }
@@ -145,8 +145,8 @@ namespace Utils{
     }
     int aLen = a->length();
     int bLen = b->length();
-    int* prev = new int[aLen + 1];
     int* curr = new int[aLen + 1];
+    int* prev = new int[aLen + 1];
     for(int i = 0; i <= aLen; i++){
       prev[i] = i;
     }
