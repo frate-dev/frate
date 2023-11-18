@@ -5,9 +5,9 @@
 namespace Command{
   namespace RemoteServers{
     
-    bool add(std::vector<RemoteServer> servers);
-    bool list(std::vector<RemoteServer> servers);
+    bool add(Interface* inter);
+    bool list(Interface* inter);
     bool get(Interface* inter);
-    bool set(std::vector<RemoteServer> servers);
+    bool set(Interface* inter);
   }
 }

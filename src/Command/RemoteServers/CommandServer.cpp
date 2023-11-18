@@ -4,6 +4,66 @@
 
 namespace Command::RemoteServers{
   using namespace Utils::CLI;
+  std::vector<RemoteServer> remoteServerData(Interface* inter){
+    std::fstream file;
+    std::string build_servers_dir= std::string(std::getenv("HOME"))  + "/.config/cmaker/";
+    if (!std::filesystem::exists(build_servers_dir)){
+      std::filesystem::create_directory(build_servers_dir);
+    }
+    std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json";
+    std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "current_build_server.json";
+    if (!std::filesystem::exists(build_servers)){
+      std::ofstream file(build_servers);
+      file << "[]";
+    }
+    if (!std::filesystem::exists(current_build_server)){
+      std::ofstream file(current_build_server);
+      file << "{}";
+    }
+    file.open(build_servers);
+
+    std::vector<RemoteServer> servers;
+    json server_list;
+    try{
+      server_list = json::parse(file);
+    }
+    catch(json::exception &e){
+      std::cout << "Error: Could not load build_server.json" << std::endl;
+      exit(1);
+    }
+    try{
+      json current_build_server_json = json::parse(std::ifstream(current_build_server));
+      if (!current_build_server_json["name"].is_null()) {
+        inter->pro->build_server = RemoteServer(
+            current_build_server_json["name"].get<std::string>(),
+            current_build_server_json["address"].get<std::string>(), 
+            current_build_server_json["username"].get<std::string>(),
+            current_build_server_json["authMethod"].get<std::string>(),
+            current_build_server_json["password"].get<std::string>(),
+            current_build_server_json["key"].get<std::string>(),
+            current_build_server_json["port"].get<int>()
+            );
+      }
+
+    }
+    catch(json::exception &e){
+      std::cout << "Error: Could not load current_build_server.json" << std::endl;
+      exit(1);
+    }
+    for (json& server : server_list){
+      RemoteServer  build_server = RemoteServer(
+          server["name"].get<std::string>(),
+          server["address"].get<std::string>(), 
+          server["username"].get<std::string>(),
+          server["authMethod"].get<std::string>(),
+          server["password"].get<std::string>(),
+          server["key"].get<std::string>(),
+          server["port"].get<int>()
+          );
+      servers.push_back(build_server);
+    }
+    return servers;
+  }
   bool getServerName(std::string& name){
     Prompt<std::string> *name_promp = new Prompt<std::string>("Enter the name of the server: ");
     name_promp->Run();
@@ -73,8 +133,9 @@ Usage server:
         )EOF" << std::endl;
     return true;
   }
-  bool list(std::vector<RemoteServer> servers){
+  bool list(Interface* inter){
     //TODO put this in  the constructor
+    std::vector<RemoteServer> servers =  remoteServerData(inter);
     Utils::TableFormat table;
     table.width = 20;
     table << "Name"  << "Address" << "Port" << "Username" <<  "AuthMethod" << ENDL;
@@ -85,7 +146,8 @@ Usage server:
     return true;
   }
 
-  bool set( std::vector<RemoteServer> servers){
+  bool set(Interface* inter){
+    std::vector<RemoteServer> servers =  remoteServerData(inter);
     std::string name;
     getServerName(name);
     for (auto& server: servers){
@@ -163,65 +225,6 @@ Usage server:
     return true;
   }
 
-  std::vector<RemoteServer> remoteServerData(Interface* inter){
-    std::fstream file;
-    std::string build_servers_dir= std::string(std::getenv("HOME"))  + "/.config/cmaker/";
-    if (!std::filesystem::exists(build_servers_dir)){
-      std::filesystem::create_directory(build_servers_dir);
-    }
-    std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json";
-    std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "current_build_server.json";
-    if (!std::filesystem::exists(build_servers)){
-      std::ofstream file(build_servers);
-      file << "[]";
-    }
-    if (!std::filesystem::exists(current_build_server)){
-      std::ofstream file(current_build_server);
-      file << "{}";
-    }
-    file.open(build_servers);
 
-    std::vector<RemoteServer> servers;
-    json server_list;
-    try{
-      server_list = json::parse(file);
-    }
-    catch(json::exception &e){
-      std::cout << "Error: Could not load build_server.json" << std::endl;
-      exit(1);
-    }
-    try{
-      json current_build_server_json = json::parse(std::ifstream(current_build_server));
-      if (!current_build_server_json["name"].is_null()) {
-        inter->pro->build_server = RemoteServer(
-            current_build_server_json["name"].get<std::string>(),
-            current_build_server_json["address"].get<std::string>(), 
-            current_build_server_json["username"].get<std::string>(),
-            current_build_server_json["authMethod"].get<std::string>(),
-            current_build_server_json["password"].get<std::string>(),
-            current_build_server_json["key"].get<std::string>(),
-            current_build_server_json["port"].get<int>()
-            );
-      }
-
-    }
-    catch(json::exception &e){
-      std::cout << "Error: Could not load current_build_server.json" << std::endl;
-      exit(1);
-    }
-    for (json& server : server_list){
-      RemoteServer  build_server = RemoteServer(
-          server["name"].get<std::string>(),
-          server["address"].get<std::string>(), 
-          server["username"].get<std::string>(),
-          server["authMethod"].get<std::string>(),
-          server["password"].get<std::string>(),
-          server["key"].get<std::string>(),
-          server["port"].get<int>()
-          );
-      servers.push_back(build_server);
-    }
-    return servers;
-  }
 
 }
