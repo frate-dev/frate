@@ -205,7 +205,6 @@ namespace Command::Packages {
   std::pair<bool, Package> get(std::string query){
     json rawIndex = fetchIndex();
     Package package;
-
     for(auto& [name, pi]: rawIndex.items()){
       if(name == query){
         package.fromJson(pi);
