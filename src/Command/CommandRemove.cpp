@@ -2,6 +2,7 @@
 #include <CMaker/Command.hpp>
 #include <CMaker/Command/CommandMode.hpp>
 #include <CMaker/Command/Package.hpp>
+#include <CMaker/Command/RemoteServers.hpp>
 namespace Command {
 
  
@@ -33,7 +34,11 @@ namespace Command {
         //TODO: remove toolchain
       }else if(subcommand == "author"){
         //TODO: remove author
-      }else if(subcommand == "license"){
+      }
+      else if (subcommand == "server") {
+        RemoteServers::remove(this);
+      }
+      else if(subcommand == "license"){
         //TODO: remove license
       }
 

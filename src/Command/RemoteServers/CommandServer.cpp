@@ -83,6 +83,31 @@ namespace Command::RemoteServers{
     port = port_promp->Get();
     return true;
   }
+  bool remove(Interface* inter){
+    std::vector<RemoteServer> servers =  remoteServerData(inter);
+    std::string name;
+    getServerName(name);
+    std::erase_if(servers, [&name](RemoteServer &server){
+        return server.name == name;
+        });
+    std::vector<json> build_server_json;
+    for (RemoteServer& build_server: servers){
+      json build_server_json_tmp = {
+        {"name", build_server.name},
+        {"address", build_server.ip},
+        {"port", build_server.port},
+        {"username", build_server.username},
+        {"authMethod", build_server.authMethod},
+        {"password", build_server.password.value_or("")},
+        {"key", build_server.key.value_or("")}
+      }; 
+      build_server_json.push_back(build_server_json_tmp);
+    }
+    std::ofstream file;
+    file.open(std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json");
+    file << build_server_json;
+    return true;
+  }
 
   bool getServerUsername(std::string& username){
     Prompt<std::string> *username_promp = new Prompt<std::string>("Enter the username of the server: ");
@@ -175,7 +200,8 @@ Usage server:
     return false;
   }
 
-  bool add(std::vector<RemoteServer> servers){
+  bool add(Interface* inter){
+    std::vector<RemoteServer> servers =  remoteServerData(inter);
     std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json";
     std::string name, address,  username, authMethod, password, key;
     int port;
@@ -224,7 +250,5 @@ Usage server:
     table << inter->pro->build_server.name << inter->pro->build_server.ip << inter->pro->build_server.port << inter->pro->build_server.username << inter->pro->build_server.authMethod << ENDL;
     return true;
   }
-
-
 
 }

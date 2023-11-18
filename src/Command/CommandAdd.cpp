@@ -6,6 +6,7 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <CMaker/Command/Package.hpp>
+#include <CMaker/Command/RemoteServers.hpp>
 #include <string>
 #include <CMaker/Utils/General.hpp>
 #include <CMaker/Utils/CLI.hpp>
@@ -105,6 +106,10 @@ namespace Command {
       buildTypeAdd(this);
     }
     //TODO add Remote server
+    else if (subcommand == "server") {
+      //TODO implement server
+      RemoteServers::add(this);
+    }
     //TODO add toolchain
     else if (subcommand == "author") {
       //TODO implement author
