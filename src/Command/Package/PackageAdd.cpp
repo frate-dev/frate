@@ -41,12 +41,14 @@ namespace Command::Packages {
 
       if(!latest){
         version = promptForVersion(chosen_package);
+        chosen_package.selected_version = version;
       }else{
         if(chosen_package.versions.size() == 0){
           std::cout << "No versions found" << std::endl;
           return false;
         }
         version = chosen_package.versions[0];
+        chosen_package.selected_version = version;
       }
       if(dependenciesConflict(inter->pro->dependencies, chosen_package.name)){
         std::cout << "Package already installed" << std::endl;

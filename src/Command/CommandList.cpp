@@ -1,4 +1,5 @@
 #include <CMaker/Command.hpp>
+#include <CMaker/Command/Package.hpp>
 #include <CMaker/Command/Modes.hpp>
 #include <CMaker/Command/RemoteServers.hpp>
 #include <CMaker/Utils/CLI.hpp>
@@ -33,6 +34,7 @@ namespace Command{
     }else if(target == "servers" || target == "remote-servers"){
       return RemoteServers::list(this);
     }else if(target == "installed-packages" || target == "packages" || target == "p"){
+      return Packages::list(this);
       //TODO: List installed packages
     }else if(target == "flags" || target == "f"){
       //TODO: List flags

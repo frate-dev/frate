@@ -1,3 +1,5 @@
+#include <stdint.h>
+#include "termcolor/termcolor.hpp"
 #include <CMaker/Generators.hpp>
 #include <iostream>
 #include <vector>
@@ -94,18 +96,20 @@ namespace Utils{
   std::string fetchText(std::string url) {
     std::string requrl = url;
     CurlResponse r = HttpGet(requrl);
+    std::cout << "Attempting to download: " << termcolor::bright_blue << url << termcolor::reset << std::endl;
     
     switch(r.status_code){
       case 200:
-        std::cout << "Downloaded index.json" << std::endl;
+        std::cout << termcolor::bright_green << "Successfully downloaded: "
+        << termcolor::bright_blue << url << termcolor::reset << std::endl;
         break;
       case 404:
-        std::cout << "Failed to download index.json" << std::endl;
+        std::cout << termcolor::bright_red << "Failed to download: " << url << termcolor::reset << std::endl;
         std::cout << "Error: " << r.error << std::endl;
         exit(-1);
         break;
       default:
-        std::cout << "Failed to download index.json" << std::endl;
+        std::cout << termcolor::bright_red << "Failed to download: " << url << termcolor::reset << std::endl;
         std::cout << "Error: " << r.error << std::endl;
         exit(-1);
         break;
