@@ -10,7 +10,9 @@ namespace Command::Packages {
       "-m",
       "--target",
       "-t",
-      "--help"
+      "--help",
+      "--latest",
+      "-l"
     }
   };
 
@@ -21,17 +23,34 @@ namespace Command::Packages {
   std::string promptForVersion(Package &chosen_package);
 
   //Get the exact package from the query
-  std::pair<bool,Package> get(std::string query);
+  std::pair<bool,Package> getExact(std::string query);
 
 
   
-  //Add package command
+  /*
+   * Add package command adds a package to a project
+   * if a package is not exact then it will prompt the user with search results for package
+   * if -l is not specified then it will prompt the user for a version
+   * if -l is specified then it will install the latest version
+   */
   bool add(Interface* inter);
-  //Removed packackage command
+  /*
+   * Remove package command, removes a package from the project
+   * TODO: implement local package search
+   */
   bool remove(Interface *inter);
+  //List packages command, lists installed packages
+  bool list(Interface *inter);
+  /*
+   * Get package command, lists information about a pacakge
+   * TODO: implement search if package is not exact
+   */
+  bool get(Interface *inter);
 
-  //Search command
-  //Search for a package and return a bool if command run successfully
+  /*
+   * Search command
+   * Search for a package and return a bool if command run successfully
+   */
   bool search(Interface* inter);
 
   //MOSTLY INTERNAL STUFF
@@ -44,3 +63,4 @@ namespace Command::Packages {
 
 
 }
+

@@ -45,15 +45,6 @@ namespace Command {
       ("l,language", "Language of the project", cxxopts::value<std::string>()->default_value("cpp"));
     return inter->parse();
   }
-  bool OptionsInit::Add(Interface* inter) {
-    inter->InitHeader();
-    inter->options->parse_positional({"command", "subcommand"});
-    inter->options->allow_unrecognised_options().add_options()
-      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
-      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
-    inter->options->help();
-    return inter->parse();
-  }
   bool OptionsInit::List(Interface* inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});

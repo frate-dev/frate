@@ -17,6 +17,15 @@ namespace Command {
   using nlohmann::json;
   using Utils::CLI::ListItem;
 
+  bool OptionsInit::Add(Interface* inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand"});
+    inter->options->allow_unrecognised_options().add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
+    inter->options->help();
+    return inter->parse();
+  }
   bool addFlags(Interface *inter) {
     std::cout << "Adding flags" << std::endl; 
     std::vector<std::string> raw_flags = inter->args->unmatched();

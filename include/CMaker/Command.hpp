@@ -117,11 +117,13 @@ namespace Command {
       //Commands;
       bool init();
       bool add();
+      bool get();
       bool remove();
       bool update();
       bool run();
       bool help();
       bool search();
+      //TODO: remove this
       bool setRemoteServer(std::vector<RemoteServer> servers);
       bool getBuildServer();
       bool ftp();
