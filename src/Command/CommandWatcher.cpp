@@ -73,30 +73,30 @@ void watcher(const std::function<void()> &changeCallback, std::string path) {
 #ifdef DEBUG
     for (auto filetoken : std::filesystem::recursive_directory_iterator(path)) {
 #else
-    for (auto filetoken : std::filesystem::recursive_directory_iterator(path)) {
+      for (auto filetoken : std::filesystem::recursive_directory_iterator(path)) {
 #endif
-      if (std::filesystem::is_directory(filetoken.path())) {
-        dirs.push_back(filetoken.path());
+        if (std::filesystem::is_directory(filetoken.path())) {
+          dirs.push_back(filetoken.path());
+        }
       }
-    }
-    if (dirs.size() != filedescriptors) {
-      std::cout << "\nDirectory change detected\n" << std::endl;
-      filedescriptors = walk(epoll_fd, path.c_str());
-    }
-    if (num_events > 0) {
-      char buffer[1024];
-      while (read(events[0].data.fd, &buffer, sizeof(buffer)) < 0) {
+      if (dirs.size() != filedescriptors) {
+        std::cout << "\nDirectory change detected\n" << std::endl;
+        filedescriptors = walk(epoll_fd, path.c_str());
       }
-      std::cout << buffer << std::endl;
+      if (num_events > 0) {
+        char buffer[1024];
+        while (read(events[0].data.fd, &buffer, sizeof(buffer)) < 0) {
+        }
+        std::cout << buffer << std::endl;
+      }
+      changeCallback();
     }
-    changeCallback();
-  }
 
-  // Don't forget to clean up your file descriptors when you're done
-  close(watch_desc);
-  close(inotify_fd);
-  close(epoll_fd);
-}
+    // Don't forget to clean up your file descriptors when you're done
+    close(watch_desc);
+    close(inotify_fd);
+    close(epoll_fd);
+  }
 
 bool Interface::watch() {
   // This is where you call the watcher function and provide a lambda for the
@@ -160,7 +160,7 @@ bool Interface::watch() {
               pro->project_name + "'";
         }
 
-#else
+      #else
         std::string command =
             "cmake . && make  && ./" + pro->build_dir + "/" + pro->project_name;
 

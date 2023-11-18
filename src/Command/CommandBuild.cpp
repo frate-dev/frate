@@ -1,7 +1,6 @@
 #include <CMaker/Command.hpp>
 
 namespace Command {
-
   bool Interface::build() {
     std::string target;
     std::string mode;

@@ -163,6 +163,7 @@ namespace Command {
       bool Update(Interface*);
       bool Main(Interface*);
       bool Modes(Interface*);
+      bool Flags(Interface*);
       bool Mode(Interface*);
       bool Watch(Interface*);
       bool Clean(Interface*);
