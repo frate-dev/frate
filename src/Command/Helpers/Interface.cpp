@@ -5,6 +5,18 @@
 
 namespace Command {
 
+  bool OptionsInit::Main(Interface* inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command"});
+    inter->options->allow_unrecognised_options().add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("v,verbose", "Verbose output", cxxopts::value<bool>()->default_value("false"))
+      ("y,yes", "skip all y/n prompts", cxxopts::value<bool>()->default_value("false"))
+      ("h,help", "Print usage");
+
+    return inter->parse();
+  }
+
   bool Interface::parse(){
     try{
       this->args = std::make_shared<cxxopts::ParseResult>(this->options->parse(argc, argv));

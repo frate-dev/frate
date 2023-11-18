@@ -3,6 +3,15 @@
 #include <CMaker/Command/RemoteServers.hpp>
 #include <CMaker/Utils/CLI.hpp>
 namespace Command{
+  bool OptionsInit::List(Interface* inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand"});
+    inter->options->allow_unrecognised_options().add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
+    inter->options->help();
+    return inter->parse();
+  }
   // bool modesList(Interface* interface){
   //   for(auto mode : interface->pro->modes){
   //     std::cout << mode.name << std::endl;

@@ -2,10 +2,8 @@
 
 
 namespace Command::Packages {
-
-  bool get(Interface *inter) {
+  bool list(Interface *inter) {
     if (inter->args->count("args") == 0) {
-      //TODO: get package info
 
     }
   }

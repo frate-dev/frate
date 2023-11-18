@@ -15,6 +15,20 @@ namespace Command {
 using Utils::CLI::Prompt;
 using Utils::CLI::Ansi::RED;
 
+bool OptionsInit::Init(Interface* inter) {
+  inter->InitHeader();
+  inter->options->parse_positional({"command", "subcommand"});
+  inter->options->add_options()
+    ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+    ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
+    ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
+    ("name", "Name of the project", cxxopts::value<std::string>()->default_value("false"))
+    ("t,type", "Type of the project", cxxopts::value<std::string>()->default_value(ProjectType::EXECUTABLE))
+    ("l,language", "Language of the project", cxxopts::value<std::string>()->default_value("cpp"));
+  return inter->parse();
+}
+
+
 bool createJson(std::shared_ptr<Project> pro) {
   // Lucas did it again
   std::shared_ptr<Generators::ConfigJson::Config> config_json =

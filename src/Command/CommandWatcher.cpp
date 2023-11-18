@@ -8,6 +8,15 @@
 #include <sys/inotify.h>
 
 namespace Command {
+  bool OptionsInit::Watch(Interface *inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command"});
+    inter->options->add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("r,remote-build", "Build server to use", cxxopts::value<bool>()->default_value("false"))
+      ("c,args", "command to pass to dev", cxxopts::value<std::vector<std::string>>());
+    return inter->parse();
+  }
 using std::filesystem::directory_entry;
 using std::filesystem::recursive_directory_iterator;
 using std::views::filter;
