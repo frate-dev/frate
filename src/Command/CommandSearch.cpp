@@ -17,11 +17,7 @@ namespace Command {
       return false;
     }
     if(target == "package" || target == "p"){
-<<<<<<< Updated upstream
-      auto [found,Package] = Packages::searchPrompt(query);
-=======
-      return Packages::search(this, query);
->>>>>>> Stashed changes
+      return Packages::search(this);
     }
     return true;
   }

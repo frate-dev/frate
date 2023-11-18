@@ -34,56 +34,109 @@ namespace Command::Packages {
     return results;
   }
 
-  std::vector<Package> search(std::string& query){
-    auto [found, package] = get(query);
-    if(found){
-      return std::vector<Package>{package};
-    }
-
-    std::vector<Package> results = calculatePackageScores(query);
+  std::vector<Package> filterOutBest(std::vector<Package> &packages){
 
     int totalScore = std::accumulate(
-        results.begin(), results.end(), 0, [](int a, Package b){
+        packages.begin(), packages.end(), 0, [](int a, Package b){
         return a + b.score;
         });
 
-    int averageScore = totalScore / results.size();
+    int averageScore = totalScore / packages.size();
 
-    auto filterResults = results | std::views::filter(
+    auto filterResults = packages | std::views::filter(
         [&averageScore](Package package){
         return package.score > 2 * averageScore;
         });
-    return std::vector<Package>(filterResults.begin(), filterResults.end());
-  }
-  
-  std::pair<bool,Package> searchPrompt(std::string& query){
-    std::vector<Package> results = search(query);
-    if(results.size() == 0){
-      return std::pair<bool,Package>(false, Package());
-    }
-    if(results.size() == 1){
-      return std::pair<bool,Package>(true, results[0]);
-    }
 
+    std::vector<Package> filterResultsVec(filterResults.begin(), filterResults.end());
+
+    return filterResultsVec;
+  }
+
+  std::pair<bool, Package> getExactMatch(std::string &query){
+    json rawIndex = fetchIndex();
+    Utils::toLower(query);
+    for(json json: rawIndex){
+      Package package;
+      package.fromJson(json);
+      if(package.name == query){
+        return {true, package};
+      }
+    }
+    return {false, Package()};
+  }
+
+  bool search(Interface* inter){
+    std::string query;
+    if(inter->args->operator[]("query").count() == 0){
+      std::cout << "No query provided" << ENDL;
+      std::cout << "Usage: cmaker search p <query>" << ENDL;
+      return false;
+    }else{
+      query = inter->args->operator[]("query").as<std::string>();
+      std::vector<Package> results = calculatePackageScores(query);
+      List *packageList = (new Utils::CLI::List())->
+        ReverseIndexed();
+      for(Package result: results){
+        packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
+      }
+
+      std::cout << packageList->Build() << ENDL;
+
+      return true;
+    }
+  }
+
+  std::vector<Package> search(std::string &query){
+    std::vector<Package> results = calculatePackageScores(query);
+    return results;
+  }
+
+  std::pair<bool, Package> searchGetFirst(std::string& query){
+    std::vector<Package> results = calculatePackageScores(query);
+    if(results.size() == 0){
+      return {false, Package()};
+    }
+    return {true, results[0]};
+  }
+
+  std::pair<bool, Package> searchWithPrompt(std::string& query, bool latest){
+    std::vector<Package> results = calculatePackageScores(query);
+    if(results.size() == 0){
+      return {false, Package()};
+    }
     List *packageList = (new Utils::CLI::List())->
       Numbered()->
       ReverseIndexed();
     for(Package result: results){
       packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
     }
+
+
     std::cout << packageList->Build() << std::endl;
+
+    std::vector<Package> filterResultsVec = filterOutBest(results);
+
     Prompt<int> *prompt = new Prompt<int>("Select a package to install: ");
-    for(size_t i = 0; i < results.size(); i++){
+    for(size_t i = 0; i < filterResultsVec.size(); i++){
       prompt->AddOption(i);
     }
     prompt->Run();
-    int index = prompt->Get();
+    Package chosen_package = results[prompt->Get()];
+    
+    if(latest){
+      chosen_package.selected_version = chosen_package.versions[0];
+      return {true, chosen_package};
+    }
 
-    return std::pair<bool,Package>(true, results[index]);
+    std::string version = promptForVersion(chosen_package);
+
+    chosen_package.selected_version = version;
+
+    return {true, chosen_package};
   }
-
-  bool checkForOverlappingDependencies(std::vector<Package> deps,
-      std::string &name) {
+  
+  bool dependenciesConflict(std::vector<Package> deps, std::string &name) {
     if (deps.size() == 0) {
       return false;
     }
@@ -95,36 +148,36 @@ namespace Command::Packages {
 
     return false;
   }
-  Package promptSearchResults(std::string &query){
+ Package promptSearchResults(std::string &query){
 
-    std::vector<Package> searchResults = search(query);
+   std::vector<Package> searchResults = search(query);
 
-    if(searchResults.size() == 1){
-      std::cout << "Installing " << searchResults[0].name << std::endl;
-      return searchResults[0];
-    }
+   if(searchResults.size() == 1){
+     std::cout << "Installing " << searchResults[0].name << std::endl;
+     return searchResults[0];
+   }
 
-    if(searchResults.size() == 0){
-      std::cout << "No results found" << std::endl;
-      exit(0);
-    }
+   if(searchResults.size() == 0){
+     std::cout << "No results found" << std::endl;
+     exit(0);
+   }
 
-    List *packageList = (new Utils::CLI::List())->
-      Numbered()->
-      ReverseIndexed();
-    for(Package result: searchResults){
-      packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
-    }
-    std::cout << packageList->Build() << std::endl;
-    Prompt<int> *prompt = new Prompt<int>("Select a package to install: ");
-    for(size_t i = 0; i < searchResults.size(); i++){
-      prompt->AddOption(i);
-    }
-    prompt->Run();
-    int index = prompt->Get();
+   List *packageList = (new Utils::CLI::List())->
+     Numbered()->
+     ReverseIndexed();
+   for(Package result: searchResults){
+     packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
+   }
+   std::cout << packageList->Build() << std::endl;
+   Prompt<int> *prompt = new Prompt<int>("Select a package to install: ");
+   for(size_t i = 0; i < searchResults.size(); i++){
+     prompt->AddOption(i);
+   }
+   prompt->Run();
+   int index = prompt->Get();
 
-    return searchResults[index];
-  }
+   return searchResults[index];
+ }
 
   std::string promptForVersion(Package &chosen_package){
 
@@ -148,28 +201,18 @@ namespace Command::Packages {
 
   }
 
-  std::pair<bool, Package> get(std::string query, std::vector<Package> deps){
-    Package chosen_package;
-    chosen_package = promptSearchResults(query);
-    std::string version = "";
-    std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
-    version = promptForVersion(chosen_package);
-    chosen_package.selected_version = version;
-    if(checkForOverlappingDependencies(deps, chosen_package.name)){
-      std::cout << "Package already installed" << std::endl;
-      return std::pair<bool, Package>(false, chosen_package);
-    }
-    return std::pair<bool, Package>(true, chosen_package);
-  }
   
   std::pair<bool, Package> get(std::string query){
-    Package chosen_package;
-    chosen_package = promptSearchResults(query);
-    std::string version = "";
-    std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
-    version = promptForVersion(chosen_package);
-    chosen_package.selected_version = version;
-    return std::pair<bool, Package>(true, chosen_package);
+    json rawIndex = fetchIndex();
+    Package package;
+
+    for(auto& [name, pi]: rawIndex.items()){
+      if(name == query){
+        package.fromJson(pi);
+        return {true, package};
+      }
+    }
+    return {false, package};
   }
   bool remove(Interface *inter) {
 
@@ -244,7 +287,7 @@ Usage remove dep:
         }
         version = chosen_package.versions[0];
       }
-      if(checkForOverlappingDependencies(inter->pro->dependencies, chosen_package.name)){
+      if(dependenciesConflict(inter->pro->dependencies, chosen_package.name)){
         std::cout << "Package already installed" << std::endl;
         return false;
       }

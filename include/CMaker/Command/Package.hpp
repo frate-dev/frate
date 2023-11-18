@@ -14,26 +14,33 @@ namespace Command::Packages {
     }
   };
 
-  bool checkForOverlappingDependencies(std::vector<Package> deps, std::string &name);
+  bool dependenciesConflict(std::vector<Package> deps, std::string &name);
 
   Package promptSearchResults(std::string &query);
 
   std::string promptForVersion(Package &chosen_package);
 
-  std::pair<bool,Package> get(std::string query, std::vector<Package> deps);
-
+  //Get the exact package from the query
   std::pair<bool,Package> get(std::string query);
 
+
+  
+  //Add package command
   bool add(Interface* inter);
+  //Removed packackage command
   bool remove(Interface *inter);
 
+  //Search command
+  //Search for a package and return a bool if command run successfully
+  bool search(Interface* inter);
 
-  std::pair<bool,Package> searchPrompt(std::string& query);
-
+  //MOSTLY INTERNAL STUFF
+  //Search for a packages and return a vector of results
   std::vector<Package> search(std::string& query);
+  //Get the first result from the search
+  std::pair<bool,Package> searchGetFirst(std::string& query);
+  //Prompt the user to choose from the search results
+  std::pair<bool, Package> searchWithPrompt(std::string& query, bool latest);
 
-  std::vector<Package> search(std::string& query);
-
-  bool search(Interface* inter, std::string& query);
 
 }
