@@ -1,12 +1,13 @@
 #include <CMaker/Generators.hpp>
 #include <CMaker/Command.hpp>
 #include <CMaker/Command/Author.hpp>
+#include <CMaker/Command/Flags.hpp>
+#include <CMaker/Command/Package.hpp>
+#include <CMaker/Command/RemoteServers.hpp>
 #include <algorithm>
 #include <cxxopts.hpp>
 #include <iostream>
 #include <nlohmann/json.hpp>
-#include <CMaker/Command/Package.hpp>
-#include <CMaker/Command/RemoteServers.hpp>
 #include <string>
 #include <CMaker/Utils/General.hpp>
 #include <CMaker/Utils/CLI.hpp>
@@ -25,49 +26,6 @@ namespace Command {
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
     inter->options->help();
     return inter->parse();
-  }
-  //TODO: This should be moved to the flags module
-  bool addFlags(Interface *inter) {
-    std::cout << "Adding flags" << std::endl; 
-    std::vector<std::string> raw_flags = inter->args->unmatched();
-    std::vector<std::string> flags;
-    std::string build_flags = "";
-    for (std::string flag : raw_flags) {
-      if (flag[0] == '-' && flag[1] == '-') {
-        build_flags = "-" + build_flags;
-        flags.push_back(build_flags);
-        build_flags = "";
-      }
-      flag.erase(std::remove(flag.begin(), flag.end(), '-'), flag.end());
-      build_flags += flag;
-    }
-    if (build_flags != "") {
-      build_flags = "-" + build_flags;
-      flags.push_back(build_flags);
-    }
-    if (inter->args->count("mode") > 0) {
-      std::string mode = inter->args->operator[]("mode").as<std::string>();
-      for (Mode &m : inter->pro->modes) {
-        if (m.name == mode) {
-          for (std::string flag : flags) {
-            std::cout << "Adding flag: " << flag << std::endl;
-            m.flags.push_back(flag);
-          }
-          std::cout << "Writing config.json" << std::endl;
-          Generators::ConfigJson::writeConfig(inter->pro);
-          Generators::CMakeList::createCMakeListsExecutable(inter->pro);
-          return true;
-        }
-      }
-    }
-    
-    for (std::string flag : flags) {
-      std::cout << "Adding flag: " << flag << std::endl;
-      inter->pro->flags.push_back(flag);
-    }
-    std::cout << "Writing config.json" << std::endl;
-    Generators::ConfigJson::writeConfig(inter->pro);
-    return true;
   }
 
 
@@ -110,7 +68,7 @@ namespace Command {
         .docs = "Add a flag to the project",
         .callback = [this]() {
           OptionsInit::Flags(this);
-          return addFlags(this);
+          return Flags::add(this);
         },
       },
       Handler{
