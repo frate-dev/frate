@@ -30,12 +30,13 @@ bool OptionsInit::Main(Interface *inter) {
     }
   }
 
-  bool Interface::registerCommand(initializer_list<std::string> aliases,
-                                  initializer_list<std::string> flags,
-                                  function<bool()> func) {
-    commands.push_back(Handler(aliases, flags, func));
-    return true;
-  }
+  // bool Interface::registerCommand(initializer_list<std::string> aliases,
+  //                                 initializer_list<std::string> flags,
+  //                                 std::string docs,
+  //                                 function<bool()> func) {
+  //   commands.push_back(Handler(aliases, flags,docs, func));
+  //   return true;
+  // }
   bool Interface::InitHeader(){
     try{
       this->options = std::make_shared<cxxopts::Options>("CMaker", "A CMake project generator, we suffer so you don't have to!");

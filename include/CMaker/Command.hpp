@@ -114,9 +114,15 @@ namespace Command {
   } Project;
 
   typedef struct Handler_s {
-    std::initializer_list<std::string> alisas;
-    std::initializer_list<std::string> flags;
-    std::function<bool()> callback;
+    std::vector<std::string> aliases;
+    std::vector<std::string> flags{};
+    std::string docs{""};
+    std::function<bool()> callback{
+      []() -> bool {
+        std::cout << "This command has not been implemented yet" << std::endl;
+        return false;
+      }
+    };
   } Handler;
 
   class Interface{
@@ -132,6 +138,7 @@ namespace Command {
       bool search();
       //TODO: remove this
       bool setRemoteServer(std::vector<RemoteServer> servers);
+      //TODO: remove this
       bool getBuildServer();
       bool ftp();
       bool watch();
@@ -147,6 +154,7 @@ namespace Command {
           );
     public:
       std::shared_ptr<Project> pro;
+      bool project_present{false};
       std::vector<Handler> commands;
       bool skip_prompts{false};
       bool parse();
@@ -154,14 +162,14 @@ namespace Command {
       std::shared_ptr<cxxopts::ParseResult> args;
       char** argv;
       int argc;
-      bool confirm_all = false;
+      bool confirm_all{false};
       Interface(int argc, char **argv);
       ~Interface();
       bool InitHeader();
       bool CreateCMakelists();
       bool LoadPackageJson();
   };
-
+  //TODO: To be imlemented later to get information about a target or action
   typedef struct Info_s {
     std::string name;
     std::string description;

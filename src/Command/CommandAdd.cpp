@@ -16,7 +16,7 @@
 namespace Command {
   using nlohmann::json;
   using Utils::CLI::ListItem;
-
+  
   bool OptionsInit::Add(Interface* inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
@@ -26,6 +26,7 @@ namespace Command {
     inter->options->help();
     return inter->parse();
   }
+  //TODO: This should be moved to the flags module
   bool addFlags(Interface *inter) {
     std::cout << "Adding flags" << std::endl; 
     std::vector<std::string> raw_flags = inter->args->unmatched();
@@ -70,7 +71,6 @@ namespace Command {
   }
 
 
-
   bool getModeName(Mode &mode){
     Prompt<std::string> *name = new Prompt<std::string>("Name: ");
     name->Run();
@@ -94,37 +94,91 @@ namespace Command {
     return true;
   }
   bool Interface::add() {
-    if (!(args->count("subcommand") > 0)) {
-      std::cout << "Usage add:" << ENDL
-        "\tp, package: adds a package to  your project" << ENDL
-        "\tflag: adds a flag" << ENDL
-        "\tlib:  adds a library" << std::endl;
+    Handler add_handlers[] = {
+      Handler{
+        .aliases = 
+        {"package","p"},
+        .docs = "Add a package to the project",
+        .callback = [this]() {
+          OptionsInit::Dependencies(this);
+          return Packages::add(this);
+        },
+      },
+      Handler{
+        .aliases = 
+        {"flag","f"},
+        .docs = "Add a flag to the project",
+        .callback = [this]() {
+          OptionsInit::Flags(this);
+          return addFlags(this);
+        },
+      },
+      Handler{
+        .aliases = 
+        {"lib","l"},
+        .docs = "Add a library to link to your project",
+        .callback = [this]() {
+          //TODO implement library
+          // OptionsInit::Libraries(this);
+          // Libraries::add(this);
+          return true;
+        },
+      },
+      Handler{
+        .aliases = 
+        {"mode","m"},
+        .docs = "Adds a build mode to your project",
+        .callback = [this]() {
+          OptionsInit::Modes(this);
+          return buildTypeAdd(this);
+        },
+      },
+      Handler{
+        .aliases = 
+        {"server","s"},
+        .docs = "Add a remote server to your local config that you can later build to",
+        .callback = [this]() {
+          //TODO implement server
+          return RemoteServers::add(this);
+        },
+      },
+      Handler{
+        .aliases = 
+        {"author","a"},
+        .docs = "Add an author to your project",
+        .callback = [this]() {
+          return Author::add(this);
+        },
+      },
+    };
+    if(args->count("subcommand")){
+      std::string subcommand = args->operator[]("subcommand").as<std::string>();
+      for(Handler handler : add_handlers){
+        for(std::string alias : handler.aliases){
+          if(alias == subcommand){
+            return handler.callback();
+          }
+        }
+      }
+      std::cout << "Unknown subcommand: " << subcommand << ENDL;
+      std::cout << "Usage: add" << ENDL;
+      for(Handler handler : add_handlers){
+        std::cout << "\t" << handler.aliases[0];
+      }
       return false;
+    }else{
+      std::cout << "Usage: add" << ENDL;
+      for(Handler handler : add_handlers){
+        std::cout << "\t";
+        for(std::string alias : handler.aliases){
+          std::cout << alias;
+          if(alias != handler.aliases.back()){
+            std::cout << " , ";
+          }
+        }
+        std::cout << " : " << handler.docs << ENDL;
+      }
     }
-    std::string subcommand = args->operator[]("subcommand").as<std::string>();
-    if (subcommand == "packages" || subcommand == "p") {
-      OptionsInit::Dependencies(this);
-      Packages::add(this);
-    }
-    else if (subcommand == "flags") {
-      OptionsInit::Flags(this);
-      addFlags(this);
-    }
-    else if (subcommand == "modes") {
-      OptionsInit::Modes(this);
-      buildTypeAdd(this);
-    }
-    //TODO add Remote server
-    else if (subcommand == "server") {
-      //TODO implement server
-      RemoteServers::add(this);
-    }
-    //TODO add toolchain
-    else if (subcommand == "author") {
-      //TODO implement author
-      Author::add(this);
-    }
-
     return true;
   }
 }

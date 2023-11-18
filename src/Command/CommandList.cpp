@@ -38,7 +38,7 @@ namespace Command{
       //TODO: List flags
     }else if(target == "authors" || target == "a"){
       //TODO: List authors
-    }else if(target == "liceses"){
+    }else if(target == "licenses" || target == "l"){
       //TODO: List possible liceses
     }else if(target == "modes"){
       //TODO: List modes
