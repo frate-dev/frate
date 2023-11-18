@@ -1,3 +1,5 @@
+#include <stdint.h> 
+#include "termcolor/termcolor.hpp"
 #include <CMaker/Command.hpp>
 #include <cstddef>
 #include <format>
@@ -14,7 +16,7 @@ namespace Command {
       pro->fromJson(data);
       //Simplfied this fucking code
     } catch (json::exception &e) {
-      std::cout << "Error: Could not load: " << (pro->project_path / file_name) << std::endl;
+      std::cout << termcolor::bright_red << "Error: Could not load: " << (pro->project_path / file_name) << termcolor::reset << std::endl;
       return false;
     }
     file.close();

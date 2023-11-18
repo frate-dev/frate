@@ -94,7 +94,7 @@ namespace Command {
     return true;
   }
   bool Interface::add() {
-    Handler add_handlers[] = {
+    std::vector<Handler> add_handlers = {
       Handler{
         .aliases = 
         {"package","p"},
@@ -161,23 +161,11 @@ namespace Command {
         }
       }
       std::cout << "Unknown subcommand: " << subcommand << ENDL;
-      std::cout << "Usage: add" << ENDL;
-      for(Handler handler : add_handlers){
-        std::cout << "\t" << handler.aliases[0];
-      }
+      getHelpString("add", add_handlers);
       return false;
     }else{
-      std::cout << "Usage: add" << ENDL;
-      for(Handler handler : add_handlers){
-        std::cout << "\t";
-        for(std::string alias : handler.aliases){
-          std::cout << alias;
-          if(alias != handler.aliases.back()){
-            std::cout << " , ";
-          }
-        }
-        std::cout << " : " << handler.docs << ENDL;
-      }
+      std::cout <<  termcolor::bright_red << "No subcommand given" << termcolor::reset << ENDL;
+      getHelpString("add", add_handlers);
     }
     return true;
   }

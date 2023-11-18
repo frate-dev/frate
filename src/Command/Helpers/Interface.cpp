@@ -1,7 +1,9 @@
 #include <CMaker/Command.hpp>
 #include "cxxopts.hpp"
+#include "termcolor/termcolor.hpp"
 #include <initializer_list>
 #include <memory>
+#include <sstream>
 
 namespace Command {
 using std::function;
@@ -169,6 +171,19 @@ bool OptionsInit::Main(Interface *inter) {
 
     }
 
+  }
+  void Interface::getHelpString(std::string,std::vector<Handler> handlers){
+    std::cout << "Usage: add" << ENDL;
+    for(Handler handler : handlers){
+      std::cout << "\t";
+      for(std::string alias : handler.aliases){
+        std::cout << termcolor::bright_green << alias << termcolor::reset;
+        if(alias != handler.aliases.back()){
+          std::cout << " , ";
+        }
+      }
+      std::cout << " : " << termcolor::bright_blue << handler.docs << termcolor::reset << ENDL;
+    }
   }
   Interface::~Interface(){
   }

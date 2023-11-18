@@ -3,6 +3,7 @@
 #include <exception>
 #include <initializer_list>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <filesystem>
@@ -152,6 +153,7 @@ namespace Command {
           std::initializer_list<std::string> flags,
           std::function<bool()> callback
           );
+      void getHelpString(std::string name,std::vector<Handler> handlers);
     public:
       std::shared_ptr<Project> pro;
       bool project_present{false};
