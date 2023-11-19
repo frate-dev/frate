@@ -96,7 +96,6 @@ namespace Command {
         {"server","s"},
         .docs = "Add a remote server to your local config that you can later build to",
         .callback = [this]() {
-          //TODO implement server
           return RemoteServers::add(this);
         },
       },

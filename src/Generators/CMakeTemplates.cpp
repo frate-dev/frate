@@ -7,8 +7,9 @@
 namespace Generators::CMakeList {
   bool createCMakeListsExecutable(std::shared_ptr<Command::Project> pro){
   std::cout << "Creating CMakeLists.txt" << std::endl;
-  std::cout << pro->toJson() << std::endl;
-
+  #ifdef DEBUG
+    std::cout << pro->toJson().dump(2) << std::endl;
+  #endif
   std::string CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
   std::ofstream CPMFile;
   try{
@@ -64,7 +65,8 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
 )
 
 message("Sources: ${SOURCES}")
-SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} {% for flag in dep.flags %} {{ flag }} {% endfor %}")
+
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} {% if flags %} {% for flag in flags %} {{ flag }} {% endfor %} {% endif %}")
 
 include_directories($CMAKE_SOURCE_DIR/{{ include_dir }})
 set(HEADER_DIR $CMAKE_SOURCE_DIR/{{ include_dir }})

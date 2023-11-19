@@ -58,6 +58,7 @@ namespace Command::Packages {
 
       std::cout << "Adding dependency to config.json" << std::endl;
       //Reflecing the package to dependency
+      std::cout << chosen_package.toJson() << ENDL;
       inter->pro->dependencies.push_back(chosen_package);
 
 

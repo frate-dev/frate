@@ -137,10 +137,6 @@ namespace Command {
       bool run();
       bool help();
       bool search();
-      //TODO: remove this
-      bool setRemoteServer(std::vector<RemoteServer> servers);
-      //TODO: remove this
-      bool getBuildServer();
       bool ftp();
       bool watch();
       bool toolchains();
