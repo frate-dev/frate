@@ -1,5 +1,5 @@
-#include <CMaker/Command.hpp>
-#include <CMaker/Command/Package.hpp>
+#include <Frate/Command.hpp>
+#include <Frate/Command/Package.hpp>
 
 namespace Command {
   bool Interface::get(){

@@ -11,7 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <cxxopts.hpp>
-#include "CMaker/Utils/CLI.hpp"
+#include <Frate/Utils/CLI.hpp>
 
 
 #define ENDL "\n"

@@ -42,7 +42,7 @@ jobs:
 
     - name: RunTest
       working-directory: ${{github.workspace}}
-      run: ./build/cmaker
+      run: ./build/frate
       
       
 

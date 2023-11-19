@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include "termcolor/termcolor.hpp"
-#include <CMaker/Generators.hpp>
+#include <Frate/Generators.hpp>
 #include <iostream>
 #include <vector>
 #include <nlohmann/json.hpp>
@@ -92,7 +92,7 @@ namespace Utils{
       str[i] = tolower(str[i]);
     }
   }
-  //"https://github.com/cmaker-dev/index/releases/latest/download/index.json"
+  //"https://github.com/frate-dev/index/releases/latest/download/index.json"
   std::string fetchText(std::string url) {
     std::string requrl = url;
     CurlResponse r = HttpGet(requrl);

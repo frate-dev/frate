@@ -1,8 +1,8 @@
-#include <CMaker/Generators.hpp>
-#include <CMaker/Command.hpp>
-#include <CMaker/Command/CommandMode.hpp>
-#include <CMaker/Command/Package.hpp>
-#include <CMaker/Command/RemoteServers.hpp>
+#include <Frate/Generators.hpp>
+#include <Frate/Command.hpp>
+#include <Frate/Command/CommandMode.hpp>
+#include <Frate/Command/Package.hpp>
+#include <Frate/Command/RemoteServers.hpp>
 namespace Command {
 
   bool OptionsInit::Remove(Interface *inter) {

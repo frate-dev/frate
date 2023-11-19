@@ -1,4 +1,4 @@
-#include <CMaker/Command.hpp>
+#include <Frate/Command.hpp>
 #include <filesystem>
 
 namespace Command {

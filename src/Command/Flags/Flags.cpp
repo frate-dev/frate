@@ -1,5 +1,5 @@
-#include <CMaker/Command/Flags.hpp>
-#include <CMaker/Generators.hpp>
+#include <Frate/Command/Flags.hpp>
+#include <Frate/Generators.hpp>
 
 namespace Command::Flags {
   //TODO: This should be moved to the flags module

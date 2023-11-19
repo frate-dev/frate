@@ -1,6 +1,6 @@
-#include <CMaker/Generators.hpp>
+#include <Frate/Generators.hpp>
 #include <format>
-#include <CMaker/Utils/CLI.hpp>
+#include <Frate/Utils/CLI.hpp>
 
 
 namespace Generators::GitIgnore{

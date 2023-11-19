@@ -1,5 +1,5 @@
 #ifdef TEST
-#include <CMaker/Utils/General.hpp>
+#include <Frate/Utils/General.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <vector>
 #include <iostream>

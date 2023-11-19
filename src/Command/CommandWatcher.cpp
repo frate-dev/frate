@@ -1,8 +1,8 @@
-#include <CMaker/Command.hpp>
+#include <Frate/Command.hpp>
 #include <functional>
 #include <iostream>
 #include <ranges>
-#include <CMaker/Utils/General.hpp>
+#include <Frate/Utils/General.hpp>
 #ifdef __linux__
 #include <sys/epoll.h>
 #include <sys/inotify.h>
@@ -134,17 +134,17 @@ bool Interface::watch() {
               "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " +
               std::to_string(pro->build_server.port) + "' --progress . " +
               pro->build_server.username + "@" + pro->build_server.ip +
-              ":/tmp/cmaker && ssh -p " +
+              ":/tmp/frate && ssh -p " +
               std::to_string(pro->build_server.port) + " " +
               pro->build_server.username + "@" + pro->build_server.ip +
-              "  'cd /tmp/cmaker && cmake . && make && ./build/new'";
+              "  'cd /tmp/frate && cmake . && make && ./build/new'";
           // command = "cmake ./build/ && make && ./build/" + pro->build_dir +
           // "/" + pro->project_name + "  " + command_args;
         }
         bool build_server = args->operator[]("remote-build").as<bool>();
         if (build_server == true) {
           std::string current_build_server = std::string(std::getenv("HOME")) +
-                                             "/.config/cmaker/" +
+                                             "/.config/frate/" +
                                              "current_build_server.json";
           json current_build_server_json =
               json::parse(std::ifstream(current_build_server));
@@ -162,10 +162,10 @@ bool Interface::watch() {
               "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " +
               std::to_string(pro->build_server.port) + "' --progress . " +
               pro->build_server.username + "@" + pro->build_server.ip +
-              ":/tmp/cmaker && ssh -p " +
+              ":/tmp/frate && ssh -p " +
               std::to_string(pro->build_server.port) + " " +
               pro->build_server.username + "@" + pro->build_server.ip +
-              "  'cd /tmp/cmaker && cmake . && make && ./build/" +
+              "  'cd /tmp/frate && cmake . && make && ./build/" +
               pro->project_name + "'";
         }
 
@@ -176,7 +176,7 @@ bool Interface::watch() {
         bool build_server = args->operator[]("remote-build").as<bool>();
         if (build_server == true) {
           std::string current_build_server = std::string(std::getenv("HOME")) +
-                                             "/.config/cmaker/" +
+                                             "/.config/frate/" +
                                              "current_build_server.json";
           json current_build_server_json =
               json::parse(std::ifstream(current_build_server));
@@ -194,15 +194,15 @@ bool Interface::watch() {
               "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " +
               std::to_string(pro->build_server.port) + "' --progress . " +
               pro->build_server.username + "@" + pro->build_server.ip +
-              ":/tmp/cmaker && ssh -p " +
+              ":/tmp/frate && ssh -p " +
               std::to_string(pro->build_server.port) + " " +
               pro->build_server.username + "@" + pro->build_server.ip +
-              "  'cd /tmp/cmaker && cmake . && make -j ${nproc} && ./build/" +
+              "  'cd /tmp/frate && cmake . && make -j ${nproc} && ./build/" +
               pro->project_name + "'";
         }
         //        else{
         //          std::string build_servers = std::string(std::getenv("HOME"))
-        //          + "/.config/cmaker/" + "build_servers.json"; json
+        //          + "/.config/frate/" + "build_servers.json"; json
         //          build_servers_json =
         //          json::parse(std::ifstream(build_servers)); std::string
         //          build_server = args->operator[]("server").as<std::string>();
@@ -222,11 +222,11 @@ bool Interface::watch() {
         //              . "
         //                + pro->build_server.username + "@" +
         //                pro->build_server.ip
-        //                +  ":/tmp/cmaker && ssh -p " +
+        //                +  ":/tmp/frate && ssh -p " +
         //                std::to_string(pro->build_server.port)  + " " +
         //                pro->build_server.username + "@" +
         //                pro->build_server.ip
-        //                + "  'cd /tmp/cmaker && cmake . && make && ./build/" +
+        //                + "  'cd /tmp/frate && cmake . && make && ./build/" +
         //                pro->project_name + "'";
         //              break;
         //            }

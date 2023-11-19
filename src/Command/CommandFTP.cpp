@@ -1,7 +1,7 @@
 #include <iostream>
-#include <CMaker/Command.hpp>
-#include <CMaker/Utils/CLI.hpp>
-#include <CMaker/Utils/General.hpp>
+#include <Frate/Command.hpp>
+#include <Frate/Utils/CLI.hpp>
+#include <Frate/Utils/General.hpp>
 
 namespace Command{
   using namespace std::filesystem;
@@ -18,7 +18,7 @@ namespace Command{
     }
     for (const directory_entry &p : directory_iterator(pro->project_path)  
           | std::views::filter(
-            [](const directory_entry &p) { return p.path().filename() != "cmaker"; })
+            [](const directory_entry &p) { return p.path().filename() != "frate"; })
         ){
       std::filesystem::path path = p.path();
       try{

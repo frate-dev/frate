@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project ( 
-    cmaker
+    frate
     VERSION 0.0.1
     LANGUAGES CXX
 )
@@ -56,7 +56,7 @@ if(NOT DEFINED RELEASE)
   set(RELEASE 0)
 endif()
 
-add_executable(cmaker ${SOURCES}) #test mode
+add_executable(${PROJECT_NAME} ${SOURCES}) #test mode
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   message("Release mode")
@@ -71,7 +71,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
   CPMAddPackage("gh:catchorg/Catch2@3.4.0")
   add_definitions(-DTEST -DDEBUG) #test mode
-  target_link_libraries(cmaker Catch2::Catch2WithMain) #test mode fuck you cmake
+  target_link_libraries(${PROJECT_NAME} Catch2::Catch2WithMain) #test mode fuck you cmake
 else()
   add_definitions(-DDEBUG)
   message("Default mode")
@@ -84,21 +84,21 @@ target_link_libraries(${PROJECT_NAME} termcolor)
 
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
-set_target_properties(cmaker PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
-install(TARGETS cmaker DESTINATION bin)
-install(FILES ./completions/cmaker-completion.zsh
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+install(FILES ./completions/${PROJECT_NAME}-completion.zsh
         DESTINATION /usr/local/share/zsh/site-functions/
-        RENAME _cmaker)
-install(FILES ./completions/cmaker-completion.bash
+        RENAME _${PROJECT_NAME})
+      install(FILES ./completions/${PROJECT_NAME}-completion.bash
         DESTINATION /etc/bash_completion.d/
-        RENAME cmaker)
-install(FILES ./completions/cmaker-completion.fish
+        RENAME ${PROJECT_NAME})
+      install(FILES ./completions/${PROJECT_NAME}-completion.fish
     DESTINATION /usr/share/fish/vendor_completions.d
-    RENAME cmaker.fish)
+    RENAME ${PROJECT_NAME}.fish)
 
 if(NOT DEFINED MAN_INSTALL_DIR)
   set(MAN_INSTALL_DIR "share/man/man1")
 endif()
 
-add_custom_target(man ALL DEPENDS docs/man/cmaker.1)
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/docs/man/cmaker.1" DESTINATION "${MAN_INSTALL_DIR}")
+add_custom_target(man ALL DEPENDS docs/man/${PROJECT_NAME}.1)
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/docs/man/${PROJECT_NAME}.1" DESTINATION "${MAN_INSTALL_DIR}")

@@ -1,8 +1,8 @@
-#include <CMaker/Command.hpp>
-#include <CMaker/Command/Package.hpp>
-#include <CMaker/Command/Modes.hpp>
-#include <CMaker/Command/RemoteServers.hpp>
-#include <CMaker/Utils/CLI.hpp>
+#include <Frate/Command.hpp>
+#include <Frate/Command/Package.hpp>
+#include <Frate/Command/Modes.hpp>
+#include <Frate/Command/RemoteServers.hpp>
+#include <Frate/Utils/CLI.hpp>
 namespace Command{
   bool OptionsInit::List(Interface* inter) {
     inter->InitHeader();

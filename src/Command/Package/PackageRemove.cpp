@@ -1,6 +1,6 @@
-#include <CMaker/Command/CommandMode.hpp>
-#include <CMaker/Command/Package.hpp>
-#include <CMaker/Generators.hpp>
+#include <Frate/Command/CommandMode.hpp>
+#include <Frate/Command/Package.hpp>
+#include <Frate/Generators.hpp>
 
 namespace Command::Packages {
 

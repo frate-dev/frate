@@ -1,6 +1,6 @@
-#include <CMaker/Command.hpp>
+#include <Frate/Command.hpp>
 #include <nlohmann/json.hpp>
-#include <CMaker/Utils/General.hpp>
+#include <Frate/Utils/General.hpp>
 #include <iostream>
 #include <cstdlib>
 

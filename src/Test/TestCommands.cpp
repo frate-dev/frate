@@ -2,11 +2,11 @@
 #include <cstdio>
 #include <filesystem>
 #include <catch2/catch_test_macros.hpp>
-#include <CMaker/Command.hpp>
+#include <Frate/Command.hpp>
 #include <cxxopts.hpp>
 #include <memory>
 #include <string>
-#include <CMaker/Test/Test.hpp>
+#include <Frate/Test/Test.hpp>
 
 namespace Tests{
   std::string genBase64String(int random_string_length) {
@@ -53,7 +53,7 @@ namespace Tests::Command {
 //  }
 //  [[deprecated("This test is deprecated because it is not a unit test")]]
 //  bool testCommandAdd() { std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
-//    char* args[] = {"cmaker","add","dep", "cxxopts"};
+//    char* args[] = {"frate","add","dep", "cxxopts"};
 //
 //    for(auto arg : args) {
 //      std::cout << arg << std::endl;

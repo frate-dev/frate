@@ -1,7 +1,7 @@
 #include <string>
 #include <nlohmann/json.hpp>
-#include <CMaker/Command.hpp>
-#include <CMaker/Utils/General.hpp>
+#include <Frate/Command.hpp>
+#include <Frate/Utils/General.hpp>
 #include <inja.hpp>
 
 namespace Generators::CMakeList {

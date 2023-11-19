@@ -1,6 +1,6 @@
-#compdef cmaker
+#compdef frate
 
-_cmaker() {
+_frate() {
   local state
   local -a options
   local -a cmd
@@ -41,4 +41,4 @@ _cmaker() {
   esac
 }
 
-_cmaker "$@"
+_frate "$@"

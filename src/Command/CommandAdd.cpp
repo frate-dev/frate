@@ -1,16 +1,16 @@
-#include <CMaker/Generators.hpp>
-#include <CMaker/Command.hpp>
-#include <CMaker/Command/Author.hpp>
-#include <CMaker/Command/Flags.hpp>
-#include <CMaker/Command/Package.hpp>
-#include <CMaker/Command/RemoteServers.hpp>
+#include <Frate/Generators.hpp>
+#include <Frate/Command.hpp>
+#include <Frate/Command/Author.hpp>
+#include <Frate/Command/Flags.hpp>
+#include <Frate/Command/Package.hpp>
+#include <Frate/Command/RemoteServers.hpp>
 #include <algorithm>
 #include <cxxopts.hpp>
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <string>
-#include <CMaker/Utils/General.hpp>
-#include <CMaker/Utils/CLI.hpp>
+#include <Frate/Utils/General.hpp>
+#include <Frate/Utils/CLI.hpp>
 #include <cmath>
 #include <termcolor/termcolor.hpp>
 

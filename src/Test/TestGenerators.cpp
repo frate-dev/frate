@@ -1,6 +1,6 @@
 #ifdef TEST
-#include <CMaker/Test/Test.hpp>
-#include <CMaker/Generators.hpp>
+#include <Frate/Test/Test.hpp>
+#include <Frate/Generators.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <memory>
 

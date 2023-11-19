@@ -1,7 +1,7 @@
-#include <CMaker/Command/Package.hpp>
-#include <CMaker/Utils/CLI.hpp>
-#include <CMaker/Utils/General.hpp> 
-#include <CMaker/Command/CommandMode.hpp>
+#include <Frate/Command/Package.hpp>
+#include <Frate/Utils/CLI.hpp>
+#include <Frate/Utils/General.hpp> 
+#include <Frate/Command/CommandMode.hpp>
 
 namespace Command::Packages {
   using namespace Utils::CLI;
@@ -68,7 +68,7 @@ namespace Command::Packages {
     std::string query;
     if(inter->args->operator[]("query").count() == 0){
       std::cout << "No query provided" << ENDL;
-      std::cout << "Usage: cmaker search p <query>" << ENDL;
+      std::cout << "Usage: frate search p <query>" << ENDL;
       return false;
     }else{
       query = inter->args->operator[]("query").as<std::string>();

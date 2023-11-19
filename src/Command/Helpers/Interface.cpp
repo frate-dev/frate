@@ -1,4 +1,4 @@
-#include <CMaker/Command.hpp>
+#include <Frate/Command.hpp>
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
 #include <initializer_list>

@@ -1,4 +1,4 @@
-#include <CMaker/Command.hpp>
+#include <Frate/Command.hpp>
 #include <cstdlib>
 #include <cxxopts.hpp>
 #include <algorithm>
@@ -8,8 +8,8 @@
 #include <fstream>
 #include <iostream> 
 #include <string>
-#include <CMaker/Generators.hpp>
-#include <CMaker/Utils/General.hpp>
+#include <Frate/Generators.hpp>
+#include <Frate/Utils/General.hpp>
 
 namespace Command {
 using Utils::CLI::Prompt;
@@ -180,7 +180,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     std::string language = "cpp";
     std::string project_type = "executable";
 #ifdef DEBUG
-    project_name = "debug-cmaker";
+    project_name = "debug-frate";
 #else
     project_name = Utils::getFolderName();
 #endif

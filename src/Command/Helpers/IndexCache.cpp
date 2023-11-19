@@ -1,6 +1,6 @@
-#include <CMaker/Command.hpp>
+#include <Frate/Command.hpp>
 #include <nlohmann/json.hpp>
-#include <CMaker/Utils/General.hpp>
+#include <Frate/Utils/General.hpp>
 
 namespace Command{
   using nlohmann::json;
@@ -10,9 +10,9 @@ namespace Command{
   using std::string;
   using std::filesystem::create_directories;
   std::string indexFileName =
-    std::string(std::getenv("HOME")) + "/.local/cmaker/index.json";
+    std::string(std::getenv("HOME")) + "/.local/frate/index.json";
   std::string indexUrl =
-    "https://github.com/cmaker-dev/index/releases/latest/download/index.json";
+    "https://github.com/frate-dev/index/releases/latest/download/index.json";
   /*
    * If index is not in path then we create one
    * returns fetched index
@@ -31,7 +31,7 @@ namespace Command{
       cout << "Creating a new index file" << ENDL;
 
       try {
-        create_directories(string(std::getenv("HOME")) + "/.local/cmaker");
+        create_directories(string(std::getenv("HOME")) + "/.local/frate");
       }catch(std::exception& e){
         std::cout << "Failed to create index file" << ENDL;
         exit(-1);
@@ -65,7 +65,7 @@ namespace Command{
 
       try{
 
-        create_directories(string(std::getenv("HOME")) + "/.local/cmaker");
+        create_directories(string(std::getenv("HOME")) + "/.local/frate");
 
       }catch(std::exception& e){
 

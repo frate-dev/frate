@@ -1,5 +1,5 @@
-#include <CMaker/Command/Package.hpp>
-#include <CMaker/Utils/CLI.hpp>
+#include <Frate/Command/Package.hpp>
+#include <Frate/Utils/CLI.hpp>
 
 namespace Command::Packages {
   using namespace Utils::CLI;

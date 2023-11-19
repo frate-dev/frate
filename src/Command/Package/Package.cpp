@@ -1,8 +1,8 @@
-#include <CMaker/Command/Package.hpp>
-#include <CMaker/Utils/CLI.hpp>
-#include <CMaker/Generators.hpp>
-#include <CMaker/Utils/General.hpp> 
-#include <CMaker/Command/CommandMode.hpp>
+#include <Frate/Command/Package.hpp>
+#include <Frate/Utils/CLI.hpp>
+#include <Frate/Generators.hpp>
+#include <Frate/Utils/General.hpp> 
+#include <Frate/Command/CommandMode.hpp>
 
 namespace Command::Packages {
   using namespace Utils::CLI;
