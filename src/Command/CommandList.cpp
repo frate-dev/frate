@@ -24,62 +24,54 @@ namespace Command{
     return {
       Handler{
         .aliases = 
-        {"package","p"},
-          .docs = "List packages",
-          .callback = [this]() {
-            return list();
-          }
-      },
-      Handler{
-        .aliases = 
         {"modes","m"},
-          .docs = "List modes",
-          .callback = [this]() {
-            return Modes::list(this);
-          }
+        .docs = "List modes",
+        .callback = [this]() {
+          return Modes::list(this);
+        }
       },
       Handler{
         .aliases = 
         {"servers","remote-servers"},
-          .docs = "List remote servers",
-          .callback = [this]() {
-            return RemoteServers::list(this);
-          }
+        .docs = "List remote servers",
+        .callback = [this]() {
+          return RemoteServers::list(this);
+        }
       },
       Handler{
-        .aliases = 
-        {"installed-packages","packages","p"},
-          .docs = "List installed packages",
-          .callback = [this]() {
-            return Packages::list(this);
-          }
+        .aliases = {"installed-packages","packages","p"},
+        .flags = {"-m","--mode"},
+        .docs = "List installed packages",
+        .callback = [this]() {
+          return Packages::list(this);
+        }
       },
       Handler{
         .aliases = 
         {"flags","f"},
-          .docs = "List flags",
-          .callback = [this]() {
-            //TODO: List flags
-            return true;
-          }
+        .docs = "List flags",
+        .callback = [this]() {
+          //TODO: List flags
+          return true;
+        }
       },
       Handler{
         .aliases = 
         {"authors","a"},
-          .docs = "List authors",
-          .callback = [this]() {
-            //TODO: List authors
-            return true;
-          }
+        .docs = "List authors",
+        .callback = [this]() {
+          //TODO: List authors
+          return true;
+        }
       },
       Handler{
         .aliases = 
         {"licenses","l"},
-          .docs = "List possible liceses",
-          .callback = [this]() {
-            //TODO: List possible liceses
-            return true;
-          }
+        .docs = "List possible licenses",
+        .callback = [this]() {
+          //TODO: List possible liceses
+          return true;
+        }
       },
     };
   }

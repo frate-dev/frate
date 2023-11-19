@@ -54,17 +54,16 @@ namespace Command {
   std::vector<Handler> Interface::getAddHandlers(){
     return {
       Handler{
-        .aliases = 
-        {"package","p"},
-          .docs = "Add a package to the project",
-          .callback = [this]() {
-            OptionsInit::Dependencies(this);
-            return Packages::add(this);
-          },
+        .aliases = {"package","p"},
+        .flags = {"-l","--latest"},
+        .docs = "Add a package to the project",
+        .callback = [this]() {
+          OptionsInit::Dependencies(this);
+          return Packages::add(this);
+        },
       },
         Handler{
-          .aliases = 
-          {"flag","f"},
+          .aliases = {"flag","f"},
           .docs = "Add a flag to the project",
           .callback = [this]() {
             OptionsInit::Flags(this);
@@ -72,8 +71,7 @@ namespace Command {
           },
         },
         Handler{
-          .aliases = 
-          {"lib","l"},
+          .aliases = {"lib","l"},
           .docs = "Add a library to link to your project",
           .callback = [this]() {
             //TODO implement library
@@ -83,8 +81,7 @@ namespace Command {
           },
         },
         Handler{
-          .aliases = 
-          {"mode","m"},
+          .aliases = {"mode","m"},
           .docs = "Adds a build mode to your project",
           .callback = [this]() {
             OptionsInit::Modes(this);
@@ -92,16 +89,14 @@ namespace Command {
           },
         },
         Handler{
-          .aliases = 
-          {"server","s"},
+          .aliases = {"server","s"},
           .docs = "Add a remote server to your local config that you can later build to",
           .callback = [this]() {
             return RemoteServers::add(this);
           },
         },
         Handler{
-          .aliases = 
-          {"author","a"},
+          .aliases = {"author","a"},
           .docs = "Add an author to your project",
           .callback = [this]() {
             return Author::add(this);

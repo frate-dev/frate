@@ -15,16 +15,36 @@ namespace Command {
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
     return inter->parse();
   }
-
+  std::vector<Handler> Interface::getUpdateHandlers(){
+    return {
+      Handler{
+        .aliases = 
+        {"index"},
+          .docs = "Update package index",
+          .callback = [this]() {
+            return updateIndex();
+          }
+      }
+    };
+  }
   bool Interface::update() {
+    std::vector<Handler> handlers = getUpdateHandlers();
+    std::string target = "";
     if(this->args->count("subcommand") == 0){
-      std::cout << "Usage: update (index)" << ENDL;
+      getHelpString("update",handlers);
       return true;
     }
-    if (this->args->operator[]("subcommand").as<std::string>() == "index") {
-      std::cout << "Updating packages" << ENDL;
-      updateIndex();
+    target = this->args->operator[]("subcommand").as<std::string>();
+
+    for(auto handler : handlers){
+      for(auto alias : handler.aliases){
+        if(alias == target){
+          return handler.callback();
+        }
+      }
     }
+    std::cout << "Unknown subcommand: " << target << std::endl;
+    getHelpString("update",handlers);
     return true;
   }
 }

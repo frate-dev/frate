@@ -51,7 +51,7 @@ namespace Command{
    * TODO: Add a check to see if the index is up to date
    * TODO: Add this to the interface caching the index in memory
    */
-  void updateIndex(){
+  bool updateIndex(){
     std::ofstream indexFile;
 
     try{
@@ -70,7 +70,7 @@ namespace Command{
       }catch(std::exception& e){
 
         std::cout << "Failed to create index file" << ENDL;
-        exit(-1);
+        return false;
 
       }
 
@@ -79,6 +79,7 @@ namespace Command{
 
     json data = Utils::fetchJson(indexUrl);
     indexFile << data.dump(2);
+    return true;
   }
   std::pair<bool,Package> getExactPackage(std::string package_name){
 

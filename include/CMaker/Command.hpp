@@ -118,6 +118,7 @@ namespace Command {
     std::vector<std::string> aliases;
     std::vector<std::string> flags{};
     std::vector<Handler> subcommands{};
+    std::vector<std::string> positional_args{};
     std::string docs{""};
     std::function<bool()> callback{
       []() -> bool {
@@ -157,6 +158,9 @@ namespace Command {
       //All sub command getters
       std::vector<Handler> getAddHandlers();
       std::vector<Handler> getListHandlers();
+      std::vector<Handler> getSearchHandlers();
+      std::vector<Handler> getRemoveHandlers();
+      std::vector<Handler> getUpdateHandlers();
 
       bool skip_prompts{false};
       bool parse();
@@ -200,6 +204,6 @@ namespace Command {
 
   json fetchIndex();
 
-  void updateIndex();
+  bool updateIndex();
 
 }

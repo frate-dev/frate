@@ -85,7 +85,7 @@ bool OptionsInit::Main(Interface *inter) {
 
       Handler{
         .aliases = {"new", "n"},
-        .flags = {}, //TODO: Add flags
+        .flags = {"-d","--defaults"}, //TODO: Add flags
         .docs = "Create a new project",
         .callback = [this](){
           OptionsInit::Init(this);
@@ -95,7 +95,7 @@ bool OptionsInit::Main(Interface *inter) {
 
       Handler{
         .aliases = {"run"},
-        .flags = {}, //TODO: Add flags
+        .flags = {"-m","--build-mode","-t","--target"}, //TODO: Add flags
         .docs = "Run the project",
         .callback = [this](){
           return this->run();
@@ -134,6 +134,7 @@ bool OptionsInit::Main(Interface *inter) {
       Handler{
         .aliases = {"search"},
         .flags = {}, //TODO: Add flags
+        .subcommands = getSearchHandlers(),
         .docs = "search sub command",
         .callback = [this](){
           OptionsInit::Search(this);
@@ -165,6 +166,7 @@ bool OptionsInit::Main(Interface *inter) {
       Handler{
         .aliases = {"update"},
         .flags = {}, //TODO: Add flags
+        .subcommands = getUpdateHandlers(),
         .docs = "update sub command",
         .callback = [this](){
           OptionsInit::Update(this);
@@ -174,7 +176,7 @@ bool OptionsInit::Main(Interface *inter) {
 
       Handler{
         .aliases = {"clean"},
-        .flags = {}, //TODO: Add flags
+        .flags = {"-c","--cache"}, //TODO: Add flags
         .docs = "clean sub command",
         .callback = [this](){
           OptionsInit::Clean(this);
@@ -218,6 +220,18 @@ bool OptionsInit::Main(Interface *inter) {
     }
 
   }
+  void renderFlags(std::vector<std::string> flags){
+    std::cout << "  [";
+    for(std::string flag : flags){
+      std::cout << " " << termcolor::bold << termcolor::magenta << flag << termcolor::reset;
+    }
+    std::cout << " ]";
+  }
+  void renderPositionals(std::vector<std::string> positionals){
+    for(std::string positional : positionals){
+      std::cout << termcolor::bold <<  termcolor::green << " <" << positional << ">" << termcolor::reset;
+    }
+  }
   void Interface::getHelpString(std::string name,std::vector<Handler> &handlers, bool is_subcommand){
     int index = 0;
     for(Handler handler : handlers){
@@ -236,10 +250,17 @@ bool OptionsInit::Main(Interface *inter) {
       for(std::string alias : handler.aliases){
         alias_str_len += alias.length();
         std::cout << termcolor::bold << termcolor::yellow << alias << termcolor::reset;
+        //Render pipes between aliases
         if(alias != handler.aliases.back()){
           alias_str_len += 1;
           std::cout << " | ";
         }
+      }
+      if(handler.positional_args.size() > 0){
+        renderPositionals(handler.positional_args);
+      }
+      if(handler.flags.size() > 0){
+        renderFlags(handler.flags);
       }
       if(is_subcommand){
         std::cout << " ";

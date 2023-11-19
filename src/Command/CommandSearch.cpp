@@ -13,23 +13,51 @@ namespace Command {
       ("query", "Arguments to pass to the command", cxxopts::value<std::string>());
     return inter->parse();
   }
+  
+  std::vector<Handler> Interface::getSearchHandlers(){
+    return {
+      Handler{
+        .aliases = {"package","p"},
+        .flags = {},
+        .positional_args = {"query"},
+        .docs = "Search for packages",
+        .callback = [this]() {
+          return Packages::search(this);
+        }
+      }
+    };
+  }
 
   bool Interface::search(){
     std::string query;
     std::string target;
-    if(args->operator[]("subcommand").count() > 0){
-      target = args->operator[]("subcommand").as<std::string>();
-    }
-    if(args->operator[]("query").count() > 0){
-      query = args->operator[]("query").as<std::string>();
-    }else{
-      std::cout << "No query provided" << ENDL;
-      std::cout << "Usage: cmaker search <query>" << ENDL;
+    std::vector<Handler> handlers = getSearchHandlers();
+
+    if(args->operator[]("subcommand").count() == 0){
+      std::cout << "No subcommand specified" << std::endl;
+      getHelpString("search", handlers);
       return false;
     }
-    if(target == "package" || target == "p"){
-      return Packages::search(this);
+
+    target = args->operator[]("subcommand").as<std::string>();
+
+    if(args->operator[]("query").count() == 0){
+      std::cout << "No query specified" << std::endl;
+      getHelpString("search", handlers);
+      return false;
     }
-    return true;
+
+    query = args->operator[]("query").as<std::string>();
+
+    for(auto handler : handlers){
+      if(std::find(handler.aliases.begin(), handler.aliases.end(), target) != handler.aliases.end()){
+        return handler.callback();
+      }
+    }
+
+    std::cout << "Unknown subcommand: " << target << std::endl;
+    getHelpString("search", handlers);
+
+    return false;
   }
 }
