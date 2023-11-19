@@ -1,7 +1,9 @@
 #pragma once
 #include "nlohmann/json_fwd.hpp"
 #include <exception>
+#include <initializer_list>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <filesystem>
@@ -9,7 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <cxxopts.hpp>
-#include "CMaker/Utils/CLI.hpp"
+#include <Frate/Utils/CLI.hpp>
 
 
 #define ENDL "\n"
@@ -111,19 +113,31 @@ namespace Command {
     void fromJson(json j);
     nlohmann::json toJson();
   } Project;
-
+  typedef struct Handler_s Handler;
+  typedef struct Handler_s {
+    std::vector<std::string> aliases;
+    std::vector<std::string> flags{};
+    std::vector<Handler> subcommands{};
+    std::vector<std::string> positional_args{};
+    std::string docs{""};
+    std::function<bool()> callback{
+      []() -> bool {
+        std::cout << "This command has not been implemented yet" << std::endl;
+        return false;
+      }
+    };
+  } Handler;
   class Interface{
     private:
       //Commands;
       bool init();
       bool add();
+      bool get();
       bool remove();
       bool update();
       bool run();
       bool help();
       bool search();
-      bool setRemoteServer(std::vector<RemoteServer> servers);
-      bool getBuildServer();
       bool ftp();
       bool watch();
       bool toolchains();
@@ -131,23 +145,37 @@ namespace Command {
       bool build();
       bool list();
       //TODO: setup register comamnd
-      bool registerCommand(std::string name, std::vector<std::string> subcommands, std::function<bool()> func);
+      bool registerCommand(
+          std::initializer_list<std::string> &alisas,
+          std::initializer_list<std::string> &flags,
+          std::function<bool()> &callback
+          );
+      void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
     public:
       std::shared_ptr<Project> pro;
+      bool project_present{false};
+      std::vector<Handler> commands{};
+      //All sub command getters
+      std::vector<Handler> getAddHandlers();
+      std::vector<Handler> getListHandlers();
+      std::vector<Handler> getSearchHandlers();
+      std::vector<Handler> getRemoveHandlers();
+      std::vector<Handler> getUpdateHandlers();
+
       bool skip_prompts{false};
       bool parse();
       std::shared_ptr<cxxopts::Options> options;
       std::shared_ptr<cxxopts::ParseResult> args;
       char** argv;
       int argc;
-      bool confirm_all = false;
+      bool confirm_all{false};
       Interface(int argc, char **argv);
       ~Interface();
       bool InitHeader();
       bool CreateCMakelists();
       bool LoadPackageJson();
   };
-
+  //TODO: To be imlemented later to get information about a target or action
   typedef struct Info_s {
     std::string name;
     std::string description;
@@ -176,6 +204,6 @@ namespace Command {
 
   json fetchIndex();
 
-  void updateIndex();
+  bool updateIndex();
 
 }

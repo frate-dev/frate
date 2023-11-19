@@ -1,9 +1,19 @@
-#include <CMaker/Command.hpp>
+#include <Frate/Command.hpp>
 #include <filesystem>
 
 namespace Command {
-using namespace std::filesystem;
+  bool OptionsInit::Clean(Interface *inter){
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand", "args"});
+    inter->options->add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
+      ("args", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>())
+      ("c,cache", "Cleans build and cache", cxxopts::value<bool>()->default_value("false"));
+    return inter->parse();
+  }
 
+using namespace std::filesystem;
 bool cleanCache(std::shared_ptr<Project> pro) {
   const std::vector<path> files_to_delete = {
       pro->project_path / "CMakeCache.txt",
@@ -11,7 +21,9 @@ bool cleanCache(std::shared_ptr<Project> pro) {
       pro->project_path / "cmake_install.cmake",
       pro->project_path / "Makefile"};
   const std::vector<std::filesystem::path> dirs_to_delete = {
-      pro->project_path / "CMakeFiles/", pro->project_path / "_deps/"};
+      pro->project_path / "CMakeFiles/",
+      pro->project_path / "_deps/"
+  };
 
   for (auto &file : files_to_delete) {
     if (exists(file)) {

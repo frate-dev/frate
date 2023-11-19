@@ -1,13 +1,13 @@
-#include <CMaker/Command/Toolchains.hpp>
-#include <CMaker/Utils/General.hpp>
+#include <Frate/Command/Toolchains.hpp>
+#include <Frate/Utils/General.hpp>
 
 
 
 namespace Command::Toolchains{
   json load(){
-    std::filesystem::path  path = std::string(std::getenv("HOME")) + "/.config/" + "cmaker/" + "toolchains.json";
+    std::filesystem::path  path = std::string(std::getenv("HOME")) + "/.config/" + "frate/" + "toolchains.json";
     if(!std::filesystem::exists(path)){
-      json data = Utils::fetchJson("https://github.com/cmaker-dev/toolchains/releases/download/index-6/index.json");
+      json data = Utils::fetchJson("https://github.com/frate-dev/toolchains/releases/download/index-6/index.json");
       if(data == nullptr){
         std::cout << "error: failed to fetch toolchains" << std::endl;
         return false;

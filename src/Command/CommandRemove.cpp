@@ -1,10 +1,20 @@
-#include <CMaker/Generators.hpp>
-#include <CMaker/Command.hpp>
-#include <CMaker/Command/CommandMode.hpp>
-#include <CMaker/Command/Package.hpp>
-#include <CMaker/Command/RemoteServers.hpp>
+#include <Frate/Generators.hpp>
+#include <Frate/Command.hpp>
+#include <Frate/Command/CommandMode.hpp>
+#include <Frate/Command/Package.hpp>
+#include <Frate/Command/RemoteServers.hpp>
 namespace Command {
 
+  bool OptionsInit::Remove(Interface *inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand", "args"});
+    inter->options->allow_unrecognised_options().add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("m,mode", "make changes to compile mode", cxxopts::value<std::string>())
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
+      ("args", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>());
+    return inter->parse();
+  }
  
   bool removeFlag(Interface *inter) {
     if (inter->args->count("args") == 0) {

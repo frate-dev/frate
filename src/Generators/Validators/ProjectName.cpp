@@ -2,8 +2,8 @@
 #include <string>
 #include <regex>
 #include <memory>
-#include <CMaker/Command.hpp> 
-#include <CMaker/Generators.hpp> 
+#include <Frate/Command.hpp> 
+#include <Frate/Generators.hpp> 
 
 
 

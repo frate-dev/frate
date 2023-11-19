@@ -1,4 +1,4 @@
-_cmaker() {
+_frate() {
     local cur prev words cword
     _get_comp_words_by_ref -n : cur prev words cword
 
@@ -30,4 +30,4 @@ _cmaker() {
     COMPREPLY=()
 }
 
-complete -F _cmaker cmaker
+complete -F _frate cmaker

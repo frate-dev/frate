@@ -1,9 +1,26 @@
-#include <CMaker/Command.hpp>
+#include <Frate/Command.hpp>
 #include "cxxopts.hpp"
+#include "termcolor/termcolor.hpp"
+#include <initializer_list>
 #include <memory>
-
+#include <sstream>
 
 namespace Command {
+using std::function;
+using std::initializer_list;
+
+bool OptionsInit::Main(Interface *inter) {
+  inter->InitHeader();
+  inter->options->parse_positional({"command"});
+  inter->options->allow_unrecognised_options().add_options()(
+      "command", "Command to run",
+      cxxopts::value<std::string>()->default_value("help"))(
+      "v,verbose", "Verbose output",
+      cxxopts::value<bool>()->default_value("false"))(
+      "y,confim-all", "skip all y/n prompts",
+      cxxopts::value<bool>()->default_value("false"))("h,help", "Print usage");
+  return inter->parse();
+  }
 
   bool Interface::parse(){
     try{
@@ -14,6 +31,14 @@ namespace Command {
       return false;
     }
   }
+
+  // bool Interface::registerCommand(initializer_list<std::string> aliases,
+  //                                 initializer_list<std::string> flags,
+  //                                 std::string docs,
+  //                                 function<bool()> func) {
+  //   commands.push_back(Handler(aliases, flags,docs, func));
+  //   return true;
+  // }
   bool Interface::InitHeader(){
     try{
       this->options = std::make_shared<cxxopts::Options>("CMaker", "A CMake project generator, we suffer so you don't have to!");
@@ -23,6 +48,7 @@ namespace Command {
     }
     return true;
   }
+
   Interface::Interface(int argc, char** argv){
     this->argc = argc;
     this->argv = argv;
@@ -55,96 +81,210 @@ namespace Command {
     #endif
 
     std::cout << "Project Path: " << pro->project_path << ENDL;
-    if(command != "init"){
-      if(!this->LoadPackageJson()){
+    commands = {
+
+      Handler{
+        .aliases = {"new", "n"},
+        .flags = {"-d","--defaults"}, //TODO: Add flags
+        .docs = "Create a new project",
+        .callback = [this](){
+          OptionsInit::Init(this);
+          return this->init();
+        }
+      },
+
+      Handler{
+        .aliases = {"run"},
+        .flags = {"-m","--build-mode","-t","--target"}, //TODO: Add flags
+        .docs = "Run the project",
+        .callback = [this](){
+          return this->run();
+        }
+      },
+
+      Handler{
+        .aliases = {"help", "h"},
+        .flags = {}, //TODO: Add flags
+        .docs = "Display help",
+        .callback = [this](){
+          return this->help();
+        }
+      },
+
+      Handler{
+        .aliases = {"ftp"},
+        .flags = {}, //TODO: Add flags
+        .docs = "Deletes the entire project F*ck This Project",
+        .callback = [this](){
+          return this->ftp();
+        }
+      },
+
+      Handler{
+        .aliases = {"add"},
+        .flags = {}, //TODO: Add flags
+        .subcommands = getAddHandlers(),
+        .docs = "add sub command",
+        .callback = [this](){
+          OptionsInit::Add(this);
+          return this->add();
+        }
+      },
+
+      Handler{
+        .aliases = {"search"},
+        .flags = {}, //TODO: Add flags
+        .subcommands = getSearchHandlers(),
+        .docs = "search sub command",
+        .callback = [this](){
+          OptionsInit::Search(this);
+          return this->search();
+        }
+      },
+
+      Handler{
+        .aliases = {"list", "ls"},
+        .flags = {}, //TODO: Add flags
+        .subcommands = getListHandlers(),
+        .docs = "list sub command",
+        .callback = [this](){
+          OptionsInit::List(this);
+          return this->list();
+        }
+      },
+
+      Handler{
+        .aliases = {"remove", "rm"},
+        .flags = {}, //TODO: Add flags
+        .docs = "remove sub command",
+        .callback = [this](){
+          OptionsInit::Remove(this);
+          return this->remove();
+        }
+      },
+
+      Handler{
+        .aliases = {"update"},
+        .flags = {}, //TODO: Add flags
+        .subcommands = getUpdateHandlers(),
+        .docs = "update sub command",
+        .callback = [this](){
+          OptionsInit::Update(this);
+          return this->update();
+        }
+      },
+
+      Handler{
+        .aliases = {"clean"},
+        .flags = {"-c","--cache"}, //TODO: Add flags
+        .docs = "clean sub command",
+        .callback = [this](){
+          OptionsInit::Clean(this);
+          return this->clean();
+        }
+      },
+
+      Handler{
+        .aliases = {"build"},
+        .flags = {}, //TODO: Add flags
+        .docs = "build sub command",
+        .callback = [this](){
+          OptionsInit::Build(this);
+          return this->build();
+        }
+      },
+      Handler{
+        .aliases = {"watch"},
+        .flags = {}, //TODO: Add flags
+        .docs = "watches the project for changes",
+        .callback = [this](){
+          OptionsInit::Watch(this);
+          return this->watch();
+        }
+      },
+    };
+
+    bool found_alias = false;
+    for(Handler& handler : commands){
+      for(std::string& alias : handler.aliases){
+        if(alias == command){
+          found_alias = true;
+          if(!handler.callback()){
+            std::cout << "Error: Could not run: " << handler.aliases[0] << ENDL;
+          }
+        }
       }
     }
+    if(!found_alias){
+      std::cout << "Error: Command not found: " << command << ENDL;
+    }
 
+  }
+  void renderFlags(std::vector<std::string> flags){
+    std::cout << "  [";
+    for(std::string flag : flags){
+      std::cout << " " << termcolor::bold << termcolor::magenta << flag << termcolor::reset;
+    }
+    std::cout << " ]";
+  }
+  void renderPositionals(std::vector<std::string> positionals){
+    for(std::string positional : positionals){
+      std::cout << termcolor::bold <<  termcolor::green << " <" << positional << ">" << termcolor::reset;
+    }
+  }
+  void Interface::getHelpString(std::string name,std::vector<Handler> &handlers, bool is_subcommand){
+    int index = 0;
+    for(Handler handler : handlers){
+      index++;
+      int alias_str_len = 0;
+      std::cout << "  ";
+      if(is_subcommand){
+        if(index == handlers.size()){
+          std::cout << " └── ";
+        }
+        else{
+          std::cout << " ├── ";
+        }
+        alias_str_len += 4;
+      }
+      for(std::string alias : handler.aliases){
+        alias_str_len += alias.length();
+        std::cout << termcolor::bold << termcolor::yellow << alias << termcolor::reset;
+        //Render pipes between aliases
+        if(alias != handler.aliases.back()){
+          alias_str_len += 1;
+          std::cout << " | ";
+        }
+      }
+      if(handler.positional_args.size() > 0){
+        renderPositionals(handler.positional_args);
+      }
+      if(handler.flags.size() > 0){
+        renderFlags(handler.flags);
+      }
+      if(is_subcommand){
+        std::cout << " ";
+        if(index != handlers.size()){
+          std::cout << "\n   │";
+        }else{
+          std::cout << "\n    ";
+        }
+        std::cout << "    └" << termcolor::blue << handler.docs << termcolor::reset << ENDL;
+      }else{
+        if(handler.subcommands.size() > 0){
+          std::cout << termcolor::blue << " <target>" << termcolor::reset << ENDL;
 
-    using namespace cxxopts;
-
-    if (command == "new" || command == "n"){
-      std::cout << "got here" << ENDL;
-      OptionsInit::Init(this);
-      if(!this->init()){
-        std::cout << "Error: Could not initialize project" << ENDL;
+        }else{
+          std::cout << " : " << termcolor::blue << handler.docs << termcolor::reset << ENDL;
+        }
+      }
+      if(handler.subcommands.size() > 0){
+        getHelpString(name + " " + handler.aliases[0], handler.subcommands, true);
+        std::cout << ENDL;
       }
     }
-
-    else if (command == "run"){
-      if(!this->run()){
-        std::cout << "Error: Could not run project" << ENDL;
-      }
-    }
-
-    else if (command == "help"){
-      if(!this->help()){
-        std::cout << "Error: Could not display help" << ENDL;
-      }
-    }
-    else if (command == "ftp"){
-      if(!this->ftp()){
-        std::cout << "Error: Could not ftp project" << ENDL;
-      }
-    }
-
-    else if(command == "add"){
-      OptionsInit::Add(this);
-      if(!this->add()){
-        std::cout << "Error: Could not add project" << ENDL;
-      }
-    }
-
-    else if(command == "search"){
-      OptionsInit::Search(this);
-      if(!this->search()){
-        std::cout << "Error: Could not search project" << ENDL;
-      }
-    }
-
-    else if(command == "list"){
-      OptionsInit::List(this);
-      if(!this->list()){
-        std::cout << "Error: Could not list project" << ENDL;
-      }
-    }
-
-    else if (command == "remove" || command == "rm"){
-      OptionsInit::Remove(this);
-      if(!this->remove()){
-        std::cout << "Error: Could not remove project" << ENDL;
-      }
-
-    }
-
-    else if (command == "watch"){
-      OptionsInit::Watch(this);
-      if(!this->watch()){
-        std::cout << "Error: Could not watch project" << ENDL;
-      }
-    }
-
-    else if (command == "update"){
-      OptionsInit::Update(this);
-      if(!this->update()){
-        std::cout << "Error: Could not update project index" << ENDL;
-      }
-    }
-
-    else if (command == "clean"){
-      OptionsInit::Clean(this);
-      if(!this->clean()){
-        std::cout << "Error: Could not clean project" << ENDL;
-      }
-    }
-
-    else{
-      std::cout << "Invalid command try one of these" << ENDL;
-      this->help();
-
-    }
-
   }
   Interface::~Interface(){
   }
-}
+
+  } // namespace Command

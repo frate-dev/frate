@@ -1,65 +1,32 @@
-#include <CMaker/Generators.hpp>
-#include <CMaker/Command.hpp>
-#include <CMaker/Command/Author.hpp>
+#include <Frate/Generators.hpp>
+#include <Frate/Command.hpp>
+#include <Frate/Command/Author.hpp>
+#include <Frate/Command/Flags.hpp>
+#include <Frate/Command/Package.hpp>
+#include <Frate/Command/RemoteServers.hpp>
 #include <algorithm>
 #include <cxxopts.hpp>
 #include <iostream>
 #include <nlohmann/json.hpp>
-#include <CMaker/Command/Package.hpp>
-#include <CMaker/Command/RemoteServers.hpp>
 #include <string>
-#include <CMaker/Utils/General.hpp>
-#include <CMaker/Utils/CLI.hpp>
+#include <Frate/Utils/General.hpp>
+#include <Frate/Utils/CLI.hpp>
 #include <cmath>
 #include <termcolor/termcolor.hpp>
 
 namespace Command {
   using nlohmann::json;
   using Utils::CLI::ListItem;
-
-  bool addFlags(Interface *inter) {
-    std::cout << "Adding flags" << std::endl; 
-    std::vector<std::string> raw_flags = inter->args->unmatched();
-    std::vector<std::string> flags;
-    std::string build_flags = "";
-    for (std::string flag : raw_flags) {
-      if (flag[0] == '-' && flag[1] == '-') {
-        build_flags = "-" + build_flags;
-        flags.push_back(build_flags);
-        build_flags = "";
-      }
-      flag.erase(std::remove(flag.begin(), flag.end(), '-'), flag.end());
-      build_flags += flag;
-    }
-    if (build_flags != "") {
-      build_flags = "-" + build_flags;
-      flags.push_back(build_flags);
-    }
-    if (inter->args->count("mode") > 0) {
-      std::string mode = inter->args->operator[]("mode").as<std::string>();
-      for (Mode &m : inter->pro->modes) {
-        if (m.name == mode) {
-          for (std::string flag : flags) {
-            std::cout << "Adding flag: " << flag << std::endl;
-            m.flags.push_back(flag);
-          }
-          std::cout << "Writing config.json" << std::endl;
-          Generators::ConfigJson::writeConfig(inter->pro);
-          Generators::CMakeList::createCMakeListsExecutable(inter->pro);
-          return true;
-        }
-      }
-    }
-    
-    for (std::string flag : flags) {
-      std::cout << "Adding flag: " << flag << std::endl;
-      inter->pro->flags.push_back(flag);
-    }
-    std::cout << "Writing config.json" << std::endl;
-    Generators::ConfigJson::writeConfig(inter->pro);
-    return true;
+  
+  bool OptionsInit::Add(Interface* inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand"});
+    inter->options->allow_unrecognised_options().add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
+    inter->options->help();
+    return inter->parse();
   }
-
 
 
   bool getModeName(Mode &mode){
@@ -84,38 +51,77 @@ namespace Command {
     }
     return true;
   }
+  std::vector<Handler> Interface::getAddHandlers(){
+    return {
+      Handler{
+        .aliases = {"package","p"},
+        .flags = {"-l","--latest"},
+        .docs = "Add a package to the project",
+        .callback = [this]() {
+          OptionsInit::Dependencies(this);
+          return Packages::add(this);
+        },
+      },
+        Handler{
+          .aliases = {"flag","f"},
+          .docs = "Add a flag to the project",
+          .callback = [this]() {
+            OptionsInit::Flags(this);
+            return Flags::add(this);
+          },
+        },
+        Handler{
+          .aliases = {"lib","l"},
+          .docs = "Add a library to link to your project",
+          .callback = [this]() {
+            //TODO implement library
+            // OptionsInit::Libraries(this);
+            // Libraries::add(this);
+            return true;
+          },
+        },
+        Handler{
+          .aliases = {"mode","m"},
+          .docs = "Adds a build mode to your project",
+          .callback = [this]() {
+            OptionsInit::Modes(this);
+            return buildTypeAdd(this);
+          },
+        },
+        Handler{
+          .aliases = {"server","s"},
+          .docs = "Add a remote server to your local config that you can later build to",
+          .callback = [this]() {
+            return RemoteServers::add(this);
+          },
+        },
+        Handler{
+          .aliases = {"author","a"},
+          .docs = "Add an author to your project",
+          .callback = [this]() {
+            return Author::add(this);
+          },
+        },
+    };
+  }
   bool Interface::add() {
-    if (!(args->count("subcommand") > 0)) {
-      std::cout << "Usage add:" << ENDL
-        "\tp, package: adds a package to  your project" << ENDL
-        "\tflag: adds a flag" << ENDL
-        "\tlib:  adds a library" << std::endl;
+    std::vector<Handler> addHandlers = getAddHandlers();
+    if(args->count("subcommand")){
+      std::string subcommand = args->operator[]("subcommand").as<std::string>();
+      for(Handler handler : addHandlers){
+        for(std::string alias : handler.aliases){
+          if(alias == subcommand){
+            return handler.callback();
+          }
+        }
+      }
+      std::cout << "Unknown subcommand: " << subcommand << ENDL;
+      getHelpString("add", addHandlers);
       return false;
+    }else{
+      std::cout <<  termcolor::bright_red << "No subcommand given" << termcolor::reset << ENDL;
+      getHelpString("add", addHandlers);
     }
-    std::string subcommand = args->operator[]("subcommand").as<std::string>();
-    if (subcommand == "packages" || subcommand == "p") {
-      OptionsInit::Dependencies(this);
-      Packages::add(this);
-    }
-    else if (subcommand == "flags") {
-      OptionsInit::Flags(this);
-      addFlags(this);
-    }
-    else if (subcommand == "modes") {
-      OptionsInit::Modes(this);
-      buildTypeAdd(this);
-    }
-    //TODO add Remote server
-    else if (subcommand == "server") {
-      //TODO implement server
-      RemoteServers::add(this);
-    }
-    //TODO add toolchain
-    else if (subcommand == "author") {
-      //TODO implement author
-      Author::add(this);
-    }
-
     return true;
   }
 }

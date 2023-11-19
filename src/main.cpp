@@ -1,4 +1,4 @@
-#include <CMaker/Command.hpp>
+#include <Frate/Command.hpp>
 #include <vector>
 #include <string>
 // LUCAS PAY ATTENTION TO IF THE HEADER IS .hpp OR .h
@@ -11,12 +11,12 @@
 
 #ifdef TEST
   #include <catch2/catch_session.hpp>
-  #include <CMaker/Test/Test.hpp>
+  #include <Frate/Test/Test.hpp>
 #endif
 int main(int argc, char **argv) {
 
 
-  // LUCAS MAKE SURE YOU INITIALIZE YOUR FUCKING STRUCT YOU TWAT
+  // LUCAS MAKE SURE YOU INITIALIZE YOUR F@*KING STRUCT YOU TW@T
   //std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
   #ifdef TEST
     Catch::Session session;

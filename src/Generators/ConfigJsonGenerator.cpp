@@ -1,5 +1,5 @@
-#include <CMaker/Generators.hpp>
-#include <CMaker/Command.hpp>
+#include <Frate/Generators.hpp>
+#include <Frate/Command.hpp>
 #include <string>
 #include <iostream>
 #include <regex>

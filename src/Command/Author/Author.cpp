@@ -1,4 +1,4 @@
-#include <CMaker/Command/Author.hpp>
+#include <Frate/Command/Author.hpp>
 
 
 namespace Command::Author {

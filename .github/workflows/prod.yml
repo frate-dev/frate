@@ -9,7 +9,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   RELEASE_VERSION: 0.1.0
-  PACKAGE_NAME: cmaker-release-0.1.0.${{github.run_number}}
+  PACKAGE_NAME: frate-release-0.1.0.${{github.run_number}}
 
 jobs:
   build:
@@ -34,12 +34,12 @@ jobs:
       with:
         repo_token: ${{ secrets.CI_TOKEN }}
         file: ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz
-        asset_name: cmaker-release
+        asset_name: frate-release
         tag: ${{env.PACKAGE_NAME}}
         overwrite: false
         prerelease: false
         make_latest: true
-        release_name: "CMaker ${{env.RELEASE_VERSION}}.${{github.run_number}}"
-        body: "CMaker ${{env.RELEASE_VERSION}}.${{github.run_number}}" 
+        release_name: "Frate ${{env.RELEASE_VERSION}}.${{github.run_number}}"
+        body: "Frate ${{env.RELEASE_VERSION}}.${{github.run_number}}" 
       
 

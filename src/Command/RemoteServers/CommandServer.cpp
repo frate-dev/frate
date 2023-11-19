@@ -1,17 +1,17 @@
-#include <CMaker/Command.hpp>
-#include <CMaker/Utils/General.hpp>
-#include <CMaker/Utils/CLI.hpp>
+#include <Frate/Command.hpp>
+#include <Frate/Utils/General.hpp>
+#include <Frate/Utils/CLI.hpp>
 
 namespace Command::RemoteServers{
   using namespace Utils::CLI;
   std::vector<RemoteServer> remoteServerData(Interface* inter){
     std::fstream file;
-    std::string build_servers_dir= std::string(std::getenv("HOME"))  + "/.config/cmaker/";
+    std::string build_servers_dir= std::string(std::getenv("HOME"))  + "/.config/frate/";
     if (!std::filesystem::exists(build_servers_dir)){
       std::filesystem::create_directory(build_servers_dir);
     }
-    std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json";
-    std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "current_build_server.json";
+    std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/frate/" + "build_server.json";
+    std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/frate/" + "current_build_server.json";
     if (!std::filesystem::exists(build_servers)){
       std::ofstream file(build_servers);
       file << "[]";
@@ -104,7 +104,7 @@ namespace Command::RemoteServers{
       build_server_json.push_back(build_server_json_tmp);
     }
     std::ofstream file;
-    file.open(std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json");
+    file.open(std::string(std::getenv("HOME"))  + "/.config/frate/" + "build_server.json");
     file << build_server_json;
     return true;
   }
@@ -182,7 +182,7 @@ Usage server:
 
         std::cout << "Found server" << std::endl;
         std::ofstream file;
-        file.open(std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "current_build_server.json");
+        file.open(std::string(std::getenv("HOME"))  + "/.config/frate/" + "current_build_server.json");
         json current_build_server = {
           {"name", server.name},
           {"address", server.ip},
@@ -202,7 +202,7 @@ Usage server:
 
   bool add(Interface* inter){
     std::vector<RemoteServer> servers =  remoteServerData(inter);
-    std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/cmaker/" + "build_server.json";
+    std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/frate/" + "build_server.json";
     std::string name, address,  username, authMethod, password, key;
     int port;
     getServerName(name);

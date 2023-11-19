@@ -42,7 +42,7 @@ jobs:
 
     - name: RunTest
       working-directory: ${{github.workspace}}
-      run: ./build/cmaker
+      run: ./build/frate
       
       
     - name: Upload artifacts
@@ -50,7 +50,7 @@ jobs:
       with:
         repo_token: ${{ secrets.CI_TOKEN }}
         file: ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz
-        asset_name: cmaker
+        asset_name: frate
         tag: nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}
         overwrite: false
         prerelease: true

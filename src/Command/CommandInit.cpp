@@ -1,4 +1,4 @@
-#include <CMaker/Command.hpp>
+#include <Frate/Command.hpp>
 #include <cstdlib>
 #include <cxxopts.hpp>
 #include <algorithm>
@@ -8,12 +8,26 @@
 #include <fstream>
 #include <iostream> 
 #include <string>
-#include <CMaker/Generators.hpp>
-#include <CMaker/Utils/General.hpp>
+#include <Frate/Generators.hpp>
+#include <Frate/Utils/General.hpp>
 
 namespace Command {
 using Utils::CLI::Prompt;
 using Utils::CLI::Ansi::RED;
+
+bool OptionsInit::Init(Interface* inter) {
+  inter->InitHeader();
+  inter->options->parse_positional({"command", "subcommand"});
+  inter->options->add_options()
+    ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+    ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
+    ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
+    ("name", "Name of the project", cxxopts::value<std::string>()->default_value("false"))
+    ("t,type", "Type of the project", cxxopts::value<std::string>()->default_value(ProjectType::EXECUTABLE))
+    ("l,language", "Language of the project", cxxopts::value<std::string>()->default_value("cpp"));
+  return inter->parse();
+}
+
 
 bool createJson(std::shared_ptr<Project> pro) {
   // Lucas did it again
@@ -166,7 +180,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     std::string language = "cpp";
     std::string project_type = "executable";
 #ifdef DEBUG
-    project_name = "debug-cmaker";
+    project_name = "debug-frate";
 #else
     project_name = Utils::getFolderName();
 #endif
