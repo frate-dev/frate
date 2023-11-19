@@ -113,10 +113,11 @@ namespace Command {
     void fromJson(json j);
     nlohmann::json toJson();
   } Project;
-
+  typedef struct Handler_s Handler;
   typedef struct Handler_s {
     std::vector<std::string> aliases;
     std::vector<std::string> flags{};
+    std::vector<Handler> subcommands{};
     std::string docs{""};
     std::function<bool()> callback{
       []() -> bool {
@@ -125,7 +126,6 @@ namespace Command {
       }
     };
   } Handler;
-
   class Interface{
     private:
       //Commands;
@@ -145,15 +145,19 @@ namespace Command {
       bool list();
       //TODO: setup register comamnd
       bool registerCommand(
-          std::initializer_list<std::string> alisas,
-          std::initializer_list<std::string> flags,
-          std::function<bool()> callback
+          std::initializer_list<std::string> &alisas,
+          std::initializer_list<std::string> &flags,
+          std::function<bool()> &callback
           );
-      void getHelpString(std::string name,std::vector<Handler> handlers);
+      void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
     public:
       std::shared_ptr<Project> pro;
       bool project_present{false};
       std::vector<Handler> commands{};
+      //All sub command getters
+      std::vector<Handler> getAddHandlers();
+      std::vector<Handler> getListHandlers();
+
       bool skip_prompts{false};
       bool parse();
       std::shared_ptr<cxxopts::Options> options;

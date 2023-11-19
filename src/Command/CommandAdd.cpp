@@ -51,66 +51,69 @@ namespace Command {
     }
     return true;
   }
-  bool Interface::add() {
-    std::vector<Handler> add_handlers = {
+  std::vector<Handler> Interface::getAddHandlers(){
+    return {
       Handler{
         .aliases = 
         {"package","p"},
-        .docs = "Add a package to the project",
-        .callback = [this]() {
-          OptionsInit::Dependencies(this);
-          return Packages::add(this);
-        },
+          .docs = "Add a package to the project",
+          .callback = [this]() {
+            OptionsInit::Dependencies(this);
+            return Packages::add(this);
+          },
       },
-      Handler{
-        .aliases = 
-        {"flag","f"},
-        .docs = "Add a flag to the project",
-        .callback = [this]() {
-          OptionsInit::Flags(this);
-          return Flags::add(this);
+        Handler{
+          .aliases = 
+          {"flag","f"},
+          .docs = "Add a flag to the project",
+          .callback = [this]() {
+            OptionsInit::Flags(this);
+            return Flags::add(this);
+          },
         },
-      },
-      Handler{
-        .aliases = 
-        {"lib","l"},
-        .docs = "Add a library to link to your project",
-        .callback = [this]() {
-          //TODO implement library
-          // OptionsInit::Libraries(this);
-          // Libraries::add(this);
-          return true;
+        Handler{
+          .aliases = 
+          {"lib","l"},
+          .docs = "Add a library to link to your project",
+          .callback = [this]() {
+            //TODO implement library
+            // OptionsInit::Libraries(this);
+            // Libraries::add(this);
+            return true;
+          },
         },
-      },
-      Handler{
-        .aliases = 
-        {"mode","m"},
-        .docs = "Adds a build mode to your project",
-        .callback = [this]() {
-          OptionsInit::Modes(this);
-          return buildTypeAdd(this);
+        Handler{
+          .aliases = 
+          {"mode","m"},
+          .docs = "Adds a build mode to your project",
+          .callback = [this]() {
+            OptionsInit::Modes(this);
+            return buildTypeAdd(this);
+          },
         },
-      },
-      Handler{
-        .aliases = 
-        {"server","s"},
-        .docs = "Add a remote server to your local config that you can later build to",
-        .callback = [this]() {
-          return RemoteServers::add(this);
+        Handler{
+          .aliases = 
+          {"server","s"},
+          .docs = "Add a remote server to your local config that you can later build to",
+          .callback = [this]() {
+            return RemoteServers::add(this);
+          },
         },
-      },
-      Handler{
-        .aliases = 
-        {"author","a"},
-        .docs = "Add an author to your project",
-        .callback = [this]() {
-          return Author::add(this);
+        Handler{
+          .aliases = 
+          {"author","a"},
+          .docs = "Add an author to your project",
+          .callback = [this]() {
+            return Author::add(this);
+          },
         },
-      },
     };
+  }
+  bool Interface::add() {
+    std::vector<Handler> addHandlers = getAddHandlers();
     if(args->count("subcommand")){
       std::string subcommand = args->operator[]("subcommand").as<std::string>();
-      for(Handler handler : add_handlers){
+      for(Handler handler : addHandlers){
         for(std::string alias : handler.aliases){
           if(alias == subcommand){
             return handler.callback();
@@ -118,11 +121,11 @@ namespace Command {
         }
       }
       std::cout << "Unknown subcommand: " << subcommand << ENDL;
-      getHelpString("add", add_handlers);
+      getHelpString("add", addHandlers);
       return false;
     }else{
       std::cout <<  termcolor::bright_red << "No subcommand given" << termcolor::reset << ENDL;
-      getHelpString("add", add_handlers);
+      getHelpString("add", addHandlers);
     }
     return true;
   }

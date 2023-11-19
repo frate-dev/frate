@@ -123,6 +123,7 @@ bool OptionsInit::Main(Interface *inter) {
       Handler{
         .aliases = {"add"},
         .flags = {}, //TODO: Add flags
+        .subcommands = getAddHandlers(),
         .docs = "add sub command",
         .callback = [this](){
           OptionsInit::Add(this);
@@ -143,6 +144,7 @@ bool OptionsInit::Main(Interface *inter) {
       Handler{
         .aliases = {"list", "ls"},
         .flags = {}, //TODO: Add flags
+        .subcommands = getListHandlers(),
         .docs = "list sub command",
         .callback = [this](){
           OptionsInit::List(this);
@@ -215,112 +217,50 @@ bool OptionsInit::Main(Interface *inter) {
       std::cout << "Error: Command not found: " << command << ENDL;
     }
 
-
-//     if(command != "new" && command != "n"){
-//       if(!this->LoadPackageJson()){
-//       }
-//     }
-//     using namespace cxxopts;
-//     
-//     if (command == "new" || command == "n"){
-//       OptionsInit::Init(this);
-//       if(!this->init()){
-//         std::cout << "Error: Could not initialize project" << ENDL;
-//       }
-//     }
-// 
-//     else if (command == "run"){
-//       if(!this->run()){
-//         std::cout << "Error: Could not run project" << ENDL;
-//       }
-//     }
-// 
-//     else if (command == "help"){
-//       if(!this->help()){
-//         std::cout << "Error: Could not display help" << ENDL;
-//       }
-//     }
-// 
-//     else if (command == "ftp"){
-//       if(!this->ftp()){
-//         std::cout << "Error: Could not ftp project" << ENDL;
-//       }
-//     }
-// 
-//     else if(command == "add"){
-//       OptionsInit::Add(this);
-//       if(!this->add()){
-//         std::cout << "Error: Could not add project" << ENDL;
-//       }
-//     }
-// 
-//     else if(command == "search"){
-//       OptionsInit::Search(this);
-//       if(!this->search()){
-//         std::cout << "Error: Could not search project" << ENDL;
-//       }
-//     }
-// 
-//     else if(command == "list"){
-//       OptionsInit::List(this);
-//       if(!this->list()){
-//         std::cout << "Error: Could not list project" << ENDL;
-//       }
-//     }
-// 
-//     else if (command == "remove" || command == "rm"){
-//       OptionsInit::Remove(this);
-//       if(!this->remove()){
-//         std::cout << "Error: Could not remove project" << ENDL;
-//       }
-// 
-//     }
-// 
-//     else if (command == "watch"){
-//       OptionsInit::Watch(this);
-//       if(!this->watch()){
-//         std::cout << "Error: Could not watch project" << ENDL;
-//       }
-//     }
-// 
-//     else if (command == "update"){
-//       OptionsInit::Update(this);
-//       if(!this->update()){
-//         std::cout << "Error: Could not update project index" << ENDL;
-//       }
-//     }
-// 
-//     else if (command == "clean"){
-//       OptionsInit::Clean(this);
-//       if(!this->clean()){
-//         std::cout << "Error: Could not clean project" << ENDL;
-//       }
-//     }
-// 
-//     else{
-//       std::cout << "Invalid command try one of these" << ENDL;
-//       this->help();
-// 
-//     }
-
   }
-  void Interface::getHelpString(std::string,std::vector<Handler> handlers){
-    std::cout << "Usage: add" << ENDL;
+  void Interface::getHelpString(std::string name,std::vector<Handler> &handlers, bool is_subcommand){
+    int index = 0;
     for(Handler handler : handlers){
+      index++;
       int alias_str_len = 0;
-      std::cout << "\t";
+      std::cout << "  ";
+      if(is_subcommand){
+        if(index == handlers.size()){
+          std::cout << " └── ";
+        }
+        else{
+          std::cout << " ├── ";
+        }
+        alias_str_len += 4;
+      }
       for(std::string alias : handler.aliases){
         alias_str_len += alias.length();
-        std::cout << termcolor::bright_green << alias << termcolor::reset;
+        std::cout << termcolor::bold << termcolor::yellow << alias << termcolor::reset;
         if(alias != handler.aliases.back()){
           alias_str_len += 1;
-          std::cout << "|";
+          std::cout << " | ";
         }
       }
-      for(int i = 0; i < 10 - alias_str_len; i++){
+      if(is_subcommand){
         std::cout << " ";
+        if(index != handlers.size()){
+          std::cout << "\n   │";
+        }else{
+          std::cout << "\n    ";
+        }
+        std::cout << "    └" << termcolor::blue << handler.docs << termcolor::reset << ENDL;
+      }else{
+        if(handler.subcommands.size() > 0){
+          std::cout << termcolor::blue << " <target>" << termcolor::reset << ENDL;
+
+        }else{
+          std::cout << " : " << termcolor::blue << handler.docs << termcolor::reset << ENDL;
+        }
       }
-      std::cout << " : " << termcolor::bright_blue << handler.docs << termcolor::reset << ENDL;
+      if(handler.subcommands.size() > 0){
+        getHelpString(name + " " + handler.aliases[0], handler.subcommands, true);
+        std::cout << ENDL;
+      }
     }
   }
   Interface::~Interface(){
