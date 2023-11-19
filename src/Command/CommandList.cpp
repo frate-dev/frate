@@ -2,6 +2,7 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/Modes.hpp>
 #include <Frate/Command/RemoteServers.hpp>
+#include <Frate/Command/Toolchains.hpp>
 #include <Frate/Utils/CLI.hpp>
 namespace Command{
   bool OptionsInit::List(Interface* inter) {
@@ -66,6 +67,15 @@ namespace Command{
       },
       Handler{
         .aliases = 
+        {"available-targets","at"},
+        .docs = "List available targets",
+        .callback = [this]() {
+          Command::Toolchains::list();
+          return true;
+        }
+      },
+      Handler{
+        .aliases = 
         {"licenses","l"},
         .docs = "List possible licenses",
         .callback = [this]() {
@@ -87,6 +97,7 @@ namespace Command{
       getHelpString("list", handlers);
       return false;
     }
+
     for(auto handler : handlers){
       for(auto alias : handler.aliases){
         if(alias == target){

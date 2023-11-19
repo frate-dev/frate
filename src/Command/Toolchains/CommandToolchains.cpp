@@ -1,43 +1,35 @@
 #include <Frate/Command/Toolchains.hpp>
 #include <Frate/Utils/General.hpp>
+#include <Frate/Command/AvailableTriples.hpp>
+#include <Frate/Generators.hpp>
 
 
 
 namespace Command::Toolchains{
   json load(){
     std::filesystem::path  path = std::string(std::getenv("HOME")) + "/.config/" + "frate/" + "toolchains.json";
-    if(!std::filesystem::exists(path)){
-      json data = Utils::fetchJson("https://github.com/frate-dev/toolchains/releases/download/index-6/index.json");
-      if(data == nullptr){
-        std::cout << "error: failed to fetch toolchains" << std::endl;
-        return false;
-      } 
-      std::ofstream file(path);
-      file << data.dump(2);
-    }
-    std::ifstream file(path);
-    json data = json::parse(file);
-    std::cout << "loaded toolchains" << std::endl;
-    return data;
+    return json{};
   }
   bool list(){
     json data = load();
-    for(auto toolchain : data["toolchains"]){
-      std::cout << toolchain["name"] << std::endl;
+    for (std::string toolchain : Command::Toolchain::available_triples){
+      std::cout << toolchain << std::endl;
     }
     return true;
   }
-  bool add(std::string toolchain, Interface* interface){
+  bool add(std::string toolchain, Interface* inter){
     json data = load();
-    for(auto toolchainJson : data["toolchains"]){
-      if(toolchainJson["name"] == toolchain){
-        std::cout << "found toolchain" << std::endl;
-        std::cout << toolchainJson.dump(2) << std::endl;
-        interface->pro->toolchains.push_back(toolchain);
-        return true;
-      }
+    inter->pro->toolchains.push_back(toolchain);
+    Generators::Toolchain::generateToolchain(toolchain);
+    std::ofstream file;
+    if (!std::filesystem::exists(inter->pro->project_path / "toolchains/")){
+      std::filesystem::create_directory(inter->pro->project_path / "toolchains/");
     }
-
+    file.open(inter->pro->project_path / "toolchains/" / (toolchain + ".cmake"));
+    std::cout << "Writing toolchain file" << std::endl;
+    std::string toolchain_template = Generators::Toolchain::generateToolchain(toolchain);
+    std::cout << toolchain_template << std::endl;
+    file << toolchain_template;
     return true;
   }
   bool remove(std::string toolchain_name, Interface* interface){
@@ -50,6 +42,7 @@ namespace Command::Toolchains{
             });
       }
     }
+    std::filesystem::remove(interface->pro->project_path / "toolchains/" / (toolchain_name + ".cmake"));
     return true;
   }
 }

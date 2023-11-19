@@ -4,6 +4,7 @@
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/RemoteServers.hpp>
+#include <Frate/Command/Toolchains.hpp>
 #include <algorithm>
 #include <cxxopts.hpp>
 #include <iostream>
@@ -93,6 +94,16 @@ namespace Command {
           .docs = "Add a remote server to your local config that you can later build to",
           .callback = [this]() {
             return RemoteServers::add(this);
+          },
+        },
+        Handler{
+          .aliases = {"toolchain","t"},
+          .docs = "Add a crosscompile toolchain to your project",
+          .callback = [this]() {
+            Prompt<std::string> *toolchain = new Prompt<std::string>("Toolchain: ");
+            toolchain->Run();
+            Toolchains::add(toolchain->Get(), this);
+            return true;
           },
         },
         Handler{

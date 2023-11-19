@@ -6,6 +6,9 @@ namespace Generators{
   namespace GitIgnore{
     bool create(std::shared_ptr<Command::Project> pro);
   }
+  namespace Toolchain{
+    std::string generateToolchain(std::string toolchain);
+  }
   namespace CMakeList{
     typedef struct Dep {
       std::string fetch_declare;
