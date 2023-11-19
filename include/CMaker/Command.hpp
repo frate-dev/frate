@@ -153,7 +153,7 @@ namespace Command {
     public:
       std::shared_ptr<Project> pro;
       bool project_present{false};
-      std::vector<Handler> commands;
+      std::vector<Handler> commands{};
       bool skip_prompts{false};
       bool parse();
       std::shared_ptr<cxxopts::Options> options;

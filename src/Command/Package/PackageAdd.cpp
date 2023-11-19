@@ -16,8 +16,8 @@ namespace Command::Packages {
     if (inter->args->count("args") == 0) {
       std::cout << 
         "Usage add dep:" << ENDL
-        "\t[inter->args]: the dependencies to project" << ENDL
-        "\tcmake add dep [inter->args] " << std::endl;
+        "\t[args]: the dependencies to project" << ENDL
+        "\tcmake add dep [args] " << std::endl;
       return false;
     }
     if (inter->args->count("mode") != 0){

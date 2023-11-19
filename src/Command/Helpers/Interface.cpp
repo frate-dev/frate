@@ -81,106 +81,244 @@ bool OptionsInit::Main(Interface *inter) {
     #endif
 
     std::cout << "Project Path: " << pro->project_path << ENDL;
-    if(command != "new" && command != "n"){
-      if(!this->LoadPackageJson()){
+    commands = {
+
+      Handler{
+        .aliases = {"new", "n"},
+        .flags = {}, //TODO: Add flags
+        .docs = "Create a new project",
+        .callback = [this](){
+          OptionsInit::Init(this);
+          return this->init();
+        }
+      },
+
+      Handler{
+        .aliases = {"run"},
+        .flags = {}, //TODO: Add flags
+        .docs = "Run the project",
+        .callback = [this](){
+          return this->run();
+        }
+      },
+
+      Handler{
+        .aliases = {"help", "h"},
+        .flags = {}, //TODO: Add flags
+        .docs = "Display help",
+        .callback = [this](){
+          return this->help();
+        }
+      },
+
+      Handler{
+        .aliases = {"ftp"},
+        .flags = {}, //TODO: Add flags
+        .docs = "Deletes the entire project F*ck This Project",
+        .callback = [this](){
+          return this->ftp();
+        }
+      },
+
+      Handler{
+        .aliases = {"add"},
+        .flags = {}, //TODO: Add flags
+        .docs = "add sub command",
+        .callback = [this](){
+          OptionsInit::Add(this);
+          return this->add();
+        }
+      },
+
+      Handler{
+        .aliases = {"search"},
+        .flags = {}, //TODO: Add flags
+        .docs = "search sub command",
+        .callback = [this](){
+          OptionsInit::Search(this);
+          return this->search();
+        }
+      },
+
+      Handler{
+        .aliases = {"list", "ls"},
+        .flags = {}, //TODO: Add flags
+        .docs = "list sub command",
+        .callback = [this](){
+          OptionsInit::List(this);
+          return this->list();
+        }
+      },
+
+      Handler{
+        .aliases = {"remove", "rm"},
+        .flags = {}, //TODO: Add flags
+        .docs = "remove sub command",
+        .callback = [this](){
+          OptionsInit::Remove(this);
+          return this->remove();
+        }
+      },
+
+      Handler{
+        .aliases = {"update"},
+        .flags = {}, //TODO: Add flags
+        .docs = "update sub command",
+        .callback = [this](){
+          OptionsInit::Update(this);
+          return this->update();
+        }
+      },
+
+      Handler{
+        .aliases = {"clean"},
+        .flags = {}, //TODO: Add flags
+        .docs = "clean sub command",
+        .callback = [this](){
+          OptionsInit::Clean(this);
+          return this->clean();
+        }
+      },
+
+      Handler{
+        .aliases = {"build"},
+        .flags = {}, //TODO: Add flags
+        .docs = "build sub command",
+        .callback = [this](){
+          OptionsInit::Build(this);
+          return this->build();
+        }
+      },
+      Handler{
+        .aliases = {"watch"},
+        .flags = {}, //TODO: Add flags
+        .docs = "watches the project for changes",
+        .callback = [this](){
+          OptionsInit::Watch(this);
+          return this->watch();
+        }
+      },
+    };
+
+    bool found_alias = false;
+    for(Handler& handler : commands){
+      for(std::string& alias : handler.aliases){
+        if(alias == command){
+          found_alias = true;
+          if(!handler.callback()){
+            std::cout << "Error: Could not run: " << handler.aliases[0] << ENDL;
+          }
+        }
       }
     }
-
-
-    using namespace cxxopts;
-    
-    if (command == "new" || command == "n"){
-      std::cout << "got here" << ENDL;
-      OptionsInit::Init(this);
-      if(!this->init()){
-        std::cout << "Error: Could not initialize project" << ENDL;
-      }
+    if(!found_alias){
+      std::cout << "Error: Command not found: " << command << ENDL;
     }
 
-    else if (command == "run"){
-      if(!this->run()){
-        std::cout << "Error: Could not run project" << ENDL;
-      }
-    }
 
-    else if (command == "help"){
-      if(!this->help()){
-        std::cout << "Error: Could not display help" << ENDL;
-      }
-    }
-
-    else if (command == "ftp"){
-      if(!this->ftp()){
-        std::cout << "Error: Could not ftp project" << ENDL;
-      }
-    }
-
-    else if(command == "add"){
-      OptionsInit::Add(this);
-      if(!this->add()){
-        std::cout << "Error: Could not add project" << ENDL;
-      }
-    }
-
-    else if(command == "search"){
-      OptionsInit::Search(this);
-      if(!this->search()){
-        std::cout << "Error: Could not search project" << ENDL;
-      }
-    }
-
-    else if(command == "list"){
-      OptionsInit::List(this);
-      if(!this->list()){
-        std::cout << "Error: Could not list project" << ENDL;
-      }
-    }
-
-    else if (command == "remove" || command == "rm"){
-      OptionsInit::Remove(this);
-      if(!this->remove()){
-        std::cout << "Error: Could not remove project" << ENDL;
-      }
-
-    }
-
-    else if (command == "watch"){
-      OptionsInit::Watch(this);
-      if(!this->watch()){
-        std::cout << "Error: Could not watch project" << ENDL;
-      }
-    }
-
-    else if (command == "update"){
-      OptionsInit::Update(this);
-      if(!this->update()){
-        std::cout << "Error: Could not update project index" << ENDL;
-      }
-    }
-
-    else if (command == "clean"){
-      OptionsInit::Clean(this);
-      if(!this->clean()){
-        std::cout << "Error: Could not clean project" << ENDL;
-      }
-    }
-
-    else{
-      std::cout << "Invalid command try one of these" << ENDL;
-      this->help();
-
-    }
+//     if(command != "new" && command != "n"){
+//       if(!this->LoadPackageJson()){
+//       }
+//     }
+//     using namespace cxxopts;
+//     
+//     if (command == "new" || command == "n"){
+//       OptionsInit::Init(this);
+//       if(!this->init()){
+//         std::cout << "Error: Could not initialize project" << ENDL;
+//       }
+//     }
+// 
+//     else if (command == "run"){
+//       if(!this->run()){
+//         std::cout << "Error: Could not run project" << ENDL;
+//       }
+//     }
+// 
+//     else if (command == "help"){
+//       if(!this->help()){
+//         std::cout << "Error: Could not display help" << ENDL;
+//       }
+//     }
+// 
+//     else if (command == "ftp"){
+//       if(!this->ftp()){
+//         std::cout << "Error: Could not ftp project" << ENDL;
+//       }
+//     }
+// 
+//     else if(command == "add"){
+//       OptionsInit::Add(this);
+//       if(!this->add()){
+//         std::cout << "Error: Could not add project" << ENDL;
+//       }
+//     }
+// 
+//     else if(command == "search"){
+//       OptionsInit::Search(this);
+//       if(!this->search()){
+//         std::cout << "Error: Could not search project" << ENDL;
+//       }
+//     }
+// 
+//     else if(command == "list"){
+//       OptionsInit::List(this);
+//       if(!this->list()){
+//         std::cout << "Error: Could not list project" << ENDL;
+//       }
+//     }
+// 
+//     else if (command == "remove" || command == "rm"){
+//       OptionsInit::Remove(this);
+//       if(!this->remove()){
+//         std::cout << "Error: Could not remove project" << ENDL;
+//       }
+// 
+//     }
+// 
+//     else if (command == "watch"){
+//       OptionsInit::Watch(this);
+//       if(!this->watch()){
+//         std::cout << "Error: Could not watch project" << ENDL;
+//       }
+//     }
+// 
+//     else if (command == "update"){
+//       OptionsInit::Update(this);
+//       if(!this->update()){
+//         std::cout << "Error: Could not update project index" << ENDL;
+//       }
+//     }
+// 
+//     else if (command == "clean"){
+//       OptionsInit::Clean(this);
+//       if(!this->clean()){
+//         std::cout << "Error: Could not clean project" << ENDL;
+//       }
+//     }
+// 
+//     else{
+//       std::cout << "Invalid command try one of these" << ENDL;
+//       this->help();
+// 
+//     }
 
   }
   void Interface::getHelpString(std::string,std::vector<Handler> handlers){
     std::cout << "Usage: add" << ENDL;
     for(Handler handler : handlers){
+      int alias_str_len = 0;
       std::cout << "\t";
       for(std::string alias : handler.aliases){
+        alias_str_len += alias.length();
         std::cout << termcolor::bright_green << alias << termcolor::reset;
         if(alias != handler.aliases.back()){
-          std::cout << " , ";
+          alias_str_len += 1;
+          std::cout << "|";
         }
+      }
+      for(int i = 0; i < 10 - alias_str_len; i++){
+        std::cout << " ";
       }
       std::cout << " : " << termcolor::bright_blue << handler.docs << termcolor::reset << ENDL;
     }
