@@ -31,6 +31,7 @@ namespace Command{
         }
       }catch(std::exception &e){
         std::cout << "Failed to delete: " << path << std::endl;
+        Utils::debug(e.what());
         return false;
       }
     }

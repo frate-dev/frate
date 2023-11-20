@@ -1,3 +1,4 @@
+#include "Frate/Utils/General.hpp"
 #include <Frate/Utils/CLI.hpp>
 #include <exception>
 #include <string>
@@ -51,6 +52,7 @@ namespace Utils::CLI {
     try{
       value = std::stoi(input);
     }catch(std::exception& e){
+      Utils::debug("Failed to convert input to int");
       return false;
     }
     return true;
@@ -60,6 +62,7 @@ namespace Utils::CLI {
     try{
       value = std::stof(input);
     }catch(std::exception& e){
+      Utils::debug("Failed to convert input to float");
       return false;
     }
     return true;
@@ -69,6 +72,7 @@ namespace Utils::CLI {
     try{
       value = std::stod(input);
     }catch(std::exception& e){
+      Utils::debug("Failed to convert input to double");
       return false;
     }
     return true;

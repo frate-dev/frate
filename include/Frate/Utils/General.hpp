@@ -4,6 +4,17 @@
 #include <nlohmann/json.hpp>
 #include <iomanip>
 #include <iostream>
+#define DEBUGTHIS(x) std::cout << "##x" << " -> " << x << std::endl;
+
+#ifdef DEBUG
+#include <cpptrace/cpptrace.hpp>
+#endif
+
+#ifdef TEST 
+#include <cpptrace/cpptrace.hpp>
+#endif
+
+
 namespace Utils {
   using nlohmann::json;
   std::string getFolderName();
@@ -53,4 +64,10 @@ namespace Utils {
    */
   int levensteinDistance(std::string aStr, std::string bStr);
   int getStringScore(std::string &text, std::string &query);
+
+
+  /*
+   * Debug stuff
+   */
+  void debug(std::string something);
 }

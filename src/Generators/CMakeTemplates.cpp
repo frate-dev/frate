@@ -17,7 +17,7 @@ namespace Generators::CMakeList {
       std::filesystem::create_directory(pro->project_path / "cmake");
     CPMFile.open(pro->project_path / "cmake/CPM.cmake");
   }catch(...){
-    std::cout << "Error while opening file: CPM.cmake" << std::endl;
+    Utils::debug("Error while opening file: CPM.cmake");
     return false;
   }
   CPMFile << CPM;
@@ -105,14 +105,14 @@ install(TARGETS {{project_name}} DESTINATION bin)
   try{
     remove((pro->project_path / file_name).c_str());
   }catch(...){
-    std::cout << "Error while removing file: " << file_name << std::endl;
+    Utils::debug("Error while removing file: " + file_name);
     return false;
   }
 
   try{
     file.open(pro->project_path / file_name);
   }catch(...){
-    std::cout << "Error while opening file: " << file_name << std::endl;
+    Utils::debug("Error while opening file: " + file_name);
     return false;
   }
   //std::cout << CMakeListsExecutable << std::endl;

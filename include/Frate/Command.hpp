@@ -144,12 +144,6 @@ namespace Command {
       bool clean();
       bool build();
       bool list();
-      //TODO: setup register comamnd
-      bool registerCommand(
-          std::initializer_list<std::string> &alisas,
-          std::initializer_list<std::string> &flags,
-          std::function<bool()> &callback
-          );
       void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
       void getHelpString(Handler &handler);
       bool runCommand(std::string,std::vector<Handler>&);

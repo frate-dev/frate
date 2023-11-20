@@ -56,7 +56,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     try{
       std::filesystem::create_directory(pro->project_path / pro->src_dir);
     }catch(std::exception &e){
-      std::cout << e.what() << std::endl;
+      Utils::debug(e.what());
       return false;
     }
     std::ofstream file_stream;
@@ -70,7 +70,7 @@ bool createJson(std::shared_ptr<Project> pro) {
         "\treturn 0;\n"
         "}\n";
     }catch(std::exception &e){
-      std::cout << e.what() << std::endl;
+      Utils::debug(e.what());
       return false;
     }
     file_stream.close();
@@ -89,7 +89,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     try{
       std::filesystem::create_directory(pro->project_path / pro->src_dir);
     }catch(std::exception &e){
-      std::cout << e.what() << std::endl;
+      Utils::debug(e.what());
       return false;
     }
     std::ofstream file_stream;
@@ -103,7 +103,7 @@ bool createJson(std::shared_ptr<Project> pro) {
         "\treturn 0;\n"
         "}\n";
     }catch(std::exception &e){
-      std::cout << e.what() << std::endl;
+      Utils::debug(e.what());
       return false;
     }
     file_stream.close();
@@ -151,7 +151,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     try{
       file.open(pro->project_path / file_name);
     }catch(std::exception &e){
-      std::cout << e.what() << std::endl;
+      Utils::debug(e.what());
       return false;
     }
     file << j;

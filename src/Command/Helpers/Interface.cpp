@@ -1,7 +1,6 @@
 #include <Frate/Command.hpp>
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
-#include <cpptrace/cpptrace.hpp>
 #include <initializer_list>
 #include <memory>
 #include <sstream>
@@ -32,14 +31,6 @@ bool OptionsInit::Main(Interface *inter) {
       return false;
     }
   }
-
-  // bool Interface::registerCommand(initializer_list<std::string> aliases,
-  //                                 initializer_list<std::string> flags,
-  //                                 std::string docs,
-  //                                 function<bool()> func) {
-  //   commands.push_back(Handler(aliases, flags,docs, func));
-  //   return true;
-  // }
   bool Interface::InitHeader(){
     try{
       this->options = std::make_shared<cxxopts::Options>("Frate", "A CMake project generator, we suffer so you don't have to!");
@@ -108,7 +99,6 @@ bool OptionsInit::Main(Interface *inter) {
         .flags = {}, //TODO: Add flags
         .docs = "Display help",
         .callback = [this](){
-          cpptrace::generate_trace().print();
           return this->help();
         }
       },

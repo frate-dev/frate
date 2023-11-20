@@ -21,7 +21,7 @@ bool Interface::run() {
   try{
     create_directories(pro->project_path / "build");
   }catch(std::exception& e){
-    std::cout << "Failed to create build directory" << std::endl;
+    Utils::debug(e.what());
     return false;
   }
 
