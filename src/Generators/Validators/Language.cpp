@@ -40,4 +40,5 @@ namespace Generators::ConfigJson{
       pro->lang = config_json->lang == "" ? pro->lang : config_json->lang;
     return true;
   }
+
 }

@@ -56,7 +56,7 @@ namespace Command {
     return {
       Handler{
         .aliases = {"packages","p"},
-        .flags = {"-l","--latest"},
+        .flags = {"-l,--latest","-m,--mode","-t,--target"},
         .positional_args = {"package,..."},
         .docs = "Add a package to the project",
         .callback = [this]() {

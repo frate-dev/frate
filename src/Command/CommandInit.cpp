@@ -176,7 +176,7 @@ bool createJson(std::shared_ptr<Project> pro) {
 #endif
     std::string file_name = "config.json";
     std::string project_name = "";
-    bool skip_init = false;
+    bool defaults = false;
     std::string language = "cpp";
     std::string project_type = "executable";
 #ifdef DEBUG
@@ -201,8 +201,8 @@ bool createJson(std::shared_ptr<Project> pro) {
     if(args->operator[]("language").count() > 0){
       language = args->operator[]("language").as<std::string>();
     }
-    if(args->operator[]("skip-init").count() > 0){
-      skip_init = args->operator[]("skip-init").as<bool>();
+    if(args->operator[]("defaults").count() > 0){
+      defaults = args->operator[]("defaults").as<bool>();
     }
 
 
@@ -216,7 +216,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     pro->lang = language;
 
 
-    if(skip_init){
+    if(defaults){
       std::cout << "Skipping init" << ENDL;
       std::cout << "Creating project" << ENDL;
       if (language == "cpp" || language == "c++"){

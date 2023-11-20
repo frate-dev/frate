@@ -78,7 +78,8 @@ bool OptionsInit::Main(Interface *inter) {
 
       Handler{
         .aliases = {"new", "n"},
-        .flags = {"-d","--defaults"}, //TODO: Add flags
+        .flags = {"-d,--defaults"}, //TODO: Add flags
+        .positional_args = {"project_name/dir"},
         .docs = "Create a new project",
         .callback = [this](){
           OptionsInit::Init(this);
@@ -88,7 +89,7 @@ bool OptionsInit::Main(Interface *inter) {
 
       Handler{
         .aliases = {"run"},
-        .flags = {"-m","--build-mode","-t","--target"}, //TODO: Add flags
+        .flags = {"-m,--build-mode","-t,--target"}, //TODO: Add flags
         .docs = "Run the project",
         .callback = [this](){
           return this->run();
