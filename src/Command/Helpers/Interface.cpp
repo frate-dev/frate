@@ -133,8 +133,7 @@ bool OptionsInit::Main(Interface *inter) {
           return this->search();
         }
       },
-
-      Handler{
+Handler{
         .aliases = {"list", "ls"},
         .flags = {}, //TODO: Add flags
         .subcommands = getListHandlers(),
