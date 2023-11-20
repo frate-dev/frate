@@ -3,6 +3,7 @@
 #include "termcolor/termcolor.hpp"
 #include <initializer_list>
 #include <memory>
+#include <nlohmann/json_fwd.hpp>
 #include <sstream>
 
 namespace Command {
@@ -133,7 +134,7 @@ bool OptionsInit::Main(Interface *inter) {
           return this->search();
         }
       },
-Handler{
+      Handler{
         .aliases = {"list", "ls"},
         .flags = {}, //TODO: Add flags
         .subcommands = getListHandlers(),
@@ -195,6 +196,7 @@ Handler{
       },
     };
 
+
     bool found_alias = false;
     for(Handler& handler : commands){
       for(std::string& alias : handler.aliases){
@@ -227,6 +229,10 @@ Handler{
     for(Handler handler : handlers){
       for(std::string alias : handler.aliases){
         if(alias == command){
+          if(!handler.implemented){
+            std::cout << termcolor::red << "Error: Command not implemented: " << command << termcolor::reset << ENDL;
+            return false;
+          }
           if(!handler.callback()){
             getHelpString(handler);
             return false;
@@ -282,14 +288,19 @@ Handler{
         }else{
           std::cout << "\n    ";
         }
-        std::cout << "    └" << termcolor::blue << handler.docs << termcolor::reset << ENDL;
+        std::cout << "    └" << termcolor::blue << handler.docs << termcolor::reset;
       }else{
         if(handler.subcommands.size() > 0){
-          std::cout << termcolor::blue << " <target>" << termcolor::reset << ENDL;
+          std::cout << termcolor::blue << " <target>" << termcolor::reset;
 
         }else{
-          std::cout << " : " << termcolor::blue << handler.docs << termcolor::reset << ENDL;
+          std::cout << " : " << termcolor::blue << handler.docs << termcolor::reset;
         }
+      }
+      if(!handler.implemented){
+        std::cout << termcolor::red << " (Not implemented)" << termcolor::reset << ENDL;
+      }else{
+        std::cout << ENDL;
       }
       if(handler.subcommands.size() > 0){
         getHelpString(name + " " + handler.aliases[0], handler.subcommands, true);

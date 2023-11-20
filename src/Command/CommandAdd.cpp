@@ -57,7 +57,7 @@ namespace Command {
       Handler{
         .aliases = {"packages","p"},
         .flags = {"-l","--latest"},
-        .positional_args = {"packages"},
+        .positional_args = {"package,..."},
         .docs = "Add a package to the project",
         .callback = [this]() {
           OptionsInit::Dependencies(this);
@@ -66,6 +66,7 @@ namespace Command {
       },
         Handler{
           .aliases = {"flag","f"},
+          .positional_args = {"\"flag\""},
           .docs = "Add a flag to the project",
           .callback = [this]() {
             OptionsInit::Flags(this);
@@ -74,16 +75,19 @@ namespace Command {
         },
         Handler{
           .aliases = {"lib","l"},
+          .positional_args = {"library-name"},
           .docs = "Add a library to link to your project",
           .callback = [this]() {
             //TODO implement library
             // OptionsInit::Libraries(this);
             // Libraries::add(this);
-            return true;
+            return false;
           },
+          .implemented = false,
         },
         Handler{
           .aliases = {"mode","m"},
+          .positional_args = {"mode-name"},
           .docs = "Adds a build mode to your project",
           .callback = [this]() {
             OptionsInit::Modes(this);
@@ -92,6 +96,7 @@ namespace Command {
         },
         Handler{
           .aliases = {"server","s"},
+          //TODO: Don't know what this requires
           .docs = "Add a remote server to your local config that you can later build to",
           .callback = [this]() {
             return RemoteServers::add(this);
@@ -99,8 +104,10 @@ namespace Command {
         },
         Handler{
           .aliases = {"toolchain","t"},
+          .positional_args = {},
           .docs = "Add a crosscompile toolchain to your project",
           .callback = [this]() {
+            //What is this????
             Prompt<std::string> *toolchain = new Prompt<std::string>("Toolchain: ");
             toolchain->Run();
             return Toolchains::add(toolchain->Get(), this);
@@ -108,6 +115,7 @@ namespace Command {
         },
         Handler{
           .aliases = {"author","a"},
+          .positional_args = {"author-name"},
           .docs = "Add an author to your project",
           .callback = [this]() {
             return Author::add(this);

@@ -64,6 +64,7 @@ namespace Command {
     std::optional<std::string> key;
     int port;
   } RemoteServer;
+
   namespace ProjectType {
     const std::string EXECUTABLE = "executable";
     const std::string HEADER_ONLY = "header_only";
@@ -126,7 +127,9 @@ namespace Command {
         return false;
       }
     };
+    bool implemented{true};
   } Handler;
+
   class Interface{
     private:
       //Commands;
@@ -171,12 +174,6 @@ namespace Command {
       bool CreateCMakelists();
       bool LoadPackageJson();
   };
-  //TODO: To be imlemented later to get information about a target or action
-  typedef struct Info_s {
-    std::string name;
-    std::string description;
-    std::vector<std::string> valid_flags;
-  } Info;
 
   namespace OptionsInit{
       bool Init(Interface*);

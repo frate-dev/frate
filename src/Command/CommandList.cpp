@@ -56,7 +56,8 @@ namespace Command{
         .callback = [this]() {
           //TODO: List flags
           return true;
-        }
+        },
+        .implemented = false
       },
       Handler{
         .aliases = 
@@ -65,7 +66,8 @@ namespace Command{
         .callback = [this]() {
           //TODO: List authors
           return true;
-        }
+        },
+        .implemented = false
       },
       Handler{
         .aliases = 
@@ -83,7 +85,8 @@ namespace Command{
         .callback = [this]() {
           //TODO: List possible liceses
           return true;
-        }
+        },
+        .implemented = false
       },
     };
   }
