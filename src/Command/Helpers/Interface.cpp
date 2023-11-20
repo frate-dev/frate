@@ -202,7 +202,7 @@ bool OptionsInit::Main(Interface *inter) {
         if(alias == command){
           found_alias = true;
           if(!handler.callback()){
-            std::cout << termcolor::red << "Error: Could not run: " << handler.aliases[0] << termcolor::reset << ENDL;
+            // std::cout << termcolor::red << "Error: Could not run: " << handler.aliases[0] << termcolor::reset << ENDL;
           }
         }
       }

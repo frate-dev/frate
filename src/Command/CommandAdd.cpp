@@ -55,9 +55,9 @@ namespace Command {
   std::vector<Handler> Interface::getAddHandlers(){
     return {
       Handler{
-        .aliases = {"package","p"},
+        .aliases = {"packages","p"},
         .flags = {"-l","--latest"},
-        .positional_args = {"package"},
+        .positional_args = {"packages"},
         .docs = "Add a package to the project",
         .callback = [this]() {
           OptionsInit::Dependencies(this);
@@ -117,12 +117,23 @@ namespace Command {
   }
   bool Interface::add() {
     std::vector<Handler> addHandlers = getAddHandlers();
+    std::string subcommand;
+
     if(args->count("subcommand")){
-      std::string subcommand = args->operator[]("subcommand").as<std::string>();
+
+      subcommand = args->operator[]("subcommand").as<std::string>();
+
     }else{
+
       std::cout <<  termcolor::bright_red << "No subcommand given" << termcolor::reset << ENDL;
+
       getHelpString("add", addHandlers);
+
+      return false;
     }
+
+    return runCommand(subcommand, addHandlers);
+
     return true;
   }
 }

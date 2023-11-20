@@ -1,3 +1,5 @@
+#include <stdint.h>
+#include <termcolor/termcolor.hpp>
 #include <Frate/Utils/General.hpp>
 
 
@@ -10,7 +12,7 @@ namespace Utils {
     cpptrace::generate_trace().print();
     DEBUGTHIS(something);
 #else
-    std::cout << something << std::endl;
+    std::cout << termcolor::bright_red << something << std::endl;
 #endif
   }
 }

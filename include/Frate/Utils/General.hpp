@@ -4,7 +4,9 @@
 #include <nlohmann/json.hpp>
 #include <iomanip>
 #include <iostream>
-#define DEBUGTHIS(x) std::cout << "##x" << " -> " << x << std::endl;
+#include <stdint.h>
+#include <termcolor/termcolor.hpp>
+#define DEBUGTHIS(x) std::cout << termcolor::bright_red << "##x" << " -> " << x << std::endl;
 
 #ifdef DEBUG
 #include <cpptrace/cpptrace.hpp>
