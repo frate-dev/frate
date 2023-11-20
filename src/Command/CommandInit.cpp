@@ -21,7 +21,7 @@ bool OptionsInit::Init(Interface* inter) {
   inter->options->add_options()
     ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
     ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
-    ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
+    ("d,defaults", "Sets all the defaults", cxxopts::value<bool>()->default_value("false"))
     ("name", "Name of the project", cxxopts::value<std::string>()->default_value("false"))
     ("t,type", "Type of the project", cxxopts::value<std::string>()->default_value(ProjectType::EXECUTABLE))
     ("l,language", "Language of the project", cxxopts::value<std::string>()->default_value("cpp"));

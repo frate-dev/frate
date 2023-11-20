@@ -1,3 +1,4 @@
+#include "Frate/Utils/Validation.hpp"
 #include <iostream>
 #include <string>
 #include <regex>
@@ -40,6 +41,23 @@ namespace Generators::ConfigJson{
     end:
       pro->build_dir = config_json->build_dir == "" ? pro->build_dir : config_json->build_dir;
     
+    return true;
+  }
+}
+
+namespace Utils::Validation{
+  bool BuildDir(std::string build_dir){
+    if (build_dir.size() > 255) {
+      return false;
+    }
+    if (build_dir != "build") {
+      return false;
+    }
+    //check if the build directory is valid
+    //format: name-something_420-69
+    if (!std::regex_match(build_dir, std::regex("^[a-zA-Z0-9_-]+$"))) {
+      return false;
+    }
     return true;
   }
 }
