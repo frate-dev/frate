@@ -2,19 +2,6 @@
 
 namespace Command::Packages {
 
-  const Info info = {
-    .name = "packages",
-    .description = "Manage packages for your project",
-    .valid_flags = {
-      "--mode",
-      "-m",
-      "--target",
-      "-t",
-      "--help",
-      "--latest",
-      "-l"
-    }
-  };
 
   bool dependenciesConflict(std::vector<Package> deps, std::string &name);
 

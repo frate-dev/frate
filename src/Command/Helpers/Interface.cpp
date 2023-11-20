@@ -1,6 +1,7 @@
 #include <Frate/Command.hpp>
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
+#include <cpptrace/cpptrace.hpp>
 #include <initializer_list>
 #include <memory>
 #include <sstream>
@@ -41,7 +42,7 @@ bool OptionsInit::Main(Interface *inter) {
   // }
   bool Interface::InitHeader(){
     try{
-      this->options = std::make_shared<cxxopts::Options>("CMaker", "A CMake project generator, we suffer so you don't have to!");
+      this->options = std::make_shared<cxxopts::Options>("Frate", "A CMake project generator, we suffer so you don't have to!");
     } catch (std::exception& e) {
       std::cout << e.what() << std::endl;
       return false;
@@ -107,6 +108,7 @@ bool OptionsInit::Main(Interface *inter) {
         .flags = {}, //TODO: Add flags
         .docs = "Display help",
         .callback = [this](){
+          cpptrace::generate_trace().print();
           return this->help();
         }
       },
@@ -210,7 +212,7 @@ bool OptionsInit::Main(Interface *inter) {
         if(alias == command){
           found_alias = true;
           if(!handler.callback()){
-            std::cout << "Error: Could not run: " << handler.aliases[0] << ENDL;
+            std::cout << termcolor::red << "Error: Could not run: " << handler.aliases[0] << termcolor::reset << ENDL;
           }
         }
       }
@@ -231,6 +233,28 @@ bool OptionsInit::Main(Interface *inter) {
     for(std::string positional : positionals){
       std::cout << termcolor::bold <<  termcolor::green << " <" << positional << ">" << termcolor::reset;
     }
+  }
+  bool Interface::runCommand(std::string command, std::vector<Handler> &handlers){
+    for(Handler handler : handlers){
+      for(std::string alias : handler.aliases){
+        if(alias == command){
+          if(!handler.callback()){
+            getHelpString(handler);
+            return false;
+          }else{
+            return true;
+          }
+        }
+      }
+    }
+    std::cout << termcolor::red << "Error: Subcommand not found: " << command << termcolor::reset << ENDL;
+    return false;
+  }
+  void Interface::getHelpString(Handler& handler){
+    std::cout << termcolor::bold << termcolor::yellow << handler.aliases[0] << termcolor::reset;
+    renderFlags(handler.flags);
+    renderPositionals(handler.positional_args);
+    std::cout << " - " << handler.docs << ENDL;
   }
   void Interface::getHelpString(std::string name,std::vector<Handler> &handlers, bool is_subcommand){
     int index = 0;

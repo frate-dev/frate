@@ -57,6 +57,7 @@ namespace Command {
       Handler{
         .aliases = {"package","p"},
         .flags = {"-l","--latest"},
+        .positional_args = {"package"},
         .docs = "Add a package to the project",
         .callback = [this]() {
           OptionsInit::Dependencies(this);
@@ -102,8 +103,7 @@ namespace Command {
           .callback = [this]() {
             Prompt<std::string> *toolchain = new Prompt<std::string>("Toolchain: ");
             toolchain->Run();
-            Toolchains::add(toolchain->Get(), this);
-            return true;
+            return Toolchains::add(toolchain->Get(), this);
           },
         },
         Handler{
@@ -119,16 +119,6 @@ namespace Command {
     std::vector<Handler> addHandlers = getAddHandlers();
     if(args->count("subcommand")){
       std::string subcommand = args->operator[]("subcommand").as<std::string>();
-      for(Handler handler : addHandlers){
-        for(std::string alias : handler.aliases){
-          if(alias == subcommand){
-            return handler.callback();
-          }
-        }
-      }
-      std::cout << "Unknown subcommand: " << subcommand << ENDL;
-      getHelpString("add", addHandlers);
-      return false;
     }else{
       std::cout <<  termcolor::bright_red << "No subcommand given" << termcolor::reset << ENDL;
       getHelpString("add", addHandlers);

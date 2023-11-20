@@ -151,6 +151,8 @@ namespace Command {
           std::function<bool()> &callback
           );
       void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
+      void getHelpString(Handler &handler);
+      bool runCommand(std::string,std::vector<Handler>&);
     public:
       std::shared_ptr<Project> pro;
       bool project_present{false};

@@ -14,10 +14,6 @@ namespace Command::Packages {
     bool latest = false;
     //TODO: Add support for multiple dependencies
     if (inter->args->count("args") == 0) {
-      std::cout << 
-        "Usage add dep:" << ENDL
-        "\t[args]: the dependencies to project" << ENDL
-        "\tcmake add dep [args] " << std::endl;
       return false;
     }
     if (inter->args->count("mode") != 0){

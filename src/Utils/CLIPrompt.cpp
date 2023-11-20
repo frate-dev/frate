@@ -80,6 +80,9 @@ namespace Utils::CLI {
   }
   template <>
   bool Prompt<bool>::yoink(){
+#ifdef TEST 
+    return true;
+#endif
     if(input == "y" || input == "Y"){
       value = true;
       return true;
