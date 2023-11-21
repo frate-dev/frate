@@ -7,41 +7,6 @@
 #include <Frate/Command.hpp> 
 #include <Frate/Generators.hpp> 
 
-
-namespace Generators::ConfigJson{
-  /*
-   * Reads the data from the user
-   * @param ctx: the context of the command
-   * @param config_json: the config json context
-   * @return: true if the data is valid
-   */
-  [[deprecated("Use the new project wizard")]]
-  bool validateIncludeDir(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json) {
-    std::cout << prefix;
-#ifndef TEST
-      std::getline(std::cin, config_json->include_dir);
-#endif
-    //If the include directory is empty we're gonna set it
-    if(config_json->include_dir == "") {
-      goto end;
-    }
-    if (config_json->include_dir.size() > 255) {
-      return false;
-    }
-
-    //check if the include directory is valid
-    if (std::regex_match(config_json->include_dir, std::regex("^[a-zA-Z0-9_-]+$"))) {
-      goto end;
-    }
-
-    return false;
-    end:
-      pro->include_dir = config_json->include_dir == "" ? pro->include_dir : config_json->include_dir;
-    
-    return true;
-  }
-}
-
 namespace Utils::Validation {
   bool IncludeDir(std::string include_dir){
     if (include_dir.size() > 255) {
