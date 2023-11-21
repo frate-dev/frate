@@ -15,6 +15,7 @@ namespace Generators::ConfigJson{
    * @param config_json: the config json context
    * @return: true if the build directory is valid
    */
+  [[deprecated("Use the new project wizard")]]
   bool validateBuildDir(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json) { 
     std::cout << prefix;
 #ifndef TEST

@@ -10,6 +10,7 @@
 #include <string>
 #include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp>
+#include <Frate/Wizards.hpp>
 
 namespace Command {
 using Utils::CLI::Prompt;
@@ -33,7 +34,10 @@ bool createJson(std::shared_ptr<Project> pro) {
   // Lucas did it again
   std::shared_ptr<Generators::ConfigJson::Config> config_json =
       std::make_shared<Generators::ConfigJson::Config>();
-  if (!Generators::ConfigJson::readUserInput(pro, config_json)) {
+  // if (!Generators::ConfigJson::readUserInput(pro, config_json)) {
+  //   return false;
+  // }
+  if(!Wizard::Project(pro)){
     return false;
   }
   if (!Generators::ConfigJson::writeConfig(pro)) {

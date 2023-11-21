@@ -16,6 +16,7 @@ namespace Generators::ConfigJson{
    * @param config_json: the config json context
    * @return: true if the language is valid
    */
+  [[deprecated("Use the new project wizard")]]
   bool validateLang(std::string prefix, std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json) {
     std::vector<std::string> supportedLangs = {"cpp", "c"};
     std::cout << prefix << ENDL;

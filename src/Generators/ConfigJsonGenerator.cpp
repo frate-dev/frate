@@ -6,6 +6,7 @@
 #include <termcolor/termcolor.hpp>
 
 namespace Generators::ConfigJson{
+  [[deprecated("Use the new project wizard")]]
   bool readUserInput(std::shared_ptr<Command::Project> pro, std::shared_ptr<Config> config_json) {
     //TODO: Convert this to the new prompt system
     
