@@ -3,9 +3,9 @@
 
 namespace Command{
   namespace Modes{
-    bool add(Interface* interface);
-    bool remove(Interface* interface);
-    bool list(Interface* interface);
+    bool add(Interface* inter);
+    bool remove(Interface* inter);
+    bool list(Interface* inter);
   }
 }
 

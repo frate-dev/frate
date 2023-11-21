@@ -2,7 +2,6 @@
 #include "termcolor/termcolor.hpp"
 #include <Frate/Command.hpp>
 #include <cstddef>
-#include <format>
 #include <iostream>
 
 namespace Command {

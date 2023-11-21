@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <locale>
 #include <ranges>
-#include <format>
 #include <fstream>
 #include <iostream> 
 #include <string>
@@ -64,7 +63,7 @@ bool createJson(std::shared_ptr<Project> pro) {
       return false;
     }
     std::ofstream file_stream;
-    std::string file_path = pro->project_path / pro->src_dir / "main.cpp";
+    std::filesystem::path file_path = pro->project_path / pro->src_dir / "main.cpp";
     try{
       file_stream.open(file_path);
       file_stream << "#include <iostream>\n"
@@ -97,7 +96,7 @@ bool createJson(std::shared_ptr<Project> pro) {
       return false;
     }
     std::ofstream file_stream;
-    std::string file_path = pro->project_path / pro->src_dir / "main.c";
+    std::filesystem::path file_path = pro->project_path / pro->src_dir / "main.c";
     try{
       file_stream.open(file_path);
       file_stream << "#include <stdio.h>\n"

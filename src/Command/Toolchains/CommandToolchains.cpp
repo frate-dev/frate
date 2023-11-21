@@ -32,17 +32,17 @@ namespace Command::Toolchains{
     file << toolchain_template;
     return true;
   }
-  bool remove(std::string toolchain_name, Interface* interface){
+  bool remove(std::string toolchain_name, Interface* inter){
     json data = load();
 
-    for (std::string toolchainProject : interface->pro->toolchains){
+    for (std::string toolchainProject : inter->pro->toolchains){
       if(toolchainProject == toolchain_name){
-        std::erase_if(interface->pro->toolchains, [&toolchain_name](std::string &toolchain){
+        std::erase_if(inter->pro->toolchains, [&toolchain_name](std::string &toolchain){
             return toolchain == toolchain_name;
             });
       }
     }
-    std::filesystem::remove(interface->pro->project_path / "toolchains/" / (toolchain_name + ".cmake"));
+    std::filesystem::remove(inter->pro->project_path / "toolchains/" / (toolchain_name + ".cmake"));
     return true;
   }
 }

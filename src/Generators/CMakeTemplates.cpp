@@ -103,7 +103,7 @@ install(TARGETS {{project_name}} DESTINATION bin)
   std::string file_name = "CMakeLists.txt";
 
   try{
-    remove((pro->project_path / file_name).c_str());
+    std::filesystem::remove((pro->project_path / file_name).c_str());
   }catch(...){
     Utils::debug("Error while removing file: " + file_name);
     return false;

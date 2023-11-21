@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(-DUSE_CCACHE=YES -DCCACHE_OPTIONS="CCACHE_CPP2=true;CCACHE_SLOPPINESS=clang_index_store")
 
 
+
 set(BUILD_CURL_EXE OFF)
 include (cmake/CPM.cmake)
 CPMUsePackageLock(package-lock.cmake)
@@ -60,6 +61,7 @@ add_executable(${PROJECT_NAME} ${SOURCES}) #test mode
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   message("Release mode")
+  include (toolchains/windows.cmake)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wextra -Wpedantic -Wall")
   add_definitions(-DRELEASE)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")

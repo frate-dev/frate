@@ -64,7 +64,7 @@ namespace Utils{
 
   using nlohmann::json;
   std::string getFolderName(){
-    std::string directory_name = std::filesystem::current_path();
+    std::string directory_name = std::filesystem::current_path().string();
     directory_name = directory_name.substr(directory_name.find_last_of("/\\") + 1);
     return directory_name;
   }
@@ -130,11 +130,15 @@ namespace Utils{
   }
   int hSystem(std::string cmd){
     int return_code = std::system(cmd.c_str());
+#ifdef __linux__
     if(WIFEXITED(return_code)){
       return WEXITSTATUS(return_code);
     }else{
       return -1;
     }
+#else
+    return return_code;
+#endif
   }
   /*
    * FUCKING MAGIC

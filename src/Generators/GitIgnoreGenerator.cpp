@@ -1,6 +1,5 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
-#include <format>
 #include <Frate/Utils/CLI.hpp>
 
 
@@ -23,7 +22,8 @@ bool write_gitignore(std::string gitignore, std::filesystem::path gitignore_path
   using namespace Utils::CLI;
   bool create(std::shared_ptr<Command::Project> pro){
     std::filesystem::path gitignore_path = pro->project_path / ".gitignore";
-    std::string gitignore = std::format(R"VOG(
+    std::string gitignore = 
+R"(
 # CMake
 CMakeLists.txt.user
 CMakeFiles/
@@ -35,7 +35,7 @@ cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 # Build dir
-{}/*
+${build_dir}/*
 # VS Code
 .vscode/
 # CLion
@@ -53,7 +53,11 @@ compile_commands.json
 # vim/nvim
 *.swp
 compile_commands.json
-    )VOG", pro->build_dir);
+)";
+
+gitignore.replace(gitignore.find("${build_dir}"), 12, pro->build_dir);
+
+
 
     if(std::filesystem::exists(gitignore_path)){
       std::cout << "Gitignore already exists" << std::endl;

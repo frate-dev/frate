@@ -36,18 +36,18 @@ namespace Command {
     mode.name = name->Get();
     return true;
   }
-  bool buildTypeAdd(Interface* interface){
+  bool buildTypeAdd(Interface* inter){
     std::cout << "Adding mode" << std::endl; 
     Mode mode;
     getModeName(mode);
-    interface->pro->modes.push_back(mode);
+    inter->pro->modes.push_back(mode);
     
     std::cout << "Writing config.json" << std::endl;
-    if(!Generators::ConfigJson::writeConfig(interface->pro)){
+    if(!Generators::ConfigJson::writeConfig(inter->pro)){
       std::cout << "Failed to write config.json" << std::endl;
     }
 
-    if(!Generators::CMakeList::createCMakeListsExecutable(interface->pro)){
+    if(!Generators::CMakeList::createCMakeListsExecutable(inter->pro)){
       std::cout << "Failed to write CMakeLists.txt" << std::endl;
     }
     return true;

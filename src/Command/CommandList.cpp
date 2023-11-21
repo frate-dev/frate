@@ -16,8 +16,8 @@ namespace Command{
     inter->options->help();
     return inter->parse();
   }
-  // bool modesList(Interface* interface){
-  //   for(auto mode : interface->pro->modes){
+  // bool modesList(Interface* inter){
+  //   for(auto mode : inter->pro->modes){
   //     std::cout << mode.name << std::endl;
   //   }
   //   return true;
