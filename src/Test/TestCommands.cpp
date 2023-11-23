@@ -1,5 +1,5 @@
+#include "nlohmann/detail/json_pointer.hpp"
 #include <fstream>
-#include <nlohmann/json_fwd.hpp>
 #ifdef TEST
 #include <cstdio>
 #include <filesystem>
@@ -30,6 +30,7 @@ namespace Tests{
 
 
 namespace Tests::Command {
+  using nlohmann::json;
 
   const std::filesystem::path test_path = std::filesystem::path("/tmp/frate-test");
   
@@ -79,9 +80,9 @@ namespace Tests::Command {
 
   }
 
-  bool testAddPackage() {
+  bool testAddPackage(std::string package_name) {
     std::cout << "Testing add package command" << std::endl;
-    auto [argc, argv] = genCommand("frate add p cxxopts -l");
+    auto [argc, argv] = genCommand("frate add p "+package_name+" -l");
     ::Command::Interface *inter = new ::Command::Interface(argc, argv);
 
     inter->pro->project_path = std::filesystem::path(test_path);
@@ -196,9 +197,9 @@ namespace Tests::Command {
 
     return true;
   }
-  bool testAddPackageToMode() {
+  bool testAddPackageToMode(std::string mode_name, std::string package_name){
     std::cout << "Testing add package to mode command" << std::endl;
-    auto [argc, argv] = genCommand("frate add p cxxopts -l -m Debug");
+    auto [argc, argv] = genCommand("frate add p "+package_name+" -l -m "+mode_name);
 
     ::Command::Interface *inter = new ::Command::Interface(argc, argv);
 
@@ -222,29 +223,31 @@ namespace Tests::Command {
       return false;
     }
 
-    if (config["modes"]["Debug"]["dependencies"].size() != 1) {
-      cleanUp();
-      std::cout << "Failed to add package : expected 1 package to be added to Debug mode" << std::endl;
-      return false;
+    for(json mode : config["modes"]){
+      if(mode["name"] == mode_name){
+        for(json dep : mode["dependencies"]){
+          if(dep["name"] == package_name){
+            return true;
+          }
+        }
+      }
     }
 
-    if (config["modes"]["Debug"]["dependencies"][0]["name"] != "cxxopts") {
-      cleanUp();
-      std::cout << "Failed to add package : expected cxxopts to be added to Debug mode" << std::endl;
-      return false;
-    }
+    std::cout << "Failed to add package to mode "+mode_name+" : the selected mode either doesn't exist or we couldn't find " + package_name << std::endl;
 
-    return true;
+    return false;
 
   }
 
 
   TEST_CASE("TestCommands", "[commands]"){
     REQUIRE(testNew());
-    REQUIRE(testAddPackage());
+    REQUIRE(testAddPackage("cxxopts"));
     REQUIRE(testAddPackageMultiple());
     REQUIRE(testRemovePackage());
-    REQUIRE(testAddPackageToMode());
+    REQUIRE(testAddPackageToMode("Debug","cxxopts"));
+    REQUIRE(testAddPackageToMode("Test","cxxopts"));
+    REQUIRE(testAddPackageToMode("Release","cxxopts"));
     //REQUIRE(testCommandAdd());
   }
 }

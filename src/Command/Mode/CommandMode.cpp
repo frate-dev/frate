@@ -24,6 +24,7 @@ namespace Command::ModeCommands {
   bool addPackages(Interface* inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep_str : dependencies) {
+
       auto [found,new_package] = Packages::searchWithPrompt(dep_str,false);
       if(found){
         //Push the found package to the dependencies

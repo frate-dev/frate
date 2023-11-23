@@ -62,7 +62,7 @@ namespace Utils {
       }
   };
   /*
-   * FUCKING MAGIC
+   * F*CKING MAGIC
    */
   int levensteinDistance(std::string aStr, std::string bStr);
   int getStringScore(std::string &text, std::string &query);
@@ -72,4 +72,41 @@ namespace Utils {
    * Debug stuff
    */
   void debug(std::string something);
+
+  class Error {
+    public:
+      template<typename T>
+      Error& operator<<(const T& data) {
+        std::cout << termcolor::red << data << termcolor::reset;
+        return *this;
+      }
+      Error& operator<<(std::ostream& (*pf)(std::ostream&)) {
+        std::cout << pf;
+        return *this;
+      }
+  };
+  class Warning {
+    public:
+      template<typename T>
+      Warning& operator<<(const T& data) {
+        std::cout << termcolor::yellow << data << termcolor::reset;
+        return *this;
+      }
+      Warning& operator<<(std::ostream& (*pf)(std::ostream&)) {
+        std::cout << pf;
+        return *this;
+      }
+  };
+  class Info {
+    public:
+      template<typename T>
+      Info& operator<<(const T& data) {
+        std::cout << termcolor::green << data << termcolor::reset;
+        return *this;
+      }
+      Info& operator<<(std::ostream& (*pf)(std::ostream&)) {
+        std::cout << pf;
+        return *this;
+      }
+  };
 }

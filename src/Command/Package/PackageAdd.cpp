@@ -10,16 +10,34 @@
 namespace Command::Packages {
   using Generators::CMakeList::createCMakeListsExecutable;
   using Generators::ConfigJson::writeConfig;
+
+
+  bool addPackageToMode(Interface* inter, Package package, std::string selected_mode){
+    Utils::Info info;
+    info << "Adding package to mode " << selected_mode << std::endl;
+    for(Mode &mode : inter->pro->modes){
+      if(selected_mode == mode.name){
+        mode.dependencies.push_back(package);
+        return true;
+      }
+    }
+    Utils::Error error;
+    error << "Mode " << selected_mode << " not found";
+    return false;
+  }
   bool add(Interface* inter) {
     bool latest = false;
+    std::string mode = "";
     std::string query = "";
+    Utils::Error error;
+    Utils::Info info;
     //TODO: Add support for multiple dependencies
     if (inter->args->count("args") == 0) {
-      std::cout << termcolor::red << "No packages specified" << termcolor::reset << std::endl;
+      error << "No packages specified" << std::endl;
       return false;
     }
     if (inter->args->count("mode") != 0){
-      return ModeCommands::addPackages(inter, inter->args->operator[]("mode").as<std::string>());
+      mode = inter->args->operator[]("mode").as<std::string>();
     }
     if(inter->args->operator[]("latest").as<bool>()){
       latest = true;
@@ -32,20 +50,20 @@ namespace Command::Packages {
 
     std::vector<std::string> package_names = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string package_name : package_names) { 
-      std::cout << "Searching for " << package_name << std::endl;
+      info <<  "Searching for " << package_name << std::endl;
       auto [exact, exact_package] = getExact(package_name);
   
 
       Package chosen_package;
 
       if(!exact){
-        std::cout << "No exact match found" << std::endl;
+        error << "No exact match found" << std::endl;
         chosen_package = promptSearchResults(package_name);
       }else{
-        std::cout << "Exact match found" << std::endl;
+        info << "Exact match found" << std::endl;
         chosen_package = exact_package;
       }
-      std::cout << "Installing " << chosen_package.name << std::endl;
+      info << "Installing " << chosen_package.name << std::endl;
 
 
       std::string version = ""; 
@@ -57,7 +75,7 @@ namespace Command::Packages {
         chosen_package.selected_version = version;
       }else{
         if(chosen_package.versions.size() == 0){
-          std::cout << "No versions found" << std::endl;
+          error << "No versions found" << std::endl;
           return false;
         }
         version = chosen_package.versions[0];
@@ -65,24 +83,30 @@ namespace Command::Packages {
       }
 
       if(dependenciesConflict(inter->pro->dependencies, chosen_package.name)){
-        std::cout << "Package already installed" << std::endl;
+        error << "Package already installed" << std::endl;
         return false;
       }
 
 
-      std::cout << "Adding dependency to config.json" << std::endl;
+      info << "Adding dependency to config.json" << std::endl;
       //Reflecing the package to dependency
-      std::cout << chosen_package.toJson() << ENDL;
-      inter->pro->dependencies.push_back(chosen_package);
+      // info << chosen_package.toJson() << ENDL;
+      if(mode != ""){
+        if(!addPackageToMode(inter, chosen_package, mode)){
+          error << "Failed to add package to mode" << std::endl;
+          return false;
+        }
+      }else{
+        inter->pro->dependencies.push_back(chosen_package);
+      }
 
-
-      std::cout << "Writing config.json" << std::endl;
+      info << "Writing config.json" << std::endl;
       if (!writeConfig(inter->pro)) {
-        std::cout << "Failed to write config.json" << std::endl;
+        error << "Failed to write config.json" << std::endl;
       }
 
       if (!createCMakeListsExecutable(inter->pro)) {
-        std::cout << "Failed to write CMakeLists.txt" << std::endl;
+        error << "Failed to write CMakeLists.txt" << std::endl;
       }
     }
 
