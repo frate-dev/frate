@@ -50,10 +50,10 @@ jobs:
       with:
         repo_token: ${{ secrets.CI_TOKEN }}
         file: ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz
-        asset_name: frate
+        asset_name: frate.tar.gz
         tag: nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}
         overwrite: false
         prerelease: true
         make_latest: true
-        release_name: "CMaker nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}"
-        body: "CMaker nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}" 
+        release_name: "Frate nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}"
+        body: "Frate nightly-${{env.RELEASE_VERSION}}.${{github.run_number}}" 
