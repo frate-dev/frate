@@ -6,12 +6,12 @@
 #include <memory>
 #include <Frate/Command.hpp> 
 #include <Frate/Generators.hpp> 
+#include <Frate/Constants.hpp>
 
 
 namespace Utils::Validation {
   bool CCompiler(std::string cccompiler){
-    std::vector<std::string> supportedCCompilers = {"gcc", "clang", "msvc", "icc", "tcc", "emcc"};
-    for(std::string compiler : supportedCCompilers){
+    for(std::string compiler : Constants::SUPPORTED_C_COMPILERS){
       if(cccompiler == compiler){
         return true;
       }
@@ -19,8 +19,7 @@ namespace Utils::Validation {
     return false;
   }
   bool CppCompiler(std::string cppcompiler){
-    std::vector<std::string> supportedCppCompilers = {"g++", "clang++"};
-    for(std::string compiler : supportedCppCompilers){
+    for(std::string compiler : Constants::SUPPORTED_CXX_COMPILERS){
       if(cppcompiler == compiler){
         return true;
       }

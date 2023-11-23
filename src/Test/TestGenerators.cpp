@@ -4,6 +4,7 @@
 #include <Frate/Generators.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <memory>
+#include <Frate/Constants.hpp>
 
 namespace Tests{
   std::string genBase64String(int random_string_length);
@@ -17,50 +18,10 @@ namespace Test::Generators {
   using std::string;
   using std::cout;
 
-  //     bool testCmakeVersion(){
-  //       std::vector<std::string> versions{"3.28", "3.27", "3.26", "3.25",
-  //       "3.24", "3.23", "3.22", "3.21", "3.20", "3.19", "3.18", "3.17",
-  //       "3.16", "3.15", "3.14", "3.13", "3.12", "3.11", "3.10", "3.9", "3.8",
-  //       "3.7", "3.6", "3.5", "3.4", "3.3", "3.2", "3.1", "3.0"};
-  //       std::vector<std::string> failing_versions{"5.69",
-  //       "5.42","6.69","7.77","9.69"};
-  //
-  //
-  //       for(std::string version : versions){
-  //         std::shared_ptr<Command::Project> pro =
-  //         std::make_shared<Command::Project>();
-  //         std::shared_ptr<::Generators::ConfigJson::Config> cmake_context =
-  //           std::make_shared<::Generators::ConfigJson::Config>();
-  //         cmake_context->cmake_version = version;
-  //         if(!::Generators::ConfigJson::validateCmakeVersion("Testing version
-  //         " + version + "\n",pro, cmake_context)){
-  //           return false;
-  //         }
-  //       }
-  //
-  //       for(std::string version : failing_versions){
-  //         std::shared_ptr<Command::Project> pro =
-  //         std::make_shared<Command::Project>();
-  //         std::shared_ptr<::Generators::ConfigJson::Config> cmake_context =
-  //           std::make_shared<::Generators::ConfigJson::Config>();
-  //         cmake_context->cmake_version = version;
-  //         if(::Generators::ConfigJson::validateCmakeVersion("Testing failing
-  //         version " + version + "\n",pro, cmake_context)){
-  //           return false;
-  //         }
-  //       }
-  //
-  //       return true;
-  //     }
   bool testCmakeVersion() {
-    std::vector<std::string> versions{
-        "3.28", "3.27", "3.26", "3.25", "3.24", "3.23", "3.22", "3.21",
-        "3.20", "3.19", "3.18", "3.17", "3.16", "3.15", "3.14", "3.13",
-        "3.12", "3.11", "3.10", "3.9",  "3.8",  "3.7",  "3.6",  "3.5",
-        "3.4",  "3.3",  "3.2",  "3.1",  "3.0"};
     std::vector<std::string> failing_versions{"5.69", "5.42", "6.69", "7.77",
                                               "9.69"};
-    for (std::string version : versions) {
+    for (std::string version : Constants::SUPPORTED_CMAKE_VERSIONS) {
       cout << "Testing version " << version << endl;
       if (!Utils::Validation::CmakeVersion(version)) {
         return false;
@@ -133,10 +94,9 @@ namespace Test::Generators {
     }
     bool testCLanguageVersion(){
 
-      std::vector<std::string> passing_c_language_versions = {"89","90","99","11","17"};
       std::vector<std::string> failing_c_language_versions = {"3", "69", "420", "69.420", "69.420.69", "69.420.69.420"};
 
-      for(std::string version : passing_c_language_versions){
+      for(std::string version : Constants::SUPPORTED_C_STANDARDS){
         cout << "Testing version " << version << endl;
         if(!Utils::Validation::CLanguageVersion(version)){
           return false;
@@ -151,10 +111,9 @@ namespace Test::Generators {
       return true;
     }
     bool testCppLanguageVersion(){
-      std::vector<std::string> passing_cpp_language_versions = {"98","11","14","17","20"};
       std::vector<std::string> failing_cpp_language_versions = {"3", "69", "420", "69.420", "69.420.69", "69.420.69.420"};
 
-      for(std::string version : passing_cpp_language_versions){
+      for(std::string version : Constants::SUPPORTED_CXX_STANDARDS){
         cout << "Testing version " << version << endl;
         if(!Utils::Validation::CppLanguageVersion(version)){
           return false;
@@ -169,10 +128,9 @@ namespace Test::Generators {
       return true;
     }
     bool testCCompiler(){
-      std::vector<std::string> passing_c_compilers = {"gcc","clang","msvc","icc","tcc","emcc"};
       std::vector<std::string> failing_c_compilers = {"fuckcusecpp","clangdeeznuts"};
 
-      for(std::string compiler : passing_c_compilers){
+      for(std::string compiler : Constants::SUPPORTED_C_COMPILERS){
         cout << "testing c compiler: " << compiler << endl;
         if(!Utils::Validation::CCompiler(compiler)){
             return false;
@@ -190,10 +148,9 @@ namespace Test::Generators {
 
     bool testCppCompiler(){
 
-      std::vector<std::string> passing_cpp_compilers = {"g++","clang++"};
-      std::vector<std::string> failing_cpp_compilers = {"fuckitidontknow","iforgot","msvc","icc","tcc","emcc","clang"};
+      std::vector<std::string> failing_cpp_compilers = {"fuckitidontknow","iforgot","icc","tcc","emcc","clang"};
 
-      for(std::string compiler : passing_cpp_compilers){
+      for(std::string compiler : Constants::SUPPORTED_CXX_COMPILERS){
         cout << "testing cpp compiler " << compiler << endl;
         if(!Utils::Validation::CppCompiler(compiler)){
           return false;

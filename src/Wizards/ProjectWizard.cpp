@@ -2,7 +2,7 @@
 #include "Frate/Utils/CLI.hpp"
 #include <Frate/Wizards.hpp>
 #include <Frate/Utils/Validation.hpp>
-
+#include <Frate/Constants.hpp>
 
 namespace Wizard {
   using Utils::CLI::Prompt;
@@ -32,8 +32,9 @@ namespace Wizard {
     pro->project_type = project_type.Get();
 
     Prompt<std::string> language("Language",pro->lang);
-    language.AddOption("cpp");
-    language.AddOption("c");
+    for(std::string lang: Constants::SUPPORTED_LANGUAGES){
+      language.AddOption(lang);
+    }
     language.PrintValidOptions();
     language.Validator(Utils::Validation::Language);
     language.Color(Utils::CLI::Ansi::GREEN);
@@ -45,15 +46,9 @@ namespace Wizard {
     
     if(pro->lang == "cpp"){
       Prompt<std::string> cpp_version("C++ Version",pro->lang_version);
-      cpp_version.AddOption("98");
-      cpp_version.AddOption("11");
-      cpp_version.AddOption("1x");
-      cpp_version.AddOption("14");
-      cpp_version.AddOption("17");
-      cpp_version.AddOption("2a");
-      cpp_version.AddOption("20");
-      cpp_version.AddOption("23");
-      cpp_version.AddOption("26");
+      for(std::string version: Constants::SUPPORTED_CXX_STANDARDS){
+        cpp_version.AddOption(version);
+      }
       cpp_version.PrintValidOptions();
       cpp_version.Validator(Utils::Validation::CppLanguageVersion);
       cpp_version.Color(Utils::CLI::Ansi::GREEN);
@@ -63,8 +58,9 @@ namespace Wizard {
       pro->lang_version = cpp_version.Get();
 
       Prompt<std::string> cpp_compiler("C++ Compiler",pro->compiler);
-      cpp_compiler.AddOption("g++");
-      cpp_compiler.AddOption("clang++");
+      for(std::string compiler: Constants::SUPPORTED_CXX_COMPILERS){
+        cpp_compiler.AddOption(compiler);
+      }
       cpp_compiler.PrintValidOptions();
       cpp_compiler.Validator(Utils::Validation::CppCompiler);
       cpp_compiler.Color(Utils::CLI::Ansi::GREEN);
@@ -76,15 +72,9 @@ namespace Wizard {
     }
     else if(pro->lang == "c"){
       Prompt<std::string> c_version("C Version",pro->lang_version);
-      c_version.AddOption("89");
-      c_version.AddOption("90");
-      c_version.AddOption("95");
-      c_version.AddOption("99");
-      c_version.AddOption("11");
-      c_version.AddOption("1x");
-      c_version.AddOption("18");
-      c_version.AddOption("23");
-      c_version.AddOption("26");
+      for(std::string version: Constants::SUPPORTED_C_STANDARDS){
+        c_version.AddOption(version);
+      }
       c_version.PrintValidOptions();
       c_version.Validator(Utils::Validation::CLanguageVersion);
       c_version.Color(Utils::CLI::Ansi::GREEN);
@@ -96,10 +86,9 @@ namespace Wizard {
       pro->compiler = "gcc";
 
       Prompt<std::string> c_compiler("C Compiler",pro->compiler);
-      c_compiler.AddOption("gcc");
-      c_compiler.AddOption("clang");
-      c_compiler.AddOption("icc");
-      c_compiler.AddOption("msvc");
+      for(std::string compiler: Constants::SUPPORTED_C_COMPILERS){
+        c_compiler.AddOption(compiler);
+      }
       c_compiler.PrintValidOptions();
       c_compiler.Validator(Utils::Validation::CCompiler);
       c_compiler.Color(Utils::CLI::Ansi::GREEN);
@@ -112,35 +101,9 @@ namespace Wizard {
     }
 
     Prompt<std::string> cmake_version("CMake Version",pro->cmake_version);
-    cmake_version.AddOption("3.0");
-    cmake_version.AddOption("3.1");
-    cmake_version.AddOption("3.2");
-    cmake_version.AddOption("3.3");
-    cmake_version.AddOption("3.4");
-    cmake_version.AddOption("3.5");
-    cmake_version.AddOption("3.6");
-    cmake_version.AddOption("3.7");
-    cmake_version.AddOption("3.8");
-    cmake_version.AddOption("3.9");
-    cmake_version.AddOption("3.10");
-    cmake_version.AddOption("3.11");
-    cmake_version.AddOption("3.12");
-    cmake_version.AddOption("3.13");
-    cmake_version.AddOption("3.14");
-    cmake_version.AddOption("3.15");
-    cmake_version.AddOption("3.16");
-    cmake_version.AddOption("3.17");
-    cmake_version.AddOption("3.18");
-    cmake_version.AddOption("3.19");
-    cmake_version.AddOption("3.20");
-    cmake_version.AddOption("3.21");
-    cmake_version.AddOption("3.22");
-    cmake_version.AddOption("3.23");
-    cmake_version.AddOption("3.24");
-    cmake_version.AddOption("3.25");
-    cmake_version.AddOption("3.26");
-    cmake_version.AddOption("3.27");
-    cmake_version.AddOption("3.28");
+    for(std::string version: Constants::SUPPORTED_CMAKE_VERSIONS){
+      cmake_version.AddOption(version);
+    }
     cmake_version.PrintValidOptions();
     cmake_version.Validator(Utils::Validation::CmakeVersion);
     cmake_version.Color(Utils::CLI::Ansi::GREEN);

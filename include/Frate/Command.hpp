@@ -161,6 +161,7 @@ namespace Command {
       std::vector<Handler> getRemoveHandlers();
       std::vector<Handler> getUpdateHandlers();
 
+      bool execute();
       bool skip_prompts{false};
       bool parse();
       std::shared_ptr<cxxopts::Options> options;

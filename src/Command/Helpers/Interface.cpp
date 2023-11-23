@@ -52,6 +52,17 @@ bool OptionsInit::Main(Interface *inter) {
     //After the parse we can set the context args
     this->pro->args = this->args;
 
+    #ifdef DEBUG
+        std::cout << "DEBUG MODE ENABLED\n";
+    #endif
+    #ifdef DEBUG
+        pro->project_path = std::filesystem::current_path() / "build";
+    #else
+        pro->project_path = std::filesystem::current_path();
+    #endif
+
+  }
+  bool Interface::execute(){
     if(this->args->count("yes")){
       this->skip_prompts = true;
       std::cout << "Skipping prompts" << ENDL;
@@ -62,16 +73,8 @@ bool OptionsInit::Main(Interface *inter) {
 
     // if(!this->args->count("command")){
     //   this->help();
-     std::string command = this->args->operator[]("command").as<std::string>();
+    std::string command = this->args->operator[]("command").as<std::string>();
 
-    #ifdef DEBUG
-        std::cout << "DEBUG MODE ENABLED\n";
-    #endif
-    #ifdef DEBUG
-        pro->project_path = std::filesystem::current_path() / "build";
-    #else
-        pro->project_path = std::filesystem::current_path();
-    #endif
 
     std::cout << "Project Path: " << pro->project_path << ENDL;
     commands = {
@@ -204,6 +207,7 @@ bool OptionsInit::Main(Interface *inter) {
         if(alias == command){
           found_alias = true;
           if(!handler.callback()){
+            return false;
             // std::cout << termcolor::red << "Error: Could not run: " << handler.aliases[0] << termcolor::reset << ENDL;
           }
         }
@@ -212,6 +216,7 @@ bool OptionsInit::Main(Interface *inter) {
     if(!found_alias){
       std::cout << "Error: Command not found: " << command << ENDL;
     }
+    return true;
 
   }
   void renderFlags(std::vector<std::string> flags){

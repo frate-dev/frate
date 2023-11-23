@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <string>
 #include <nlohmann/json.hpp>
 #include <Frate/Command.hpp>
@@ -14,7 +15,7 @@ namespace Generators::CMakeList {
   std::ofstream CPMFile;
   try{
     if(!std::filesystem::exists(pro->project_path / "cmake"))
-      std::filesystem::create_directory(pro->project_path / "cmake");
+      std::filesystem::create_directories(pro->project_path / "cmake");
     CPMFile.open(pro->project_path / "cmake/CPM.cmake");
   }catch(...){
     Utils::debug("Error while opening file: CPM.cmake");

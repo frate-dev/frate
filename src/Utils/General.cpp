@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "Frate/Utils/General.hpp"
 #include "termcolor/termcolor.hpp"
 #include <Frate/Generators.hpp>
 #include <iostream>
@@ -125,6 +126,7 @@ namespace Utils{
       std::cout << "Error: " << e.what() << std::endl;
       std::cout << "Failed to parse index.json" << std::endl;
       std::cout << "Text: " << responseStr << std::endl;
+      Utils::debug("Failed to parse index.json");
       exit(-1);
     }
   }

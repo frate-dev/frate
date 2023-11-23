@@ -12,6 +12,7 @@ namespace Command::Packages {
   using Generators::ConfigJson::writeConfig;
   bool add(Interface* inter) {
     bool latest = false;
+    std::string query = "";
     //TODO: Add support for multiple dependencies
     if (inter->args->count("args") == 0) {
       std::cout << termcolor::red << "No packages specified" << termcolor::reset << std::endl;
@@ -24,11 +25,26 @@ namespace Command::Packages {
       latest = true;
     }
 
+
+
+
+
+
     std::vector<std::string> package_names = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string package_name : package_names) { 
+      std::cout << "Searching for " << package_name << std::endl;
+      auto [exact, exact_package] = getExact(package_name);
+  
 
-      Package chosen_package = promptSearchResults(package_name);
+      Package chosen_package;
 
+      if(!exact){
+        std::cout << "No exact match found" << std::endl;
+        chosen_package = promptSearchResults(package_name);
+      }else{
+        std::cout << "Exact match found" << std::endl;
+        chosen_package = exact_package;
+      }
       std::cout << "Installing " << chosen_package.name << std::endl;
 
 
@@ -47,6 +63,7 @@ namespace Command::Packages {
         version = chosen_package.versions[0];
         chosen_package.selected_version = version;
       }
+
       if(dependenciesConflict(inter->pro->dependencies, chosen_package.name)){
         std::cout << "Package already installed" << std::endl;
         return false;

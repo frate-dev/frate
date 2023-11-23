@@ -1,3 +1,5 @@
+#include <fstream>
+#include <nlohmann/json_fwd.hpp>
 #ifdef TEST
 #include <cstdio>
 #include <filesystem>
@@ -7,6 +9,8 @@
 #include <memory>
 #include <string>
 #include <Frate/Test/Test.hpp>
+#include <Frate/Utils/General.hpp>
+#include <Frate/Command.hpp>
 
 namespace Tests{
   std::string genBase64String(int random_string_length) {
@@ -27,54 +31,220 @@ namespace Tests{
 
 namespace Tests::Command {
 
+  const std::filesystem::path test_path = std::filesystem::path("/tmp/frate-test");
+  
+  void cleanUp(){
+    try{
+      std::filesystem::remove_all(test_path);
+    }catch(...){
+      std::cout << "Failed to clean up test directory" << std::endl;
+    }
+  }
+  
+  void init(){
+    cleanUp();
+    std::filesystem::create_directory(test_path);
+  }
+
+  std::pair<int, char**> genCommand(std::string args){
+    std::vector<std::string> command_split = ::Utils::split(args, ' ');
+    char** argv = new char*[command_split.size()];
+
+    for(size_t i = 0; i < command_split.size(); i++){
+
+      argv[i] = new char[command_split[i].size()];
+
+      strcpy(argv[i], command_split[i].c_str());
+
+    }
+
+    return std::make_pair(command_split.size(), argv);
+  }
+
+  bool testNew(){
+    std::cout << "Testing new command" << std::endl;
+    init();
+    auto [argc,argv] = genCommand("frate new test -d");
+    ::Command::Interface *inter = new ::Command::Interface(argc,argv);
+
+    inter->pro->project_path = std::filesystem::path(test_path);
 
 
+    if(!inter->execute()){
+      cleanUp();
+      std::cout << "Failed to create new project" << std::endl;
+      return false;
+    }
+    return true;
+
+  }
+
+  bool testAddPackage() {
+    std::cout << "Testing add package command" << std::endl;
+    auto [argc, argv] = genCommand("frate add p cxxopts -l");
+    ::Command::Interface *inter = new ::Command::Interface(argc, argv);
+
+    inter->pro->project_path = std::filesystem::path(test_path);
+
+    if (!inter->execute()) {
+      cleanUp();
+      std::cout << "Failed to add package" << std::endl;
+      return false;
+    }
+    
+    std::ifstream config_file(test_path / "config.json");
+    try{
+      nlohmann::json config;
+      config_file >> config;
+      if(config["dependencies"].size() != 1){
+        cleanUp();
+        std::cout << "Failed to add package : no pacakge add dected config.json" << std::endl;
+        return false;
+      }
+    }catch(...){
+      cleanUp();
+      std::cout << "Failed to add package : could not open file - file possibly never created" << std::endl;
+      return false;
+    }
+
+    return true;
+  }
+
+  bool testAddPackageMultiple() {
+    std::cout << "Testing add multiple packages : adding SDL and fmt" << std::endl;
+
+    auto [argc, argv] = genCommand("frate add p SDL2 fmt -l");
+
+    ::Command::Interface *inter = new ::Command::Interface(argc, argv);
+
+    inter->pro->project_path = std::filesystem::path(test_path);
+
+    if (!inter->execute()) {
+      cleanUp();
+      std::cout << "Failed to add package" << std::endl;
+      return false;
+    }
+
+    std::ifstream config_file(test_path / "config.json");
+
+    nlohmann::json config;
+    try {
+      std::cout << "attempting to read config file" << std::endl;
+      config_file >> config;
+    } catch (...) {
+      cleanUp();
+      std::cout << "Failed to add package : could not open file - file possibly never created" << std::endl;
+      return false;
+    }
+
+    std::cout << "checking config for 2 packages" << std::endl;
+    if (config["dependencies"].size() != 2) {
+      cleanUp();
+      std::cout << "Failed to add package : expected 2 packages to be added" << std::endl;
+      return false;
+    }
+
+    std::cout << "checking config for SDL package" << std::endl;
+    if(config["dependencies"][0]["name"] != "SDL2"){
+      cleanUp();
+      std::cout << "Failed to add package : expected SDL2 to be added got: " << config["dependencies"][0]["name"] << std::endl;
+      return false;
+    }
+    std::cout << "checking config for fmt package" << std::endl;
+    if (config["dependencies"][1]["name"] != "fmt") {
+      cleanUp();
+      std::cout << "Failed to add package : expected fmt to be added got: " << config["dependencies"][1]["name"] << std::endl;
+      return false;
+    }
+    return true;
+  }
+
+  bool testRemovePackage(){
+    std::cout << "Testing remove package command" << std::endl;
+    auto [argc, argv] = genCommand("frate remove p cxxopts");
+
+    ::Command::Interface *inter = new ::Command::Interface(argc, argv);
+
+    if (!inter->execute()) {
+      cleanUp();
+      std::cout << "Failed to remove package : could not run command" << std::endl;
+      return false;
+    }
+
+    std::cout << "Searching for cxxopts in config.json" << std::endl;
+
+    std::ifstream config_file(test_path / "config.json");
+
+    nlohmann::json config;
+
+    try {
+      config_file >> config;
+    } catch (...) {
+      cleanUp();
+      std::cout << "Failed to remove package : could not open file - file possibly never created" << std::endl;
+      return false;
+    }
 
 
+    for (auto& dep : config["dependencies"]) {
+      if (dep["name"] == "cxxopts") {
+        std::cout << "Failed to remove package : cxxopts still in config.json" << std::endl;
+        cleanUp();
+        return false;
+      }
+    }
 
-//  [[deprecated("This test is deprecated because it is not a unit test")]]  
-//  bool testCommandInit() { std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
-//    char* args[] = {"cmake-generator","init","-y"};
-//
-//    for(auto arg : args) {
-//      std::cout << arg << std::endl;
-//    }
-//    cxxopts::ParseResult parseResults = ::Command::initOptions(3, args);
-//    ::Command::init(context, parseResults);
-//    std::ifstream file;
-//    try{
-//      file = std::ifstream(context->project_path / "CMakeLists.txt");
-//    } catch (std::exception& e) {
-//      std::cout << "Failed to load CMakeLists.txt" << std::endl;
-//      return false;
-//    }
-//    return true;
-//  }
-//  [[deprecated("This test is deprecated because it is not a unit test")]]
-//  bool testCommandAdd() { std::shared_ptr<::Command::Context> context = std::make_shared<::Command::Context>();
-//    char* args[] = {"frate","add","dep", "cxxopts"};
-//
-//    for(auto arg : args) {
-//      std::cout << arg << std::endl;
-//    }
-//    cxxopts::ParseResult parseResults = ::Command::initOptions(3,args);
-//    ::Command::init(context, parseResults);
-//    std::ifstream file;
-//    try{
-//      file = std::ifstream(context->project_path / "CMakeLists.txt");
-//    } catch (std::exception& e) {
-//      std::cout << "Failed to load CMakeLists.txt" << std::endl;
-//      return false;
-//    }
-//    
-//    return true;
-//  }
+    return true;
+  }
+  bool testAddPackageToMode() {
+    std::cout << "Testing add package to mode command" << std::endl;
+    auto [argc, argv] = genCommand("frate add p cxxopts -l -m Debug");
 
+    ::Command::Interface *inter = new ::Command::Interface(argc, argv);
+
+    inter->pro->project_path = std::filesystem::path(test_path);
+
+    if (!inter->execute()) {
+      cleanUp();
+      std::cout << "Failed to add package : could not run command" << std::endl;
+      return false;
+    }
+
+    std::ifstream config_file(test_path / "config.json");
+
+    nlohmann::json config;
+
+    try {
+      config_file >> config;
+    } catch (...) {
+      cleanUp();
+      std::cout << "Failed to add package : could not open file - file possibly never created" << std::endl;
+      return false;
+    }
+
+    if (config["modes"]["Debug"]["dependencies"].size() != 1) {
+      cleanUp();
+      std::cout << "Failed to add package : expected 1 package to be added to Debug mode" << std::endl;
+      return false;
+    }
+
+    if (config["modes"]["Debug"]["dependencies"][0]["name"] != "cxxopts") {
+      cleanUp();
+      std::cout << "Failed to add package : expected cxxopts to be added to Debug mode" << std::endl;
+      return false;
+    }
+
+    return true;
+
+  }
 
 
   TEST_CASE("TestCommands", "[commands]"){
-
-    //REQUIRE(testCommandInit());
+    REQUIRE(testNew());
+    REQUIRE(testAddPackage());
+    REQUIRE(testAddPackageMultiple());
+    REQUIRE(testRemovePackage());
+    REQUIRE(testAddPackageToMode());
     //REQUIRE(testCommandAdd());
   }
 }

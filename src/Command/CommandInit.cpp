@@ -264,9 +264,10 @@ bool createJson(std::shared_ptr<Project> pro) {
       return false;
       //TODO: shared library
     }
-
+    std::cout << "CMakeLists.txt created" << ENDL;
+    std::cout << "Initializing git" << ENDL;
     gitInit(this);
-
+    std::cout << "Done" << ENDL;
 
     return true;
   }
