@@ -8,9 +8,9 @@ project (
 
 set(CMAKE_CXX_STANDARD 20)
 set(-DUSE_CCACHE=YES -DCCACHE_OPTIONS="CCACHE_CPP2=true;CCACHE_SLOPPINESS=clang_index_store")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
-set(BUILD_CURL_EXE OFF)
 include (cmake/CPM.cmake)
 CPMUsePackageLock(package-lock.cmake)
 CPMAddPackage(
@@ -38,6 +38,8 @@ CPMAddPackage(
   NAME curl
   GITHUB_REPOSITORY curl/curl
   GIT_TAG curl-8_3_0
+  OPTIONS
+  "ENABLE_VERSIONED_SYMBOLS ON"
 )
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"

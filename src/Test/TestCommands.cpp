@@ -1,12 +1,10 @@
-#include "nlohmann/detail/json_pointer.hpp"
-#include <fstream>
 #ifdef TEST
 #include <cstdio>
+#include <fstream>
 #include <filesystem>
 #include <catch2/catch_test_macros.hpp>
 #include <Frate/Command.hpp>
 #include <cxxopts.hpp>
-#include <memory>
 #include <string>
 #include <Frate/Test/Test.hpp>
 #include <Frate/Utils/General.hpp>

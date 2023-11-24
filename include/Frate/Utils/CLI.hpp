@@ -1,10 +1,8 @@
 #pragma once
 #include <functional>
-#include <ostream>
 #include <sstream>
 #include <string>
 #include <stdint.h>
-#include <iostream>
 #include <termcolor/termcolor.hpp>
 #include <vector>
 

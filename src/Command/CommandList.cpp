@@ -55,6 +55,7 @@ namespace Command{
         .docs = "List flags",
         .callback = [this]() {
           //TODO: List flags
+          (void)this;
           return true;
         },
         .implemented = false
@@ -65,6 +66,7 @@ namespace Command{
         .docs = "List authors",
         .callback = [this]() {
           //TODO: List authors
+          (void)this;
           return true;
         },
         .implemented = false
@@ -74,6 +76,7 @@ namespace Command{
         {"available-targets","at"},
         .docs = "List available targets",
         .callback = [this]() {
+          (void)this;
           Command::Toolchains::list();
           return true;
         }
@@ -84,6 +87,7 @@ namespace Command{
         .docs = "List possible licenses",
         .callback = [this]() {
           //TODO: List possible liceses
+          (void)this;
           return true;
         },
         .implemented = false

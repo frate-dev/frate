@@ -1,9 +1,8 @@
-#include "Frate/Utils/Validation.hpp"
 #ifdef TEST
 #include <Frate/Test/Test.hpp>
+#include "Frate/Utils/Validation.hpp"
 #include <Frate/Generators.hpp>
 #include <catch2/catch_test_macros.hpp>
-#include <memory>
 #include <Frate/Constants.hpp>
 
 namespace Tests{

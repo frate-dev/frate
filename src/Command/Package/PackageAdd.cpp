@@ -1,5 +1,3 @@
-
-
 #include <Frate/Command/Package.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <Frate/Generators.hpp>

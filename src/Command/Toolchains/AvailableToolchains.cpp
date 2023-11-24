@@ -220,6 +220,6 @@ namespace Command::Toolchain {
     "x86_64-uwp-windows-gnu",
     "x86_64-uwp-windows-msvc",
     "x86_64-wrs-vxworks",
-    "x86_64h-apple-darwin"
+    "x86_64-apple-darwin"
   };
 }
