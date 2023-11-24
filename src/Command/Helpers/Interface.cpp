@@ -60,7 +60,7 @@ bool OptionsInit::Main(Interface *inter) {
     #else
         pro->project_path = std::filesystem::current_path();
     #endif
-
+    LoadProjectJson();
   }
   bool Interface::execute(){
     if(this->args->count("yes")){

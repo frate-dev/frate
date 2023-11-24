@@ -173,7 +173,7 @@ namespace Command {
       ~Interface();
       bool InitHeader();
       bool CreateCMakelists();
-      bool LoadPackageJson();
+      bool LoadProjectJson();
   };
 
   namespace OptionsInit{

@@ -126,7 +126,7 @@ bool createJson(std::shared_ptr<Project> pro) {
 
   bool createProjectWizard(Interface *inter){
     createJson(inter->pro);
-    inter->LoadPackageJson();
+    inter->LoadProjectJson();
     Generators::CMakeList::createCMakeListsExecutable(inter->pro);
     if(inter->pro->lang == "cpp"){
       if(!createHelloWorldCpp(inter->pro)){
