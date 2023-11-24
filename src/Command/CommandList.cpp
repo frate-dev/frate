@@ -5,6 +5,7 @@
 #include <Frate/Command/Modes.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Command/Toolchains.hpp>
+#include <Frate/Command/License.hpp>
 #include <Frate/Utils/CLI.hpp>
 namespace Command{
   bool OptionsInit::List(Interface* inter) {
@@ -86,11 +87,8 @@ namespace Command{
         {"licenses","l"},
         .docs = "List possible licenses",
         .callback = [this]() {
-          //TODO: List possible liceses
-          (void)this;
-          return true;
+          return License::list(this);
         },
-        .implemented = false
       },
     };
   }

@@ -170,6 +170,7 @@ namespace Utils{
     delete[] curr;
     return result;
   }
+
   int getStringScore(std::string &text, std::string &query){
     int score = 0;
     std::vector<std::string> split_text = Utils::split(text, ' ');
@@ -190,5 +191,14 @@ namespace Utils{
       score += 30;
     }
     return score;
+  }
+  /*
+   * replaces keys like [key] with values
+   */
+  void replaceKey(std::string &str, std::string key, std::string value){
+    std::string key_start = "[" + key + "]";
+    while(str.find(key_start) != std::string::npos){
+      str.replace(str.find(key_start), key_start.length(), value);
+    }
   }
 }

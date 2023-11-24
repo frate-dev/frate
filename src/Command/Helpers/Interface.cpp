@@ -129,6 +129,17 @@ bool OptionsInit::Main(Interface *inter) {
       },
 
       Handler{
+        .aliases = {"set"},
+        .flags = {}, //TODO: Add flags
+        .subcommands = getSetHandlers(),
+        .docs = "set sub command",
+        .callback = [this](){
+          //OptionsInit::Set(this);
+          return this->set();
+        }
+      },
+
+      Handler{
         .aliases = {"search"},
         .flags = {}, //TODO: Add flags
         .subcommands = getSearchHandlers(),
@@ -294,7 +305,7 @@ bool OptionsInit::Main(Interface *inter) {
         }else{
           std::cout << "\n    ";
         }
-        std::cout << "    └" << termcolor::blue << handler.docs << termcolor::reset;
+        std::cout << "     " << termcolor::blue << handler.docs << termcolor::reset;
       }else{
         if(handler.subcommands.size() > 0){
           std::cout << termcolor::blue << " <target>" << termcolor::reset;

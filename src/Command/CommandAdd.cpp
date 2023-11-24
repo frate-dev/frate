@@ -5,14 +5,11 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Command/Toolchains.hpp>
-#include <algorithm>
 #include <cxxopts.hpp>
 #include <iostream>
 #include <nlohmann/json.hpp>
-#include <string>
 #include <Frate/Utils/General.hpp>
 #include <Frate/Utils/CLI.hpp>
-#include <cmath>
 #include <termcolor/termcolor.hpp>
 
 namespace Command {

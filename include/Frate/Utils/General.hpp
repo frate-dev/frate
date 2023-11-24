@@ -109,4 +109,6 @@ namespace Utils {
         return *this;
       }
   };
+
+  void replaceKey(std::string &str, std::string key, std::string value);
 }

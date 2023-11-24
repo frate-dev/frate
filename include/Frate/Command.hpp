@@ -95,6 +95,7 @@ namespace Command {
     std::string cmake_version{"3.10"};
     std::string lang_version{"20"};
     std::string compiler{"g++"};
+    std::string license{""};
     std::vector<Mode> modes{
       Mode{.name = "Release", .flags={"-O2 "}}, 
       Mode{.name= "Debug", .flags= {"-g"}},
@@ -136,6 +137,7 @@ namespace Command {
       bool init();
       bool add();
       bool get();
+      bool set();
       bool remove();
       bool update();
       bool run();
@@ -156,6 +158,8 @@ namespace Command {
       std::vector<Handler> commands{};
       //All sub command getters
       std::vector<Handler> getAddHandlers();
+      std::vector<Handler> getGetHandlers();
+      std::vector<Handler> getSetHandlers();
       std::vector<Handler> getListHandlers();
       std::vector<Handler> getSearchHandlers();
       std::vector<Handler> getRemoveHandlers();
@@ -180,6 +184,7 @@ namespace Command {
       bool Init(Interface*);
       bool Search(Interface*);
       bool Add(Interface*);
+      bool Set(Interface*);
       bool Remove(Interface*);
       bool Server(Interface*);
       bool Dependencies(Interface*);

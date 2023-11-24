@@ -1,11 +1,9 @@
 #include <Frate/Command.hpp>
 // LUCAS PAY ATTENTION TO IF THE HEADER IS .hpp OR .h
-#include <cxxopts.hpp>
 #ifdef TEST
   #include <catch2/catch_session.hpp>
   #include <Frate/Test/Test.hpp>
 #endif
-
 int main(int argc, char **argv) {
   // LUCAS MAKE SURE YOU INITIALIZE YOUR F@*KING STRUCT YOU TW@T
   //std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
