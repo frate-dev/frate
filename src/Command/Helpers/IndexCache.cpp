@@ -1,6 +1,7 @@
 #include <Frate/Command.hpp>
 #include <nlohmann/json.hpp>
 #include <Frate/Utils/General.hpp>
+#include <fstream>
 
 namespace Command{
   using nlohmann::json;

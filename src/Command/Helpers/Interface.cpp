@@ -265,7 +265,7 @@ bool OptionsInit::Main(Interface *inter) {
     std::cout << " - " << handler.docs << ENDL;
   }
   void Interface::getHelpString(std::string name,std::vector<Handler> &handlers, bool is_subcommand){
-    int index = 0;
+    size_t index = 0;
     for(Handler handler : handlers){
       index++;
       int alias_str_len = 0;

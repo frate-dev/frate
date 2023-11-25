@@ -78,6 +78,7 @@ namespace Command {
             //TODO implement library
             // OptionsInit::Libraries(this);
             // Libraries::add(this);
+            (void)this;
             return false;
           },
           .implemented = false,

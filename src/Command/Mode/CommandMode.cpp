@@ -18,6 +18,7 @@ namespace Command::ModeCommands {
   }
   //TODO: Implement this
   bool removeFlags(Interface *inter, std::string mode){
+    (void) inter, (void) mode;
     return true;
   }
 

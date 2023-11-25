@@ -1,10 +1,5 @@
 #include <Frate/Command.hpp>
-#include <cstdlib>
 #include <cxxopts.hpp>
-#include <algorithm>
-#include <locale>
-#include <ranges>
-#include <format>
 #include <fstream>
 #include <iostream> 
 #include <string>

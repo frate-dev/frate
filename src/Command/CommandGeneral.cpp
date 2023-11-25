@@ -1,6 +1,7 @@
 #include <stdint.h> 
 #include "termcolor/termcolor.hpp"
 #include <Frate/Command.hpp>
+#include <fstream>
 #include <iostream>
 
 namespace Command {
@@ -23,5 +24,4 @@ namespace Command {
 
     return true;
   };
-
 } // namespace Command
