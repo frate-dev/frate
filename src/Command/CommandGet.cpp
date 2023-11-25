@@ -13,5 +13,6 @@ namespace Command {
         return Packages::get(this);
       }
     }
+    return true;
   }
 }

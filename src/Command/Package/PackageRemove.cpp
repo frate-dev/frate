@@ -4,7 +4,7 @@
 
 namespace Command::Packages {
 
-  bool removeByModePackages(Interface* inter, std::string mode){
+  bool removePackagesByMode(Interface* inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep : dependencies) {
       for(Mode &m : inter->pro->modes){
@@ -32,7 +32,7 @@ Usage remove dep:
       return false;
     }
     if (inter->args->count("mode") != 0){
-      return removeByModePackages(inter, inter->args->operator[]("mode").as<std::string>());
+      return removePackagesByMode(inter, inter->args->operator[]("mode").as<std::string>());
     }
 
     std::vector<std::string> name_to_remove = inter->args->operator[]("args").as<std::vector<std::string>>();

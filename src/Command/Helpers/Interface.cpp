@@ -1,14 +1,10 @@
 #include <Frate/Command.hpp>
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
-#include <initializer_list>
 #include <memory>
 #include <nlohmann/json_fwd.hpp>
-#include <sstream>
 
 namespace Command {
-using std::function;
-using std::initializer_list;
 
 bool OptionsInit::Main(Interface *inter) {
   inter->InitHeader();

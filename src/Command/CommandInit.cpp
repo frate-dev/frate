@@ -114,7 +114,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     return true;
   }
   void gitInit(Interface *inter){
-    #ifndef DEBUG
+    #ifdef RELEASE 
       Generators::GitIgnore::create(inter->pro);
       //TODO: make this work on windows
       int gitinit = Utils::hSystem("cd "+inter->pro->project_path.string()+";git init");
@@ -122,6 +122,7 @@ bool createJson(std::shared_ptr<Project> pro) {
         std::cout << "git init failed" << std::endl;
       }
     #endif
+    (void)inter;
   }
 
   bool createProjectWizard(Interface *inter){
