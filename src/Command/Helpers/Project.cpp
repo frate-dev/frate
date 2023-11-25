@@ -93,6 +93,7 @@ namespace Command {
       j["project_path"] = project_path;
       j["project_type"] = project_type;
       j["project_description"] = project_description;
+      j["toolchains"] = toolchains;
       return  j;
 
     };

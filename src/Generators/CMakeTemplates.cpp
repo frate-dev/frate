@@ -23,6 +23,9 @@ namespace Generators::CMakeList {
   }
   CPMFile << CPM;
   std::string CMakeListsExecutable = inja::render(R"EOF(
+{% for toolchain in toolchains %}
+include(toolchains/{{ toolchain }}.cmake)
+{% endfor %}
 cmake_minimum_required( VERSION {{ cmake_version }} )
 project(
   {{ project_name }}

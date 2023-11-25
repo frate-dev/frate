@@ -6,7 +6,7 @@
 
 namespace Generators::Toolchain{
   using nlohmann::json;
-  std::string generateToolchain(std::string  toolchain){
+  std::string something(std::string  toolchain){
     std::string toolchain_template = R"(
 set(CMAKE_C_COMPILER "zig")
 set(CMAKE_CXX_COMPILER "zig")

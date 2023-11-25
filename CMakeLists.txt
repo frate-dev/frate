@@ -7,6 +7,8 @@ project (
 )
 set(CMAKE_CXX_STANDARD 20)
 set(-DUSE_CCACHE=YES -DCCACHE_OPTIONS="CCACHE_CPP2=true;CCACHE_SLOPPINESS=clang_index_store")
+set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+set(CMAKE_C_COMPILER_LAUNCHER ccache)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
@@ -17,6 +19,11 @@ CPMAddPackage(
   GITHUB_REPOSITORY TheLartians/Ccache.cmake
   VERSION 1.2
 )
+find_program(CCACHE_FOUND ccache)
+if(CCACHE_FOUND)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache) # Less useful to do it for linking, see edit2
+endif(CCACHE_FOUND)
 CPMAddPackage(
   NAME termcolor
   GITHUB_REPOSITORY ikalnytskyi/termcolor

@@ -12,24 +12,30 @@ namespace Command::Toolchains{
   }
   bool list(){
     json data = load();
-    for (std::string toolchain : Command::Toolchain::available_triples){
-      std::cout << toolchain << std::endl;
+    for (Command::Toolchain::CompileTarget toolchain : Command::Toolchain::CompileTargets){
+      std::cout << toolchain.triple << std::endl;
     }
     return true;
   }
+  bool fuckit(){
+    return false;
+  };
   bool add(std::string toolchain, Interface* inter){
     json data = load();
-    inter->pro->toolchains.push_back(toolchain);
     Generators::Toolchain::generateToolchain(toolchain);
     std::ofstream file;
     if (!std::filesystem::exists(inter->pro->project_path / "toolchains/")){
       std::filesystem::create_directory(inter->pro->project_path / "toolchains/");
     }
     file.open(inter->pro->project_path / "toolchains/" / (toolchain + ".cmake"));
+
     std::cout << "Writing toolchain file" << std::endl;
     std::string toolchain_template = Generators::Toolchain::generateToolchain(toolchain);
     std::cout << toolchain_template << std::endl;
     file << toolchain_template;
+    inter->pro->toolchains.push_back(toolchain);
+    Generators::ConfigJson::writeConfig(inter->pro);
+    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
     return true;
   }
   bool remove(std::string toolchain_name, Interface* interface){

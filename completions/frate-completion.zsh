@@ -23,6 +23,7 @@ _frate() {
     'dep:Add a dependecy <dep>'
     'lib:Add a library <lib>'
     'flags:Add a flag <flag>'
+    'toolchain:Add a toolchain <toolchain>'
   )
 
   case $state in 
