@@ -22,7 +22,7 @@ namespace Command {
   }
   //TODO: add
   //
-  bool OptionsInit::Dependencies(Interface* inter) {
+  bool OptionsInit::Packages(Interface* inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
     inter->options->add_options()

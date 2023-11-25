@@ -187,7 +187,7 @@ namespace Command {
       bool Set(Interface*);
       bool Remove(Interface*);
       bool Server(Interface*);
-      bool Dependencies(Interface*);
+      bool Packages(Interface*);
       bool Update(Interface*);
       bool Main(Interface*);
       bool Modes(Interface*);

@@ -1,6 +1,7 @@
 #include <memory>
 #include <vector>
 #include "./Command.hpp"
+
 namespace Generators{
   namespace GitIgnore{
     bool create(std::shared_ptr<Command::Project> pro);
