@@ -50,7 +50,7 @@ namespace Command {
   }
   bool Interface::remove() {
 
-    std::vector<Handler> addHandlers = getRemoveHandlers();
+    std::vector<Handler> removeHandlers = getRemoveHandlers();
     std::string subcommand;
 
     if(args->count("subcommand")){
@@ -61,12 +61,12 @@ namespace Command {
       Utils::Error error;
       error << "No subcommand given" << std::endl;
 
-      getHelpString("add", addHandlers);
+      getHelpString("add", removeHandlers);
 
       return false;
     }
 
-    return runCommand(subcommand, addHandlers);
+    return runCommand(subcommand, removeHandlers);
 
 
     return true;
