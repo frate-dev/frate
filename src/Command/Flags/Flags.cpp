@@ -41,7 +41,6 @@ namespace Command::Flags {
         }
       }
     }
-    
     for (std::string flag : flags) {
       std::cout << "Adding flag: " << flag << std::endl;
       inter->pro->flags.push_back(flag);
@@ -80,7 +79,4 @@ namespace Command::Flags {
     Generators::ConfigJson::writeConfig(inter->pro);
     return true;
   }
-
-
-
 } 

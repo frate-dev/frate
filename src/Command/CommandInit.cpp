@@ -6,6 +6,7 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp>
 #include <Frate/Wizards.hpp>
+#include <git2.h>
 
 namespace Command {
 using Utils::CLI::Prompt;
@@ -112,10 +113,14 @@ bool createJson(std::shared_ptr<Project> pro) {
     #ifdef RELEASE 
       Generators::GitIgnore::create(inter->pro);
       //TODO: make this work on windows
-      int gitinit = Utils::hSystem("cd "+inter->pro->project_path.string()+";git init");
-      if(gitinit != 0){
-        std::cout << "git init failed" << std::endl;
-      }
+      git_repository *repo = nullptr;
+      git_repository_init(&repo, inter->pro->project_path.string().c_str(),0);
+      //int gitinit = Utils::hSystem("cd "+inter->pro->project_path.string()+";git init");
+      
+      
+      //if(gitinit != 0){
+      //  std::cout << "git init failed" << std::endl;
+      //}
     #endif
     (void)inter;
   }
@@ -160,6 +165,9 @@ bool createJson(std::shared_ptr<Project> pro) {
     return true;
   }
 
+  bool initTemplate(){
+    return true;
+  }
 
   bool Interface::init() {
 #ifdef RELEASE

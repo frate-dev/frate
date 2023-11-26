@@ -25,6 +25,15 @@ CPMDeclarePackage(termcolor
 #  GIT_TAG origin/master
 #  GITHUB_REPOSITORY nlohmann/json
 #)
+# libgit2
+CPMDeclarePackage(libgit2
+  GIT_TAG v1.7.1
+  GITHUB_REPOSITORY libgit2/libgit2
+  OPTIONS
+    "BUILD_TESTS OFF"
+    "BUILD_CLI OFF"
+  name libgit2
+)
 # curl (unversioned)
 # CPMDeclarePackage(curl
 #  NAME curl
@@ -33,10 +42,3 @@ CPMDeclarePackage(termcolor
 #  OPTIONS
 #    "ENABLE_VERSIONED_SYMBOLS ON"
 #)
-# cpptrace
-CPMDeclarePackage(cpptrace
-  VERSION 0.2.1
-  GITHUB_REPOSITORY jeremy-rifkin/cpptrace
-  SYSTEM YES
-  EXCLUDE_FROM_ALL YES
-)

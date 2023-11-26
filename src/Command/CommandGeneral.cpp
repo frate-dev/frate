@@ -21,7 +21,6 @@ namespace Command {
       return false;
     }
     file.close();
-
     return true;
   };
 } // namespace Command

@@ -3,6 +3,7 @@
 #include "termcolor/termcolor.hpp"
 #include <memory>
 #include <nlohmann/json_fwd.hpp>
+#include <git2.h>
 
 namespace Command {
 
@@ -41,7 +42,7 @@ bool OptionsInit::Main(Interface *inter) {
   Interface::Interface(int argc, char** argv){
     this->argc = argc;
     this->argv = argv;
-
+    git_libgit2_init();
     this->pro = std::make_shared<Project>();
     OptionsInit::Main(this);
     this->parse();
@@ -322,6 +323,7 @@ bool OptionsInit::Main(Interface *inter) {
     }
   }
   Interface::~Interface(){
+    git_libgit2_shutdown(); 
   }
 
   } // namespace Command
