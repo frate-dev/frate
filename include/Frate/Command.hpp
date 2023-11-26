@@ -131,6 +131,7 @@ namespace Command {
   class Interface{
     private:
       //Commands;
+      //TODO: We really should define top level commands as seperate modules
       bool init();
       bool add();
       bool get();
@@ -142,7 +143,6 @@ namespace Command {
       bool search();
       bool ftp();
       bool watch();
-      bool toolchains();
       bool clean();
       bool build();
       bool list();
@@ -178,22 +178,33 @@ namespace Command {
   };
 
   namespace OptionsInit{
+      //Top level commands
+      //TODO: We really should decouple the options from top level commands
       bool Init(Interface*);
       bool Search(Interface*);
       bool Add(Interface*);
       bool Set(Interface*);
       bool Remove(Interface*);
-      bool Server(Interface*);
-      bool Packages(Interface*);
       bool Update(Interface*);
-      bool Main(Interface*);
-      bool Modes(Interface*);
-      bool Flags(Interface*);
-      bool Mode(Interface*);
       bool Watch(Interface*);
       bool Clean(Interface*);
-      bool Build(Interface*);
       bool List(Interface*);
+      bool Build(Interface*);
+
+
+
+      [[deprecated("put options in the specific module")]]
+      bool Server(Interface*);
+      [[deprecated("put options in the specific module")]]
+      bool Packages(Interface*);
+      [[deprecated("put options in the specific module")]]
+      bool Main(Interface*);
+      [[deprecated("put options in the specific module")]]
+      bool Modes(Interface*);
+      [[deprecated("put options in the specific module")]]
+      bool Flags(Interface*);
+      [[deprecated("put options in the specific module")]]
+      bool Mode(Interface*);
   };
 
   std::string downloadIndex();

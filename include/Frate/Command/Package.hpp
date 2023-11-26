@@ -3,6 +3,7 @@
 namespace Command::Packages {
 
 
+  bool options(Interface* inter);
 
   /*
    * Add package command adds a package to a project

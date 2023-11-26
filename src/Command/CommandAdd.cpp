@@ -57,7 +57,7 @@ namespace Command {
         .positional_args = {"package,..."},
         .docs = "Add a package to the project",
         .callback = [this]() {
-          OptionsInit::Packages(this);
+          Packages::options(this);
           return Packages::add(this);
         },
       },
@@ -66,7 +66,7 @@ namespace Command {
           .positional_args = {"\"flag\""},
           .docs = "Add a flag to the project",
           .callback = [this]() {
-            OptionsInit::Flags(this);
+            Flags::options(this);
             return Flags::add(this);
           },
         },

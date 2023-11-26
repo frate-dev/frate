@@ -31,7 +31,7 @@ namespace Command {
         .positional_args = {"package,..."},
         .docs = "Remove a package from the project",
         .callback = [this]() {
-          OptionsInit::Packages(this);
+          Packages::options(this);
           return Packages::remove(this);
         },
       },
@@ -41,7 +41,7 @@ namespace Command {
         .positional_args = {"flag,..."},
         .docs = "Remove a flag from the project",
         .callback = [this]() {
-          OptionsInit::Flags(this);
+          Flags::options(this);
           return Flags::remove(this);
         },
       }
