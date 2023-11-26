@@ -1,14 +1,11 @@
 #pragma once
 #include "nlohmann/json_fwd.hpp"
-#include <exception>
-#include <initializer_list>
 #include <memory>
-#include <sstream>
 #include <string>
+#include <fstream>
 #include <vector>
 #include <filesystem>
 #include <nlohmann/json.hpp>
-#include <fstream>
 #include <iostream>
 #include <cxxopts.hpp>
 #include <Frate/Utils/CLI.hpp>
@@ -64,6 +61,7 @@ namespace Command {
     std::optional<std::string> key;
     int port;
   } RemoteServer;
+
   namespace ProjectType {
     const std::string EXECUTABLE = "executable";
     const std::string HEADER_ONLY = "header_only";
@@ -94,6 +92,7 @@ namespace Command {
     std::string cmake_version{"3.10"};
     std::string lang_version{"20"};
     std::string compiler{"g++"};
+    std::string license{""};
     std::vector<Mode> modes{
       Mode{.name = "Release", .flags={"-O2 "}}, 
       Mode{.name= "Debug", .flags= {"-g"}},
@@ -109,7 +108,7 @@ namespace Command {
     std::string project_version{"0.0.1"};
     std::vector<std::string> flags; 
     std::shared_ptr<cxxopts::ParseResult> args;
-    std::vector<std::string> toolchains;
+    std::vector<std::string> toolchains {};
     void fromJson(json j);
     nlohmann::json toJson();
   } Project;
@@ -126,13 +125,16 @@ namespace Command {
         return false;
       }
     };
+    bool implemented{true};
   } Handler;
+
   class Interface{
     private:
       //Commands;
       bool init();
       bool add();
       bool get();
+      bool set();
       bool remove();
       bool update();
       bool run();
@@ -144,24 +146,23 @@ namespace Command {
       bool clean();
       bool build();
       bool list();
-      //TODO: setup register comamnd
-      bool registerCommand(
-          std::initializer_list<std::string> &alisas,
-          std::initializer_list<std::string> &flags,
-          std::function<bool()> &callback
-          );
       void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
+      void getHelpString(Handler &handler);
+      bool runCommand(std::string,std::vector<Handler>&);
     public:
       std::shared_ptr<Project> pro;
       bool project_present{false};
       std::vector<Handler> commands{};
       //All sub command getters
       std::vector<Handler> getAddHandlers();
+      std::vector<Handler> getGetHandlers();
+      std::vector<Handler> getSetHandlers();
       std::vector<Handler> getListHandlers();
       std::vector<Handler> getSearchHandlers();
       std::vector<Handler> getRemoveHandlers();
       std::vector<Handler> getUpdateHandlers();
 
+      bool execute();
       bool skip_prompts{false};
       bool parse();
       std::shared_ptr<cxxopts::Options> options;
@@ -173,22 +174,17 @@ namespace Command {
       ~Interface();
       bool InitHeader();
       bool CreateCMakelists();
-      bool LoadPackageJson();
+      bool LoadProjectJson();
   };
-  //TODO: To be imlemented later to get information about a target or action
-  typedef struct Info_s {
-    std::string name;
-    std::string description;
-    std::vector<std::string> valid_flags;
-  } Info;
 
   namespace OptionsInit{
       bool Init(Interface*);
       bool Search(Interface*);
       bool Add(Interface*);
+      bool Set(Interface*);
       bool Remove(Interface*);
       bool Server(Interface*);
-      bool Dependencies(Interface*);
+      bool Packages(Interface*);
       bool Update(Interface*);
       bool Main(Interface*);
       bool Modes(Interface*);

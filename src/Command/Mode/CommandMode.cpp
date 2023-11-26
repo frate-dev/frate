@@ -18,12 +18,14 @@ namespace Command::ModeCommands {
   }
   //TODO: Implement this
   bool removeFlags(Interface *inter, std::string mode){
+    (void) inter, (void) mode;
     return true;
   }
 
   bool addPackages(Interface* inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep_str : dependencies) {
+
       auto [found,new_package] = Packages::searchWithPrompt(dep_str,false);
       if(found){
         //Push the found package to the dependencies

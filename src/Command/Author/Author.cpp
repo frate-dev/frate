@@ -12,5 +12,4 @@ namespace Command::Author {
     }
     return true;
   }
-
 }

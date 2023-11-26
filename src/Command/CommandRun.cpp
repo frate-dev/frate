@@ -14,6 +14,7 @@ bool Interface::run() {
   const std::string cmake_cmd = work_dir_cmd + ";cmake .";
   const std::string make_cmd = work_dir_cmd + ";make";
   const std::string run_cmd = work_dir_cmd + ";./build/" + pro->project_name;
+  std::cout << "project_name " << pro->project_name << ENDL;
 
   /*
    * Creating build directory and building project
@@ -21,7 +22,7 @@ bool Interface::run() {
   try{
     create_directories(pro->project_path / "build");
   }catch(std::exception& e){
-    std::cout << "Failed to create build directory" << std::endl;
+    Utils::debug(e.what());
     return false;
   }
 

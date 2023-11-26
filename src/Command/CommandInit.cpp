@@ -1,15 +1,12 @@
 #include <Frate/Command.hpp>
-#include <cstdlib>
 #include <cxxopts.hpp>
-#include <algorithm>
-#include <locale>
-#include <ranges>
-#include <format>
 #include <fstream>
 #include <iostream> 
 #include <string>
 #include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp>
+#include <Frate/Wizards.hpp>
+#include <git2.h>
 
 namespace Command {
 using Utils::CLI::Prompt;
@@ -21,7 +18,7 @@ bool OptionsInit::Init(Interface* inter) {
   inter->options->add_options()
     ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
     ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
-    ("y,skip-init", "skip init", cxxopts::value<bool>()->default_value("false"))
+    ("d,defaults", "Sets all the defaults", cxxopts::value<bool>()->default_value("false"))
     ("name", "Name of the project", cxxopts::value<std::string>()->default_value("false"))
     ("t,type", "Type of the project", cxxopts::value<std::string>()->default_value(ProjectType::EXECUTABLE))
     ("l,language", "Language of the project", cxxopts::value<std::string>()->default_value("cpp"));
@@ -33,7 +30,10 @@ bool createJson(std::shared_ptr<Project> pro) {
   // Lucas did it again
   std::shared_ptr<Generators::ConfigJson::Config> config_json =
       std::make_shared<Generators::ConfigJson::Config>();
-  if (!Generators::ConfigJson::readUserInput(pro, config_json)) {
+  // if (!Generators::ConfigJson::readUserInput(pro, config_json)) {
+  //   return false;
+  // }
+  if(!Wizard::Project(pro)){
     return false;
   }
   if (!Generators::ConfigJson::writeConfig(pro)) {
@@ -56,7 +56,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     try{
       std::filesystem::create_directory(pro->project_path / pro->src_dir);
     }catch(std::exception &e){
-      std::cout << e.what() << std::endl;
+      Utils::debug(e.what());
       return false;
     }
     std::ofstream file_stream;
@@ -70,7 +70,7 @@ bool createJson(std::shared_ptr<Project> pro) {
         "\treturn 0;\n"
         "}\n";
     }catch(std::exception &e){
-      std::cout << e.what() << std::endl;
+      Utils::debug(e.what());
       return false;
     }
     file_stream.close();
@@ -89,7 +89,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     try{
       std::filesystem::create_directory(pro->project_path / pro->src_dir);
     }catch(std::exception &e){
-      std::cout << e.what() << std::endl;
+      Utils::debug(e.what());
       return false;
     }
     std::ofstream file_stream;
@@ -103,26 +103,31 @@ bool createJson(std::shared_ptr<Project> pro) {
         "\treturn 0;\n"
         "}\n";
     }catch(std::exception &e){
-      std::cout << e.what() << std::endl;
+      Utils::debug(e.what());
       return false;
     }
     file_stream.close();
     return true;
   }
   void gitInit(Interface *inter){
-    #ifndef DEBUG
+    #ifdef RELEASE 
       Generators::GitIgnore::create(inter->pro);
       //TODO: make this work on windows
-      int gitinit = Utils::hSystem("cd "+inter->pro->project_path.string()+";git init");
-      if(gitinit != 0){
-        std::cout << "git init failed" << std::endl;
-      }
+      git_repository *repo = nullptr;
+      git_repository_init(&repo, inter->pro->project_path.string().c_str(),0);
+      //int gitinit = Utils::hSystem("cd "+inter->pro->project_path.string()+";git init");
+      
+      
+      //if(gitinit != 0){
+      //  std::cout << "git init failed" << std::endl;
+      //}
     #endif
+    (void)inter;
   }
 
   bool createProjectWizard(Interface *inter){
     createJson(inter->pro);
-    inter->LoadPackageJson();
+    inter->LoadProjectJson();
     Generators::CMakeList::createCMakeListsExecutable(inter->pro);
     if(inter->pro->lang == "cpp"){
       if(!createHelloWorldCpp(inter->pro)){
@@ -151,7 +156,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     try{
       file.open(pro->project_path / file_name);
     }catch(std::exception &e){
-      std::cout << e.what() << std::endl;
+      Utils::debug(e.what());
       return false;
     }
     file << j;
@@ -160,6 +165,9 @@ bool createJson(std::shared_ptr<Project> pro) {
     return true;
   }
 
+  bool initTemplate(){
+    return true;
+  }
 
   bool Interface::init() {
 #ifdef RELEASE
@@ -176,7 +184,7 @@ bool createJson(std::shared_ptr<Project> pro) {
 #endif
     std::string file_name = "config.json";
     std::string project_name = "";
-    bool skip_init = false;
+    bool defaults = false;
     std::string language = "cpp";
     std::string project_type = "executable";
 #ifdef DEBUG
@@ -201,8 +209,8 @@ bool createJson(std::shared_ptr<Project> pro) {
     if(args->operator[]("language").count() > 0){
       language = args->operator[]("language").as<std::string>();
     }
-    if(args->operator[]("skip-init").count() > 0){
-      skip_init = args->operator[]("skip-init").as<bool>();
+    if(args->operator[]("defaults").count() > 0){
+      defaults = args->operator[]("defaults").as<bool>();
     }
 
 
@@ -216,7 +224,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     pro->lang = language;
 
 
-    if(skip_init){
+    if(defaults){
       std::cout << "Skipping init" << ENDL;
       std::cout << "Creating project" << ENDL;
       if (language == "cpp" || language == "c++"){
@@ -260,9 +268,10 @@ bool createJson(std::shared_ptr<Project> pro) {
       return false;
       //TODO: shared library
     }
-
+    std::cout << "CMakeLists.txt created" << ENDL;
+    std::cout << "Initializing git" << ENDL;
     gitInit(this);
-
+    std::cout << "Done" << ENDL;
 
     return true;
   }

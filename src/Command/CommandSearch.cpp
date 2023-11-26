@@ -1,3 +1,5 @@
+#include <stdint.h>
+#include "termcolor/termcolor.hpp"
 #include <Frate/Command.hpp>
 #include <Frate/Command/Package.hpp>
 
@@ -34,7 +36,7 @@ namespace Command {
     std::vector<Handler> handlers = getSearchHandlers();
 
     if(args->operator[]("subcommand").count() == 0){
-      std::cout << "No subcommand specified" << std::endl;
+      std::cout << termcolor::bright_red << "No subcommand specified" << std::endl;
       getHelpString("search", handlers);
       return false;
     }
@@ -42,21 +44,23 @@ namespace Command {
     target = args->operator[]("subcommand").as<std::string>();
 
     if(args->operator[]("query").count() == 0){
-      std::cout << "No query specified" << std::endl;
+      std::cout << termcolor::bright_red << "No query specified" << std::endl;
       getHelpString("search", handlers);
       return false;
     }
 
     query = args->operator[]("query").as<std::string>();
 
-    for(auto handler : handlers){
-      if(std::find(handler.aliases.begin(), handler.aliases.end(), target) != handler.aliases.end()){
-        return handler.callback();
-      }
-    }
+    return runCommand(target, handlers);
 
-    std::cout << "Unknown subcommand: " << target << std::endl;
-    getHelpString("search", handlers);
+//     for(auto handler : handlers){
+//       if(std::find(handler.aliases.begin(), handler.aliases.end(), target) != handler.aliases.end()){
+//         return handler.callback();
+//       }
+//     }
+// 
+//     std::cout << "Unknown subcommand: " << target << std::endl;
+//     getHelpString("search", handlers);
 
     return false;
   }

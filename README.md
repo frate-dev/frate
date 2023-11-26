@@ -23,26 +23,90 @@
 
 ```
 gcc >= 13
-or
-clang >= 18
 and
 cmake >= 3
 ```
 
-### Basic Usage
+### Usage
 ```bash
-$ frate init
-#Follow prompt to build your project
+  new | n <project_name/dir>  [ -d,--defaults ] : Create a new project
+  run  [ -m,--build-mode -t,--target ] : Run the project
+  help | h : Display help
+  ftp : Deletes the entire project F*ck This Project
+  add <target>
+   ├── packages | p | package <package,...>  [ -l,--latest -m,--mode -t,--target ] 
+   │     Add a package to the project
+   ├── flag | f <"flag"> 
+   │     Add a flag to the project
+   ├── lib | l <library-name> 
+   │     Add a library to link to your project (Not implemented)
+   ├── mode | m <mode-name> 
+   │     Adds a build mode to your project
+   ├── server | s 
+   │     Add a remote server to your local config that you can later build to
+   ├── toolchain | t 
+   │     Add a crosscompile toolchain to your project
+   └── author | a <author-name> 
+         Add an author to your project
 
-$ frate run
-#If everything worked properly, it will build and run the example project
-#which is a basic hello world program
+  set <target>
+   ├── license | lc 
+   │     Set the project's license
+   ├── name | n 
+   │     Set the project's name (Not implemented)
+   ├── version | ver | v 
+   │     Set the project's version (Not implemented)
+   └── keywords | kw 
+         Set the project's keywords (Not implemented)
 
-$ frate add dep <package name>
-#Pick one of the results
+  search <target>
+   ├── mode | m <mode-name> 
+   │     Adds a build mode to your project
+   ├── server | s 
+   │     Add a remote server to your local config that you can later build to
+   ├── toolchain | t 
+   │     Add a crosscompile toolchain to your project
+   └── author | a <author-name> 
+         Add an author to your project
 
-$ frate run
-#To rebuild your project with the new dependency
+  set <target>
+   ├── license | lc 
+   │     Set the project's license (Not implemented)
+   ├── name | n 
+   │     Set the project's name (Not implemented)
+   ├── version | ver | v 
+   │     Set the project's version (Not implemented)
+   └── keywords | kw 
+         Set the project's keywords (Not implemented)
+
+  search <target>
+   └── package | p <query> 
+         Search for packages
+
+  list | ls <target>
+   ├── modes | m 
+   │     List modes
+   ├── servers | remote-servers 
+   │     List remote servers
+   ├── installed-packages | packages | p  [ -m --mode ] 
+   │     List installed packages
+   ├── flags | f 
+   │     List flags (Not implemented)
+   ├── authors | a 
+   │     List authors (Not implemented)
+   ├── available-targets | at 
+   │     List available targets
+   └── licenses | l 
+         List possible licenses
+
+  remove | rm : remove sub command
+  update <target>
+   └── index 
+         Update package index
+
+  clean  [ -c --cache ] : clean sub command
+  build : build sub command
+  watch : watches the project for changes
 ```
 
 
@@ -67,8 +131,10 @@ sudo make install
 ### Your friend in the world of C/C++
 frate is a command line utility used to expedite building modern c/c++ applications.
 
-- [x] Simple project initialization
-- [x] Simple dependency management
+- [x] Easy project initialization
+- [x] Easy dependency management
+- [x] Easy license management
+- [x] Multi mode builds
+    - [x] Modal dependency management
 - [ ] Multi platform builds
-- [ ] Existing cmake project migration
 - [ ] Extensible json configuration

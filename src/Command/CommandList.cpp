@@ -1,7 +1,11 @@
+#include <stdint.h> 
+#include "termcolor/termcolor.hpp"
 #include <Frate/Command.hpp>
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/Modes.hpp>
 #include <Frate/Command/RemoteServers.hpp>
+#include <Frate/Command/Toolchains.hpp>
+#include <Frate/Command/License.hpp>
 #include <Frate/Utils/CLI.hpp>
 namespace Command{
   bool OptionsInit::List(Interface* inter) {
@@ -52,8 +56,10 @@ namespace Command{
         .docs = "List flags",
         .callback = [this]() {
           //TODO: List flags
+          (void)this;
           return true;
-        }
+        },
+        .implemented = false
       },
       Handler{
         .aliases = 
@@ -61,6 +67,18 @@ namespace Command{
         .docs = "List authors",
         .callback = [this]() {
           //TODO: List authors
+          (void)this;
+          return true;
+        },
+        .implemented = false
+      },
+      Handler{
+        .aliases = 
+        {"available-targets","at"},
+        .docs = "List available targets",
+        .callback = [this]() {
+          (void)this;
+          Command::Toolchains::list();
           return true;
         }
       },
@@ -69,9 +87,8 @@ namespace Command{
         {"licenses","l"},
         .docs = "List possible licenses",
         .callback = [this]() {
-          //TODO: List possible liceses
-          return true;
-        }
+          return License::list(this);
+        },
       },
     };
   }
@@ -83,41 +100,10 @@ namespace Command{
     if(args->operator[]("subcommand").count() > 0){
       target = args->operator[]("subcommand").as<std::string>();
     }else{
-      std::cout << "No target provided" << ENDL;
+      std::cout << termcolor::bright_red << "No subcommand provided" << ENDL;
       getHelpString("list", handlers);
       return false;
     }
-    for(auto handler : handlers){
-      for(auto alias : handler.aliases){
-        if(alias == target){
-          return handler.callback();
-        }
-      }
-    }
-    std::cout << "Unknown target: " << target << ENDL;
-    getHelpString("list", handlers);
-
-    // if(target == "modes" || target == "m"){
-    //   return Modes::list(this);
-    // }else if(target == "servers" || target == "remote-servers"){
-    //   return RemoteServers::list(this);
-    // }else if(target == "installed-packages" || target == "packages" || target == "p"){
-    //   return Packages::list(this);
-    //   //TODO: List installed packages
-    // }else if(target == "flags" || target == "f"){
-    //   //TODO: List flags
-    // }else if(target == "authors" || target == "a"){
-    //   //TODO: List authors
-    // }else if(target == "licenses" || target == "l"){
-    //   //TODO: List possible liceses
-    // }else if(target == "modes"){
-    //   //TODO: List modes
-    // }else if(target == "available-toolchains"){
-    //   //TODO: List available toolchains
-    // }else if(target == "installed-toolchains"){
-    //   //TODO: List installed toolchains
-    // }
-    return true;
-
+    return runCommand(target, handlers);
   }
 }

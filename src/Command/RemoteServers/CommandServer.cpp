@@ -29,6 +29,7 @@ namespace Command::RemoteServers{
     }
     catch(json::exception &e){
       std::cout << "Error: Could not load build_server.json" << std::endl;
+      Utils::debug(e.what());
       exit(1);
     }
     try{
@@ -48,6 +49,7 @@ namespace Command::RemoteServers{
     }
     catch(json::exception &e){
       std::cout << "Error: Could not load current_build_server.json" << std::endl;
+      Utils::debug(e.what());
       exit(1);
     }
     for (json& server : server_list){

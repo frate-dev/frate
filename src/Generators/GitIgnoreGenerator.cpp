@@ -1,3 +1,4 @@
+#include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
 #include <format>
 #include <Frate/Utils/CLI.hpp>
@@ -13,6 +14,7 @@ bool write_gitignore(std::string gitignore, std::filesystem::path gitignore_path
       file.close();
     }catch(std::exception &e){
       std::cout << "Failed to create gitignore" << std::endl;
+      Utils::debug(e.what());
       return false;
     }
     return true;

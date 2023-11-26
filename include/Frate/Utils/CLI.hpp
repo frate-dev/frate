@@ -3,7 +3,6 @@
 #include <sstream>
 #include <string>
 #include <stdint.h>
-#include <iostream>
 #include <termcolor/termcolor.hpp>
 #include <vector>
 
@@ -96,7 +95,7 @@ namespace Utils::CLI {
         "Prompt only supports std::string, int, float, and double, bool");
     private:
       std::string prompt;
-      std::string color{Ansi::WHITE};
+      std::string color;
       std::string input;
       T value;
       size_t max_length{0};
@@ -117,6 +116,7 @@ namespace Utils::CLI {
        * @param color the color of the prompt
        */
       Prompt(std::string prompt);
+      Prompt(std::string prompt, T default_input);
       Prompt* Message(std::string prompt);
       /*
        * Adds a vector of <T> options to the prompt
@@ -142,6 +142,7 @@ namespace Utils::CLI {
        * @return this
        */
       Prompt* Color(std::string color);
+
       /*
        * Sets a validator for the input
        * @param validator a function that takes a T and returns a bool

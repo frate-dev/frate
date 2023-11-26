@@ -4,14 +4,12 @@
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/RemoteServers.hpp>
-#include <algorithm>
+#include <Frate/Command/Toolchains.hpp>
 #include <cxxopts.hpp>
 #include <iostream>
 #include <nlohmann/json.hpp>
-#include <string>
 #include <Frate/Utils/General.hpp>
 #include <Frate/Utils/CLI.hpp>
-#include <cmath>
 #include <termcolor/termcolor.hpp>
 
 namespace Command {
@@ -54,16 +52,18 @@ namespace Command {
   std::vector<Handler> Interface::getAddHandlers(){
     return {
       Handler{
-        .aliases = {"package","p"},
-        .flags = {"-l","--latest"},
+        .aliases = {"packages","p","package"},
+        .flags = {"-l,--latest","-m,--mode","-t,--target"},
+        .positional_args = {"package,..."},
         .docs = "Add a package to the project",
         .callback = [this]() {
-          OptionsInit::Dependencies(this);
+          OptionsInit::Packages(this);
           return Packages::add(this);
         },
       },
         Handler{
           .aliases = {"flag","f"},
+          .positional_args = {"\"flag\""},
           .docs = "Add a flag to the project",
           .callback = [this]() {
             OptionsInit::Flags(this);
@@ -72,16 +72,20 @@ namespace Command {
         },
         Handler{
           .aliases = {"lib","l"},
+          .positional_args = {"library-name"},
           .docs = "Add a library to link to your project",
           .callback = [this]() {
             //TODO implement library
             // OptionsInit::Libraries(this);
             // Libraries::add(this);
-            return true;
+            (void)this;
+            return false;
           },
+          .implemented = false,
         },
         Handler{
           .aliases = {"mode","m"},
+          .positional_args = {"mode-name"},
           .docs = "Adds a build mode to your project",
           .callback = [this]() {
             OptionsInit::Modes(this);
@@ -90,13 +94,26 @@ namespace Command {
         },
         Handler{
           .aliases = {"server","s"},
+          //TODO: Don't know what this requires
           .docs = "Add a remote server to your local config that you can later build to",
           .callback = [this]() {
             return RemoteServers::add(this);
           },
         },
         Handler{
+          .aliases = {"toolchain","t"},
+          .positional_args = {},
+          .docs = "Add a crosscompile toolchain to your project",
+          .callback = [this]() {
+            //What is this????
+            Prompt<std::string> *toolchain = new Prompt<std::string>("Toolchain: ");
+            toolchain->Run();
+            return Toolchains::add(toolchain->Get(), this);
+          },
+        },
+        Handler{
           .aliases = {"author","a"},
+          .positional_args = {"author-name"},
           .docs = "Add an author to your project",
           .callback = [this]() {
             return Author::add(this);
@@ -106,22 +123,23 @@ namespace Command {
   }
   bool Interface::add() {
     std::vector<Handler> addHandlers = getAddHandlers();
+    std::string subcommand;
+
     if(args->count("subcommand")){
-      std::string subcommand = args->operator[]("subcommand").as<std::string>();
-      for(Handler handler : addHandlers){
-        for(std::string alias : handler.aliases){
-          if(alias == subcommand){
-            return handler.callback();
-          }
-        }
-      }
-      std::cout << "Unknown subcommand: " << subcommand << ENDL;
-      getHelpString("add", addHandlers);
-      return false;
+
+      subcommand = args->operator[]("subcommand").as<std::string>();
+
     }else{
-      std::cout <<  termcolor::bright_red << "No subcommand given" << termcolor::reset << ENDL;
+      Utils::Error error;
+      error << "No subcommand given" << std::endl;
+
       getHelpString("add", addHandlers);
+
+      return false;
     }
+
+    return runCommand(subcommand, addHandlers);
+
     return true;
   }
 }

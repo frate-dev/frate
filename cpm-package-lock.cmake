@@ -25,16 +25,20 @@ CPMDeclarePackage(termcolor
 #  GIT_TAG origin/master
 #  GITHUB_REPOSITORY nlohmann/json
 #)
+# libgit2
+CPMDeclarePackage(libgit2
+  GIT_TAG v1.7.1
+  GITHUB_REPOSITORY libgit2/libgit2
+  OPTIONS
+    "BUILD_TESTS OFF"
+    "BUILD_CLI OFF"
+  name libgit2
+)
 # curl (unversioned)
 # CPMDeclarePackage(curl
 #  NAME curl
 #  GIT_TAG curl-8_3_0
 #  GITHUB_REPOSITORY curl/curl
+#  OPTIONS
+#    "ENABLE_VERSIONED_SYMBOLS ON"
 #)
-# Catch2
-CPMDeclarePackage(Catch2
-  VERSION 3.4.0
-  GITHUB_REPOSITORY catchorg/Catch2
-  SYSTEM YES
-  EXCLUDE_FROM_ALL YES
-)

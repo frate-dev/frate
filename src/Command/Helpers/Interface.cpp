@@ -1,13 +1,11 @@
 #include <Frate/Command.hpp>
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
-#include <initializer_list>
 #include <memory>
-#include <sstream>
+#include <nlohmann/json_fwd.hpp>
+#include <git2.h>
 
 namespace Command {
-using std::function;
-using std::initializer_list;
 
 bool OptionsInit::Main(Interface *inter) {
   inter->InitHeader();
@@ -31,17 +29,9 @@ bool OptionsInit::Main(Interface *inter) {
       return false;
     }
   }
-
-  // bool Interface::registerCommand(initializer_list<std::string> aliases,
-  //                                 initializer_list<std::string> flags,
-  //                                 std::string docs,
-  //                                 function<bool()> func) {
-  //   commands.push_back(Handler(aliases, flags,docs, func));
-  //   return true;
-  // }
   bool Interface::InitHeader(){
     try{
-      this->options = std::make_shared<cxxopts::Options>("CMaker", "A CMake project generator, we suffer so you don't have to!");
+      this->options = std::make_shared<cxxopts::Options>("Frate", "A CMake project generator, we suffer so you don't have to!");
     } catch (std::exception& e) {
       std::cout << e.what() << std::endl;
       return false;
@@ -52,13 +42,24 @@ bool OptionsInit::Main(Interface *inter) {
   Interface::Interface(int argc, char** argv){
     this->argc = argc;
     this->argv = argv;
-
+    git_libgit2_init();
     this->pro = std::make_shared<Project>();
     OptionsInit::Main(this);
     this->parse();
     //After the parse we can set the context args
     this->pro->args = this->args;
 
+    #ifdef DEBUG
+        std::cout << "DEBUG MODE ENABLED\n";
+    #endif
+    #ifdef DEBUG
+        pro->project_path = std::filesystem::current_path() / "build";
+    #else
+        pro->project_path = std::filesystem::current_path();
+    #endif
+    LoadProjectJson();
+  }
+  bool Interface::execute(){
     if(this->args->count("yes")){
       this->skip_prompts = true;
       std::cout << "Skipping prompts" << ENDL;
@@ -69,23 +70,16 @@ bool OptionsInit::Main(Interface *inter) {
 
     // if(!this->args->count("command")){
     //   this->help();
-     std::string command = this->args->operator[]("command").as<std::string>();
+    std::string command = this->args->operator[]("command").as<std::string>();
 
-    #ifdef DEBUG
-        std::cout << "DEBUG MODE ENABLED\n";
-    #endif
-    #ifdef DEBUG
-        pro->project_path = std::filesystem::current_path() / "build";
-    #else
-        pro->project_path = std::filesystem::current_path();
-    #endif
 
     std::cout << "Project Path: " << pro->project_path << ENDL;
     commands = {
 
       Handler{
         .aliases = {"new", "n"},
-        .flags = {"-d","--defaults"}, //TODO: Add flags
+        .flags = {"-d,--defaults"}, //TODO: Add flags
+        .positional_args = {"project_name/dir"},
         .docs = "Create a new project",
         .callback = [this](){
           OptionsInit::Init(this);
@@ -95,7 +89,7 @@ bool OptionsInit::Main(Interface *inter) {
 
       Handler{
         .aliases = {"run"},
-        .flags = {"-m","--build-mode","-t","--target"}, //TODO: Add flags
+        .flags = {"-m,--build-mode","-t,--target"}, //TODO: Add flags
         .docs = "Run the project",
         .callback = [this](){
           return this->run();
@@ -132,6 +126,17 @@ bool OptionsInit::Main(Interface *inter) {
       },
 
       Handler{
+        .aliases = {"set"},
+        .flags = {}, //TODO: Add flags
+        .subcommands = getSetHandlers(),
+        .docs = "set sub command",
+        .callback = [this](){
+          //OptionsInit::Set(this);
+          return this->set();
+        }
+      },
+
+      Handler{
         .aliases = {"search"},
         .flags = {}, //TODO: Add flags
         .subcommands = getSearchHandlers(),
@@ -141,7 +146,6 @@ bool OptionsInit::Main(Interface *inter) {
           return this->search();
         }
       },
-
       Handler{
         .aliases = {"list", "ls"},
         .flags = {}, //TODO: Add flags
@@ -204,13 +208,15 @@ bool OptionsInit::Main(Interface *inter) {
       },
     };
 
+
     bool found_alias = false;
     for(Handler& handler : commands){
       for(std::string& alias : handler.aliases){
         if(alias == command){
           found_alias = true;
           if(!handler.callback()){
-            std::cout << "Error: Could not run: " << handler.aliases[0] << ENDL;
+            return false;
+            // std::cout << termcolor::red << "Error: Could not run: " << handler.aliases[0] << termcolor::reset << ENDL;
           }
         }
       }
@@ -218,6 +224,7 @@ bool OptionsInit::Main(Interface *inter) {
     if(!found_alias){
       std::cout << "Error: Command not found: " << command << ENDL;
     }
+    return true;
 
   }
   void renderFlags(std::vector<std::string> flags){
@@ -232,8 +239,34 @@ bool OptionsInit::Main(Interface *inter) {
       std::cout << termcolor::bold <<  termcolor::green << " <" << positional << ">" << termcolor::reset;
     }
   }
+  bool Interface::runCommand(std::string command, std::vector<Handler> &handlers){
+    for(Handler handler : handlers){
+      for(std::string alias : handler.aliases){
+        if(alias == command){
+          if(!handler.implemented){
+            std::cout << termcolor::red << "Error: Command not implemented: " << command << termcolor::reset << ENDL;
+            return false;
+          }
+          if(!handler.callback()){
+            getHelpString(handler);
+            return false;
+          }else{
+            return true;
+          }
+        }
+      }
+    }
+    std::cout << termcolor::red << "Error: Subcommand not found: " << command << termcolor::reset << ENDL;
+    return false;
+  }
+  void Interface::getHelpString(Handler& handler){
+    std::cout << termcolor::bold << termcolor::yellow << handler.aliases[0] << termcolor::reset;
+    renderFlags(handler.flags);
+    renderPositionals(handler.positional_args);
+    std::cout << " - " << handler.docs << ENDL;
+  }
   void Interface::getHelpString(std::string name,std::vector<Handler> &handlers, bool is_subcommand){
-    int index = 0;
+    size_t index = 0;
     for(Handler handler : handlers){
       index++;
       int alias_str_len = 0;
@@ -269,14 +302,19 @@ bool OptionsInit::Main(Interface *inter) {
         }else{
           std::cout << "\n    ";
         }
-        std::cout << "    └" << termcolor::blue << handler.docs << termcolor::reset << ENDL;
+        std::cout << "     " << termcolor::blue << handler.docs << termcolor::reset;
       }else{
         if(handler.subcommands.size() > 0){
-          std::cout << termcolor::blue << " <target>" << termcolor::reset << ENDL;
+          std::cout << termcolor::blue << " <target>" << termcolor::reset;
 
         }else{
-          std::cout << " : " << termcolor::blue << handler.docs << termcolor::reset << ENDL;
+          std::cout << " : " << termcolor::blue << handler.docs << termcolor::reset;
         }
+      }
+      if(!handler.implemented){
+        std::cout << termcolor::red << " (Not implemented)" << termcolor::reset << ENDL;
+      }else{
+        std::cout << ENDL;
       }
       if(handler.subcommands.size() > 0){
         getHelpString(name + " " + handler.aliases[0], handler.subcommands, true);
@@ -285,6 +323,7 @@ bool OptionsInit::Main(Interface *inter) {
     }
   }
   Interface::~Interface(){
+    git_libgit2_shutdown(); 
   }
 
   } // namespace Command

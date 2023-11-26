@@ -1,3 +1,4 @@
+#include "Frate/Utils/General.hpp"
 #include <Frate/Command.hpp>
 #include <filesystem>
 
@@ -31,8 +32,7 @@ bool cleanCache(std::shared_ptr<Project> pro) {
         std::cout << "Deleting: " << file << std::endl;
         std::filesystem::remove(file);
       } catch (std::exception &e) {
-        std::cout << e.what() << std::endl;
-        return false;
+        Utils::debug(e.what());
       }
     }
   }
@@ -42,8 +42,7 @@ bool cleanCache(std::shared_ptr<Project> pro) {
         std::cout << "Deleting: " << dir << std::endl;
         remove_all(dir);
       } catch (std::exception &e) {
-        std::cout << e.what() << std::endl;
-        return false;
+        Utils::debug(e.what());
       }
     }
   }

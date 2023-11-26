@@ -6,11 +6,7 @@ namespace Command {
    * Welp reflection is a bitch aint it
    */
     void Project::fromJson(json j){
-    #ifdef DEBUG
-      project_path = std::filesystem::current_path() / "build";
-    #else
-      project_path = std::filesystem::current_path();
-    #endif
+
       project_name = j["project_name"];
       cmake_version = j["cmake_version"];
       project_version = j["project_version"];
@@ -97,6 +93,7 @@ namespace Command {
       j["project_path"] = project_path;
       j["project_type"] = project_type;
       j["project_description"] = project_description;
+      j["toolchains"] = toolchains;
       return  j;
 
     };

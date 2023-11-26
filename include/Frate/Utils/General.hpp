@@ -4,6 +4,19 @@
 #include <nlohmann/json.hpp>
 #include <iomanip>
 #include <iostream>
+#include <stdint.h>
+#include <termcolor/termcolor.hpp>
+#define DEBUGTHIS(x) std::cout << termcolor::bright_red << "##x" << " -> " << x << std::endl;
+
+#ifdef DEBUG
+#include <cpptrace/cpptrace.hpp>
+#endif
+
+#ifdef TEST 
+#include <cpptrace/cpptrace.hpp>
+#endif
+
+
 namespace Utils {
   using nlohmann::json;
   std::string getFolderName();
@@ -49,8 +62,53 @@ namespace Utils {
       }
   };
   /*
-   * FUCKING MAGIC
+   * F*CKING MAGIC
    */
   int levensteinDistance(std::string aStr, std::string bStr);
   int getStringScore(std::string &text, std::string &query);
+
+
+  /*
+   * Debug stuff
+   */
+  void debug(std::string something);
+
+  class Error {
+    public:
+      template<typename T>
+      Error& operator<<(const T& data) {
+        std::cout << termcolor::red << data << termcolor::reset;
+        return *this;
+      }
+      Error& operator<<(std::ostream& (*pf)(std::ostream&)) {
+        std::cout << pf;
+        return *this;
+      }
+  };
+  class Warning {
+    public:
+      template<typename T>
+      Warning& operator<<(const T& data) {
+        std::cout << termcolor::yellow << data << termcolor::reset;
+        return *this;
+      }
+      Warning& operator<<(std::ostream& (*pf)(std::ostream&)) {
+        std::cout << pf;
+        return *this;
+      }
+  };
+  class Info {
+    public:
+      template<typename T>
+      Info& operator<<(const T& data) {
+        std::cout << termcolor::green << data << termcolor::reset;
+        return *this;
+      }
+      Info& operator<<(std::ostream& (*pf)(std::ostream&)) {
+        std::cout << pf;
+        return *this;
+      }
+  };
+
+  void replaceKey(std::string &str, std::string key, std::string value);
 }

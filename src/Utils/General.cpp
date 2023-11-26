@@ -1,5 +1,4 @@
-#include <stdint.h>
-#include "termcolor/termcolor.hpp"
+#include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
 #include <iostream>
 #include <vector>
@@ -125,6 +124,7 @@ namespace Utils{
       std::cout << "Error: " << e.what() << std::endl;
       std::cout << "Failed to parse index.json" << std::endl;
       std::cout << "Text: " << responseStr << std::endl;
+      Utils::debug("Failed to parse index.json");
       exit(-1);
     }
   }
@@ -170,6 +170,7 @@ namespace Utils{
     delete[] curr;
     return result;
   }
+
   int getStringScore(std::string &text, std::string &query){
     int score = 0;
     std::vector<std::string> split_text = Utils::split(text, ' ');
@@ -190,5 +191,14 @@ namespace Utils{
       score += 30;
     }
     return score;
+  }
+  /*
+   * replaces keys like [key] with values
+   */
+  void replaceKey(std::string &str, std::string key, std::string value){
+    std::string key_start = "[" + key + "]";
+    while(str.find(key_start) != std::string::npos){
+      str.replace(str.find(key_start), key_start.length(), value);
+    }
   }
 }

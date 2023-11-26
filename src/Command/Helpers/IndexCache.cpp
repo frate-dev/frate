@@ -1,6 +1,7 @@
 #include <Frate/Command.hpp>
 #include <nlohmann/json.hpp>
 #include <Frate/Utils/General.hpp>
+#include <fstream>
 
 namespace Command{
   using nlohmann::json;
@@ -34,6 +35,7 @@ namespace Command{
         create_directories(string(std::getenv("HOME")) + "/.local/frate");
       }catch(std::exception& e){
         std::cout << "Failed to create index file" << ENDL;
+        Utils::debug(e.what());
         exit(-1);
       }
 
@@ -62,14 +64,15 @@ namespace Command{
     }catch(std::exception& e){
 
       std::cout << "Creating a new index file" << ENDL;
+      Utils::debug(e.what());
 
       try{
 
         create_directories(string(std::getenv("HOME")) + "/.local/frate");
 
       }catch(std::exception& e){
-
         std::cout << "Failed to create index file" << ENDL;
+        Utils::debug(e.what());
         return false;
 
       }

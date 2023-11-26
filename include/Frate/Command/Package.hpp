@@ -2,28 +2,7 @@
 
 namespace Command::Packages {
 
-  const Info info = {
-    .name = "packages",
-    .description = "Manage packages for your project",
-    .valid_flags = {
-      "--mode",
-      "-m",
-      "--target",
-      "-t",
-      "--help",
-      "--latest",
-      "-l"
-    }
-  };
 
-  bool dependenciesConflict(std::vector<Package> deps, std::string &name);
-
-  Package promptSearchResults(std::string &query);
-
-  std::string promptForVersion(Package &chosen_package);
-
-  //Get the exact package from the query
-  std::pair<bool,Package> getExact(std::string query);
 
   /*
    * Add package command adds a package to a project
@@ -64,6 +43,16 @@ namespace Command::Packages {
   //Prompt the user to choose from the search results
   std::pair<bool, Package> searchWithPrompt(std::string& query, bool latest);
 
+  //Uh this should be pretty self explanatory
+  bool dependenciesConflict(std::vector<Package> deps, std::string &name);
+  
+  // Prompts the user with a list of packages and returns the chosen package
+  Package promptSearchResults(std::string &query);
+
+  std::string promptForVersion(Package &chosen_package);
+
+  //Get the exact package from the query
+  std::pair<bool,Package> getExact(std::string query);
 
 }
 

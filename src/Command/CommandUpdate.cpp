@@ -32,19 +32,12 @@ namespace Command {
     std::string target = "";
     if(this->args->count("subcommand") == 0){
       getHelpString("update",handlers);
-      return true;
+      return false;
     }
     target = this->args->operator[]("subcommand").as<std::string>();
 
-    for(auto handler : handlers){
-      for(auto alias : handler.aliases){
-        if(alias == target){
-          return handler.callback();
-        }
-      }
-    }
-    std::cout << "Unknown subcommand: " << target << std::endl;
-    getHelpString("update",handlers);
+    return runCommand(target, handlers);
+
     return true;
   }
 }

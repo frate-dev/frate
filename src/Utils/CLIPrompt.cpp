@@ -1,3 +1,4 @@
+#include "Frate/Utils/General.hpp"
 #include <Frate/Utils/CLI.hpp>
 #include <exception>
 #include <string>
@@ -6,6 +7,37 @@ namespace Utils::CLI {
   template <typename T>
   Prompt<T>::Prompt(std::string prompt){
     this->prompt = prompt;
+    this->color = Ansi::GREEN;
+  }
+  template <>
+  Prompt<std::string>::Prompt(std::string prompt){
+    this->prompt = prompt;
+    this->value = "";
+    this->color = Ansi::GREEN;
+  }
+  template <>
+  Prompt<int>::Prompt(std::string prompt){
+    this->prompt = prompt;
+    this->value = 0;
+    this->color = Ansi::GREEN;
+  }
+  template <>
+  Prompt<float>::Prompt(std::string prompt){
+    this->prompt = prompt;
+    this->value = 0.0f;
+    this->color = Ansi::GREEN;
+  }
+  template <>
+  Prompt<double>::Prompt(std::string prompt){
+    this->prompt = prompt;
+    this->value = 0.0;
+    this->color = Ansi::GREEN;
+  }
+  
+  template <typename T>
+  Prompt<T>::Prompt(std::string prompt, T default_value){
+    this->prompt = prompt;
+    this->value = default_value;
     this->color = Ansi::GREEN;
   }
 
@@ -51,6 +83,7 @@ namespace Utils::CLI {
     try{
       value = std::stoi(input);
     }catch(std::exception& e){
+      Utils::debug("Failed to convert input to int");
       return false;
     }
     return true;
@@ -60,6 +93,7 @@ namespace Utils::CLI {
     try{
       value = std::stof(input);
     }catch(std::exception& e){
+      Utils::debug("Failed to convert input to float");
       return false;
     }
     return true;
@@ -69,17 +103,24 @@ namespace Utils::CLI {
     try{
       value = std::stod(input);
     }catch(std::exception& e){
+      Utils::debug("Failed to convert input to double");
       return false;
     }
     return true;
   }
   template <>
   bool Prompt<std::string>::yoink(){
-    value = input;
+    if(value.size() == 0){
+      value = input;
+      return true;
+    }
     return true;
   }
   template <>
   bool Prompt<bool>::yoink(){
+#ifdef TEST 
+    return true;
+#endif
     if(input == "y" || input == "Y"){
       value = true;
       return true;
@@ -91,20 +132,25 @@ namespace Utils::CLI {
   }
   template <typename T>
   void Prompt<T>::get_input(){
-    if(std::is_same<T, bool>::value){
-    std::cout << color << prompt << Ansi::RESET;
-      std::cout << "[y/n]";
 
+    if(std::is_same<T, bool>::value){
+      std::cout << color << prompt << Ansi::RESET;
+      std::cout << "[y/n]";
     }else if(has_options()){
-      std::cout << color << prompt << Ansi::RESET << "\n";
+      std::cout << color << prompt << termcolor::white << " [" << color << value << termcolor::white << "] : " << Ansi::RESET << "\n";
       if(print_valid_options){
         for(size_t i = 0; i < options.size(); i++){
-          std::cout << "[ " << options[i] << " ]" << "\n";
+          std::cout << "[ " << options[i] << " ] ";
+          if(i % 3 == 2){
+            std::cout << "\n";
+          }else if(i == options.size() - 1){
+            std::cout << "\n";
+          }
         }
       }
       std::cout << ">";
     }else{
-      std::cout << color << prompt << Ansi::RESET;
+      std::cout << color << prompt << termcolor::white << " [" << color << value << termcolor::white << "] : " << Ansi::RESET;
     }
     std::getline(std::cin, input);
   };

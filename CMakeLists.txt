@@ -5,12 +5,13 @@ project (
     VERSION 0.0.1
     LANGUAGES CXX
 )
-
 set(CMAKE_CXX_STANDARD 20)
 set(-DUSE_CCACHE=YES -DCCACHE_OPTIONS="CCACHE_CPP2=true;CCACHE_SLOPPINESS=clang_index_store")
+set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+set(CMAKE_C_COMPILER_LAUNCHER ccache)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
-set(BUILD_CURL_EXE OFF)
 include (cmake/CPM.cmake)
 CPMUsePackageLock(package-lock.cmake)
 CPMAddPackage(
@@ -18,6 +19,12 @@ CPMAddPackage(
   GITHUB_REPOSITORY TheLartians/Ccache.cmake
   VERSION 1.2
 )
+find_program(CCACHE_FOUND ccache)
+if(CCACHE_FOUND)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache) # Less useful to do it for linking, see edit2
+endif(CCACHE_FOUND)
+
 CPMAddPackage(
   NAME termcolor
   GITHUB_REPOSITORY ikalnytskyi/termcolor
@@ -35,9 +42,19 @@ CPMAddPackage(
   GIT_TAG origin/master
 )
 CPMAddPackage(
+  name libgit2
+  GITHUB_REPOSITORY libgit2/libgit2
+  GIT_TAG v1.7.1
+  OPTIONS
+  "BUILD_TESTS OFF"
+  "BUILD_CLI OFF"
+)
+CPMAddPackage(
   NAME curl
   GITHUB_REPOSITORY curl/curl
   GIT_TAG curl-8_3_0
+  OPTIONS
+  "ENABLE_VERSIONED_SYMBOLS ON"
 )
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
@@ -52,6 +69,7 @@ set(HEADER_DIR ${CMAKE_SOURCE_DIR}/include)
 message("Sources: ${SOURCES}")
 
 
+
 if(NOT DEFINED RELEASE)
   set(RELEASE 0)
 endif()
@@ -60,18 +78,22 @@ add_executable(${PROJECT_NAME} ${SOURCES}) #test mode
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
   message("Release mode")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wextra -Wpedantic -Wall")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -O2 -Wextra -Wpedantic -Wall")
   add_definitions(-DRELEASE)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
   message("Debug mode")
   add_definitions(-DDEBUG)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall -Wredundant-decls -Wunused -Wunused-parameter -Wunused-function -Wunused-macros")
+  CPMAddPackage("gh:jeremy-rifkin/cpptrace@0.2.1")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g -O0 -Wextra -Wpedantic -Wall -Wredundant-decls -Wunused -Wunused-parameter -Wunused-function -Wunused-macros")
+  target_link_libraries(${PROJECT_NAME} cpptrace)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
   message("Test mode")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -Wextra -Wpedantic -Wall")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g -O0 -Wextra -Wpedantic -Wall")
   CPMAddPackage("gh:catchorg/Catch2@3.4.0")
+  CPMAddPackage("gh:jeremy-rifkin/cpptrace@0.2.1")
   add_definitions(-DTEST -DDEBUG) #test mode
   target_link_libraries(${PROJECT_NAME} Catch2::Catch2WithMain) #test mode fuck you cmake
+  target_link_libraries(${PROJECT_NAME} cpptrace)
 else()
   add_definitions(-DDEBUG)
   message("Default mode")
@@ -80,6 +102,7 @@ endif()
 target_link_libraries(${PROJECT_NAME} libcurl)
 target_link_libraries(${PROJECT_NAME} cxxopts)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
+target_link_libraries(${PROJECT_NAME} libgit2package)
 target_link_libraries(${PROJECT_NAME} termcolor)
 
 set(SOURCE_DIR src)

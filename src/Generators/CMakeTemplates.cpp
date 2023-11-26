@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <string>
 #include <nlohmann/json.hpp>
 #include <Frate/Command.hpp>
@@ -14,14 +15,17 @@ namespace Generators::CMakeList {
   std::ofstream CPMFile;
   try{
     if(!std::filesystem::exists(pro->project_path / "cmake"))
-      std::filesystem::create_directory(pro->project_path / "cmake");
+      std::filesystem::create_directories(pro->project_path / "cmake");
     CPMFile.open(pro->project_path / "cmake/CPM.cmake");
   }catch(...){
-    std::cout << "Error while opening file: CPM.cmake" << std::endl;
+    Utils::debug("Error while opening file: CPM.cmake");
     return false;
   }
   CPMFile << CPM;
   std::string CMakeListsExecutable = inja::render(R"EOF(
+{% for toolchain in toolchains %}
+include(toolchains/{{ toolchain }}.cmake)
+{% endfor %}
 cmake_minimum_required( VERSION {{ cmake_version }} )
 project(
   {{ project_name }}
@@ -105,14 +109,14 @@ install(TARGETS {{project_name}} DESTINATION bin)
   try{
     remove((pro->project_path / file_name).c_str());
   }catch(...){
-    std::cout << "Error while removing file: " << file_name << std::endl;
+    Utils::debug("Error while removing file: " + file_name);
     return false;
   }
 
   try{
     file.open(pro->project_path / file_name);
   }catch(...){
-    std::cout << "Error while opening file: " << file_name << std::endl;
+    Utils::debug("Error while opening file: " + file_name);
     return false;
   }
   //std::cout << CMakeListsExecutable << std::endl;

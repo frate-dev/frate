@@ -4,6 +4,22 @@
 
 namespace Command::Packages {
 
+  bool removePackagesByMode(Interface* inter, std::string mode){
+    std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
+    for (std::string dep : dependencies) {
+      for(Mode &m : inter->pro->modes){
+        if(m.name == mode){
+          std::erase_if(m.dependencies, [&dep](auto &d) {
+              return d.name == dep;
+          });
+
+        }
+      }
+    }
+    Generators::ConfigJson::writeConfig(inter->pro);
+    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
+    return true;
+  }
   bool remove(Interface *inter) {
 
     if (inter->args->count("args") == 0) {
@@ -16,7 +32,7 @@ Usage remove dep:
       return false;
     }
     if (inter->args->count("mode") != 0){
-      return ModeCommands::removePackages(inter, inter->args->operator[]("mode").as<std::string>());
+      return removePackagesByMode(inter, inter->args->operator[]("mode").as<std::string>());
     }
 
     std::vector<std::string> name_to_remove = inter->args->operator[]("args").as<std::vector<std::string>>();

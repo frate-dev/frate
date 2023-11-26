@@ -2,6 +2,8 @@
 #include <Frate/Command.hpp>
 #include <Frate/Command/CommandMode.hpp>
 #include <Frate/Command/Package.hpp>
+#include <Frate/Utils/General.hpp>
+#include <Frate/Command/Flags.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 namespace Command {
 
@@ -21,45 +23,51 @@ namespace Command {
     }
     return true;
   }
+  std::vector<Handler> Interface::getRemoveHandlers(){
+    return {
+      {
+        .aliases = {"packages","p","package"},
+        .flags = {"-l,--latest","-m,--mode","-t,--target"},
+        .positional_args = {"package,..."},
+        .docs = "Remove a package from the project",
+        .callback = [this]() {
+          OptionsInit::Packages(this);
+          return Packages::remove(this);
+        },
+      },
+      {
+        .aliases = {"flag", "f"},
+        .flags = {"-m,--mode"},
+        .positional_args = {"flag,..."},
+        .docs = "Remove a flag from the project",
+        .callback = [this]() {
+          OptionsInit::Flags(this);
+          return Flags::remove(this);
+        },
+      }
+      
+    };
+  }
   bool Interface::remove() {
-    args->count("subcommand");
-    if (args->count("subcommand") != 0) {
-      std::string subcommand = args->operator[]("subcommand").as<std::string>();
-      for (auto arg : args->operator[]("args").as<std::vector<std::string>>()) {
-        std::cout << arg << std::endl;
-      }
-      if (subcommand == "package" || subcommand == "p") {
-        Packages::remove(this);
-      }
-      else if (subcommand == "mode") {
 
-        OptionsInit::Mode(this);
-        ModeCommands::removePackages(this, this->args->operator[]("mode").as<std::string>());
-        // this->mode();
-      }else if(subcommand == "lib"){
-        //TODO: remove lib, we don't have a lib in the project sruct
-      }else if(subcommand == "flag"){
-        //TODO: remove flag
-      }else if(subcommand == "toolchain"){
-        //TODO: remove toolchain
-      }else if(subcommand == "author"){
-        //TODO: remove author
-      }
-      else if (subcommand == "server") {
-        RemoteServers::remove(this);
-      }
-      else if(subcommand == "license"){
-        //TODO: remove license
-      }
+    std::vector<Handler> removeHandlers = getRemoveHandlers();
+    std::string subcommand;
+
+    if(args->count("subcommand")){
+
+      subcommand = args->operator[]("subcommand").as<std::string>();
 
     }else{
-    std::cout <<  R"EOF(
-Usage remove:
-  dep: removes dependencies
-  lib:  removes libraries
-  flag: removes  flags
-        )EOF" << std::endl;
+      Utils::Error error;
+      error << "No subcommand given" << std::endl;
+
+      getHelpString("add", removeHandlers);
+
+      return false;
     }
+
+    return runCommand(subcommand, removeHandlers);
+
 
     return true;
   }
