@@ -126,6 +126,7 @@ namespace Command {
       }
     };
     bool implemented{true};
+    bool requires_project{true};
   } Handler;
 
   class Interface{
@@ -190,15 +191,13 @@ namespace Command {
       bool Clean(Interface*);
       bool List(Interface*);
       bool Build(Interface*);
-
+      bool Main(Interface*);
 
 
       [[deprecated("put options in the specific module")]]
       bool Server(Interface*);
       [[deprecated("put options in the specific module")]]
       bool Packages(Interface*);
-      [[deprecated("put options in the specific module")]]
-      bool Main(Interface*);
       [[deprecated("put options in the specific module")]]
       bool Modes(Interface*);
       [[deprecated("put options in the specific module")]]
