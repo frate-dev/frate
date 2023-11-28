@@ -32,7 +32,8 @@ namespace Command{
         .docs = "List modes",
         .callback = [this]() {
           return Modes::list(this);
-        }
+        },
+        .requires_project = true
       },
       Handler{
         .aliases = 
@@ -48,7 +49,8 @@ namespace Command{
         .docs = "List installed packages",
         .callback = [this]() {
           return Packages::list(this);
-        }
+        },
+        .requires_project = true
       },
       Handler{
         .aliases = 
@@ -59,7 +61,8 @@ namespace Command{
           (void)this;
           return true;
         },
-        .implemented = false
+        .implemented = false,
+        .requires_project = true
       },
       Handler{
         .aliases = 
@@ -70,7 +73,8 @@ namespace Command{
           (void)this;
           return true;
         },
-        .implemented = false
+        .implemented = false,
+        .requires_project = true
       },
       Handler{
         .aliases = 
@@ -84,11 +88,12 @@ namespace Command{
       },
       Handler{
         .aliases = 
-        {"licenses","l"},
+        {"licenses","lc"},
         .docs = "List possible licenses",
         .callback = [this]() {
           return License::list(this);
         },
+        .requires_project = true
       },
     };
   }

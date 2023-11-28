@@ -1,4 +1,5 @@
 #include <Frate/Command.hpp>
+#include "Frate/Utils/General.hpp"
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
 #include <memory>
@@ -7,17 +8,17 @@
 
 namespace Command {
 
-bool OptionsInit::Main(Interface *inter) {
-  inter->InitHeader();
-  inter->options->parse_positional({"command"});
-  inter->options->allow_unrecognised_options().add_options()(
-      "command", "Command to run",
-      cxxopts::value<std::string>()->default_value("help"))(
-      "v,verbose", "Verbose output",
-      cxxopts::value<bool>()->default_value("false"))(
-      "y,confim-all", "skip all y/n prompts",
-      cxxopts::value<bool>()->default_value("false"))("h,help", "Print usage");
-  return inter->parse();
+  bool OptionsInit::Main(Interface *inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command"});
+    inter->options->allow_unrecognised_options().add_options()(
+        "command", "Command to run",
+        cxxopts::value<std::string>()->default_value("help"))(
+        "v,verbose", "Verbose output",
+        cxxopts::value<bool>()->default_value("false"))(
+        "y,confim-all", "skip all y/n prompts",
+        cxxopts::value<bool>()->default_value("false"))("h,help", "Print usage");
+    return inter->parse();
   }
 
   bool Interface::parse(){
@@ -49,15 +50,17 @@ bool OptionsInit::Main(Interface *inter) {
     //After the parse we can set the context args
     this->pro->args = this->args;
 
-    #ifdef DEBUG
-        std::cout << "DEBUG MODE ENABLED\n";
-    #endif
-    #ifdef DEBUG
-        pro->project_path = std::filesystem::current_path() / "build";
-    #else
-        pro->project_path = std::filesystem::current_path();
-    #endif
-    LoadProjectJson();
+#ifdef DEBUG
+    std::cout << "DEBUG MODE ENABLED\n";
+#endif
+#ifdef DEBUG
+    pro->project_path = std::filesystem::current_path() / "build";
+#else
+    pro->project_path = std::filesystem::current_path();
+#endif
+    if(LoadProjectJson()){
+      project_present = true;
+    }
   }
   bool Interface::execute(){
     if(this->args->count("yes")){
@@ -84,7 +87,8 @@ bool OptionsInit::Main(Interface *inter) {
         .callback = [this](){
           OptionsInit::Init(this);
           return this->init();
-        }
+        },
+        .requires_project = false
       },
 
       Handler{
@@ -102,7 +106,8 @@ bool OptionsInit::Main(Interface *inter) {
         .docs = "Display help",
         .callback = [this](){
           return this->help();
-        }
+        },
+        .requires_project = false
       },
 
       Handler{
@@ -144,7 +149,8 @@ bool OptionsInit::Main(Interface *inter) {
         .callback = [this](){
           OptionsInit::Search(this);
           return this->search();
-        }
+        },
+        .requires_project = false
       },
       Handler{
         .aliases = {"list", "ls"},
@@ -154,7 +160,8 @@ bool OptionsInit::Main(Interface *inter) {
         .callback = [this](){
           OptionsInit::List(this);
           return this->list();
-        }
+        },
+        .requires_project = false
       },
 
       Handler{
@@ -210,9 +217,14 @@ bool OptionsInit::Main(Interface *inter) {
 
 
     bool found_alias = false;
+    Utils::Error error;
     for(Handler& handler : commands){
       for(std::string& alias : handler.aliases){
         if(alias == command){
+          if(handler.requires_project && !project_present){
+            error << "Error: Project not found and is required for this command" << ENDL;
+            return false;
+          }
           found_alias = true;
           if(!handler.callback()){
             return false;
@@ -240,11 +252,16 @@ bool OptionsInit::Main(Interface *inter) {
     }
   }
   bool Interface::runCommand(std::string command, std::vector<Handler> &handlers){
+    Utils::Error error;
     for(Handler handler : handlers){
       for(std::string alias : handler.aliases){
         if(alias == command){
           if(!handler.implemented){
-            std::cout << termcolor::red << "Error: Command not implemented: " << command << termcolor::reset << ENDL;
+            error << "Command not implemented: " << command;
+            return false;
+          }
+          if(handler.requires_project && !project_present){
+            error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
             return false;
           }
           if(!handler.callback()){
@@ -305,7 +322,7 @@ bool OptionsInit::Main(Interface *inter) {
         std::cout << "     " << termcolor::blue << handler.docs << termcolor::reset;
       }else{
         if(handler.subcommands.size() > 0){
-          std::cout << termcolor::blue << " <target>" << termcolor::reset;
+          std::cout << termcolor::blue << " <subcommand>" << termcolor::reset;
 
         }else{
           std::cout << " : " << termcolor::blue << handler.docs << termcolor::reset;
@@ -326,4 +343,4 @@ bool OptionsInit::Main(Interface *inter) {
     git_libgit2_shutdown(); 
   }
 
-  } // namespace Command
+} // namespace Command

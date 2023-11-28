@@ -65,15 +65,15 @@ namespace Constants {
   
   const std::vector<std::string> SUPPORTED_CXX_STANDARDS =
   {
-    "c++98",
-    "c++03",
-    "c++11",
-    "c++1x",
-    "c++14",
-    "c++17",
-    "c++20",
-    "c++2x",
-    "c++23",
+    "98",
+    "03",
+    "11",
+    "1x",
+    "14",
+    "17",
+    "20",
+    "2x",
+    "23",
   };
 
   const std::vector<std::string> SUPPORTED_LANGUAGES =

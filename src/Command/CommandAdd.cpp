@@ -33,6 +33,7 @@ namespace Command {
     mode.name = name->Get();
     return true;
   }
+  //TODO: probably needs to be moved to a different file
   bool buildTypeAdd(Interface* interface){
     std::cout << "Adding mode" << std::endl; 
     Mode mode;
