@@ -42,10 +42,3 @@ CPMDeclarePackage(libgit2
 #  OPTIONS
 #    "ENABLE_VERSIONED_SYMBOLS ON"
 #)
-# cpptrace
-CPMDeclarePackage(cpptrace
-  VERSION 0.2.1
-  GITHUB_REPOSITORY jeremy-rifkin/cpptrace
-  SYSTEM YES
-  EXCLUDE_FROM_ALL YES
-)
