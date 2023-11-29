@@ -156,6 +156,9 @@ namespace Utils::CLI {
           input = completion;
         }
         tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
+        if(!is_valid()){
+          continue;
+        }
         return;
       //Tab
       }else if(c == 9){

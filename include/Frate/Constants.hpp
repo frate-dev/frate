@@ -4,8 +4,10 @@
 
 namespace Constants {
   const std::string NAME = "frate";
-  const std::string DESCRIPTION = "A C/C++ project manager";
+  const std::string DESCRIPTION = "CLI utility for managing your project, a modern touch for C/C++";
   const std::string PROJECT_URL = "https://github.com/frate-dev/frate";
+  
+
   const std::vector<std::string> SUPPORTED_CMAKE_VERSIONS =
   {
     "3.0",
@@ -57,13 +59,13 @@ namespace Constants {
 
   const std::vector<std::string> SUPPORTED_C_STANDARDS =
   {
-    "c89",
-    "c90",
-    "c99",
-    "c11",
-    "c17",
-    "c18",
-    "c2x",
+    "89",
+    "90",
+    "99",
+    "11",
+    "17",
+    "18",
+    "2x",
   };
   
   const std::vector<std::string> SUPPORTED_CXX_STANDARDS =
