@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 #include <Frate/Command.hpp>
 #include <Frate/Utils/General.hpp>
+#include <git2.h>
 #include <inja.hpp>
 
 namespace Generators::CMakeList {
@@ -22,87 +23,11 @@ namespace Generators::CMakeList {
     return false;
   }
   CPMFile << CPM;
-  std::string CMakeListsExecutable = inja::render(R"EOF(
-{% for toolchain in toolchains %}
-include(toolchains/{{ toolchain }}.cmake)
-{% endfor %}
-cmake_minimum_required( VERSION {{ cmake_version }} )
-project(
-  {{ project_name }}
-  VERSION {{ project_version }}
-  {%if lang == "cpp"%}
-  LANGUAGES CXX
-)
-  {%endif%}
-  {%if lang == "c"%}
-  LANGUAGES C
-)
-  {%endif%}
 
-set(CMAKE_CXX_STANDARD {{ lang_version }})
-include(cmake/CPM.cmake)
-
-CPMAddPackage(
-  NAME Ccache.cmake
-  GITHUB_REPOSITORY TheLartians/Ccache.cmake
-  VERSION 1.2
-)
-include(FetchContent)
-##for dep in dependencies
-#FetchContent_Declare(
-#  {{  dep.name }}
-#  GIT_REPOSITORY {{ dep.git }}
-#  GIT_TAG {{ dep.version }}
-#)
-CPMAddPackage(
-  NAME {{ dep.name }}
-  GIT_REPOSITORY {{ dep.git }}
-  GIT_TAG {{ dep.version }})
-#FetchContent_MakeAvailable({{ dep.name }})
-##endfor
-
-file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
-  "src/**.cpp"
-  "src/**.c"
-  "src/**/**.cpp"
-  "src/**/**.c"
-)
-
-message("Sources: ${SOURCES}")
-
-SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} {% if flags %} {% for flag in flags %} {{ flag }} {% endfor %} {% endif %}")
-
-include_directories($CMAKE_SOURCE_DIR/{{ include_dir }})
-set(HEADER_DIR $CMAKE_SOURCE_DIR/{{ include_dir }})
-
-if(NOT DEFINED RELEASE)
-  set(RELEASE 0)
-endif()
-
-add_executable({{project_name}} ${SOURCES})
-##for mode in modes
-if (CMAKE_BUILD_TYPE STREQUAL "{{ mode.name }}")
-  add_definitions(-D{{ mode.name }})
-  {% for dep in mode.dependencies %}
-  CPMAddPackage(
-    NAME {{ dep.name }}
-    GIT_REPOSITORY {{ dep.git }}
-    GIT_TAG {{ dep.version }}
-  )
-  {% endfor %}
-  set_target_properties({{project_name}} PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} {% for flag in mode.flags %} {{ flag }} {% endfor %}")
-endif()
-##endfor
-set(BUILD_DIR {{ build_dir }})
-set_target_properties({{project_name}} PROPERTIES RUNTIME_OUTPUT_DIRECTORY {{build_dir}})
-
-
-##for dep in dependencies
-target_link_libraries({{project_name}} {{dep.target_link}})
-##endfor
-install(TARGETS {{project_name}} DESTINATION bin)
-
-)EOF", pro->toJson());
+  inja::Environment env;
+  git_repository *repo = NULL; 
+  git_clone(&repo, "https://github.com/frate-dev/templates.git", (pro->project_path / "templates").c_str(), NULL);
+  std::string CMakeListsExecutable =  env.render_file(pro->project_path /"templates" /"CMakeLists.tmpl", pro->toJson());
   std::ofstream file;
   std::string file_name = "CMakeLists.txt";
 

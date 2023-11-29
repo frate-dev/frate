@@ -1,5 +1,6 @@
 #include "Frate/Command.hpp"
 #include "Frate/Utils/General.hpp"
+#include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Command/License.hpp>
 
 namespace Command { 
@@ -50,6 +51,15 @@ namespace Command {
         },
         .implemented = false
       },
+      Handler{
+        .aliases = {"server","s"},
+        .docs = "Set the project's build server",
+        .callback = [this]() {
+          (void)this;
+          RemoteServers::set(this);
+          return true; //Server::set(this);
+        },
+      }
     };
   }
   bool Interface::set(){
