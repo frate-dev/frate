@@ -57,14 +57,13 @@ compile_commands.json
 
     if(std::filesystem::exists(gitignore_path)){
       std::cout << "Gitignore already exists" << std::endl;
-      Prompt<bool> *prompt = new Prompt<bool>("Do you want to overwrite it?");
+      Prompt *prompt = new Prompt("Do you want to overwrite it?");
       prompt->Color(Ansi::RED)->ExitOnFailure()->Run();
-      if(prompt->Get()){
-      write_gitignore(gitignore, gitignore_path);
-        return true;
-      }else{
+      auto [valid, value] = prompt->Get<bool>();
+      if(!valid || !value){
         return false;
       }
+      write_gitignore(gitignore, gitignore_path);
     }else{
       write_gitignore(gitignore, gitignore_path);
     }

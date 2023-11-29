@@ -115,12 +115,16 @@ namespace Command::Packages {
 
     std::vector<Package> filterResultsVec = filterOutBest(results);
 
-    Prompt<int> *prompt = new Prompt<int>("Select a package to install: ");
+    Prompt *prompt = new Prompt("Select a package to install: ");
     for(size_t i = 0; i < filterResultsVec.size(); i++){
       prompt->AddOption(i);
     }
     prompt->Run();
-    Package chosen_package = results[prompt->Get()];
+    auto[valid, index] = prompt->Get<int>();
+    if(!valid){
+      return {false, Package()};
+    }
+    Package chosen_package = results[index];
     
     if(latest){
       chosen_package.selected_version = chosen_package.versions[0];

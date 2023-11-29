@@ -8,9 +8,14 @@ namespace Command{
 
 namespace  Command::Modes{
   bool getModeName(Mode &mode){
-    Prompt<std::string> *name = new Prompt<std::string>("Name: ");
+    Prompt *name = new Prompt("Name: ");
     name->Run();
-    mode.name = name->Get();
+    auto [valid,mode_name] = name->Get<std::string>();
+    if(!valid){
+      std::cout << "Failed to get mode name" << std::endl;
+      return false;
+    }
+    mode.name = mode_name;
     return true;
   }
   bool Options(Interface *inter) {

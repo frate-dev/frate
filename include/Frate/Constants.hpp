@@ -3,6 +3,9 @@
 
 
 namespace Constants {
+  const std::string NAME = "frate";
+  const std::string DESCRIPTION = "A C/C++ project manager";
+  const std::string PROJECT_URL = "https://github.com/frate-dev/frate";
   const std::vector<std::string> SUPPORTED_CMAKE_VERSIONS =
   {
     "3.0",

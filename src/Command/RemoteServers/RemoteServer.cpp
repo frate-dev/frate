@@ -76,59 +76,78 @@ namespace Command::RemoteServers{
     return servers;
   }
   bool getServerName(std::string& name){
-    Prompt<std::string> *name_promp = new Prompt<std::string>("Enter the name of the server: ");
+    Prompt *name_promp = new Prompt("Enter the name of the server: ");
     name_promp->Run();
-    name = name_promp->Get();
+    auto[valid, _name] = name_promp->Get<std::string>();
+    if(!valid){
+      return false;
+    }
+    name = _name;
     return true;
   }
   bool getServerAddress(std::string& address){
-    Prompt<std::string> *address_promp = new Prompt<std::string>("Enter the address of the server: ");
+    Prompt *address_promp = new Prompt("Enter the address of the server: ");
     address_promp->Run();
-    address = address_promp->Get();
+    auto [valid, _address] = address_promp->Get<std::string>();
+    if(!valid){
+      return false;
+    }
+    address = _address;
     return true;
   }
 
   bool getServerPort(int& port){
-    Prompt<int> *port_promp = new Prompt<int>("Enter the port of the server: ");
+    Prompt *port_promp = new Prompt("Enter the port of the server: ");
     port_promp->Run();
-    port = port_promp->Get();
+    auto[valid,_port] = port_promp->Get<int>();
+    if(!valid){
+      return false;
+    }
+    port = _port;
     return true;
   }
 
   bool getServerUsername(std::string& username){
-    Prompt<std::string> *username_promp = new Prompt<std::string>("Enter the username of the server: ");
-    username_promp->Validator([](std::string username){
-        if (username == ""){
-        return false;
-        }
-        else if (username.length() > 256){
-        return false;
-        }
-        return true;
-        });
-    username_promp->Run();
-    username = username_promp->Get();
+    Prompt *username_promp = new Prompt("Enter the username of the server: ");
+    username_promp->MaxLength(32)->Run();
+    auto[valid, _username] = username_promp->Get<std::string>();
+    if(!valid){
+      return false;
+    }
+    username = _username;
     return true;
   }
 
   bool getServerAuthMethod(std::string& authMethod){
-    Prompt<std::string> *authMethod_promp = new Prompt<std::string>("Enter the authentication method of the server[pem/password]: ");
+    Prompt *authMethod_promp = new Prompt("Enter the authentication method of the server[pem/password]: ");
     authMethod_promp->Run();
-    authMethod = authMethod_promp->Get();
+    auto[valid,_authMethod] = authMethod_promp->Get<std::string>();
+    if(!valid){
+      return false;
+    }
+    authMethod = _authMethod;
     return true;
   }
 
   bool getServerPassword(std::string& password){
-    Prompt<std::string> *password_promp = new Prompt<std::string>("Enter the password of the server: ");
+    Prompt *password_promp = new Prompt("Enter the password of the server: ");
     password_promp->Run();
-    password = password_promp->Get();
+    auto[valid,_password] = password_promp->Get<std::string>();
+    if(!valid){
+      return false;
+    }
+    password = _password;
     return true;
   }
 
   bool getServerKey(std::string& key){
-    Prompt<std::string> *key_promp = new Prompt<std::string>("Enter path the ssh key for the server: ");
+    Prompt *key_promp = new Prompt("Enter path the ssh key for the server: ");
     key_promp->Run();
-    key = key_promp->Get();
+    auto[valid,_key] = key_promp->Get<std::string>();
+    if(!valid){
+      return false;
+    }
+    key = _key;
     return true;
   }
 

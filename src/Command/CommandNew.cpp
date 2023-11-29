@@ -45,10 +45,10 @@ bool createJson(std::shared_ptr<Project> pro) {
   bool createHelloWorldCpp(std::shared_ptr<Project> pro) {
     //directory checks
     if(std::filesystem::exists(pro->project_path / pro->src_dir)){
-      Prompt<bool> *overwrite_prompt = new Prompt<bool>("src directory already exists, overwrite?");
+      Prompt *overwrite_prompt = new Prompt("src directory already exists, overwrite?");
       overwrite_prompt->Color(RED);
       overwrite_prompt->Run();
-      if(!overwrite_prompt->Get()){
+      if(!overwrite_prompt->Get<bool>().second){
         return false;
       }
     }
@@ -78,10 +78,11 @@ bool createJson(std::shared_ptr<Project> pro) {
   }
   bool createHelloWorldC(std::shared_ptr<Project> pro) {
     if(std::filesystem::exists(pro->project_path / pro->src_dir)){
-      Prompt<bool> *overwrite_prompt = new Prompt<bool>("src directory already exists, overwrite?");
+      Prompt *overwrite_prompt = new Prompt("src directory already exists, overwrite?");
+      overwrite_prompt->IsBool();
       overwrite_prompt->Run();
       overwrite_prompt->Color(RED);
-      if(!overwrite_prompt->Get()){
+      if(!overwrite_prompt->Get<bool>().second){
         return false;
       }
     }
@@ -250,7 +251,7 @@ bool createJson(std::shared_ptr<Project> pro) {
         return false;
       }
     }
-
+    Generators::Readme::create(pro);
     if(project_type == ProjectType::EXECUTABLE){
       if(!Generators::CMakeList::createCMakeListsExecutable(pro)){
         return false;

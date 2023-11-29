@@ -30,9 +30,15 @@ namespace Command {
 
   
   bool getModeName(Mode &mode){
-    Prompt<std::string> *name = new Prompt<std::string>("Name: ");
-    name->Run();
-    mode.name = name->Get();
+    Prompt *name_prompt = new Prompt("Name: ");
+    name_prompt->Run();
+    auto [valid, name] = name_prompt->Get<std::string>();
+    if(!valid){
+      std::cout << "Invalid name" << std::endl;
+      return false;
+    }else{
+      mode.name = name;
+    }
     return true;
   }
   //TODO: probably needs to be moved to a different file
@@ -109,9 +115,15 @@ namespace Command {
           .docs = "Add a crosscompile toolchain to your project",
           .callback = [this]() {
             //What is this????
-            Prompt<std::string> *toolchain = new Prompt<std::string>("Toolchain: ");
-            toolchain->Run();
-            return Toolchains::add(toolchain->Get(), this);
+            Prompt *toolchain_prompt = new Prompt("Toolchain");
+            toolchain_prompt->Run();
+            auto [valid, toolchain_name] = toolchain_prompt->Get<std::string>();
+            if(!valid){
+              std::cout << "Invalid toolchain" << std::endl;
+              return false;
+            }else{
+              return Toolchains::add(toolchain_name, this);
+            }
           },
         },
         Handler{

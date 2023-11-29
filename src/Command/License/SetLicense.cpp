@@ -42,7 +42,7 @@ namespace Command::License {
 
     std::cout << license_list.Build() << std::endl;
 
-    Utils::CLI::Prompt<int> license_prompt("Select a license");
+    Utils::CLI::Prompt license_prompt("Select a license");
     license_prompt.ExitOnFailure();
 
     for(size_t i = 0; i < licenses.size(); i++){
@@ -50,8 +50,16 @@ namespace Command::License {
     }
 
     license_prompt.Run();
+
+    auto [valid, index] = license_prompt.Get<int>();
+
+    if(!valid){
+      Utils::Error error;
+      error << "Invalid license" << std::endl;
+      return selected_license;
+    }
   
-    selected_license = licenses[license_prompt.Get()].first;
+    selected_license = licenses[index].first;
 
     return selected_license;
   }
@@ -66,15 +74,20 @@ namespace Command::License {
 
     std::string year = std::to_string(now_tm->tm_year + 1900);
 
-    Utils::replaceKey(license, "year", year);
+    Utils::replaceKey(license, "[year]", year);
 
-    Utils::CLI::Prompt<std::string> name_prompt("Enter your name or organization: ");
+    Utils::CLI::Prompt name_prompt("Enter your name or organization");
     name_prompt.ExitOnFailure();
     name_prompt.Run();
+    auto [valid, org] = name_prompt.Get<std::string>();
+    if(!valid){
+      Utils::Error error;
+      error << "Invalid name" << std::endl;
+      return;
+    }
+    Utils::replaceKey(license, "[fullname]", org);
 
-    Utils::replaceKey(license, "fullname", name_prompt.Get());
-
-    Utils::replaceKey(license, "project", inter->pro->project_name);
+    Utils::replaceKey(license, "[project]", inter->pro->project_name);
 
     full_license.body = license;
   }
@@ -96,9 +109,10 @@ namespace Command::License {
     if(std::filesystem::exists(inter->pro->project_path / "LICENSE")){
       Utils::Error error;
       error << "A license already exists in this project" << std::endl;
-      Utils::CLI::Prompt<bool> overwrite_prompt("Overwrite existing license?");
+      Utils::CLI::Prompt overwrite_prompt("Overwrite existing license?");
       overwrite_prompt.Run();
-      if(!overwrite_prompt.Get()){
+      overwrite_prompt.IsBool();
+      if(!overwrite_prompt.Get<bool>().second){
         return false;
       }
     }

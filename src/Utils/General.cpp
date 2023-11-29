@@ -192,11 +192,8 @@ namespace Utils{
     }
     return score;
   }
-  /*
-   * replaces keys like [key] with values
-   */
   void replaceKey(std::string &str, std::string key, std::string value){
-    std::string key_start = "[" + key + "]";
+    std::string key_start = key;
     while(str.find(key_start) != std::string::npos){
       str.replace(str.find(key_start), key_start.length(), value);
     }

@@ -9,10 +9,11 @@ namespace Command{
   using namespace Utils::CLI::Ansi;
   bool Interface::ftp() {
 
-    Prompt<bool> *prompt = new Prompt<bool>(
+    Prompt *prompt = new Prompt(
         "Are you sure you would like to delete the entire project?");
     prompt->Color(RED)->Run();
-    if (!prompt->Get()) {
+    auto [valid, value] = prompt->Get<bool>();
+    if (!valid || !value) {
       std::cout << "Aborting..." << std::endl;
       return false;
     }
