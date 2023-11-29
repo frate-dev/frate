@@ -26,7 +26,7 @@ namespace Generators::CMakeList {
 
   inja::Environment env;
   git_repository *repo = NULL; 
-  git_clone(&repo, "https://github.com/frate-dev/templates-default.git", (pro->project_path / "templates").c_str(), NULL);
+  git_clone(&repo, "https://github.com/frate-dev/default-executable.git", (pro->project_path / "templates").c_str(), NULL);
   std::string CMakeListsExecutable =  env.render_file(pro->project_path /"templates" /"CMakeLists.tmpl", pro->toJson());
   std::ofstream file;
   std::string file_name = "CMakeLists.txt";
