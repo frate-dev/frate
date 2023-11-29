@@ -11,6 +11,7 @@
 #include <Frate/Utils/General.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <termcolor/termcolor.hpp>
+#include <git2.h>
 
 namespace Command {
   using nlohmann::json;
@@ -26,7 +27,7 @@ namespace Command {
     return inter->parse();
   }
 
-
+  
   bool getModeName(Mode &mode){
     Prompt<std::string> *name = new Prompt<std::string>("Name: ");
     name->Run();
