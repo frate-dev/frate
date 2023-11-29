@@ -14,13 +14,13 @@ bool Tests::Command::testAddPackage(std::string package_name) {
     return false;
   }
 
-  std::ifstream config_file(test_path / "config.json");
+  std::ifstream config_file(test_path / "frate-project.json");
   try{
     nlohmann::json config;
     config_file >> config;
     if(config["dependencies"].size() != 1){
       cleanUp(test_path);
-      std::cout << "Failed to add package : no pacakge add dected config.json" << std::endl;
+      std::cout << "Failed to add package : no pacakge add dected frate-project.json" << std::endl;
       return false;
     }
   }catch(...){

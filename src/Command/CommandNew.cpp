@@ -151,7 +151,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     std::cout << j << '\n';
 
     std::ofstream file;
-    std::string file_name = "config.json";
+    std::string file_name = "frate-project.json";
 
     try{
       file.open(pro->project_path / file_name);
@@ -182,7 +182,7 @@ bool createJson(std::shared_ptr<Project> pro) {
       pro->project_path = std::filesystem::current_path();
     }
 #endif
-    std::string file_name = "config.json";
+    std::string file_name = "frate-project.json";
     std::string project_name = "";
     bool defaults = false;
     std::string language = "cpp";
@@ -245,7 +245,7 @@ bool createJson(std::shared_ptr<Project> pro) {
       }
     }else{
       std::cout << "Creating project" << ENDL;
-      std::cout << "Creating config.json" << ENDL;
+      std::cout << "Creating frate-project.json" << ENDL;
       if(!createProjectWizard(this)){
         return false;
       }

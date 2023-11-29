@@ -86,7 +86,7 @@ namespace Command::Packages {
       }
 
 
-      info << "Adding dependency to config.json" << std::endl;
+      info << "Adding dependency to frate-project.json" << std::endl;
       //Reflecing the package to dependency
       // info << chosen_package.toJson() << ENDL;
       if(mode != ""){
@@ -98,9 +98,9 @@ namespace Command::Packages {
         inter->pro->dependencies.push_back(chosen_package);
       }
 
-      info << "Writing config.json" << std::endl;
+      info << "Writing frate-project.json" << std::endl;
       if (!writeConfig(inter->pro)) {
-        error << "Failed to write config.json" << std::endl;
+        error << "Failed to write frate-project.json" << std::endl;
       }
 
       if (!createCMakeListsExecutable(inter->pro)) {

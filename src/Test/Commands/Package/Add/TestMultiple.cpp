@@ -17,7 +17,7 @@ bool Tests::Command::testAddPackageMultiple() {
     return false;
   }
 
-  std::ifstream config_file(test_path / "config.json");
+  std::ifstream config_file(test_path / "frate-project.json");
 
   nlohmann::json config;
   try {
@@ -39,7 +39,7 @@ bool Tests::Command::testAddPackageMultiple() {
 
   if(!foundSDL){
     cleanUp(test_path);
-    std::cout << "Failed to add package : could not find SDL2 in config.json" << std::endl;
+    std::cout << "Failed to add package : could not find SDL2 in frate-project.json" << std::endl;
     return false;
   }
 
@@ -53,7 +53,7 @@ bool Tests::Command::testAddPackageMultiple() {
 
   if(!foundfmt){
     cleanUp(test_path);
-    std::cout << "Failed to add package : could not find fmt in config.json" << std::endl;
+    std::cout << "Failed to add package : could not find fmt in frate-project.json" << std::endl;
     return false;
   }
 

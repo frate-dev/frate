@@ -15,7 +15,7 @@ bool Tests::Command::testAddPackageToMode(std::string mode_name, std::string pac
     return false;
   }
 
-  std::ifstream config_file(test_path / "config.json");
+  std::ifstream config_file(test_path / "frate-project.json");
 
   nlohmann::json config;
 

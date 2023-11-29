@@ -40,9 +40,9 @@ namespace Command {
     getModeName(mode);
     interface->pro->modes.push_back(mode);
     
-    std::cout << "Writing config.json" << std::endl;
+    std::cout << "Writing frate-project.json" << std::endl;
     if(!Generators::ConfigJson::writeConfig(interface->pro)){
-      std::cout << "Failed to write config.json" << std::endl;
+      std::cout << "Failed to write frate-project.json" << std::endl;
     }
 
     if(!Generators::CMakeList::createCMakeListsExecutable(interface->pro)){

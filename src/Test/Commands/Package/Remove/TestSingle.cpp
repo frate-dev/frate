@@ -21,9 +21,9 @@ bool Tests::Command::testRemovePackage(){
     cleanUp(test_path);
     return false;
   }
-  std::cout << "Searching for cxxopts in config.json" << std::endl;
+  std::cout << "Searching for cxxopts in frate-project.json" << std::endl;
 
-  std::ifstream config_file(test_path / "config.json");
+  std::ifstream config_file(test_path / "frate-project.json");
 
   nlohmann::json config;
 
@@ -38,7 +38,7 @@ bool Tests::Command::testRemovePackage(){
 
   for (auto& dep : config["dependencies"]) {
     if (dep["name"] == "cxxopts") {
-      std::cout << "Failed to remove package : cxxopts still in config.json" << std::endl;
+      std::cout << "Failed to remove package : cxxopts still in frate-project.json" << std::endl;
       cleanUp(test_path);
       return false;
     }
