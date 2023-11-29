@@ -199,8 +199,6 @@ namespace Command {
       [[deprecated("put options in the specific module")]]
       bool Packages(Interface*);
       [[deprecated("put options in the specific module")]]
-      bool Modes(Interface*);
-      [[deprecated("put options in the specific module")]]
       bool Flags(Interface*);
       [[deprecated("put options in the specific module")]]
       bool Mode(Interface*);

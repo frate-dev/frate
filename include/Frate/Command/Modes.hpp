@@ -6,6 +6,7 @@ namespace Command{
     bool add(Interface* interface);
     bool remove(Interface* interface);
     bool list(Interface* interface);
+    bool Options(Interface* interface);
   }
 }
 

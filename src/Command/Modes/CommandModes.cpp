@@ -2,6 +2,10 @@
 #include <Frate/Generators.hpp>
 #include <sys/socket.h>
 
+namespace Command{
+}
+
+
 namespace  Command::Modes{
   bool getModeName(Mode &mode){
     Prompt<std::string> *name = new Prompt<std::string>("Name: ");
@@ -9,10 +13,21 @@ namespace  Command::Modes{
     mode.name = name->Get();
     return true;
   }
+  bool Options(Interface *inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand", "args"});
+    inter->options->add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())
+      ("args", "Subcommand to run", cxxopts::value<std::string>());
+    return inter->parse();
+  }
+
   bool add(Interface* interface){
     std::cout << "Adding mode" << std::endl; 
     Mode mode;
-    getModeName(mode);
+    mode.name = interface->args->operator[]("args").as<std::string>();
+
     interface->pro->modes.push_back(mode);
 
     std::cout << "Writing frate-project.json" << std::endl;
@@ -26,14 +41,13 @@ namespace  Command::Modes{
     return true;
   }
   bool remove(Interface* interface){
-    std::cout << "Removing mode" << std::endl;
-    Prompt<std::string> *name = new Prompt<std::string>("Name: ");
-    name->Run();
-    std::string mode_name = name->Get();
-
+    std::string mode_name = interface->args->operator[]("args").as<std::string>(); 
+    std::cout << "Removing mode: " << mode_name << std::endl;
     std::erase_if(interface->pro->modes, [&mode_name](Mode &mode){
         return mode.name == mode_name;
         });
+    Generators::ConfigJson::writeConfig(interface->pro);
+    Generators::CMakeList::createCMakeListsExecutable(interface->pro);
     return true;
   }
   bool list(Interface* interface){

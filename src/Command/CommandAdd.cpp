@@ -5,6 +5,7 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Command/Toolchains.hpp>
+#include <Frate/Command/Modes.hpp>
 #include <cxxopts.hpp>
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -90,8 +91,8 @@ namespace Command {
           .positional_args = {"mode-name"},
           .docs = "Adds a build mode to your project",
           .callback = [this]() {
-            OptionsInit::Modes(this);
-            return buildTypeAdd(this);
+            Modes::Options(this);
+            return Modes::add(this);
           },
         },
         Handler{
@@ -126,7 +127,6 @@ namespace Command {
   bool Interface::add() {
     std::vector<Handler> addHandlers = getAddHandlers();
     std::string subcommand;
-
     if(args->count("subcommand")){
 
       subcommand = args->operator[]("subcommand").as<std::string>();

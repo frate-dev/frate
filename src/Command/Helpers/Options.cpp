@@ -12,15 +12,7 @@ namespace Command {
    */
   //TODO: add
   //
-  bool OptionsInit::Modes(Interface *inter) {
-    inter->InitHeader();
-    inter->options->parse_positional({"command", "subcommand", "subsubcommand"});
-    inter->options->add_options()
-      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
-      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
-      ("subsubcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
-    return inter->parse();
-  }
+
   bool OptionsInit::Mode(Interface *inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "mode", "action",  "arguments"});
