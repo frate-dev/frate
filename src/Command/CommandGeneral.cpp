@@ -8,7 +8,7 @@ namespace Command {
   bool Interface::LoadProjectJson() {
     using nlohmann::json;
     std::fstream file;
-    std::string file_name = "config.json";
+    std::string file_name = "frate-project.json";
     try {
       std::cout << "Loading: " << (pro->project_path / file_name) << std::endl;
       file.open((pro->project_path / file_name).string());

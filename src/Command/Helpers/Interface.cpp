@@ -58,11 +58,11 @@ namespace Command {
 #else
     pro->project_path = std::filesystem::current_path();
 #endif
+  }
+  bool Interface::execute(){
     if(LoadProjectJson()){
       project_present = true;
     }
-  }
-  bool Interface::execute(){
     if(this->args->count("yes")){
       this->skip_prompts = true;
       std::cout << "Skipping prompts" << ENDL;
@@ -111,9 +111,9 @@ namespace Command {
       },
 
       Handler{
-        .aliases = {"ftp"},
+        .aliases = {"nuke"},
         .flags = {}, //TODO: Add flags
-        .docs = "Deletes the entire project F*ck This Project",
+        .docs = "Deletes the entire project",
         .callback = [this](){
           return this->ftp();
         }

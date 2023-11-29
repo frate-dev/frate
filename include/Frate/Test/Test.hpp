@@ -12,7 +12,27 @@ namespace Tests{
 
 
 namespace Tests::Command {
+  using std::filesystem::path;
+  extern const std::filesystem::path test_path;
+  void cleanUp(path test_path);
+
+  void init(path test_path);
+
+  bool validateProjectJson(::Command::Interface* inter);
+
+  std::pair<int, char**> genCommand(std::string args);
   bool testCommandInit();
+  bool testNew();
+  bool testNewWithLang(std::string lang);
+  bool testNewWithType(std::string type);
+
+
+  bool testAddPackage(std::string package_name);
+
+  bool testAddPackageMultiple();
+
+  bool testRemovePackage();
+  bool testAddPackageToMode(std::string mode_name, std::string package_name);
 }
 
 namespace Tests::Generators{

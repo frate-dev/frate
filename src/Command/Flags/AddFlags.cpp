@@ -13,7 +13,7 @@ namespace Command::Flags {
             std::cout << "Adding flag: " << flag << std::endl;
             m.flags.push_back(flag);
           }
-          std::cout << "Writing config.json" << std::endl;
+          std::cout << "Writing frate-project.json" << std::endl;
           Generators::ConfigJson::writeConfig(inter->pro);
           Generators::CMakeList::createCMakeListsExecutable(inter->pro);
           return true;
@@ -24,7 +24,7 @@ namespace Command::Flags {
       std::cout << "Adding flag: " << flag << std::endl;
       inter->pro->flags.push_back(flag);
     }
-    std::cout << "Writing config.json" << std::endl;
+    std::cout << "Writing frate-project.json" << std::endl;
     Generators::ConfigJson::writeConfig(inter->pro);
     return true;
   }
