@@ -41,6 +41,7 @@ namespace Generators::CMakeList {
   }
   std::string template_index = static_cast<std::string>(std::getenv("HOME"))+ "/.config/frate/templates.json";
 
+  std::filesystem::create_directories(static_cast<std::string>(std::getenv("HOME")) + "/.config/frate");
   std::ifstream  template_index_file;
 
   if (!std::filesystem::exists(template_index)){
