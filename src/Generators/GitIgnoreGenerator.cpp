@@ -59,6 +59,7 @@ compile_commands.json
       std::cout << "Gitignore already exists" << std::endl;
       Prompt *prompt = new Prompt("Do you want to overwrite it?");
       prompt->Color(Ansi::RED)->ExitOnFailure()->Run();
+      prompt->IsBool();
       auto [valid, value] = prompt->Get<bool>();
       if(!valid || !value){
         return false;

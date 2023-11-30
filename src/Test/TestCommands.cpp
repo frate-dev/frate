@@ -53,6 +53,8 @@ namespace Tests::Command {
     REQUIRE(testAddPackageToMode("Debug","cxxopts"));
     REQUIRE(testAddPackageToMode("Test","cxxopts"));
     REQUIRE(testAddPackageToMode("Release","cxxopts"));
+
+    REQUIRE(testNuke());
     //REQUIRE(testCommandAdd());
   }
 }

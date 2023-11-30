@@ -47,6 +47,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     if(std::filesystem::exists(pro->project_path / pro->src_dir)){
       Prompt *overwrite_prompt = new Prompt("src directory already exists, overwrite?");
       overwrite_prompt->Color(RED);
+      overwrite_prompt->IsBool();
       overwrite_prompt->Run();
       if(!overwrite_prompt->Get<bool>().second){
         return false;

@@ -11,7 +11,7 @@ namespace Command{
 
     Prompt *prompt = new Prompt(
         "Are you sure you would like to delete the entire project?");
-    prompt->Color(RED)->Run();
+    prompt->Color(RED)->IsBool()->Run();
     auto [valid, value] = prompt->Get<bool>();
     if (!valid || !value) {
       std::cout << "Aborting..." << std::endl;

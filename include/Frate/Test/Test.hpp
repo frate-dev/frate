@@ -36,6 +36,8 @@ namespace Tests::Command {
 
   bool testRemovePackage();
   bool testAddPackageToMode(std::string mode_name, std::string package_name);
+
+  bool testNuke();
 }
 
 namespace Tests::Generators{

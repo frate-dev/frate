@@ -85,9 +85,9 @@ namespace Utils::CLI {
   void Prompt::prompt_prefix(int term_width){
     int text_length = 0;
     if(is_bool){
-      std::cout << color << prompt << Ansi::RESET;
+      std::cout << "is bool";
       std::string  booloptions = "[y/n]";
-      std::cout << prompt;
+      std::cout << color << prompt << termcolor::white << booloptions << Ansi::RESET;
       text_length += prompt.length() + booloptions.length();
     }else if(has_options()){
       std::cout 
@@ -131,7 +131,9 @@ namespace Utils::CLI {
   }
   void Prompt::get_input(){
 
-
+    #ifdef TEST
+      return;
+    #endif
 
 
     struct termios oldt, newt;
@@ -216,6 +218,9 @@ namespace Utils::CLI {
   }
   template <>
   std::pair<bool, bool> Prompt::Get(){
+#ifdef TEST
+    return std::make_pair(true, true);
+#endif
     if(input == "y" || input == "Y"){
       return std::make_pair(true, true);
     }else if(input == "n" || input == "N"){
@@ -282,7 +287,7 @@ namespace Utils::CLI {
     }
   }
   Prompt* Prompt::IsBool(){
-    is_bool = true;
+    this->is_bool = true;
     return this;
   }
   Prompt* Prompt::ExitOnFailure(){
