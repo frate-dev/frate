@@ -51,6 +51,7 @@ bool downloadCMakeListsTemplate(Interface* inter){
  git_repository *repo = NULL; 
   std::cout << "Cloning " << repo_url << " into " << (pro->project_path / "templates").c_str() << std::endl;
   git_clone(&repo, repo_url.c_str(), (pro->project_path / "templates").c_str(), NULL);
+  std::filesystem::remove_all(pro->project_path / "templates" / ".git");
   return true;
 }
 
