@@ -112,6 +112,7 @@ bool createJson(std::shared_ptr<Project> pro) {
       std::ofstream file_stream;
       file_stream.open(pro->project_path / pro->src_dir / "main.cpp");
       file_stream << file_content;
+      std::filesystem::remove(pro->project_path / pro->src_dir / "main.tmpl");
 
 
     }catch(std::exception &e){
@@ -147,6 +148,7 @@ bool createJson(std::shared_ptr<Project> pro) {
       std::string file_content = env.render_file(pro->project_path / pro->src_dir / "main.tmpl", pro->toJson());
       std::ofstream file_stream;
       file_stream.open(pro->project_path / pro->src_dir / "main.c");
+      std::filesystem::remove(pro->project_path / pro->src_dir / "main.tmpl");
       file_stream << file_content;
     }catch(std::exception &e){
       Utils::debug(e.what());
