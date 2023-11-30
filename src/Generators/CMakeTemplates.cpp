@@ -46,12 +46,13 @@ namespace Generators::CMakeList {
   if (!std::filesystem::exists(template_index)){
     downloadCMakeListsTemplate(pro); 
   }
-  std::string repo_url = "https://github.com/frate-dev/default-executable.git";
+  std::string repo_url;
   std::cout << "file: " << template_index << std::endl;
   json templateIndex = json::parse(std::ifstream(template_index));
+  std::cout << templateIndex.dump(2) << std::endl;
   for(json temp: templateIndex){
     if (temp["name"] == pro->template_name){
-      repo_url = temp["repo_url"];
+      repo_url = temp["git"];
     }
   }
 
