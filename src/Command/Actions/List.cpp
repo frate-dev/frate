@@ -1,14 +1,12 @@
-#include <stdint.h> 
-#include "termcolor/termcolor.hpp"
-#include <Frate/Command.hpp>
-#include <Frate/Command/Package.hpp>
+#include <Frate/Command/Actions/List.hpp>
+#include <Frate/Command/License.hpp>
 #include <Frate/Command/Modes.hpp>
+#include <Frate/Command/Package.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Command/Toolchains.hpp>
-#include <Frate/Command/License.hpp>
-#include <Frate/Utils/CLI.hpp>
-namespace Command{
-  bool OptionsInit::List(Interface* inter) {
+
+namespace Command::List{
+  bool options(Interface* inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->allow_unrecognised_options().add_options()
@@ -18,14 +16,14 @@ namespace Command{
     return inter->parse();
   }
   
-  std::vector<Handler> Interface::getListHandlers(){
+  std::vector<Handler> handlers(Interface *inter) {
     return {
       Handler{
         .aliases = 
         {"modes","m"},
         .docs = "List modes",
-        .callback = [this]() {
-          return Modes::list(this);
+        .callback = [inter]() {
+          return Modes::list(inter);
         },
         .requires_project = true
       },
@@ -33,16 +31,16 @@ namespace Command{
         .aliases = 
         {"servers","remote-servers"},
         .docs = "List remote servers",
-        .callback = [this]() {
-          return RemoteServers::list(this);
+        .callback = [inter]() {
+          return RemoteServers::list(inter);
         }
       },
       Handler{
         .aliases = {"installed-packages","packages","p"},
         .flags = {"-m","--mode"},
         .docs = "List installed packages",
-        .callback = [this]() {
-          return Packages::list(this);
+        .callback = [inter]() {
+          return Packages::list(inter);
         },
         .requires_project = true
       },
@@ -50,9 +48,9 @@ namespace Command{
         .aliases = 
         {"flags","f"},
         .docs = "List flags",
-        .callback = [this]() {
+        .callback = [inter]() {
           //TODO: List flags
-          (void)this;
+          (void)inter;
           return true;
         },
         .implemented = false,
@@ -62,9 +60,9 @@ namespace Command{
         .aliases = 
         {"authors","a"},
         .docs = "List authors",
-        .callback = [this]() {
+        .callback = [inter]() {
           //TODO: List authors
-          (void)this;
+          (void)inter;
           return true;
         },
         .implemented = false,
@@ -74,8 +72,8 @@ namespace Command{
         .aliases = 
         {"available-targets","at"},
         .docs = "List available targets",
-        .callback = [this]() {
-          (void)this;
+        .callback = [inter]() {
+          (void)inter;
           Command::Toolchains::list();
           return true;
         }
@@ -84,8 +82,8 @@ namespace Command{
         .aliases = 
         {"licenses","lc"},
         .docs = "List possible licenses",
-        .callback = [this]() {
-          return License::list(this);
+        .callback = [inter]() {
+          return License::list(inter);
         },
         .requires_project = true
       },
@@ -93,16 +91,17 @@ namespace Command{
   }
 
 
-  bool Interface::list(){
-    std::vector<Handler> handlers = getListHandlers();
+  bool run(Interface* inter){
+    options(inter);
+    std::vector<Handler> listHandlers = handlers(inter);
     std::string target;
-    if(args->operator[]("subcommand").count() > 0){
-      target = args->operator[]("subcommand").as<std::string>();
+    if(inter->args->operator[]("subcommand").count() > 0){
+      target = inter->args->operator[]("subcommand").as<std::string>();
     }else{
       std::cout << termcolor::bright_red << "No subcommand provided" << ENDL;
-      getHelpString("list", handlers);
+      inter->getHelpString("list", listHandlers);
       return false;
     }
-    return runCommand(target, handlers);
+    return inter->runCommand(target, listHandlers);
   }
 }

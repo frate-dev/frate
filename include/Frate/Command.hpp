@@ -136,33 +136,47 @@ namespace Command {
       //Commands;
       //TODO: We really should define top level commands as seperate modules
       bool init();
+      [[deprecated("use Command::Actions::Add::run instead")]]
       bool add();
+      [[deprecated("use Command::Actions::Add::run instead")]]
       bool get();
+      [[deprecated("use Command::Actions::set::run instead")]]
       bool set();
+      [[deprecated("use Command::Actions::remove::run instead")]]
       bool remove();
+      [[deprecated("use Command::Actions::update::run instead")]]
       bool update();
       bool run();
       bool help();
+      [[deprecated("use Command::Actions::search::run instead")]]
       bool search();
       bool ftp();
       bool watch();
       bool clean();
       bool build();
+      [[deprecated("use Command::Actions::list::run instead")]]
       bool list();
+    public:
       void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
       void getHelpString(Handler &handler);
       bool runCommand(std::string,std::vector<Handler>&);
-    public:
       std::shared_ptr<Project> pro;
       bool project_present{false};
       std::vector<Handler> commands{};
       //All sub command getters
+      [[deprecated("use Command::Actions::handlers instead")]]
       std::vector<Handler> getAddHandlers();
+      [[deprecated("use Command::Actions::handlers instead")]]
       std::vector<Handler> getGetHandlers();
+      [[deprecated("use Command::Actions::handlers instead")]]
       std::vector<Handler> getSetHandlers();
+      [[deprecated("use Command::Actions::handlers instead")]]
       std::vector<Handler> getListHandlers();
+      [[deprecated("use Command::Actions::handlers instead")]]
       std::vector<Handler> getSearchHandlers();
+      [[deprecated("use Command::Actions::handlers instead")]]
       std::vector<Handler> getRemoveHandlers();
+      [[deprecated("use Command::Actions::handlers instead")]]
       std::vector<Handler> getUpdateHandlers();
 
       bool execute();

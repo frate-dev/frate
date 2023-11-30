@@ -1,4 +1,10 @@
 #include <Frate/Command.hpp>
+#include <Frate/Command/Actions/Add.hpp>
+#include <Frate/Command/Actions/Set.hpp>
+#include <Frate/Command/Actions/Remove.hpp>
+#include <Frate/Command/Actions/List.hpp>
+#include <Frate/Command/Actions/Search.hpp>
+#include "Frate/Command/Actions/Update.hpp"
 #include "Frate/Utils/General.hpp"
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
@@ -129,44 +135,41 @@ namespace Command {
       Handler{
         .aliases = {"add"},
         .flags = {}, //TODO: Add flags
-        .subcommands = getAddHandlers(),
+        .subcommands = Add::handlers(this),
         .docs = "add sub command",
         .callback = [this](){
-          OptionsInit::Add(this);
-          return this->add();
+          return Add::run(this);
         }
       },
 
       Handler{
         .aliases = {"set"},
         .flags = {}, //TODO: Add flags
-        .subcommands = getSetHandlers(),
+        .subcommands = Set::handlers(this),
         .docs = "set sub command",
         .callback = [this](){
           //OptionsInit::Set(this);
-          return this->set();
+          return Set::run(this);
         }
       },
 
       Handler{
         .aliases = {"search"},
         .flags = {}, //TODO: Add flags
-        .subcommands = getSearchHandlers(),
+        .subcommands = Search::handlers(this),
         .docs = "search sub command",
         .callback = [this](){
-          OptionsInit::Search(this);
-          return this->search();
+          return Search::run(this);
         },
         .requires_project = false
       },
       Handler{
         .aliases = {"list", "ls"},
         .flags = {}, //TODO: Add flags
-        .subcommands = getListHandlers(),
+        .subcommands = List::handlers(this),
         .docs = "list sub command",
         .callback = [this](){
-          OptionsInit::List(this);
-          return this->list();
+          return List::run(this);
         },
         .requires_project = false
       },
@@ -174,21 +177,20 @@ namespace Command {
       Handler{
         .aliases = {"remove", "rm"},
         .flags = {}, //TODO: Add flags
+        .subcommands = Remove::handlers(this),
         .docs = "remove sub command",
         .callback = [this](){
-          OptionsInit::Remove(this);
-          return this->remove();
+          return Remove::run(this);
         }
       },
 
       Handler{
         .aliases = {"update"},
         .flags = {}, //TODO: Add flags
-        .subcommands = getUpdateHandlers(),
+        .subcommands = Update::handlers(this),
         .docs = "update sub command",
         .callback = [this](){
-          OptionsInit::Update(this);
-          return this->update();
+          return Update::run(this);
         }
       },
 
