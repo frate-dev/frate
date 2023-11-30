@@ -53,7 +53,7 @@ namespace Command {
       std::cout << "Failed to write frate-project.json" << std::endl;
     }
 
-    if(!Generators::CMakeList::createCMakeListsExecutable(interface->pro)){
+    if(!Generators::CMakeList::createCMakeLists(interface->pro)){
       std::cout << "Failed to write CMakeLists.txt" << std::endl;
     }
     return true;

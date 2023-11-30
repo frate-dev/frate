@@ -6,7 +6,7 @@
 
 
 namespace Command::Packages {
-  using Generators::CMakeList::createCMakeListsExecutable;
+  using Generators::CMakeList::createCMakeLists;
   using Generators::ConfigJson::writeConfig;
 
 
@@ -103,7 +103,7 @@ namespace Command::Packages {
         error << "Failed to write frate-project.json" << std::endl;
       }
 
-      if (!createCMakeListsExecutable(inter->pro)) {
+      if (!createCMakeLists(inter->pro)) {
         error << "Failed to write CMakeLists.txt" << std::endl;
       }
     }

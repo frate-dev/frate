@@ -17,7 +17,7 @@ namespace Command::Packages {
       }
     }
     Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
+    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
   bool remove(Interface *inter) {
@@ -50,7 +50,7 @@ Usage remove dep:
     });
 
     Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
+    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
 

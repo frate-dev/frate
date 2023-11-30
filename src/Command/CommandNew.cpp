@@ -129,7 +129,7 @@ bool createJson(std::shared_ptr<Project> pro) {
   bool createProjectWizard(Interface *inter){
     createJson(inter->pro);
     inter->LoadProjectJson();
-    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
+    Generators::CMakeList::createCMakeLists(inter->pro);
     if(inter->pro->lang == "cpp"){
       if(!createHelloWorldCpp(inter->pro)){
         return false;
@@ -253,7 +253,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     }
     Generators::Readme::create(pro);
     if(project_type == ProjectType::EXECUTABLE){
-      if(!Generators::CMakeList::createCMakeListsExecutable(pro)){
+      if(!Generators::CMakeList::createCMakeLists(pro)){
         return false;
       }
     }else if(project_type == ProjectType::HEADER_ONLY){
