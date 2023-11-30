@@ -94,6 +94,7 @@ namespace Command {
     std::string lang_version{"20"};
     std::string compiler{"g++"};
     std::string license{""};
+    std::string default_mode{"Release"};
     std::vector<Mode> modes{
       Mode{.name = "Release", .flags={"-O2 "}}, 
       Mode{.name= "Debug", .flags= {"-g"}},

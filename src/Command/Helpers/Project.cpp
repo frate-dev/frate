@@ -20,6 +20,7 @@ namespace Command {
       authors = j["authors"];
       project_type = j["project_type"];
       project_description = j["project_description"];
+      default_mode = j["default_mode"];
       for (auto &dep : j["dependencies"]) {
         Package d;
         d.name = dep["name"];
@@ -86,6 +87,7 @@ namespace Command {
       j["src_dir"] = src_dir;
       j["build_dir"] = build_dir;
       j["include_dir"] = include_dir;
+      j["default_mode"] = default_mode;
       j["modes"] = modes_json;
       j["dependencies"] = deps;
       j["flags"] = flags;

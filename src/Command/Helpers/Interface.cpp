@@ -194,7 +194,7 @@ namespace Command {
 
       Handler{
         .aliases = {"clean"},
-        .flags = {"-c","--cache"}, //TODO: Add flags
+        .flags = {"-c,--cache"}, //TODO: Add flags
         .docs = "clean sub command",
         .callback = [this](){
           OptionsInit::Clean(this);
@@ -204,7 +204,7 @@ namespace Command {
 
       Handler{
         .aliases = {"build"},
-        .flags = {}, //TODO: Add flags
+        .flags = {"-m,--mode","-t,--target","-j,--jobs"}, //TODO: Add flags
         .docs = "build sub command",
         .callback = [this](){
           OptionsInit::Build(this);
