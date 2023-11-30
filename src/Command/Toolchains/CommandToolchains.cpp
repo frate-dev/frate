@@ -35,7 +35,7 @@ namespace Command::Toolchains{
     file << toolchain_template;
     inter->pro->toolchains.push_back(toolchain);
     Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
+    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
   bool remove(std::string toolchain_name, Interface* interface){

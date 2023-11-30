@@ -40,7 +40,7 @@ namespace  Command::Modes{
       std::cout << "Failed to write frate-project.json" << std::endl;
     }
 
-    if(!Generators::CMakeList::createCMakeListsExecutable(interface->pro)){
+    if(!Generators::CMakeList::createCMakeLists(interface->pro)){
       std::cout << "Failed to write CMakeLists.txt" << std::endl;
     }
     return true;
@@ -52,7 +52,7 @@ namespace  Command::Modes{
         return mode.name == mode_name;
         });
     Generators::ConfigJson::writeConfig(interface->pro);
-    Generators::CMakeList::createCMakeListsExecutable(interface->pro);
+    Generators::CMakeList::createCMakeLists(interface->pro);
     return true;
   }
   bool list(Interface* interface){

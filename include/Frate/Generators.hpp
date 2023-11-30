@@ -44,7 +44,7 @@ namespace Generators{
      */
 
     bool create(std::shared_ptr<Command::Project> pro); 
-    bool createCMakeListsExecutable(std::shared_ptr<Command::Project> pro);
+    bool createCMakeLists(std::shared_ptr<Command::Project> pro);
   }
 
   namespace ConfigJson{

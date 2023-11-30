@@ -38,7 +38,7 @@ namespace Command::ModeCommands {
       }
     }
     Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
+    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
   bool removePackages(Interface* inter, std::string mode){
@@ -54,7 +54,7 @@ namespace Command::ModeCommands {
       }
     }
     Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
+    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
 };
