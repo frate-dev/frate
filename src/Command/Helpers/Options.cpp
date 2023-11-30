@@ -22,6 +22,7 @@ namespace Command {
       ("mode", "mode to modify", cxxopts::value<std::string>())("h,help", "Print usage")
       ("action", "action to perform", cxxopts::value<std::string>())
       ("subaction", "action to perform", cxxopts::value<std::string>())
+      ("vr,version", "Print version");
       ("arguments", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>());
     return inter->parse();
   }

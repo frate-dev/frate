@@ -1,8 +1,26 @@
 cmake_minimum_required(VERSION 3.10)
 
+set(VMINOR 0)
+set(VMAJOR 0)
+set(VPATCH 1)
+
+
+if(DEFINED ENV{VBUILD})
+  set(VBUILD $ENV{VBUILD})
+else()
+  set(VBUILD 0)
+endif()
+
+add_definitions(-DVMINOR=${VMINOR})
+add_definitions(-DVMAJOR=${VMAJOR})
+add_definitions(-DVPATCH=${VPATCH})
+add_definitions(-DVBUILD=${VBUILD})
+
+set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+set(CMAKE_C_COMPILER /usr/bin/clang)
 project ( 
     frate
-    VERSION 0.0.1
+    VERSION ${VMAJOR}.${VMINOR}.${VPATCH}.${VBUILD}
     LANGUAGES CXX
 )
 set(CMAKE_CXX_STANDARD 20)

@@ -2,6 +2,7 @@
 #include "Frate/Utils/General.hpp"
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
+#include <Frate/Constants.hpp>  
 #include <memory>
 #include <nlohmann/json_fwd.hpp>
 #include <git2.h>
@@ -17,7 +18,8 @@ namespace Command {
         "v,verbose", "Verbose output",
         cxxopts::value<bool>()->default_value("false"))(
         "y,confim-all", "skip all y/n prompts",
-        cxxopts::value<bool>()->default_value("false"))("h,help", "Print usage");
+        cxxopts::value<bool>()->default_value("false"))("h,help", "Print usage")
+        ("version", "Print version");
     return inter->parse();
   }
 
@@ -47,6 +49,10 @@ namespace Command {
     this->pro = std::make_shared<Project>();
     OptionsInit::Main(this);
     this->parse();
+    if(this->args->count("version")){
+      std::cout << Constants::VERSION << ENDL;
+      exit(0);
+    }
     //After the parse we can set the context args
     this->pro->args = this->args;
 
@@ -74,6 +80,7 @@ namespace Command {
     // if(!this->args->count("command")){
     //   this->help();
     std::string command = this->args->operator[]("command").as<std::string>();
+
 
 
     std::cout << "Project Path: " << pro->project_path << ENDL;

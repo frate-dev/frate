@@ -7,8 +7,11 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
-  RELEASE_VERSION: 0.1.0
-  PACKAGE_NAME: nightly-0.1.0.${{github.run_number}}
+  VMAJOR: 0
+  VMINOR: 1
+  VPATCH: 0
+  VBUILD: ${{github.run_number}} 
+  PACKAGE_NAME: frate-nightly
 
 jobs:
   build:
@@ -23,7 +26,12 @@ jobs:
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/ -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: | 
+        export VMAJOR=${{env.VMAJOR}}
+        export VMINOR=${{env.VMINOR}}
+        export VPATCH=${{env.VPATCH}}
+        export VBUILD=${{env.VBUILD}}
+        cmake -B ${{github.workspace}}/ -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build & Zip Distribution
       working-directory: ${{github.workspace}}
@@ -32,7 +40,7 @@ jobs:
         cd ${{github.workspace}}
         make -j32
         mkdir ./dist
-        tar -czf ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz ./build/
+        tar -czf ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}-${{env.VMAJOR}}.${{env.VMINOR}}.${{env.VPATCH}}.${{env.VBUILD}}.tar.gz ./build/
 
     - name: BuildTest
       working-directory: ${{github.workspace}}

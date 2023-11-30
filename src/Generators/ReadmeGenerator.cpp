@@ -36,7 +36,7 @@ Find more information at the [Frate Github]({help_url})
 
 )";
 
-      Utils::replaceKey(readme, "{project_name}", pro->project_name);
+      Utils::replaceKey(readme, "{project_name}", pro->project_name + Constants::VERSION);
       Utils::replaceKey(readme, "{name}", Constants::NAME);
       Utils::replaceKey(readme, "{description}", pro->project_description);
       Utils::replaceKey(readme, "{author}", pro->authors.size() > 0 ? pro->authors[0] : "");
