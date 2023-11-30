@@ -58,7 +58,7 @@ jobs:
         repo_token: ${{ secrets.CI_TOKEN }}
         file: ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}-${{env.VMAJOR}}.${{env.VMINOR}}.${{env.VPATCH}}.${{env.VBUILD}}.tar.gz
         asset_name: frate.tar.gz
-        tag: ${VERSION}
+        tag: ${{env.PACKAGE_NAME}}-${{env.VMAJOR}}.${{env.VMINOR}}.${{env.VPATCH}}.${{env.VBUILD}}
         overwrite: false
         prerelease: true
         make_latest: true
