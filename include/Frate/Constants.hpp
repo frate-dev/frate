@@ -7,6 +7,14 @@ namespace Constants {
   const std::string DESCRIPTION = "CLI utility for managing your project, a modern touch for C/C++";
   const std::string PROJECT_URL = "https://github.com/frate-dev/frate";
   
+  const std::string VERSION = 
+    std::to_string(VMAJOR) + "." + 
+    std::to_string(VMINOR) + "." + 
+    std::to_string(VPATCH)
+#ifdef VBUILD
+    + "." + std::to_string(VBUILD)
+#endif
+    ;
 
   const std::vector<std::string> SUPPORTED_CMAKE_VERSIONS =
   {
