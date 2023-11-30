@@ -26,6 +26,7 @@ namespace Command::Flags {
     }
     std::cout << "Writing frate-project.json" << std::endl;
     Generators::ConfigJson::writeConfig(inter->pro);
+    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
 }
