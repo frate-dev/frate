@@ -40,7 +40,7 @@ jobs:
         cd ${{github.workspace}}
         make -j32
         mkdir ./dist
-        tar -czf ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}-${{env.VMAJOR}}.${{env.VMINOR}}.${{env.VPATCH}}.${{env.VBUILD}}.tar.gz ./build/
+        tar -czf ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz ./build/
 
     - name: BuildTest
       working-directory: ${{github.workspace}}

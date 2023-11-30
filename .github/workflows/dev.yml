@@ -19,6 +19,9 @@ jobs:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: self-hosted
 
+    env:
+      FULL_PACKAGE_NAME: ${{env.PACKAGE_NAME}}-${{env.VMAJOR}}.${{env.VMINOR}}.${{env.VPATCH}}.${{env.VBUILD}}
+
     steps:
     - uses: actions/checkout@v3
 
@@ -39,7 +42,7 @@ jobs:
         cd ${{github.workspace}}
         make -j32
         mkdir ./dist
-        tar -czf ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}-${{env.VMAJOR}}.${{env.VMINOR}}.${{env.VPATCH}}.${{env.VBUILD}}.tar.gz ./build/
+        tar -czf ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz ./build/
 
     - name: BuildTest
       working-directory: ${{github.workspace}}
@@ -56,11 +59,11 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.CI_TOKEN }}
-        file: ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}-${{env.VMAJOR}}.${{env.VMINOR}}.${{env.VPATCH}}.${{env.VBUILD}}.tar.gz
+        file: ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz
         asset_name: frate.tar.gz
-        tag: ${{env.PACKAGE_NAME}}-${{env.VMAJOR}}.${{env.VMINOR}}.${{env.VPATCH}}.${{env.VBUILD}}
+        tag: ${{FULL_PACKAGE_NAME}}
         overwrite: false
         prerelease: true
         make_latest: true
-        release_name: "${{env.PACKAGE_NAME}}-${{env.VMAJOR}}.${{env.VMINOR}}.${{env.VPATCH}}.${{env.VBUILD}}"
-        body: "${{env.PACKAGE_NAME}}-${{env.VMAJOR}}.${{env.VMINOR}}.${{env.VPATCH}}.${{env.VBUILD}}" 
+        release_name: "${{FULL_PACKAGE_NAME}}"
+        body: "${{FULL_PACKAGE_NAME}}" 
