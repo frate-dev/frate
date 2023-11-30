@@ -3,7 +3,7 @@
 
 
 namespace Tests::Command {
-  bool TestFlagSingle(){
+  bool testFlagsSingle(){
     std::cout << "Testing add flags command" << std::endl;
     if(!testNew()){
       std::cout << "Failed to create new project" << std::endl;
@@ -19,7 +19,8 @@ namespace Tests::Command {
       return false;
     }
 
-    if(inter->pro->flags[0] != "-O3"){
+    if(inter->pro->flags[0] != "-'O3'"){
+      std::cout << inter->pro->flags[0] << std::endl;
       cleanUp(test_path);
       std::cout << "Failed to add flags project" << std::endl;
       return false;

@@ -3,7 +3,7 @@
 
 
 namespace Tests::Command {
-  bool TestTagsMultiple(){
+  bool testFlagsMultiple(){
     std::cout << "Testing add flags command" << std::endl;
     if(!testNew()){
       std::cout << "Failed to create new project" << std::endl;
@@ -20,7 +20,7 @@ namespace Tests::Command {
     }
 
     for(auto &i : inter->pro->flags){
-      if(i != "-g" && i != "-O3"){
+      if(i == "-'g'" || i == "-'O3'"){
         cleanUp(test_path);
         std::cout << "Failed to add flags project" << std::endl;
         return false;

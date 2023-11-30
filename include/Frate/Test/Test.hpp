@@ -26,6 +26,9 @@ namespace Tests::Command {
   bool testNewWithLang(std::string lang);
   bool testNewWithType(std::string type);
 
+  bool testFlagsMultiple();
+  bool testFlagsSingle();
+  bool testFlagsWithMode();
 
   bool testAddPackage(std::string package_name);
 

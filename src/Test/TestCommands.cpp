@@ -38,6 +38,10 @@ namespace Tests::Command {
     REQUIRE(testNewWithLang("cpp"));
     REQUIRE(testNewWithLang("c"));
 
+    REQUIRE(testFlagsWithMode());
+    REQUIRE(testFlagsMultiple());
+    REQUIRE(testFlagsSingle());
+
     REQUIRE(testNewWithType("static_library"));
     REQUIRE(testNewWithType("executable"));
     REQUIRE(testNewWithType("shared_library"));

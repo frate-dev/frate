@@ -71,7 +71,7 @@ namespace Command {
         },
       },
         Handler{
-          .aliases = {"flag","f"},
+          .aliases = {"flags","f"},
           .positional_args = {"\"flag\""},
           .docs = "Add a flag to the project",
           .callback = [this]() {
