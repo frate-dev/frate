@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream> 
 #include <string>
+#include <inja.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp>
 #include <Frate/Wizards.hpp>
@@ -11,6 +12,48 @@
 namespace Command {
 using Utils::CLI::Prompt;
 using Utils::CLI::Ansi::RED;
+ bool downloadCMakeListsTemplate(std::shared_ptr<Command::Project> _){
+
+    std::cout << "Downloading CMakeLists.txt" << std::endl;
+    std::ofstream file;
+    json CMakeListsTemplateIndex = Utils::fetchJson("https://github.com/frate-dev/templates/releases/latest/download/index.json");
+    try{
+      file.open(static_cast<std::string>(std::getenv("HOME")) + "/.config/frate/" + "templates.json");
+      file << CMakeListsTemplateIndex.dump(2);
+    }catch(...){
+      Utils::debug("Error while opening file: templates.json");
+      return false;
+    }
+      
+    return true;
+  }
+bool downloadCMakeListsTemplate(Interface* inter){
+  std::shared_ptr<Project> pro = inter->pro;
+  std::string template_index = static_cast<std::string>(std::getenv("HOME"))+ "/.config/frate/templates.json";
+
+  std::filesystem::create_directories(static_cast<std::string>(std::getenv("HOME")) + "/.config/frate");
+  std::ifstream  template_index_file;
+
+  if (!std::filesystem::exists(template_index)){
+    downloadCMakeListsTemplate(pro); 
+  }
+  std::string repo_url;
+  std::cout << "file: " << template_index << std::endl;
+  json templateIndex = json::parse(std::ifstream(template_index));
+  std::cout << templateIndex.dump(2) << std::endl;
+  for(json temp: templateIndex){
+    if (temp["name"] == pro->template_name){
+      repo_url = temp["git"];
+    }
+  }
+
+
+ git_repository *repo = NULL; 
+  std::cout << "Cloning " << repo_url << " into " << (pro->project_path / "templates").c_str() << std::endl;
+  git_clone(&repo, repo_url.c_str(), (pro->project_path / "templates").c_str(), NULL);
+  std::filesystem::remove_all(pro->project_path / "templates" / ".git");
+  return true;
+}
 
 bool OptionsInit::Init(Interface* inter) {
   inter->InitHeader();
@@ -43,7 +86,7 @@ bool createJson(std::shared_ptr<Project> pro) {
   }
 
   bool createHelloWorldCpp(std::shared_ptr<Project> pro) {
-    //directory checks
+
     if(std::filesystem::exists(pro->project_path / pro->src_dir)){
       Prompt *overwrite_prompt = new Prompt("src directory already exists, overwrite?");
       overwrite_prompt->Color(RED);
@@ -61,15 +104,18 @@ bool createJson(std::shared_ptr<Project> pro) {
       return false;
     }
     std::ofstream file_stream;
-    std::string file_path = pro->project_path / pro->src_dir / "main.cpp";
+    std::string file_path = pro->project_path / pro->src_dir;
     try{
-      file_stream.open(file_path);
-      file_stream << "#include <iostream>\n"
-        "\n"
-        "int main(){\n"
-        "\tstd::cout << \"Hello World\" << std::endl;\n"
-        "\treturn 0;\n"
-        "}\n";
+
+      std::filesystem::rename(pro->project_path / "templates" / "src", file_path);
+      inja::Environment env;
+      std::string file_content = env.render_file(pro->project_path / pro->src_dir / "main.tmpl", pro->toJson());
+      std::ofstream file_stream;
+      file_stream.open(pro->project_path / pro->src_dir / "main.cpp");
+      file_stream << file_content;
+      std::filesystem::remove(pro->project_path / pro->src_dir / "main.tmpl");
+
+
     }catch(std::exception &e){
       Utils::debug(e.what());
       return false;
@@ -95,15 +141,16 @@ bool createJson(std::shared_ptr<Project> pro) {
       return false;
     }
     std::ofstream file_stream;
-    std::string file_path = pro->project_path / pro->src_dir / "main.c";
+    std::string file_path = pro->project_path / pro->src_dir ;
     try{
-      file_stream.open(file_path);
-      file_stream << "#include <stdio.h>\n"
-        "\n"
-        "int main(){\n"
-        "\tprintf(\"Hello World\");\n"
-        "\treturn 0;\n"
-        "}\n";
+
+      std::filesystem::rename(pro->project_path / "templates" / "src", file_path);
+      inja::Environment env;
+      std::string file_content = env.render_file(pro->project_path / pro->src_dir / "main.tmpl", pro->toJson());
+      std::ofstream file_stream;
+      file_stream.open(pro->project_path / pro->src_dir / "main.c");
+      std::filesystem::remove(pro->project_path / pro->src_dir / "main.tmpl");
+      file_stream << file_content;
     }catch(std::exception &e){
       Utils::debug(e.what());
       return false;
@@ -130,7 +177,7 @@ bool createJson(std::shared_ptr<Project> pro) {
   bool createProjectWizard(Interface *inter){
     createJson(inter->pro);
     inter->LoadProjectJson();
-    Generators::CMakeList::createCMakeLists(inter->pro);
+    downloadCMakeListsTemplate(inter);
     if(inter->pro->lang == "cpp"){
       if(!createHelloWorldCpp(inter->pro)){
         return false;
@@ -226,10 +273,12 @@ bool createJson(std::shared_ptr<Project> pro) {
     pro->lang = language;
 
 
+    downloadCMakeListsTemplate(this);
     if(defaults){
       std::cout << "Skipping init" << ENDL;
       std::cout << "Creating project" << ENDL;
       if (language == "cpp" || language == "c++"){
+
         if(!createHelloWorldCpp(pro)){
           return false;
         }
