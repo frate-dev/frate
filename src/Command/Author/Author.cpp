@@ -36,6 +36,35 @@ namespace Command::Author {
     inter->pro->save();
     return true;
   }
+  bool remove(Interface* inter){
+    options(inter);
+    std::vector<std::string> authors;
+    Utils::Info info;
+    Utils::Error error;
+    if(inter->args->count("authors") == 0){
+      info << "No authors specified" << std::endl;
+      return false;
+    }
+    authors = inter->args->operator[]("authors").as<std::vector<std::string>>();
+    for (std::string author : authors) {
+      for(auto current_author : inter->pro->authors){
+        if(current_author == author){
+          inter->pro->authors.erase(
+              std::remove(
+                inter->pro->authors.begin(), inter->pro->authors.end(), author
+                ), inter->pro->authors.end()
+              );
+          info << "Removed author " << author << std::endl;
+          inter->pro->save();
+          return true;
+        }
+      }
+      error << "Author " << author << " does not exist" << std::endl;
+      return false;
+    }
+    return true;
+
+  }
   bool list(Interface *inter){
     for (auto author : inter->pro->authors) {
       std::cout << author << std::endl;

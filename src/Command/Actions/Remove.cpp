@@ -3,6 +3,7 @@
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command/Modes.hpp>
 #include <Frate/Command/Package.hpp>
+#include <Frate/Command/Author.hpp>
 namespace Command::Remove {
 
   bool options(Interface *inter) {
@@ -50,6 +51,15 @@ namespace Command::Remove {
         .callback = [inter]() {
           Modes::options(inter);
           return Modes::remove(inter);
+        },
+      },
+      {
+        .aliases = {"author", "auth"},
+        .positional_args = {"author_name,..."},
+        .docs = "Remove an author from the project",
+        .callback = [inter]() {
+          Author::options(inter);
+          return Author::remove(inter);
         },
       }
     };

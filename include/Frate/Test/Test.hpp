@@ -30,16 +30,19 @@ namespace Tests::Command {
   bool testNewWithLang(std::string lang);
   bool testNewWithType(std::string type);
 
-  bool testFlagsMultiple();
-  bool testFlagsSingle();
-  bool testFlagsWithMode();
+  bool testAddFlagsMultiple();
+  bool testAddFlagsSingle();
+  bool testAddFlagsWithMode();
 
   bool testAddPackage(std::string package_name);
-
   bool testAddPackageMultiple();
-
-  bool testRemovePackage(std::string package_name);
   bool testAddPackageToMode(std::string mode_name, std::string package_name);
+  bool testRemovePackage(std::string package_name);
+
+  bool testAddAuthorMultiple(std::vector<std::string> name);
+  bool testAddAuthorSingle(std::string name);
+  bool testAddDuplicateAuthor(std::string name);
+  bool testRemoveAuthor(std::string name);
 
   bool testNuke();
 }

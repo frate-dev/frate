@@ -3,7 +3,7 @@
 
 
 namespace Tests::Command {
-  bool testFlagsSingle(){
+  bool testAddFlagsSingle(){
     cleanUp(test_path);
     info  << "Testing add flags command" << std::endl;
     if(!testNew()){

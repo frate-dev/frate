@@ -196,8 +196,6 @@ bool createJson(std::shared_ptr<Project> pro) {
     using nlohmann::json;
 
     json j = pro->toJson();
-    std::cout << "📄 New json File: \n";
-    std::cout << j << '\n';
 
     std::ofstream file;
     std::string file_name = "frate-project.json";

@@ -3,7 +3,7 @@
 
 
 namespace Tests::Command {
-  bool testFlagsWithMode(){
+  bool testAddFlagsWithMode(){
     std::cout << "Testing add flags command" << std::endl;
     if(!testNew()){
       std::cout << "Failed to create new project" << std::endl;
