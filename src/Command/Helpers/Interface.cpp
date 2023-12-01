@@ -135,7 +135,8 @@ namespace Command {
         .docs = "Deletes the entire project",
         .callback = [this](){
           return FTP::run(this);
-        }
+        },
+        .requires_project = false
       },
 
       Handler{

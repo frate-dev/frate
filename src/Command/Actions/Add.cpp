@@ -107,7 +107,7 @@ namespace Command::Add {
         },
         Handler{
           .aliases = {"author","a"},
-          .positional_args = {"author-name"},
+          .positional_args = {"author-name,..."},
           .docs = "Add an author to your project",
           .callback = [inter]() {
             return Author::add(inter);

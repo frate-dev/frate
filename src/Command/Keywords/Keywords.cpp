@@ -7,6 +7,6 @@ namespace Command::Keywords {
       ("command", "The command to run", cxxopts::value<std::string>())
       ("subcommand", "The subcommand to run", cxxopts::value<std::string>())
       ("keywords", "The keywords to search for", cxxopts::value<std::vector<std::string>>());
-    return true;
+    return inter->parse();
   }
 }
