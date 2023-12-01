@@ -2,8 +2,8 @@
 #include <Frate/Command/Actions/Set.hpp>
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command/License.hpp>
+#include <Frate/Command/Name.hpp>
 #include <Frate/Command/RemoteServers.hpp>
-#include <Frate/Command/Set.hpp>
 namespace Command::Set {
 
   bool options(Interface *inter) {
@@ -30,7 +30,7 @@ namespace Command::Set {
         .aliases = {"name","n"},
         .docs = "Set the project's name",
         .callback = [inter]() {
-          name(inter);
+          Name::set(inter);
           return true;//Name::set(inter);
         },
       },

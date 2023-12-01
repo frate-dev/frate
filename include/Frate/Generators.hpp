@@ -62,6 +62,7 @@ namespace Generators{
       std::string lang_version;
       std::string authors_str;
     } Config;
+    [[deprecated("Use project->writeConfig() instead")]]
     bool writeConfig(std::shared_ptr<Command::Project>& ctx);
   }
 

@@ -18,7 +18,7 @@ namespace  Command::Modes{
     mode.name = mode_name;
     return true;
   }
-  bool Options(Interface *inter) {
+  bool options(Interface *inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
     inter->options->add_options()

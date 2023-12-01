@@ -101,6 +101,7 @@ namespace Command {
       Mode{.name= "Test", .flags={"-g"}}
     };
     std::vector<std::string> authors;
+    std::vector<std::string> keywords;
     std::string src_dir{"src"};
     std::string include_dir{"include"};
     std::vector<RemoteServer> build_servers;
@@ -113,6 +114,8 @@ namespace Command {
     std::vector<std::string> toolchains {};
     void fromJson(json j);
     nlohmann::json toJson();
+    bool writeConfig();
+    void checkKeys(json j);
   } Project;
   typedef struct Handler_s Handler;
   typedef struct Handler_s {
@@ -132,36 +135,6 @@ namespace Command {
   } Handler;
 
   class Interface{
-    private:
-      //Commands;
-      //TODO: We really should define top level commands as seperate modules
-      bool init();
-      [[deprecated("use Command::Actions::Add::run instead")]]
-      bool add();
-      [[deprecated("use Command::Actions::Get::run instead")]]
-      bool get();
-      [[deprecated("use Command::Actions::Set::run instead")]]
-      bool set();
-      [[deprecated("use Command::Actions::Remove::run instead")]]
-      bool remove();
-      [[deprecated("use Command::Actions::Update::run instead")]]
-      bool update();
-      [[deprecated("use Command::Actions::Run::run instead")]]
-      bool run();
-      [[deprecated("use Command::Actions::Help::run instead")]]
-      bool help();
-      [[deprecated("use Command::Actions::Search::run instead")]]
-      bool search();
-      [[deprecated("use Command::Actions::FTP::run instead")]]
-      bool ftp();
-      [[deprecated("use Command::Actions::Watch::run instead")]]
-      bool watch();
-      [[deprecated("use Command::Actions::Clean::run instead")]]
-      bool clean();
-      [[deprecated("use Command::Actions::Build::run instead")]]
-      bool build();
-      [[deprecated("use Command::Actions::List::run instead")]]
-      bool list();
     public:
       void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
       void getHelpString(Handler &handler);
@@ -169,21 +142,6 @@ namespace Command {
       std::shared_ptr<Project> pro;
       bool project_present{false};
       std::vector<Handler> commands{};
-      //All sub command getters
-      [[deprecated("use Command::Actions::handlers instead")]]
-      std::vector<Handler> getAddHandlers();
-      [[deprecated("use Command::Actions::handlers instead")]]
-      std::vector<Handler> getGetHandlers();
-      [[deprecated("use Command::Actions::handlers instead")]]
-      std::vector<Handler> getSetHandlers();
-      [[deprecated("use Command::Actions::handlers instead")]]
-      std::vector<Handler> getListHandlers();
-      [[deprecated("use Command::Actions::handlers instead")]]
-      std::vector<Handler> getSearchHandlers();
-      [[deprecated("use Command::Actions::handlers instead")]]
-      std::vector<Handler> getRemoveHandlers();
-      [[deprecated("use Command::Actions::handlers instead")]]
-      std::vector<Handler> getUpdateHandlers();
 
       bool execute();
       bool skip_prompts{false};
@@ -201,29 +159,7 @@ namespace Command {
   };
 
   namespace OptionsInit{
-      //Top level commands
-      //TODO: We really should decouple the options from top level commands
-      bool Init(Interface*);
-      bool Search(Interface*);
-      bool Add(Interface*);
-      bool Set(Interface*);
-      bool Remove(Interface*);
-      bool Update(Interface*);
-      bool Watch(Interface*);
-      bool Clean(Interface*);
-      bool List(Interface*);
-      bool Build(Interface*);
       bool Main(Interface*);
-
-
-      [[deprecated("put options in the specific module")]]
-      bool Server(Interface*);
-      [[deprecated("put options in the specific module")]]
-      bool Packages(Interface*);
-      [[deprecated("put options in the specific module")]]
-      bool Flags(Interface*);
-      [[deprecated("put options in the specific module")]]
-      bool Mode(Interface*);
   };
 
   std::string downloadIndex();

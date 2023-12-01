@@ -48,7 +48,7 @@ namespace Command::Remove {
         .positional_args = {"mode"},
         .docs = "Remove a mode from the project",
         .callback = [inter]() {
-          Modes::Options(inter);
+          Modes::options(inter);
           return Modes::remove(inter);
         },
       }

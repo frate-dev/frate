@@ -2,6 +2,7 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command/Toolchains.hpp>
+#include <Frate/Command/Keywords.hpp>
 #include <Frate/Command/Author.hpp>
 #include <Frate/Command/Modes.hpp>
 #include <Frate/Command/RemoteServers.hpp>
@@ -75,7 +76,7 @@ namespace Command::Add {
           .positional_args = {"mode-name"},
           .docs = "Adds a build mode to your project",
           .callback = [inter]() {
-            Modes::Options(inter);
+            Modes::options(inter);
             return Modes::add(inter);
           },
         },
@@ -110,6 +111,15 @@ namespace Command::Add {
           .docs = "Add an author to your project",
           .callback = [inter]() {
             return Author::add(inter);
+          },
+        },
+        Handler{
+          .aliases = {"keywords","kw"},
+          .positional_args = {"keyword,..."},
+          .docs = "Add keywords to your project",
+          .callback = [inter]() {
+            Keywords::add(inter);
+            return false;
           },
         },
     };
