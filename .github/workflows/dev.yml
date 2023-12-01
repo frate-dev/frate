@@ -7,11 +7,6 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
-  VMAJOR: 0
-  VMINOR: 1
-  VPATCH: 0
-  VBUILD: ${{github.run_number}} 
-  PACKAGE_NAME: frate-nightly
 jobs:
   build:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
@@ -19,30 +14,11 @@ jobs:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: self-hosted
 
-    env:
-      FULL_PACKAGE_NAME: ${{env.PACKAGE_NAME}}-${{env.VMAJOR}}.${{env.VMINOR}}.${{env.VPATCH}}.${{env.VBUILD}}
-
     steps:
     - uses: actions/checkout@v3
 
-    - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: |
-        export VMAJOR=${{env.VMAJOR}}
-        export VMINOR=${{env.VMINOR}}
-        export VPATCH=${{env.VPATCH}}
-        export VBUILD=${{env.VBUILD}}
-        cmake -B ${{github.workspace}}/ -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
-    - name: Build & Zip Distribution
-      working-directory: ${{github.workspace}}
-      # Build your program with the given configuration
-      run: | 
-        cd ${{github.workspace}}
-        make -j32
-        mkdir ./dist
-        tar -czf ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz ./build/
 
     - name: BuildTest
       working-directory: ${{github.workspace}}
@@ -53,17 +29,4 @@ jobs:
     - name: RunTest
       working-directory: ${{github.workspace}}
       run: ./build/frate
-      
-      
-    - name: Upload artifacts
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.CI_TOKEN }}
-        file: ${{github.workspace}}/dist/${{env.PACKAGE_NAME}}.tar.gz
-        asset_name: frate.tar.gz
-        tag: ${{FULL_PACKAGE_NAME}}
-        overwrite: false
-        prerelease: true
-        make_latest: true
-        release_name: "${{FULL_PACKAGE_NAME}}"
-        body: "${{FULL_PACKAGE_NAME}}" 
+ 
