@@ -22,12 +22,12 @@ namespace Command {
     json data;
     try {
       json data = json::parse(file);
+      pro->checkKeys(data);
       pro->fromJson(data);
       //Simplfied this fucking code
       std::cout << "loadedJson = "  << pro->toJson() << ENDL;
     } catch (json::exception &e) {
       Utils::Error error;
-      pro->checkKeys(data);
       error << e.what() << std::endl;
       error << "Error: Could not load: " << (pro->project_path / file_name) << std::endl;
       return false;
