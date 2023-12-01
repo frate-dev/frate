@@ -1,8 +1,9 @@
-#include <Frate/Command/Set.hpp>
 
-namespace Command::Set{
+#include <Frate/Command/Name.hpp>
 
-  bool options(Interface* inter) {
+namespace Command::Name {
+
+  bool options(Interface* inter){
     inter->InitHeader();
     inter->options->parse_positional({"command","subcommand","name"});
     inter->options->add_options()

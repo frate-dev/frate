@@ -1,9 +1,9 @@
 #include "Frate/Utils/General.hpp"
-#include <Frate/Command/Set.hpp>
+#include <Frate/Command/Name.hpp>
 
-namespace Command::Set{
-  bool name(Interface* inter) {
-    Set::options(inter);
+namespace Command::Name {
+  bool set(Interface* inter) {
+    options(inter);
     Utils::Info info;
     Utils::Error error;
     if(inter->args->count("name") == 0) {
