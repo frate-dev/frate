@@ -1,6 +1,8 @@
 #include <Frate/Command/Actions/List.hpp>
 #include <Frate/Command/License.hpp>
 #include <Frate/Command/Modes.hpp>
+#include <Frate/Command/Author.hpp>.hpp>
+#include <Frate/Command/Flags.hpp>
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Command/Toolchains.hpp>
@@ -49,11 +51,9 @@ namespace Command::List{
         {"flags","f"},
         .docs = "List flags",
         .callback = [inter]() {
-          //TODO: List flags
-          (void)inter;
+          Flags::list(inter);
           return true;
         },
-        .implemented = false,
         .requires_project = true
       },
       Handler{
@@ -62,10 +62,9 @@ namespace Command::List{
         .docs = "List authors",
         .callback = [inter]() {
           //TODO: List authors
-          (void)inter;
+          Author::list(inter);
           return true;
         },
-        .implemented = false,
         .requires_project = true
       },
       Handler{

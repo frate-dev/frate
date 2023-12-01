@@ -12,4 +12,10 @@ namespace Command::Author {
     }
     return true;
   }
+  bool list(Interface *inter){
+    for (auto author : inter->pro->authors) {
+      std::cout << author << std::endl;
+    }
+    return true;
+  }
 }

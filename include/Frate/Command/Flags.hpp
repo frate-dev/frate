@@ -6,4 +6,5 @@ namespace Command::Flags {
   bool options(Interface* inter);
   bool add(Interface *inter);
   bool remove(Interface *inter);
+  bool list(Interface *inter);
 }

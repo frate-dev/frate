@@ -201,40 +201,7 @@ namespace Command {
               "  'cd /tmp/frate && cmake . && make -j ${nproc} && ./build/" +
               pro->project_name + "'";
           }
-          //        else{
-          //          std::string build_servers = std::string(std::getenv("HOME"))
-          //          + "/.config/frate/" + "build_servers.json"; json
-          //          build_servers_json =
-          //          json::parse(std::ifstream(build_servers)); std::string
-          //          build_server = args->operator[]("server").as<std::string>();
-          //          for (auto &bserver: build_servers_json){
-          //            if (bserver["name"].get<std::string>() == build_server){
-          //              pro->build_server = BuildServer(
-          //                bserver["name"].get<std::string>(),
-          //                bserver["authMethod"].get<std::string>(),
-          //                bserver["password"].get<std::string>(),
-          //                bserver["key"].get<std::string>(),
-          //                bserver["port"].get<int>()
-          //
-          //              );
-          //              command = "rsync -avh  --exclude-from='.gitignore'
-          //              --update -e 'ssh -p  " +
-          //              std::to_string(pro->build_server.port)  + "' --progress
-          //              . "
-          //                + pro->build_server.username + "@" +
-          //                pro->build_server.ip
-          //                +  ":/tmp/frate && ssh -p " +
-          //                std::to_string(pro->build_server.port)  + " " +
-          //                pro->build_server.username + "@" +
-          //                pro->build_server.ip
-          //                + "  'cd /tmp/frate && cmake . && make && ./build/" +
-          //                pro->project_name + "'";
-          //              break;
-          //            }
-          //          }
-          //        }
           if (args->count("args") != 0) {
-            std::cout << "estamos aqui" << std::endl;
             std::vector<std::string> args_vec =
               args->operator[]("args").as<std::vector<std::string>>();
             std::string command_args = args_vec[0];

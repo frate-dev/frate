@@ -2,6 +2,7 @@
 #include "termcolor/termcolor.hpp"
 #include <Frate/Command.hpp>
 #include <Frate/Command/Package.hpp>
+#include <Frate/Command/Author.hpp>
 #include <Frate/Command/Modes.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Command/Toolchains.hpp>
@@ -64,10 +65,9 @@ namespace Command{
         .docs = "List authors",
         .callback = [this]() {
           //TODO: List authors
-          (void)this;
+          Author::list(this);
           return true;
         },
-        .implemented = false,
         .requires_project = true
       },
       Handler{
