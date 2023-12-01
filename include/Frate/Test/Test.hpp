@@ -1,3 +1,4 @@
+#include "Frate/Utils/General.hpp"
 #ifdef TEST
 #pragma once
 #include "../Command.hpp"
@@ -14,9 +15,12 @@ namespace Tests{
 namespace Tests::Command {
   using std::filesystem::path;
   extern const std::filesystem::path test_path;
+  extern ::Utils::Error error;
+  extern ::Utils::Info info;
+  extern ::Utils::Warning warning;
   void cleanUp(path test_path);
 
-  void init(path test_path);
+  std::pair<bool, ::Command::Interface*> init(std::string command,bool check_config=false);
 
   bool validateProjectJson(::Command::Interface* inter);
 
@@ -34,7 +38,7 @@ namespace Tests::Command {
 
   bool testAddPackageMultiple();
 
-  bool testRemovePackage();
+  bool testRemovePackage(std::string package_name);
   bool testAddPackageToMode(std::string mode_name, std::string package_name);
 
   bool testNuke();

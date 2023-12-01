@@ -3,29 +3,18 @@
 bool Tests::Command::testAddPackageToMode(std::string mode_name, std::string package_name){
   using nlohmann::json;
   std::cout << "Testing add package to mode command" << std::endl;
-  auto [argc, argv] = genCommand("frate add p "+package_name+" -l -m "+mode_name);
-
-  ::Command::Interface *inter = new ::Command::Interface(argc, argv);
-
-  inter->pro->project_path = std::filesystem::path(test_path);
-
-  if (!inter->execute()) {
-    cleanUp(test_path);
-    std::cout << "Failed to add package : could not run command" << std::endl;
+  cleanUp(test_path);
+  if(!testNew()){
+    std::cout << "Failed to create new project" << std::endl;
+    return false;
+  }
+  auto [failed,inter] = init("frate add p "+package_name + " -m " + mode_name + " -l");
+  if(failed){
+    std::cout << "Failed to add package" << std::endl;
     return false;
   }
 
-  std::ifstream config_file(test_path / "frate-project.json");
-
-  nlohmann::json config;
-
-  try {
-    config_file >> config;
-  } catch (...) {
-    cleanUp(test_path);
-    std::cout << "Failed to add package : could not open file - file possibly never created" << std::endl;
-    return false;
-  }
+  json config = inter->pro->toJson();
 
   for(json mode : config["modes"]){
     if(mode["name"] == mode_name){

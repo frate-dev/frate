@@ -1,4 +1,5 @@
 #pragma once
+#include "Frate/Utils/General.hpp"
 #include "nlohmann/json_fwd.hpp"
 #include <memory>
 #include <string>
@@ -17,8 +18,11 @@ namespace Command {
   using nlohmann::json;
   using Utils::CLI::Prompt;
   using namespace Utils::CLI::Ansi;
-
   using namespace cxxopts;
+
+  const Utils::Error error = Utils::Error();
+  const Utils::Warning warning = Utils::Warning();
+  const Utils::Info success = Utils::Info();
 
   /*
    * Package structure from index

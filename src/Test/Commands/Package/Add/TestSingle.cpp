@@ -3,14 +3,10 @@
 
 bool Tests::Command::testAddPackage(std::string package_name) {
   std::cout << "Testing add package command" << std::endl;
-  auto [argc, argv] = genCommand("frate add p "+package_name+" -l");
-  ::Command::Interface *inter = new ::Command::Interface(argc, argv);
+  auto [failed, inter] = init("frate add p "+package_name+" -l");
 
-  inter->pro->project_path = std::filesystem::path(test_path);
-
-  if (!inter->execute()) {
-    cleanUp(test_path);
-    std::cout << "Failed to add package" << std::endl;
+  if(failed){
+    std::cout << "Failed to add package : could not initialize interface" << std::endl;
     return false;
   }
 

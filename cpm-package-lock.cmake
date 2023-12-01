@@ -42,3 +42,17 @@ CPMDeclarePackage(libgit2
 #  OPTIONS
 #    "ENABLE_VERSIONED_SYMBOLS ON"
 #)
+# Catch2
+CPMDeclarePackage(Catch2
+  VERSION 3.4.0
+  GITHUB_REPOSITORY catchorg/Catch2
+  SYSTEM YES
+  EXCLUDE_FROM_ALL YES
+)
+# cpptrace
+CPMDeclarePackage(cpptrace
+  VERSION 0.2.1
+  GITHUB_REPOSITORY jeremy-rifkin/cpptrace
+  SYSTEM YES
+  EXCLUDE_FROM_ALL YES
+)

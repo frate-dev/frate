@@ -30,6 +30,9 @@ namespace Command::Flags {
       build_flags = "-" + build_flags;
       flags.push_back(build_flags);
     }
+    for(std::string &flag : flags){
+      flag.erase(std::remove(flag.begin(), flag.end(), ' '), flag.end());
+    }
     return flags;
   }
 } 

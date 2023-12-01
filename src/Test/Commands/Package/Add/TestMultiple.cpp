@@ -5,29 +5,15 @@
 bool Tests::Command::testAddPackageMultiple() {
   std::cout << "Testing add multiple packages : adding SDL and fmt" << std::endl;
 
-  auto [argc, argv] = genCommand("frate add p SDL2 fmt -l");
+  auto [failed, inter] = init("frate add p SDL2 fmt -l");
 
-  ::Command::Interface *inter = new ::Command::Interface(argc, argv);
-
-  inter->pro->project_path = std::filesystem::path(test_path);
-
-  if (!inter->execute()) {
-    cleanUp(test_path);
-    std::cout << "Failed to add package" << std::endl;
+  if(failed){
+    std::cout << "Failed to add package : could not initialize test" << std::endl;
     return false;
   }
 
-  std::ifstream config_file(test_path / "frate-project.json");
+  nlohmann::json config = inter->pro->toJson();
 
-  nlohmann::json config;
-  try {
-    std::cout << "attempting to read config file" << std::endl;
-    config_file >> config;
-  } catch (...) {
-    cleanUp(test_path);
-    std::cout << "Failed to add package : could not open file - file possibly never created" << std::endl;
-    return false;
-  }
   
   bool foundSDL = false;
 

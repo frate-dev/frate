@@ -4,25 +4,32 @@
 
 namespace Tests::Command {
   bool testFlagsSingle(){
-    std::cout << "Testing add flags command" << std::endl;
+    cleanUp(test_path);
+    info  << "Testing add flags command" << std::endl;
     if(!testNew()){
-      std::cout << "Failed to create new project" << std::endl;
+      error << "Failed to create new project" << std::endl;
       return false;
     }
-    std::cout << "Testing add flags command normal conditions" << std::endl;
-    auto [argc,argv] = genCommand("frate add flags '-O3'");
-    ::Command::Interface *inter = new ::Command::Interface(argc,argv);
-    inter->pro->project_path = std::filesystem::path(test_path);
-    if(!inter->execute()){
+    info << "Testing add flags command normal conditions" << std::endl;
+    auto [failed, inter] = init("frate add flags '-O3'");
+
+    if(failed){
+      error << "Failed to init" << std::endl;
       cleanUp(test_path);
-      std::cout << "Failed to add flags project" << std::endl;
       return false;
     }
 
-    if(inter->pro->flags[0] != "-'O3'"){
-      std::cout << inter->pro->flags[0] << std::endl;
+    if(inter->pro->flags.size() != 1){
       cleanUp(test_path);
-      std::cout << "Failed to add flags project" << std::endl;
+      error << "Failed to add flags project wrong number of flags" << std::endl;
+      error << "Got: " << inter->pro->flags.size() << std::endl;
+      return false;
+    }
+
+    if(inter->pro->flags[0] != "-O3"){
+      error << inter->pro->flags[0] << std::endl;
+      cleanUp(test_path);
+      error << "Failed to add flags project" << std::endl;
       return false;
     }
 

@@ -38,9 +38,9 @@ namespace Tests::Command {
     REQUIRE(testNewWithLang("cpp"));
     REQUIRE(testNewWithLang("c"));
 
-    REQUIRE(testFlagsWithMode());
-    REQUIRE(testFlagsMultiple());
     REQUIRE(testFlagsSingle());
+    REQUIRE(testFlagsMultiple());
+    REQUIRE(testFlagsWithMode());
 
     REQUIRE(testNewWithType("static_library"));
     REQUIRE(testNewWithType("executable"));
@@ -49,7 +49,7 @@ namespace Tests::Command {
 
     REQUIRE(testAddPackage("cxxopts"));
     REQUIRE(testAddPackageMultiple());
-    REQUIRE(testRemovePackage());
+    REQUIRE(testRemovePackage("cxxopts"));
     REQUIRE(testAddPackageToMode("Debug","cxxopts"));
     REQUIRE(testAddPackageToMode("Test","cxxopts"));
     REQUIRE(testAddPackageToMode("Release","cxxopts"));

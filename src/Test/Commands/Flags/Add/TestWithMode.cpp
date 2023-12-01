@@ -10,17 +10,13 @@ namespace Tests::Command {
       return false;
     }
     std::cout << "Testing add flags command normal conditions" << std::endl;
-    auto [argc,argv] = genCommand("frate add flags -m Release '-O3'");
-    ::Command::Interface *inter = new ::Command::Interface(argc,argv);
-    inter->pro->project_path = std::filesystem::path(test_path);
-    if(!inter->execute()){
-      cleanUp(test_path);
-      std::cout << "Failed to add flags project" << std::endl;
+
+    auto [failed, inter] = init("frate add flags -m Release '-O3'");
+    if (failed) {
+      std::cout << "Failed to init" << std::endl;
       return false;
     }
-
-
-    if (inter->pro->modes[0].flags[1] != "-'O3'") {
+    if (inter->pro->modes[0].flags[1] != "-O3") {
       std::cout << inter->pro->modes[0].flags[0] << std::endl;
       cleanUp(test_path);
       std::cout << "Failed to add flags project" << std::endl;
