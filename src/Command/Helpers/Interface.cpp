@@ -11,6 +11,7 @@
 #include "Frate/Command/Actions/Run.hpp"
 #include "Frate/Command/Actions/Update.hpp"
 #include "Frate/Command/Actions/Watch.hpp"
+#include "Frate/Command/Actions/New.hpp"
 #include "Frate/Utils/General.hpp"
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
@@ -104,8 +105,7 @@ namespace Command {
         .positional_args = {"project_name/dir"},
         .docs = "Create a new project",
         .callback = [this](){
-          OptionsInit::Init(this);
-          return this->init();
+          return New::run(this);
         },
         .requires_project = false
       },

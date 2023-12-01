@@ -2,8 +2,12 @@
 #include <Frate/Utils/General.hpp>
 namespace Command::Run {
 using std::filesystem::create_directories;
-
+bool options(Interface* inter) {
+  //TODO: Add options
+  return true;
+}
 bool run(Interface* inter) {
+  options(inter);
   std::cout << "Running project: " << inter->pro->project_name << std::endl;
 
   const std::string work_dir_cmd = "cd " +inter->pro->project_path.string();
