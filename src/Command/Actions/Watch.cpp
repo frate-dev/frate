@@ -129,7 +129,7 @@ namespace Command::Watch {
           inter->pro->build_dir + "/" + inter->pro->project_name;
           if (inter->args->count("args") != 0) {
           std::vector<std::string> args_vec =
-         inter->args->operator[]("args").as<std::vector<std::string>>();
+          inter->args->operator[]("args").as<std::vector<std::string>>();
           std::string command_args = std::accumulate(
               args_vec.begin(), args_vec.end(), args_vec[0],
               [](std::string a, std::string b) { return a + " " + b; });
@@ -203,7 +203,7 @@ namespace Command::Watch {
               "  'cd /tmp/frate && cmake . && make -j ${nproc} && ./build/" +
               inter->pro->project_name + "'";
           }
-          if (args->count("args") != 0) {
+          if (inter->args->count("args") != 0) {
             std::cout << "estamos aqui" << std::endl;
             std::vector<std::string> args_vec =
              inter->args->operator[]("args").as<std::vector<std::string>>();
