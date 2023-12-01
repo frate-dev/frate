@@ -114,7 +114,7 @@ namespace Command {
     std::vector<std::string> toolchains {};
     void fromJson(json j);
     nlohmann::json toJson();
-    bool writeConfig();
+    bool save();
     void checkKeys(json j);
   } Project;
   typedef struct Handler_s Handler;

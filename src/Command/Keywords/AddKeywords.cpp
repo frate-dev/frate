@@ -21,7 +21,7 @@ namespace Command::Keywords{
       }
       inter->pro->keywords.push_back(keyword);
     }
-    if(!inter->pro->writeConfig()){
+    if(!inter->pro->save()){
       return false;
     }
     return true;

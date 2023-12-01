@@ -33,7 +33,7 @@ namespace Command::Author {
       inter->pro->authors.push_back(author);
       info << "Added author " << author << std::endl;
     }
-    inter->pro->writeConfig();
+    inter->pro->save();
     return true;
   }
   bool list(Interface *inter){

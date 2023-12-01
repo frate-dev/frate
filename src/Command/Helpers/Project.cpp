@@ -6,7 +6,7 @@
 
 namespace Command {
 
-  bool Project::writeConfig(){
+  bool Project::save(){
     std::ofstream file;
     std::string file_name = "frate-project.json";
     try {
