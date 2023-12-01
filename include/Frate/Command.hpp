@@ -138,23 +138,29 @@ namespace Command {
       bool init();
       [[deprecated("use Command::Actions::Add::run instead")]]
       bool add();
-      [[deprecated("use Command::Actions::Add::run instead")]]
+      [[deprecated("use Command::Actions::Get::run instead")]]
       bool get();
-      [[deprecated("use Command::Actions::set::run instead")]]
+      [[deprecated("use Command::Actions::Set::run instead")]]
       bool set();
-      [[deprecated("use Command::Actions::remove::run instead")]]
+      [[deprecated("use Command::Actions::Remove::run instead")]]
       bool remove();
-      [[deprecated("use Command::Actions::update::run instead")]]
+      [[deprecated("use Command::Actions::Update::run instead")]]
       bool update();
+      [[deprecated("use Command::Actions::Run::run instead")]]
       bool run();
+      [[deprecated("use Command::Actions::Help::run instead")]]
       bool help();
-      [[deprecated("use Command::Actions::search::run instead")]]
+      [[deprecated("use Command::Actions::Search::run instead")]]
       bool search();
+      [[deprecated("use Command::Actions::FTP::run instead")]]
       bool ftp();
+      [[deprecated("use Command::Actions::Watch::run instead")]]
       bool watch();
+      [[deprecated("use Command::Actions::Clean::run instead")]]
       bool clean();
+      [[deprecated("use Command::Actions::Build::run instead")]]
       bool build();
-      [[deprecated("use Command::Actions::list::run instead")]]
+      [[deprecated("use Command::Actions::List::run instead")]]
       bool list();
     public:
       void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);

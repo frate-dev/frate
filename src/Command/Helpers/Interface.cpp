@@ -4,7 +4,13 @@
 #include <Frate/Command/Actions/Remove.hpp>
 #include <Frate/Command/Actions/List.hpp>
 #include <Frate/Command/Actions/Search.hpp>
+#include "Frate/Command/Actions/Build.hpp"
+#include "Frate/Command/Actions/Clean.hpp"
+#include "Frate/Command/Actions/FTP.hpp"
+#include "Frate/Command/Actions/Help.hpp"
+#include "Frate/Command/Actions/Run.hpp"
 #include "Frate/Command/Actions/Update.hpp"
+#include "Frate/Command/Actions/Watch.hpp"
 #include "Frate/Utils/General.hpp"
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
@@ -109,7 +115,7 @@ namespace Command {
         .flags = {"-m,--build-mode","-t,--target"}, //TODO: Add flags
         .docs = "Run the project",
         .callback = [this](){
-          return this->run();
+          return Run::run(this);
         }
       },
 
@@ -118,7 +124,7 @@ namespace Command {
         .flags = {}, //TODO: Add flags
         .docs = "Display help",
         .callback = [this](){
-          return this->help();
+          return Help::run(this);
         },
         .requires_project = false
       },
@@ -128,7 +134,7 @@ namespace Command {
         .flags = {}, //TODO: Add flags
         .docs = "Deletes the entire project",
         .callback = [this](){
-          return this->ftp();
+          return FTP::run(this);
         }
       },
 
@@ -199,8 +205,7 @@ namespace Command {
         .flags = {"-c,--cache"}, //TODO: Add flags
         .docs = "clean sub command",
         .callback = [this](){
-          OptionsInit::Clean(this);
-          return this->clean();
+          return Clean::run(this);
         }
       },
 
@@ -209,8 +214,7 @@ namespace Command {
         .flags = {"-m,--mode","-t,--target","-j,--jobs"}, //TODO: Add flags
         .docs = "build sub command",
         .callback = [this](){
-          OptionsInit::Build(this);
-          return this->build();
+          return Build::run(this);
         }
       },
       Handler{
@@ -218,8 +222,7 @@ namespace Command {
         .flags = {}, //TODO: Add flags
         .docs = "watches the project for changes",
         .callback = [this](){
-          OptionsInit::Watch(this);
-          return this->watch();
+          return Watch::run(this);
         }
       },
     };
