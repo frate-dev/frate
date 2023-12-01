@@ -2,7 +2,7 @@
 #include <Frate/Command/Actions/Set.hpp>
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command/License.hpp>
-#include <Frate/Command/Name.hpp>
+#include <Frate/Command/Set.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 namespace Command::Set {
 
@@ -30,7 +30,7 @@ namespace Command::Set {
         .aliases = {"name","n"},
         .docs = "Set the project's name",
         .callback = [inter]() {
-          Name::set(inter);
+          Set::name(inter);
           return true;//Name::set(inter);
         },
       },
@@ -38,17 +38,8 @@ namespace Command::Set {
         .aliases = {"version","ver","v"},
         .docs = "Set the project's version",
         .callback = [inter]() {
-          (void)inter;
+
           return true;//Version::set(inter);
-        },
-        .implemented = false
-      },
-      Handler{
-        .aliases = {"keywords","kw"},
-        .docs = "Set the project's keywords",
-        .callback = [inter]() {
-          (void)inter;
-          return true; //Keywords::set(inter);
         },
         .implemented = false
       },

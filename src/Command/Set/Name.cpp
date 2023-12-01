@@ -1,7 +1,6 @@
+#include <Frate/Command/Set.hpp>
 
-#include <Frate/Command/Name.hpp>
-
-namespace Command::Name {
+namespace Command::Set{
 
   bool options(Interface* inter) {
     inter->InitHeader();
