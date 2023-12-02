@@ -1,9 +1,17 @@
+#include "Frate/Utils/General.hpp"
 #include <Frate/Command.hpp>
+#include <Frate/Frate.hpp>
 // LUCAS PAY ATTENTION TO IF THE HEADER IS .hpp OR .h
 #ifdef TEST
   #include <catch2/catch_session.hpp>
   #include <Frate/Test/Test.hpp>
 #endif
+
+namespace Frate {
+  Utils::Error error = Utils::Error();
+  Utils::Info info = Utils::Info();
+  Utils::Warning warning = Utils::Warning();
+}
 int main(int argc, char **argv) {
   // LUCAS MAKE SURE YOU INITIALIZE YOUR F@*KING STRUCT YOU TW@T
   //std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();

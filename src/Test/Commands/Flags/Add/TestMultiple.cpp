@@ -7,7 +7,7 @@ namespace Tests::Command {
     cleanUp(test_path);
     std::cout << "Testing add flags command" << std::endl;
     if(!testNew()){
-      std::cout << "Failed to create new project" << std::endl;
+      Frate::error << "Failed to create new project" << std::endl;
       return false;
     }
     std::cout << "Testing add flags command normal conditions" << std::endl;
@@ -18,18 +18,18 @@ namespace Tests::Command {
     }
     if(inter->pro->flags.size() != 2){
       cleanUp(test_path);
-      std::cout << "Failed to add flags project wrong number of flags" << std::endl;
+      Frate::error << "Failed to add flags project wrong number of flags" << std::endl;
       return false;
     }
 
     if(inter->pro->flags[0] != "-g"){
       cleanUp(test_path);
-      std::cout << "Failed to add flags project" << std::endl;
+      Frate::error << "Failed to add flags project" << std::endl;
       return false;
     }
     if(inter->pro->flags[1] != "-O3"){
       cleanUp(test_path);
-      std::cout << "Failed to add flags project" << std::endl;
+      Frate::error << "Failed to add flags project" << std::endl;
       return false;
     }
 

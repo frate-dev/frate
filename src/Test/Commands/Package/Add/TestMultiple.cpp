@@ -8,7 +8,7 @@ bool Tests::Command::testAddPackageMultiple() {
   auto [failed, inter] = init("frate add p SDL2 fmt -l");
 
   if(failed){
-    std::cout << "Failed to add package : could not initialize test" << std::endl;
+    Frate::error << "Failed to add package : could not initialize test" << std::endl;
     return false;
   }
 
@@ -25,7 +25,7 @@ bool Tests::Command::testAddPackageMultiple() {
 
   if(!foundSDL){
     cleanUp(test_path);
-    std::cout << "Failed to add package : could not find SDL2 in frate-project.json" << std::endl;
+    Frate::error << "Failed to add package : could not find SDL2 in frate-project.json" << std::endl;
     return false;
   }
 
@@ -39,7 +39,7 @@ bool Tests::Command::testAddPackageMultiple() {
 
   if(!foundfmt){
     cleanUp(test_path);
-    std::cout << "Failed to add package : could not find fmt in frate-project.json" << std::endl;
+    Frate::error << "Failed to add package : could not find fmt in frate-project.json" << std::endl;
     return false;
   }
 

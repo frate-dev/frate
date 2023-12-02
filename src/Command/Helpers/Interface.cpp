@@ -230,12 +230,11 @@ namespace Frate::Command {
 
 
     bool found_alias = false;
-    Utils::Error error;
     for(Handler& handler : commands){
       for(std::string& alias : handler.aliases){
         if(alias == command){
           if(handler.requires_project && !project_present){
-            error << "Error: Project not found and is required for this command" << ENDL;
+            Frate::error << "Error: Project not found and is required for this command" << ENDL;
             return false;
           }
           found_alias = true;
@@ -265,16 +264,15 @@ namespace Frate::Command {
     }
   }
   bool Interface::runCommand(std::string command, std::vector<Handler> &handlers){
-    Utils::Error error;
     for(Handler handler : handlers){
       for(std::string alias : handler.aliases){
         if(alias == command){
           if(!handler.implemented){
-            error << "Command not implemented: " << command;
+            Frate::error << "Command not implemented: " << command;
             return false;
           }
           if(handler.requires_project && !project_present){
-            error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
+            Frate::error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
             return false;
           }
           if(!handler.callback()){

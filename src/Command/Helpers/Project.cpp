@@ -120,7 +120,6 @@ namespace Frate::Command {
 
     };
     void Project::checkKeys(json j){
-      Utils::Error error;
       std::vector<std::pair<std::string,bool>> required_keys = {
           {"project_name", false},
           {"project_type", false},
@@ -145,7 +144,7 @@ namespace Frate::Command {
       };
       for (std::pair<std::string, bool> &key: required_keys){
         if (j.find(key.first) == j.end()){
-          error << "Missing required key: " << key.first << std::endl;
+          Frate::error << "Missing required key: " << key.first << std::endl;
         } else {
           key.second = true;
         }

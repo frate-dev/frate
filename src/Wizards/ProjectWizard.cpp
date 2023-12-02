@@ -10,6 +10,7 @@ namespace Frate::Wizard {
 
     Prompt prompt("Project name",pro->project_name);
     prompt.Validator(Utils::Validation::ProjectName);
+    prompt.MaxLength(30);
     prompt.Color(Utils::CLI::Ansi::GREEN);
     prompt.Run();
 

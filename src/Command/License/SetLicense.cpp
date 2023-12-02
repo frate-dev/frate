@@ -54,8 +54,7 @@ namespace Frate::Command::License {
     auto [valid, index] = license_prompt.Get<int>();
 
     if(!valid){
-      Utils::Error error;
-      error << "Invalid license" << std::endl;
+      Frate::error << "Invalid license" << std::endl;
       return selected_license;
     }
   
@@ -81,8 +80,7 @@ namespace Frate::Command::License {
     name_prompt.Run();
     auto [valid, org] = name_prompt.Get<std::string>();
     if(!valid){
-      Utils::Error error;
-      error << "Invalid name" << std::endl;
+      Frate::error << "Invalid name" << std::endl;
       return;
     }
     Utils::replaceKey(license, "[fullname]", org);
@@ -95,8 +93,7 @@ namespace Frate::Command::License {
   bool set(Interface* inter){
     std::string query;
     if(inter->args->count("args") == 0){
-      Utils::Error error;
-      error << "No license specified" << std::endl;
+      Frate::error << "No license specified" << std::endl;
       return false;
     }
     query = inter->args->operator[]("args").as<std::string>();
@@ -107,8 +104,7 @@ namespace Frate::Command::License {
     
     fillLicense(inter, full_license);
     if(std::filesystem::exists(inter->pro->project_path / "LICENSE")){
-      Utils::Error error;
-      error << "A license already exists in this project" << std::endl;
+      Frate::error << "A license already exists in this project" << std::endl;
       Utils::CLI::Prompt overwrite_prompt("Overwrite existing license?");
       overwrite_prompt.Run();
       overwrite_prompt.IsBool();
@@ -119,17 +115,15 @@ namespace Frate::Command::License {
 
     inter->pro->license = full_license.spdx_id;
 
-    Utils::Info info;
-    info << "Writing license to " << inter->pro->project_path / "LICENSE" << std::endl;
-    info << "License: " << full_license.name << std::endl;
+    Frate::info << "Writing license to " << inter->pro->project_path / "LICENSE" << std::endl;
+    Frate::info << "License: " << full_license.name << std::endl;
 
     try{
       std::ofstream license_file(inter->pro->project_path / "LICENSE");
       license_file << full_license.body;
     }catch(std::exception& e){
-      Utils::Error error;
-      error << "Failed to write license to file" << std::endl;
-      error << e.what() << std::endl;
+      Frate::error << "Failed to write license to file" << std::endl;
+      Frate::error << e.what() << std::endl;
       return false;
     }
 

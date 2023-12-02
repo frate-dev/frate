@@ -14,9 +14,8 @@ namespace Frate::Command {
     try{
       file.open((pro->project_path / file_name).string());
     }catch(std::exception &e){
-      Utils::Error error;
-      error << e.what() << std::endl;
-      error << "Error: Could not open: " << (pro->project_path / file_name) << std::endl;
+      Frate::error << e.what() << std::endl;
+      Frate::error << "Error: Could not open: " << (pro->project_path / file_name) << std::endl;
       return false;
     }
     json data;
@@ -27,9 +26,8 @@ namespace Frate::Command {
       //Simplfied this fucking code
       std::cout << "loadedJson = "  << pro->toJson() << ENDL;
     } catch (json::exception &e) {
-      Utils::Error error;
-      error << e.what() << std::endl;
-      error << "Error: Could not load: " << (pro->project_path / file_name) << std::endl;
+      Frate::error << e.what() << std::endl;
+      Frate::error << "Error: Could not load: " << (pro->project_path / file_name) << std::endl;
       return false;
     }
     file.close();

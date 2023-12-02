@@ -25,8 +25,7 @@ namespace Frate::Command::Add {
       subcommand = inter->args->operator[]("subcommand").as<std::string>();
 
     }else{
-      Utils::Error error;
-      error << "No subcommand given" << std::endl;
+      Frate::error << "No subcommand given" << std::endl;
 
       inter->getHelpString("add", addHandlers);
 

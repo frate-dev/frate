@@ -43,7 +43,7 @@ CURL* curl = curl_easy_init();
 
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
-        std::cout << "Failed to request " << url << std::endl;
+        Frate::error << "Failed to request " << url << std::endl;
         response.error = curl_easy_strerror(res);
         curl_easy_cleanup(curl);
         return response;
@@ -121,7 +121,7 @@ CURL* curl = curl_easy_init();
     } catch (json::parse_error& e) {
       std::cout << "At: " << e.byte << std::endl;
       std::cout << "Error: " << e.what() << std::endl;
-      std::cout << "Failed to parse index.json" << std::endl;
+      Frate::error << "Failed to parse index.json" << std::endl;
       std::cout << "Text: " << responseStr << std::endl;
       Utils::debug("Failed to parse index.json");
       exit(-1);

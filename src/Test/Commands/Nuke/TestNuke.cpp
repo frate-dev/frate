@@ -7,14 +7,14 @@ namespace Tests::Command {
     std::cout << "Testing nuke command" << std::endl;
     cleanUp(test_path);
     if(!testNew()){
-      std::cout << "Failed to create new project" << std::endl;
+      Frate::error << "Failed to create new project" << std::endl;
       return false;
     }
     std::cout << "Testing nuke command normal conditions" << std::endl;
     auto [failed, inter] = init("frate nuke",false);
 
     if(failed){
-      std::cout << "Failed to init nuke command" << std::endl;
+      Frate::error << "Failed to init nuke command" << std::endl;
       return false;
     }
 
@@ -24,7 +24,7 @@ namespace Tests::Command {
     }
 
     if(count != 0){
-      std::cout << "Failed to nuke project had: " << count << " files left" << std::endl;
+      Frate::error << "Failed to nuke project had: " << count << " files left" << std::endl;
       cleanUp(test_path);
       return false;
     }

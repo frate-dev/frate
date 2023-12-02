@@ -301,6 +301,7 @@ bool createJson(std::shared_ptr<Project> pro) {
       }
     }
     Generators::Readme::create(inter->pro);
+
     if(project_type == ProjectType::EXECUTABLE){
       if(!Generators::CMakeList::createCMakeLists(inter->pro)){
         return false;

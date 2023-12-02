@@ -52,7 +52,7 @@ Find more information at the [Frate Github]({help_url})
       try{
         readme_file << readme;
       }catch(...){
-        std::cout << "Failed to create README.md file" << std::endl;
+        Frate::error << "Failed to create README.md file" << std::endl;
         return false;
       }
       return true;

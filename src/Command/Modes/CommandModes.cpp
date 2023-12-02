@@ -12,7 +12,7 @@ namespace Frate:: Command::Modes{
     name->Run();
     auto [valid,mode_name] = name->Get<std::string>();
     if(!valid){
-      std::cout << "Failed to get mode name" << std::endl;
+      Frate::error << "Failed to get mode name" << std::endl;
       return false;
     }
     mode.name = mode_name;
@@ -37,11 +37,11 @@ namespace Frate:: Command::Modes{
 
     std::cout << "Writing frate-project.json" << std::endl;
     if(!Generators::ConfigJson::writeConfig(interface->pro)){
-      std::cout << "Failed to write frate-project.json" << std::endl;
+      Frate::error << "Failed to write frate-project.json" << std::endl;
     }
 
     if(!Generators::CMakeList::createCMakeLists(interface->pro)){
-      std::cout << "Failed to write CMakeLists.txt" << std::endl;
+      Frate::error << "Failed to write CMakeLists.txt" << std::endl;
     }
     return true;
   }
