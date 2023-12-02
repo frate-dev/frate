@@ -20,7 +20,7 @@
 #include <nlohmann/json_fwd.hpp>
 #include <git2.h>
 
-namespace Command {
+namespace Frate::Command {
 
   bool OptionsInit::Main(Interface *inter) {
     inter->InitHeader();

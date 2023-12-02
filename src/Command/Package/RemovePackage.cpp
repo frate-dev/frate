@@ -2,7 +2,7 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Generators.hpp>
 
-namespace Command::Packages {
+namespace Frate::Command::Packages {
 
   bool removePackagesByMode(Interface* inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();

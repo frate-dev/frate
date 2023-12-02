@@ -5,7 +5,7 @@
 
 
 
-namespace Command::Toolchains{
+namespace Frate::Command::Toolchains{
   json load(){
     std::filesystem::path  path = std::string(std::getenv("HOME")) + "/.config/" + "frate/" + "toolchains.json";
     return json{};

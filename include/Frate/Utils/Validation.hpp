@@ -2,7 +2,7 @@
 #include <string>
 
 
-namespace Utils::Validation {
+namespace Frate::Utils::Validation {
   bool CppLanguageVersion(std::string version);
   bool CLanguageVersion(std::string version);
   bool Language(std::string lang);

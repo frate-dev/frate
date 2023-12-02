@@ -2,7 +2,7 @@
 #include <Frate/Command/Author.hpp>
 
 
-namespace Command::Author {
+namespace Frate::Command::Author {
 
   bool options(Interface *inter){
     inter->InitHeader();

@@ -2,7 +2,7 @@
 #include "../Command.hpp"
 
 
-namespace Command::RemoteServers{
+namespace Frate::Command::RemoteServers{
   bool options(Interface* inter);
   bool add(Interface* inter);
   bool remove(Interface* inter);

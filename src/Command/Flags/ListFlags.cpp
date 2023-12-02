@@ -1,6 +1,6 @@
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command.hpp>
-namespace Command::Flags {
+namespace Frate::Command::Flags {
 
   bool list(Interface *inter) {
     if (inter->args->count("mode") > 0) {

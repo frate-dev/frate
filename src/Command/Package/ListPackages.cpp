@@ -3,7 +3,7 @@
 #include <Frate/Command/Package.hpp>
 
 
-namespace Command::Packages {
+namespace Frate::Command::Packages {
   bool list(Interface *inter) {
     std::cout << "Listing packages" << std::endl;
     std::cout << "Packages: " << std::endl;

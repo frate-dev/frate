@@ -3,7 +3,7 @@
 #include <Frate/Utils/General.hpp>
 #include <fstream>
 
-namespace Command{
+namespace Frate::Command{
   using nlohmann::json;
   using std::cout;
   using std::ifstream;

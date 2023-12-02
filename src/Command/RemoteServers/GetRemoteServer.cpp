@@ -1,7 +1,7 @@
 #include <Frate/Command/RemoteServers.hpp>  
 #include <Frate/Utils/General.hpp>
 
-namespace Command::RemoteServers {
+namespace Frate::Command::RemoteServers {
 
   bool  get(Interface* inter){
     Utils::TableFormat table;

@@ -3,7 +3,7 @@
 #include <Frate/Utils/General.hpp> 
 #include <Frate/Command/CommandMode.hpp>
 
-namespace Command::Packages {
+namespace Frate::Command::Packages {
   using namespace Utils::CLI;
 
   std::vector<Package> calculatePackageScores(std::string &query){

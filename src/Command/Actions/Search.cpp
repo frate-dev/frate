@@ -1,7 +1,7 @@
 #include <Frate/Command/Actions/Search.hpp>
 #include <Frate/Command/Package.hpp>
 
-namespace Command::Search {
+namespace Frate::Command::Search {
 
   bool options(Interface* inter){
     inter->InitHeader();

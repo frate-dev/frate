@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-namespace Command {
+namespace Frate::Command {
   bool Interface::LoadProjectJson() {
     using nlohmann::json;
     std::fstream file;

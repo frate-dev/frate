@@ -1,6 +1,6 @@
 #include <Frate/Command.hpp>
 
-namespace Command::Packages {
+namespace Frate::Command::Packages {
 
 
   bool options(Interface* inter);

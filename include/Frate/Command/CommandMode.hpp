@@ -1,7 +1,7 @@
 #pragma once
 #include "../Command.hpp"
 
-namespace Command::ModeCommands {
+namespace Frate::Command::ModeCommands {
   bool addFlags(Interface* inter, std::string mode);
   bool removeFlags(Interface* inter, std::string mode);
   [[deprecated("using add packages function in PackageAdd.cpp")]]

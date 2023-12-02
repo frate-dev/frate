@@ -1,7 +1,7 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
 #include <Frate/Constants.hpp>
-namespace Generators::Readme {
+namespace Frate::Generators::Readme {
     bool create(std::shared_ptr<Command::Project> pro){
       std::string readme = R"(
 # {project_name} with {name}

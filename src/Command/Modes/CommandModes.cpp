@@ -2,11 +2,11 @@
 #include <Frate/Generators.hpp>
 #include <sys/socket.h>
 
-namespace Command{
+namespace Frate::Command{
 }
 
 
-namespace  Command::Modes{
+namespace Frate:: Command::Modes{
   bool getModeName(Mode &mode){
     Prompt *name = new Prompt("Name: ");
     name->Run();

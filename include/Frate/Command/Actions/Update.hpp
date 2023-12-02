@@ -1,7 +1,7 @@
 #pragma once
 #include <Frate/Command.hpp>
 
-namespace Command::Update {
+namespace Frate::Command::Update {
 
   bool options(Interface* inter);
   bool run(Interface* inter);

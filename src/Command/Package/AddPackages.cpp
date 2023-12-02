@@ -5,7 +5,7 @@
 #include <Frate/Command/CommandMode.hpp>
 
 
-namespace Command::Packages {
+namespace Frate::Command::Packages {
   using Generators::CMakeList::createCMakeLists;
   using Generators::ConfigJson::writeConfig;
 

@@ -7,9 +7,9 @@
 namespace Tests::Command {
   using std::filesystem::path;
 
-  extern ::Utils::Error error = ::Utils::Error();
-  extern ::Utils::Info info = ::Utils::Info();
-  extern ::Utils::Warning warning = ::Utils::Warning();
+  extern Frate::Utils::Error error =Frate::Utils::Error();
+  extern Frate::Utils::Info info =Frate::Utils::Info();
+  extern Frate::Utils::Warning warning =Frate::Utils::Warning();
 
   void cleanUp(path test_path) {
     try {
@@ -53,11 +53,11 @@ namespace Tests::Command {
 
     return std::make_pair(command_split.size(), argv);
   }
-  std::pair<bool, ::Command::Interface*> init(std::string command,bool check_config) {
+  std::pair<bool, Frate::Command::Interface*> init(std::string command,bool check_config) {
 
     auto [argc, argv] = genCommand(command);
 
-    ::Command::Interface *inter = new ::Command::Interface(argc, argv);
+   Frate::Command::Interface *inter = new Frate::Command::Interface(argc, argv);
 
     inter->pro->project_path = std::filesystem::path(test_path);
 

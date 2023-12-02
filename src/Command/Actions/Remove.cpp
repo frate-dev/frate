@@ -4,7 +4,7 @@
 #include <Frate/Command/Modes.hpp>
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/Author.hpp>
-namespace Command::Remove {
+namespace Frate::Command::Remove {
 
   bool options(Interface *inter) {
     inter->InitHeader();

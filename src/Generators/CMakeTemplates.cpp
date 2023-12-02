@@ -6,7 +6,7 @@
 #include <git2.h>
 #include <inja.hpp>
 
-namespace Generators::CMakeList {
+namespace Frate::Generators::CMakeList {
   using nlohmann::json;
 
   bool createCMakeLists(std::shared_ptr<Command::Project> pro){

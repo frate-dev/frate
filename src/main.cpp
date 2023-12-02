@@ -17,6 +17,7 @@ int main(int argc, char **argv) {
   #else
 
   //TODO: Get some path checking in this bitch
+    using namespace Frate;
     Command::Interface* inter = new Command::Interface(argc,argv);
     if(inter->execute()){
       return 0;

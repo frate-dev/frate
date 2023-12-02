@@ -9,6 +9,7 @@ namespace Tests{
   std::string genBase64String(int random_string_length);
 }
 namespace Test::Generators {
+  using namespace Frate::Generators;
 
   const std::string long_string = Tests::genBase64String(1000);
 
@@ -20,15 +21,15 @@ namespace Test::Generators {
   bool testCmakeVersion() {
     std::vector<std::string> failing_versions{"5.69", "5.42", "6.69", "7.77",
                                               "9.69"};
-    for (std::string version : Constants::SUPPORTED_CMAKE_VERSIONS) {
+    for (std::string version : Frate::Constants::SUPPORTED_CMAKE_VERSIONS) {
       cout << "Testing version " << version << endl;
-      if (!Utils::Validation::CmakeVersion(version)) {
+      if (!Frate::Utils::Validation::CmakeVersion(version)) {
         return false;
       }
     }
     for (std::string version : failing_versions) {
       cout << "Testing failing version " << version << endl;
-      if (Utils::Validation::CmakeVersion(version)) {
+      if (Frate::Utils::Validation::CmakeVersion(version)) {
         return false;
       }
     }
@@ -59,14 +60,14 @@ namespace Test::Generators {
 
       for(std::string name : mock_names){
         cout << "Testing name " << name << endl;
-        if(!Utils::Validation::ProjectName(name)){
+        if(!Frate::Utils::Validation::ProjectName(name)){
           return false;
         }
       }
 
       for(std::string name : failing_names){
         cout << "Testing failing name " << name << endl;
-        if(Utils::Validation::ProjectName(name)){
+        if(Frate::Utils::Validation::ProjectName(name)){
           return false;
         }
       }
@@ -78,13 +79,13 @@ namespace Test::Generators {
 
       for(std::string version : passing_project_versions){
         cout << "Testing version " << version << endl;
-        if(!Utils::Validation::ProjectVersion(version)){
+        if(!Frate::Utils::Validation::ProjectVersion(version)){
           return false;
         }
       }
       for(std::string version : failing_project_versions){
         cout << "Testing failing version " << version << endl;
-        if(Utils::Validation::ProjectVersion(version)){
+        if(Frate::Utils::Validation::ProjectVersion(version)){
           return false;
         }
       }
@@ -95,15 +96,15 @@ namespace Test::Generators {
 
       std::vector<std::string> failing_c_language_versions = {"3", "69", "420", "69.420", "69.420.69", "69.420.69.420"};
 
-      for(std::string version : Constants::SUPPORTED_C_STANDARDS){
+      for(std::string version : Frate::Constants::SUPPORTED_C_STANDARDS){
         cout << "Testing version " << version << endl;
-        if(!Utils::Validation::CLanguageVersion(version)){
+        if(!Frate::Utils::Validation::CLanguageVersion(version)){
           return false;
         }
       }
       for(std::string version : failing_c_language_versions){
         cout << "Testing failing version " << version << endl;
-        if(Utils::Validation::CLanguageVersion(version)){
+        if(Frate::Utils::Validation::CLanguageVersion(version)){
           return false;
         }
       }
@@ -112,15 +113,15 @@ namespace Test::Generators {
     bool testCppLanguageVersion(){
       std::vector<std::string> failing_cpp_language_versions = {"3", "69", "420", "69.420", "69.420.69", "69.420.69.420"};
 
-      for(std::string version : Constants::SUPPORTED_CXX_STANDARDS){
+      for(std::string version : Frate::Constants::SUPPORTED_CXX_STANDARDS){
         cout << "Testing version " << version << endl;
-        if(!Utils::Validation::CppLanguageVersion(version)){
+        if(!Frate::Utils::Validation::CppLanguageVersion(version)){
           return false;
         }
       }
       for(std::string version : failing_cpp_language_versions){
         cout << "Testing failing version " << version << endl;
-        if(Utils::Validation::CppLanguageVersion(version)){
+        if(Frate::Utils::Validation::CppLanguageVersion(version)){
           return false;
         }
       }
@@ -129,15 +130,15 @@ namespace Test::Generators {
     bool testCCompiler(){
       std::vector<std::string> failing_c_compilers = {"fuckcusecpp","clangdeeznuts"};
 
-      for(std::string compiler : Constants::SUPPORTED_C_COMPILERS){
+      for(std::string compiler : Frate::Constants::SUPPORTED_C_COMPILERS){
         cout << "testing c compiler: " << compiler << endl;
-        if(!Utils::Validation::CCompiler(compiler)){
+        if(!Frate::Utils::Validation::CCompiler(compiler)){
             return false;
         }
       }
       for(std::string compiler : failing_c_compilers){
         cout << "testing cpp failing compiler: " << compiler << endl;
-        if(Utils::Validation::CCompiler(compiler)){
+        if(Frate::Utils::Validation::CCompiler(compiler)){
           return false;
 
         }
@@ -149,15 +150,15 @@ namespace Test::Generators {
 
       std::vector<std::string> failing_cpp_compilers = {"fuckitidontknow","iforgot","icc","tcc","emcc","clang"};
 
-      for(std::string compiler : Constants::SUPPORTED_CXX_COMPILERS){
+      for(std::string compiler : Frate::Constants::SUPPORTED_CXX_COMPILERS){
         cout << "testing cpp compiler " << compiler << endl;
-        if(!Utils::Validation::CppCompiler(compiler)){
+        if(!Frate::Utils::Validation::CppCompiler(compiler)){
           return false;
         }
       }
       for(std::string compiler : failing_cpp_compilers){
         cout << "testing failing cpp compiler " << compiler << endl;
-        if(Utils::Validation::CppCompiler(compiler)){
+        if(Frate::Utils::Validation::CppCompiler(compiler)){
           return false;
         }
       }
@@ -171,13 +172,13 @@ namespace Test::Generators {
 
       for(std::string source_dir : passing_source_dirs){
         cout << "testing passing source dir " << source_dir << endl;
-        if(!Utils::Validation::SourceDir(source_dir)){
+        if(!Frate::Utils::Validation::SourceDir(source_dir)){
           return false;
         }
       }
       for(std::string source_dir : failing_source_dirs){
         cout << "testing failing source dir " << source_dir << endl;
-        if(Utils::Validation::SourceDir(source_dir)){
+        if(Frate::Utils::Validation::SourceDir(source_dir)){
           return false;
         }
       }
@@ -189,13 +190,13 @@ namespace Test::Generators {
 
       for(std::string build_dir : passing_build_dirs){
         cout << "testing passing build dir " << build_dir << endl;
-        if(!Utils::Validation::BuildDir(build_dir)){
+        if(!Frate::Utils::Validation::BuildDir(build_dir)){
           return false;
         }
       }
       for(std::string build_dir : failing_build_dirs){
         cout << "testing failing build dir " << build_dir << endl;
-        if(Utils::Validation::BuildDir(build_dir)){
+        if(Frate::Utils::Validation::BuildDir(build_dir)){
           return false;
         }
       }
@@ -206,12 +207,12 @@ namespace Test::Generators {
       std::vector<std::string> failing_include_dirs = {"I*($#*(@","*(\&\$\^","includes_dir//*$", long_string,"include_dir//348934","includes_dir///84$#*"};
 
       for(std::string include_dir : passing_include_dirs){
-        if(!Utils::Validation::IncludeDir(include_dir)){
+        if(!Frate::Utils::Validation::IncludeDir(include_dir)){
           return false;
         }
       }
       for(std::string include_dir : failing_include_dirs){
-        if(Utils::Validation::IncludeDir(include_dir)){
+        if(Frate::Utils::Validation::IncludeDir(include_dir)){
           return false;
         }
       }

@@ -2,7 +2,7 @@
 #include <Frate/Command/Keywords.hpp>
 
 
-namespace Command::Keywords{
+namespace Frate::Command::Keywords{
   bool add(Interface* inter){
     Utils::Error error;
     options(inter);

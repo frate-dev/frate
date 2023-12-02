@@ -1,3 +1,4 @@
+#ifdef TEST
 #include <Frate/Test/Test.hpp>
 
 
@@ -36,3 +37,4 @@ namespace Tests::Command {
     return true;
   }
 }
+#endif

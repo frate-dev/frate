@@ -1,6 +1,6 @@
 #include <vector>
 #include <Frate/Command/AvailableTriples.hpp>
-namespace Command::Toolchain {
+namespace Frate::Command::Toolchain {
   extern const std::vector<CompileTarget> CompileTargets = {
     {
       .os = "Darwin",

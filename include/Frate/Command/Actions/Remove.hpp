@@ -1,7 +1,7 @@
 #pragma once
 #include <Frate/Command.hpp>
 
-namespace Command::Remove {
+namespace Frate::Command::Remove {
 
   bool options(Interface* inter);
   bool run(Interface* inter);

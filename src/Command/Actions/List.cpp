@@ -7,7 +7,7 @@
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Command/Toolchains.hpp>
 
-namespace Command::List{
+namespace Frate::Command::List{
   bool options(Interface* inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});

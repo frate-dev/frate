@@ -4,7 +4,7 @@
 #include <Frate/Utils/CLI.hpp>
 
 
-namespace Generators::GitIgnore{
+namespace Frate::Generators::GitIgnore{
 
 bool write_gitignore(std::string gitignore, std::filesystem::path gitignore_path) {
     try{

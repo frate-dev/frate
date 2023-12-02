@@ -1,7 +1,7 @@
 #include <Frate/Command/RemoteServers.hpp>
 
 
-namespace Command::RemoteServers{
+namespace Frate::Command::RemoteServers{
 
   bool remove(Interface* inter){
     std::vector<RemoteServer> servers =  remoteServerData(inter);

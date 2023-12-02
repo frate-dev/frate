@@ -6,7 +6,7 @@
 #include <termio.h>
 #include <unistd.h>
 
-namespace Utils::CLI {
+namespace Frate::Utils::CLI {
   Prompt::Prompt(std::string prompt){
     this->prompt = prompt;
     this->color = Ansi::GREEN;

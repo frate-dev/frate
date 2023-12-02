@@ -6,9 +6,9 @@
 
 
 namespace Tests::Command {
-  bool validateProjectJson(::Command::Interface* inter){
-    ::Utils::Error error;
-    ::Utils::Info info;
+  bool validateProjectJson(Frate::Command::Interface* inter){
+    Frate::Utils::Error error;
+    Frate::Utils::Info info;
     bool valid = true;
     info << "Testing valid project json" << std::endl;
 
@@ -52,7 +52,7 @@ namespace Tests::Command {
       valid = false;
       error << "modes is empty" << std::endl;
     }else{
-      for(::Command::Mode mode : inter->pro->modes){
+      for(Frate::Command::Mode mode : inter->pro->modes){
         if(mode.name == ""){
           valid = false;
           error << "mode "+mode.name+" has no name" << std::endl;

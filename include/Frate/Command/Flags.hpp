@@ -1,7 +1,7 @@
 #include <Frate/Command.hpp>
 
 
-namespace Command::Flags {
+namespace Frate::Command::Flags {
   std::vector<std::string> makeFlags(Interface *inter);
   bool options(Interface* inter);
   bool add(Interface *inter);

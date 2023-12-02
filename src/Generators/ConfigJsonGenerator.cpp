@@ -3,7 +3,7 @@
 #include <string>
 #include <termcolor/termcolor.hpp>
 
-namespace Generators::ConfigJson{
+namespace Frate::Generators::ConfigJson{
  // [[deprecated("Use project->writeConfig() instead")]]
   bool writeConfig(std::shared_ptr<Command::Project> &pro) {
     std::ofstream file;

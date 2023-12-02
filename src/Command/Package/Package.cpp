@@ -4,7 +4,7 @@
 #include <Frate/Utils/General.hpp> 
 #include <Frate/Command/CommandMode.hpp>
 
-namespace Command::Packages {
+namespace Frate::Command::Packages {
   using namespace Utils::CLI;
   
   bool options(Interface* inter) {
@@ -49,7 +49,7 @@ namespace Command::Packages {
 }
 
 
-namespace Command {
+namespace Frate::Command {
   using nlohmann::json;
 
   json Package::toJson() {

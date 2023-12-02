@@ -2,7 +2,7 @@
 #include <Frate/Utils/General.hpp>
 #include <cstdbool>
 #include <sys/ioctl.h>
-namespace Command::Help {
+namespace Frate::Command::Help {
   //We're keeping this for our long lost friend ryan aka fired docs guy
   bool run(Interface* inter) {
     if((static_cast<std::string>(std::getenv("TERM")) == "xterm-kitty")){

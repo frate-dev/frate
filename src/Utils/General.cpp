@@ -5,7 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <curl/curl.h>
 
-namespace Utils{
+namespace Frate::Utils{
 
   struct CurlResponse {
     std::string text;
@@ -22,8 +22,7 @@ namespace Utils{
 
   CurlResponse HttpGet(std::string& url) {
     CurlResponse response;
-
-    CURL* curl = curl_easy_init();
+CURL* curl = curl_easy_init();
     if (!curl) {
         response.error = "Failed to initialize libcurl.";
         return response;

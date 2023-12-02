@@ -2,7 +2,7 @@
 #include <vector>
 
 
-namespace Constants {
+namespace Frate::Constants {
   const std::string NAME = "frate";
   const std::string DESCRIPTION = "CLI utility for managing your project, a modern touch for C/C++";
   const std::string PROJECT_URL = "https://github.com/frate-dev/frate";

@@ -1,3 +1,4 @@
+#ifdef TEST
 #include <Frate/Test/Test.hpp>
 
 
@@ -34,7 +35,6 @@ namespace Tests::Command {
       error << "Got: " << inter->pro->authors.size() << std::endl;
       return false;
     }
-
     for(auto name : names){
       bool found = false;
       for(auto author : inter->pro->authors){
@@ -55,3 +55,4 @@ namespace Tests::Command {
     return true;
   }
 }
+#endif

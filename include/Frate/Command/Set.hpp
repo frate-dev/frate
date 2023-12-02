@@ -1,7 +1,7 @@
 #include <Frate/Command.hpp>
 
 
-namespace Command::Set{
+namespace Frate::Command::Set{
   bool options(Interface* inter);
   bool set(Interface* inter);
 }

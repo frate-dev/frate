@@ -2,7 +2,7 @@
 #include <Frate/Command.hpp>
 
 
-namespace Command::Name{
+namespace Frate::Command::Name{
   bool options(Interface* inter);
   bool set(Interface* inter);
 }

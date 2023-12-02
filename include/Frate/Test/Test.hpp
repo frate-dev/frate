@@ -15,14 +15,14 @@ namespace Tests{
 namespace Tests::Command {
   using std::filesystem::path;
   extern const std::filesystem::path test_path;
-  extern ::Utils::Error error;
-  extern ::Utils::Info info;
-  extern ::Utils::Warning warning;
+  extern Frate::Utils::Error error;
+  extern Frate::Utils::Info info;
+  extern Frate::Utils::Warning warning;
   void cleanUp(path test_path);
 
-  std::pair<bool, ::Command::Interface*> init(std::string command,bool check_config=false);
+  std::pair<bool, Frate::Command::Interface*> init(std::string command,bool check_config=false);
 
-  bool validateProjectJson(::Command::Interface* inter);
+  bool validateProjectJson(Frate::Command::Interface* inter);
 
   std::pair<int, char**> genCommand(std::string args);
   bool testCommandInit();

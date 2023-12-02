@@ -2,7 +2,7 @@
 #include <Frate/Command.hpp>
 
 
-namespace Command::License {
+namespace Frate::Command::License {
   typedef struct License_s {
     std::string name;
     std::string key;

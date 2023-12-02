@@ -1,6 +1,6 @@
 #include "Frate/Command/Flags.hpp"
 #include "Frate/Generators.hpp"
-namespace Command::Flags {
+namespace Frate::Command::Flags {
   bool add(Interface *inter) {
     std::cout << "Adding flags" << std::endl; 
     std::vector<std::string> flags = makeFlags(inter);

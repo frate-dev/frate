@@ -2,7 +2,7 @@
 
 
 
-namespace Command::RemoteServers{
+namespace Frate::Command::RemoteServers{
 
   bool add(Interface* inter){
     std::vector<RemoteServer> servers =  remoteServerData(inter);

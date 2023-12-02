@@ -1,7 +1,7 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Name.hpp>
 
-namespace Command::Name {
+namespace Frate::Command::Name {
   bool set(Interface* inter) {
     options(inter);
     Utils::Info info;

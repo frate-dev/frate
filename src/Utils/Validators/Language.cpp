@@ -8,7 +8,7 @@
 #include <Frate/Constants.hpp>
 
 
-namespace Utils::Validation {
+namespace Frate::Utils::Validation {
   bool Language(std::string lang){
     for(std::string supportedLang : Constants::SUPPORTED_LANGUAGES){
       if(lang == supportedLang){

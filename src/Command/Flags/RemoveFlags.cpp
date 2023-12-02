@@ -2,7 +2,7 @@
 #include <Frate/Generators.hpp>
 
 
-namespace Command::Flags {
+namespace Frate::Command::Flags {
   bool remove(Interface *inter){
     std::cout << "Removing flags" << std::endl; 
     std::vector<std::string> flags = makeFlags(inter);

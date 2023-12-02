@@ -5,7 +5,7 @@
 #include <ctime>
 
 
-namespace Command::License {
+namespace Frate::Command::License {
   using nlohmann::json;
   License searchPrompt(std::string& query){
     License selected_license;

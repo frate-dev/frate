@@ -1,0 +1,5 @@
+namespace Frate::Manager {
+
+
+
+}

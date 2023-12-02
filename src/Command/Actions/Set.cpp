@@ -4,7 +4,7 @@
 #include <Frate/Command/License.hpp>
 #include <Frate/Command/Name.hpp>
 #include <Frate/Command/RemoteServers.hpp>
-namespace Command::Set {
+namespace Frate::Command::Set {
 
   bool options(Interface *inter) {
 

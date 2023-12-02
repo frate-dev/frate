@@ -1,7 +1,7 @@
 #pragma once
 #include <Frate/Command.hpp>
 
-namespace Command::Clean {
+namespace Frate::Command::Clean {
 
   bool options(Interface* inter);
   bool run(Interface* inter);

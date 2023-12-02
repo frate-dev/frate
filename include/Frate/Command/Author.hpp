@@ -2,7 +2,7 @@
 #include "../Command.hpp"
 
 
-namespace Command::Author {
+namespace Frate::Command::Author {
   bool add(Interface *inter);
   bool list(Interface *inter);
   bool options(Interface *inter);

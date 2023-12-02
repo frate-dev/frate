@@ -1,6 +1,6 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/FTP.hpp>
-namespace Command::FTP {
+namespace Frate::Command::FTP {
   using namespace std::filesystem;
   using Utils::CLI::Prompt;
   using namespace Utils::CLI::Ansi;

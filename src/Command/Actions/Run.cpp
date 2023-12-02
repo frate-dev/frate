@@ -1,6 +1,6 @@
 #include <Frate/Command/Actions/Run.hpp>
 #include <Frate/Utils/General.hpp>
-namespace Command::Run {
+namespace Frate::Command::Run {
 using std::filesystem::create_directories;
 bool options(Interface* inter) {
   //TODO: Add options

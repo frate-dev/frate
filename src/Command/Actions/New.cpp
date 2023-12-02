@@ -9,7 +9,7 @@
 #include <Frate/Wizards.hpp>
 #include <git2.h>
 
-namespace Command::New {
+namespace Frate::Command::New {
 using Utils::CLI::Prompt;
 using Utils::CLI::Ansi::RED;
  bool downloadCMakeListsTemplate(std::shared_ptr<Command::Project> _){

@@ -9,7 +9,7 @@
 #include <sys/epoll.h>
 #include <sys/inotify.h>
 
-namespace Command::Watch {
+namespace Frate::Command::Watch {
   bool options(Interface *inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command"});

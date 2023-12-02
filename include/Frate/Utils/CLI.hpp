@@ -8,7 +8,7 @@
 
 
 
-namespace Utils::CLI {
+namespace Frate::Utils::CLI {
   namespace Ansi{
     const std::string RESET = "\033[0m";
     const std::string RED = "\033[31m";

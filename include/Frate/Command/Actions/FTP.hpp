@@ -1,7 +1,7 @@
 #pragma once
 #include <Frate/Command.hpp>
 
-namespace Command::FTP {
+namespace Frate::Command::FTP {
 
   bool options(Interface* inter);
   bool run(Interface* inter);

@@ -4,7 +4,7 @@
 #include <memory>
 
 
-namespace Command {
+namespace Frate::Command {
 
   bool Project::save(){
     std::ofstream file;

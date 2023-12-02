@@ -1,7 +1,7 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Utils/CLI.hpp>
 
-namespace Command::Packages {
+namespace Frate::Command::Packages {
   using namespace Utils::CLI;
 
  Package promptSearchResults(std::string &query){

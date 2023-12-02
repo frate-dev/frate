@@ -9,7 +9,7 @@
 #include <Frate/Constants.hpp>
 
 
-namespace Utils::Validation {
+namespace Frate::Utils::Validation {
   bool CCompiler(std::string cccompiler){
     for(std::string compiler : Constants::SUPPORTED_C_COMPILERS){
       if(cccompiler == compiler){

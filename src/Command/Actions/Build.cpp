@@ -1,7 +1,7 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/Build.hpp>
 
-namespace Command::Build {
+namespace Frate::Command::Build {
   bool options(Interface* inter){
     inter->InitHeader();
     inter->options->parse_positional({"command"});

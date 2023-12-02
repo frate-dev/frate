@@ -1,5 +1,5 @@
 #include <Frate/Command/License.hpp>
-namespace Command::License { 
+namespace Frate::Command::License { 
 
   void to_json(json& j, const License& l) {
     j = json{

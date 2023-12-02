@@ -1,6 +1,6 @@
 #include <Frate/Command/Actions/Update.hpp>
 
-namespace Command::Update {
+namespace Frate::Command::Update {
 
   using nlohmann::json;
   bool options(Interface *inter) {

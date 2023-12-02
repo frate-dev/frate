@@ -4,7 +4,7 @@
 #include <Frate/Utils/Validation.hpp>
 #include <Frate/Constants.hpp>
 
-namespace Wizard {
+namespace Frate::Wizard {
   using Utils::CLI::Prompt;
   bool Project(std::shared_ptr<Command::Project> pro){
 

@@ -1,7 +1,7 @@
 #include <Frate/Command.hpp>
 #include <Frate/Command/Set.hpp>
 
-namespace Command::Set{
+namespace Frate::Command::Set{
 
   bool versions(Interface* inter){
     std::string version = inter->args->operator[]("args").as<std::string>();

@@ -2,7 +2,7 @@
 #include <Frate/Utils/General.hpp>
 #include <Frate/Utils/CLI.hpp>
 
-namespace Command::RemoteServers{
+namespace Frate::Command::RemoteServers{
   using namespace Utils::CLI;
   bool options(Interface *inter) {
     inter->InitHeader();

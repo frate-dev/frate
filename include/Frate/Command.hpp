@@ -14,7 +14,7 @@
 
 #define ENDL "\n"
 
-namespace Command {
+namespace Frate::Command {
   using nlohmann::json;
   using Utils::CLI::Prompt;
   using namespace Utils::CLI::Ansi;

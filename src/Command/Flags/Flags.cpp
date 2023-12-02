@@ -1,7 +1,7 @@
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Generators.hpp>
 
-namespace Command::Flags {
+namespace Frate::Command::Flags {
   bool options(Interface* inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});

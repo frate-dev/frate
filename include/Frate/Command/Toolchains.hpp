@@ -1,7 +1,7 @@
 #include "../Command.hpp"
 
 
-namespace Command {
+namespace Frate::Command {
   namespace Toolchains {
     json load();
     bool list();

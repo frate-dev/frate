@@ -1,6 +1,6 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/Clean.hpp>
-namespace Command::Clean {
+namespace Frate::Command::Clean {
   bool options(Interface *inter){
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});

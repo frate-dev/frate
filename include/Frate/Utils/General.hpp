@@ -17,7 +17,7 @@
 #endif
 
 
-namespace Utils {
+namespace Frate::Utils {
   using nlohmann::json;
   std::string getFolderName();
   /*

@@ -1,7 +1,7 @@
 
 #include <Frate/Command/Name.hpp>
 
-namespace Command::Name {
+namespace Frate::Command::Name {
 
   bool options(Interface* inter){
     inter->InitHeader();

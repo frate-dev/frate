@@ -2,7 +2,7 @@
 #include <Frate/Command/RemoteServers.hpp>
 
 
-namespace Command::RemoteServers{
+namespace Frate::Command::RemoteServers{
   bool list(Interface* inter){
     //TODO put this in  the constructor
     std::vector<RemoteServer> servers =  remoteServerData(inter);

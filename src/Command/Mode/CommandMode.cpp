@@ -3,7 +3,7 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/CommandMode.hpp>
 
-namespace Command::ModeCommands {
+namespace Frate::Command::ModeCommands {
   bool addFlags(Interface* inter, std::string mode){
     //std::vector<std::string> flags = inter->args->operator[]("args").as<std::vector<std::string>>();
     std::vector<std::string>  flags = inter->args->unmatched();

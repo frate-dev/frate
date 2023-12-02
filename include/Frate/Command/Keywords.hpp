@@ -1,5 +1,5 @@
 #include <Frate/Command.hpp>
-namespace Command::Keywords {
+namespace Frate::Command::Keywords {
   bool options(Interface* inter);
 
 
