@@ -26,14 +26,11 @@ namespace Frate::Command {
   bool OptionsInit::Main(Interface *inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command"});
-    inter->options->allow_unrecognised_options().add_options()(
-        "command", "Command to run",
-        cxxopts::value<std::string>()->default_value("help"))(
-        "v,verbose", "Verbose output",
-        cxxopts::value<bool>()->default_value("false"))(
-        "y,confim-all", "skip all y/n prompts",
-        cxxopts::value<bool>()->default_value("false"))("h,help", "Print usage")
-        ("version", "Print version");
+    inter->options->allow_unrecognised_options().add_options()
+      ("command", "Command to run",cxxopts::value<std::string>()->default_value("help"))
+      ("verbose", "Verbose output",cxxopts::value<bool>()->default_value("false"))
+      ("y,confim-all", "skip all y/n prompts",cxxopts::value<bool>()->default_value("false"))
+      ("version", "Print version");
     return inter->parse();
   }
 
@@ -48,7 +45,9 @@ namespace Frate::Command {
   }
   bool Interface::InitHeader(){
     try{
-      this->options = std::make_shared<cxxopts::Options>("Frate", "A CMake project generator, we suffer so you don't have to!");
+      this->options = 
+        std::make_shared<cxxopts::Options>("Frate", "A CMake project generator, we suffer so you don't have to!");
+      this->options->allow_unrecognised_options();
     } catch (std::exception& e) {
       std::cout << e.what() << std::endl;
       return false;
@@ -71,7 +70,10 @@ namespace Frate::Command {
       this->verbose = true;
       std::cout << "Verbose mode enabled" << ENDL;
     }
-
+    if(this->args->count("confirm-all")){
+      this->confirm_all = true;
+      std::cout << "Skipping prompts" << ENDL;
+    }
 #ifdef DEBUG
 #ifndef TEST
     verbose = true;
@@ -83,23 +85,8 @@ namespace Frate::Command {
 #endif
   }
   bool Interface::execute(){
-    // if(LoadProjectJson()){
-    //   project_present = true;
-    // }
-    if(this->args->count("yes")){
-      this->skip_prompts = true;
-      std::cout << "Skipping prompts" << ENDL;
-    }
-    else{
-      this->skip_prompts = false;
-    }
 
-    // if(!this->args->count("command")){
-    //   this->help();
     std::string command = this->args->operator[]("command").as<std::string>();
-
-
-
     std::cout << "Project Path: " << pro->project_path << ENDL;
     commands = {
 

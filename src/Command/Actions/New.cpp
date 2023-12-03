@@ -160,7 +160,7 @@ bool createJson(std::shared_ptr<Project> pro) {
   }
   void gitInit(Interface *inter){
     #ifdef RELEASE 
-      Generators::GitIgnore::create(inter->pro);
+      Generators::GitIgnore::create(inter);
       //TODO: make this work on windows
       git_repository *repo = nullptr;
       git_repository_init(&repo, inter->pro->project_path.string().c_str(),0);
@@ -300,7 +300,7 @@ bool createJson(std::shared_ptr<Project> pro) {
         return false;
       }
     }
-    Generators::Readme::create(inter->pro);
+    Generators::Readme::create(inter);
 
     if(project_type == ProjectType::EXECUTABLE){
       if(!Generators::CMakeList::createCMakeLists(inter->pro)){

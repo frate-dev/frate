@@ -4,10 +4,10 @@
 
 namespace Frate::Generators{
   namespace GitIgnore{
-    bool create(std::shared_ptr<Command::Project> pro);
+    bool create(Command::Interface* inter);
   }
   namespace Readme{
-    bool create(std::shared_ptr<Command::Project> pro);
+    bool create(Command::Interface* inter);
   }
   namespace Toolchain{
     std::string generateToolchain(std::string toolchain);

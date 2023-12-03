@@ -21,8 +21,8 @@ bool write_gitignore(std::string gitignore, std::filesystem::path gitignore_path
 }
 
   using namespace Utils::CLI;
-  bool create(std::shared_ptr<Command::Project> pro){
-    std::filesystem::path gitignore_path = pro->project_path / ".gitignore";
+  bool create(Command::Interface* inter){
+    std::filesystem::path gitignore_path = inter->pro->project_path / ".gitignore";
     std::string gitignore = std::format(R"VOG(
 # CMake
 CMakeLists.txt.user
@@ -53,7 +53,7 @@ compile_commands.json
 # vim/nvim
 *.swp
 compile_commands.json
-    )VOG", pro->build_dir);
+    )VOG", inter->pro->build_dir);
 
     if(std::filesystem::exists(gitignore_path)){
       std::cout << "Gitignore already exists" << std::endl;

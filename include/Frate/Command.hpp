@@ -147,7 +147,6 @@ namespace Frate::Command {
       std::vector<Handler> commands{};
 
       bool execute();
-      bool skip_prompts{false};
       bool parse();
       std::shared_ptr<cxxopts::Options> options;
       std::shared_ptr<cxxopts::ParseResult> args;
