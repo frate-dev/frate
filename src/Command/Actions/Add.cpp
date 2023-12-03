@@ -41,12 +41,13 @@ namespace Frate::Command::Add {
       Handler{
         .aliases = {"packages","p","package"},
           .flags = {"-l,--latest","-m,--mode","-t,--target"},
-          .positional_args = {"package,..."},
+          .positional_args = {"package_name"},
           .docs = "Add a package to the project",
           .callback = [inter]() {
             Packages::options(inter);
             return Packages::add(inter);
           },
+          .unlimited_args = true,
       },
         Handler{
           .aliases = {"flags","f"},
@@ -106,20 +107,22 @@ namespace Frate::Command::Add {
         },
         Handler{
           .aliases = {"author","a"},
-          .positional_args = {"author-name,..."},
+          .positional_args = {"author-name"},
           .docs = "Add an author to your project",
           .callback = [inter]() {
             return Author::add(inter);
           },
+          .unlimited_args = true,
         },
         Handler{
           .aliases = {"keywords","kw"},
-          .positional_args = {"keyword,..."},
+          .positional_args = {"keyword"},
           .docs = "Add keywords to your project",
           .callback = [inter]() {
             Keywords::add(inter);
             return false;
           },
+          .unlimited_args = true,
         },
     };
   }

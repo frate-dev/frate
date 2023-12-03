@@ -12,6 +12,7 @@
 #include "Frate/Command/Actions/Update.hpp"
 #include "Frate/Command/Actions/Watch.hpp"
 #include "Frate/Command/Actions/New.hpp"
+#include <Frate/Command/Actions/Completions.hpp>
 #include "Frate/Utils/General.hpp"
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
@@ -219,6 +220,14 @@ namespace Frate::Command {
         }
       },
       Handler{
+        .aliases = {"completions"},
+        .flags = {}, //TODO: Add flags
+        .docs = "completions sub command",
+        .callback = [this](){
+          return Completions::ZshCompletions(this);
+        },
+      },
+      Handler{
         .aliases = {"watch"},
         .flags = {}, //TODO: Add flags
         .docs = "watches the project for changes",
@@ -258,9 +267,13 @@ namespace Frate::Command {
     }
     std::cout << " ]";
   }
-  void renderPositionals(std::vector<std::string> positionals){
+  void renderPositionals(std::vector<std::string> positionals, bool unlimited_args = false){
     for(std::string positional : positionals){
-      std::cout << termcolor::bold <<  termcolor::green << " <" << positional << ">" << termcolor::reset;
+      if(unlimited_args){
+        std::cout << termcolor::bold <<  termcolor::green << " [" << positional << " ...]" << termcolor::reset;
+      }else{
+        std::cout << termcolor::bold <<  termcolor::green << " [" << positional << "]" << termcolor::reset;
+      }
     }
   }
   bool Interface::runCommand(std::string command, std::vector<Handler> &handlers){
@@ -318,7 +331,7 @@ namespace Frate::Command {
         }
       }
       if(handler.positional_args.size() > 0){
-        renderPositionals(handler.positional_args);
+        renderPositionals(handler.positional_args, handler.unlimited_args);
       }
       if(handler.flags.size() > 0){
         renderFlags(handler.flags);

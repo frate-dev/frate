@@ -27,17 +27,18 @@ namespace Frate::Command::Remove {
       {
         .aliases = {"packages","p","package"},
         .flags = {"-l,--latest","-m,--mode","-t,--target"},
-        .positional_args = {"package,..."},
+        .positional_args = {"package_name"},
         .docs = "Remove a package from the project",
         .callback = [inter]() {
           Packages::options(inter);
           return Packages::remove(inter);
         },
+        .unlimited_args = true,
       },
       {
         .aliases = {"flag", "f"},
         .flags = {"-m,--mode"},
-        .positional_args = {"flag,..."},
+        .positional_args = {"flags"},
         .docs = "Remove a flag from the project",
         .callback = [inter]() {
           Flags::options(inter);
@@ -55,12 +56,13 @@ namespace Frate::Command::Remove {
       },
       {
         .aliases = {"author", "auth"},
-        .positional_args = {"author_name,..."},
+        .positional_args = {"author_name"},
         .docs = "Remove an author from the project",
         .callback = [inter]() {
           Author::options(inter);
           return Author::remove(inter);
         },
+        .unlimited_args = true,
       }
     };
   }

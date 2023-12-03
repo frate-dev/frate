@@ -134,6 +134,7 @@ namespace Frate::Command {
     };
     bool implemented{true};
     bool requires_project{true};
+    bool unlimited_args{false};
   } Handler;
 
   class Interface{
