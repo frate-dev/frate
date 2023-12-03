@@ -8,7 +8,7 @@
 #include <Frate/Constants.hpp>
 
 
-namespace Utils::Validation {
+namespace Frate::Utils::Validation {
   bool CmakeVersion(std::string cmake_version){
     for(std::string version : Constants::SUPPORTED_CMAKE_VERSIONS){
       if(cmake_version == version){

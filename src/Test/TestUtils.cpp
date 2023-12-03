@@ -25,8 +25,8 @@ namespace Tests::Utils {
 
     for(size_t i = 0; i < mock_strings.size() ; i++){
       std::cout << "Testing split: " << mock_strings[i] << std::endl;
-      if(!(::Utils::split(mock_strings[i],' ').size() == expected_results[i])){
-        std::cout << "Expected: " << expected_results[i] << "Got: " << ::Utils::split(mock_strings[i],' ').size() << std::endl;
+      if(!(Frate::Utils::split(mock_strings[i],' ').size() == expected_results[i])){
+        std::cout << "Expected: " << expected_results[i] << "Got: " << Frate::Utils::split(mock_strings[i],' ').size() << std::endl;
         return false;
       }
     }
@@ -45,7 +45,7 @@ namespace Tests::Utils {
       "this funtion causes so many problems"
     };
     for(std::string &str: mock_strings){
-      ::Utils::toLower(str);
+      Frate::Utils::toLower(str);
     }
     for(size_t i = 0; i < mock_strings.size() ; i ++){
       std::cout << "Testing to lower: " <<  mock_strings[i] << std::endl;

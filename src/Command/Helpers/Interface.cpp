@@ -1,23 +1,39 @@
 #include <Frate/Command.hpp>
+#include <Frate/Command/Actions/Add.hpp>
+#include <Frate/Command/Actions/Set.hpp>
+#include <Frate/Command/Actions/Remove.hpp>
+#include <Frate/Command/Actions/List.hpp>
+#include <Frate/Command/Actions/Search.hpp>
+#include "Frate/Command/Actions/Build.hpp"
+#include "Frate/Command/Actions/Clean.hpp"
+#include "Frate/Command/Actions/FTP.hpp"
+#include "Frate/Command/Actions/Help.hpp"
+#include "Frate/Command/Actions/Run.hpp"
+#include "Frate/Command/Actions/Update.hpp"
+#include "Frate/Command/Actions/Watch.hpp"
+#include "Frate/Command/Actions/New.hpp"
+#include "Frate/Utils/General.hpp"
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
+#include <Frate/Constants.hpp>  
 #include <memory>
 #include <nlohmann/json_fwd.hpp>
 #include <git2.h>
 
-namespace Command {
+namespace Frate::Command {
 
-bool OptionsInit::Main(Interface *inter) {
-  inter->InitHeader();
-  inter->options->parse_positional({"command"});
-  inter->options->allow_unrecognised_options().add_options()(
-      "command", "Command to run",
-      cxxopts::value<std::string>()->default_value("help"))(
-      "v,verbose", "Verbose output",
-      cxxopts::value<bool>()->default_value("false"))(
-      "y,confim-all", "skip all y/n prompts",
-      cxxopts::value<bool>()->default_value("false"))("h,help", "Print usage");
-  return inter->parse();
+  bool OptionsInit::Main(Interface *inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command"});
+    inter->options->allow_unrecognised_options().add_options()(
+        "command", "Command to run",
+        cxxopts::value<std::string>()->default_value("help"))(
+        "v,verbose", "Verbose output",
+        cxxopts::value<bool>()->default_value("false"))(
+        "y,confim-all", "skip all y/n prompts",
+        cxxopts::value<bool>()->default_value("false"))("h,help", "Print usage")
+        ("version", "Print version");
+    return inter->parse();
   }
 
   bool Interface::parse(){
@@ -46,20 +62,26 @@ bool OptionsInit::Main(Interface *inter) {
     this->pro = std::make_shared<Project>();
     OptionsInit::Main(this);
     this->parse();
+    if(this->args->count("version")){
+      std::cout << Constants::VERSION << ENDL;
+      exit(0);
+    }
     //After the parse we can set the context args
     this->pro->args = this->args;
 
-    #ifdef DEBUG
-        std::cout << "DEBUG MODE ENABLED\n";
-    #endif
-    #ifdef DEBUG
-        pro->project_path = std::filesystem::current_path() / "build";
-    #else
-        pro->project_path = std::filesystem::current_path();
-    #endif
-    LoadProjectJson();
+#ifdef DEBUG
+    std::cout << "DEBUG MODE ENABLED\n";
+#endif
+#ifdef DEBUG
+    pro->project_path = std::filesystem::current_path() / "build";
+#else
+    pro->project_path = std::filesystem::current_path();
+#endif
   }
   bool Interface::execute(){
+    if(LoadProjectJson()){
+      project_present = true;
+    }
     if(this->args->count("yes")){
       this->skip_prompts = true;
       std::cout << "Skipping prompts" << ENDL;
@@ -73,6 +95,7 @@ bool OptionsInit::Main(Interface *inter) {
     std::string command = this->args->operator[]("command").as<std::string>();
 
 
+
     std::cout << "Project Path: " << pro->project_path << ENDL;
     commands = {
 
@@ -82,9 +105,9 @@ bool OptionsInit::Main(Interface *inter) {
         .positional_args = {"project_name/dir"},
         .docs = "Create a new project",
         .callback = [this](){
-          OptionsInit::Init(this);
-          return this->init();
-        }
+          return New::run(this);
+        },
+        .requires_project = false
       },
 
       Handler{
@@ -92,7 +115,7 @@ bool OptionsInit::Main(Interface *inter) {
         .flags = {"-m,--build-mode","-t,--target"}, //TODO: Add flags
         .docs = "Run the project",
         .callback = [this](){
-          return this->run();
+          return Run::run(this);
         }
       },
 
@@ -101,100 +124,98 @@ bool OptionsInit::Main(Interface *inter) {
         .flags = {}, //TODO: Add flags
         .docs = "Display help",
         .callback = [this](){
-          return this->help();
-        }
+          return Help::run(this);
+        },
+        .requires_project = false
       },
 
       Handler{
-        .aliases = {"ftp"},
+        .aliases = {"nuke"},
         .flags = {}, //TODO: Add flags
-        .docs = "Deletes the entire project F*ck This Project",
+        .docs = "Deletes the entire project",
         .callback = [this](){
-          return this->ftp();
-        }
+          return FTP::run(this);
+        },
+        .requires_project = false
       },
 
       Handler{
         .aliases = {"add"},
         .flags = {}, //TODO: Add flags
-        .subcommands = getAddHandlers(),
+        .subcommands = Add::handlers(this),
         .docs = "add sub command",
         .callback = [this](){
-          OptionsInit::Add(this);
-          return this->add();
+          return Add::run(this);
         }
       },
 
       Handler{
         .aliases = {"set"},
         .flags = {}, //TODO: Add flags
-        .subcommands = getSetHandlers(),
+        .subcommands = Set::handlers(this),
         .docs = "set sub command",
         .callback = [this](){
           //OptionsInit::Set(this);
-          return this->set();
+          return Set::run(this);
         }
       },
 
       Handler{
         .aliases = {"search"},
         .flags = {}, //TODO: Add flags
-        .subcommands = getSearchHandlers(),
+        .subcommands = Search::handlers(this),
         .docs = "search sub command",
         .callback = [this](){
-          OptionsInit::Search(this);
-          return this->search();
-        }
+          return Search::run(this);
+        },
+        .requires_project = false
       },
       Handler{
         .aliases = {"list", "ls"},
         .flags = {}, //TODO: Add flags
-        .subcommands = getListHandlers(),
+        .subcommands = List::handlers(this),
         .docs = "list sub command",
         .callback = [this](){
-          OptionsInit::List(this);
-          return this->list();
-        }
+          return List::run(this);
+        },
+        .requires_project = false
       },
 
       Handler{
         .aliases = {"remove", "rm"},
         .flags = {}, //TODO: Add flags
+        .subcommands = Remove::handlers(this),
         .docs = "remove sub command",
         .callback = [this](){
-          OptionsInit::Remove(this);
-          return this->remove();
+          return Remove::run(this);
         }
       },
 
       Handler{
         .aliases = {"update"},
         .flags = {}, //TODO: Add flags
-        .subcommands = getUpdateHandlers(),
+        .subcommands = Update::handlers(this),
         .docs = "update sub command",
         .callback = [this](){
-          OptionsInit::Update(this);
-          return this->update();
+          return Update::run(this);
         }
       },
 
       Handler{
         .aliases = {"clean"},
-        .flags = {"-c","--cache"}, //TODO: Add flags
+        .flags = {"-c,--cache"}, //TODO: Add flags
         .docs = "clean sub command",
         .callback = [this](){
-          OptionsInit::Clean(this);
-          return this->clean();
+          return Clean::run(this);
         }
       },
 
       Handler{
         .aliases = {"build"},
-        .flags = {}, //TODO: Add flags
+        .flags = {"-m,--mode","-t,--target","-j,--jobs"}, //TODO: Add flags
         .docs = "build sub command",
         .callback = [this](){
-          OptionsInit::Build(this);
-          return this->build();
+          return Build::run(this);
         }
       },
       Handler{
@@ -202,8 +223,7 @@ bool OptionsInit::Main(Interface *inter) {
         .flags = {}, //TODO: Add flags
         .docs = "watches the project for changes",
         .callback = [this](){
-          OptionsInit::Watch(this);
-          return this->watch();
+          return Watch::run(this);
         }
       },
     };
@@ -213,6 +233,10 @@ bool OptionsInit::Main(Interface *inter) {
     for(Handler& handler : commands){
       for(std::string& alias : handler.aliases){
         if(alias == command){
+          if(handler.requires_project && !project_present){
+            Frate::error << "Error: Project not found and is required for this command" << ENDL;
+            return false;
+          }
           found_alias = true;
           if(!handler.callback()){
             return false;
@@ -244,7 +268,11 @@ bool OptionsInit::Main(Interface *inter) {
       for(std::string alias : handler.aliases){
         if(alias == command){
           if(!handler.implemented){
-            std::cout << termcolor::red << "Error: Command not implemented: " << command << termcolor::reset << ENDL;
+            Frate::error << "Command not implemented: " << command;
+            return false;
+          }
+          if(handler.requires_project && !project_present){
+            Frate::error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
             return false;
           }
           if(!handler.callback()){
@@ -305,7 +333,7 @@ bool OptionsInit::Main(Interface *inter) {
         std::cout << "     " << termcolor::blue << handler.docs << termcolor::reset;
       }else{
         if(handler.subcommands.size() > 0){
-          std::cout << termcolor::blue << " <target>" << termcolor::reset;
+          std::cout << termcolor::blue << " <subcommand>" << termcolor::reset;
 
         }else{
           std::cout << " : " << termcolor::blue << handler.docs << termcolor::reset;
@@ -326,4 +354,4 @@ bool OptionsInit::Main(Interface *inter) {
     git_libgit2_shutdown(); 
   }
 
-  } // namespace Command
+} // namespace Command

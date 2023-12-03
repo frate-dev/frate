@@ -2,7 +2,7 @@
 #include <Frate/Command.hpp>
 
 
-namespace Command::License {
+namespace Frate::Command::License {
   typedef struct License_s {
     std::string name;
     std::string key;
@@ -14,9 +14,7 @@ namespace Command::License {
     std::string key;
     std::string name;
     std::string spdx_id;
-    std::string url;
-    std::string html_url;
-    std::string description;
+    std::string url; std::string html_url; std::string description;
     std::string implementation;
     std::vector<std::string> permissions;
     std::vector<std::string> conditions;

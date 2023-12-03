@@ -8,7 +8,7 @@
 
 
 
-namespace Utils::CLI {
+namespace Frate::Utils::CLI {
   namespace Ansi{
     const std::string RESET = "\033[0m";
     const std::string RED = "\033[31m";
@@ -84,31 +84,27 @@ namespace Utils::CLI {
        */
       void pushBack(ListItem item);
   };
-  template <typename T>
   class Prompt{
-    static_assert(
-        std::is_same<T,std::string>::value 
-        || std::is_same<T, int>::value 
-        || std::is_same<T, float>::value 
-        || std::is_same<T, double>::value
-        || std::is_same<T, bool>::value,
-        "Prompt only supports std::string, int, float, and double, bool");
     private:
       std::string prompt;
       std::string color;
       std::string input;
-      T value;
+      std::string default_input;
+      int cursor_position{0};
       size_t max_length{0};
       bool print_valid_options{false};
       bool exit_on_failure{false};
-      std::function<bool(T)> validator;
-      std::vector<T> options;
+      bool is_bool{false};
+      std::function<bool(std::string)> validator;
+      std::vector<std::string> options;
       void get_input();
-      bool is_in_options(T option);
-      bool yoink();
-      virtual bool has_options();
-      virtual bool has_max_length();
-      virtual bool has_validator();
+      bool is_in_options(std::string option);
+      bool is_valid();
+      void current_input();
+      bool has_options();
+      bool has_max_length();
+      bool has_validator();
+      void prompt_prefix(int cursor_position);
     public:
       /*
        * Create a prompt builder
@@ -116,20 +112,38 @@ namespace Utils::CLI {
        * @param color the color of the prompt
        */
       Prompt(std::string prompt);
-      Prompt(std::string prompt, T default_input);
+      Prompt(std::string prompt, std::string default_input);
       Prompt* Message(std::string prompt);
       /*
        * Adds a vector of <T> options to the prompt
        * @param options the options to add
        * @return this
        */
-      Prompt* Options(std::vector<T> options);
+      Prompt* Options(std::vector<std::string> options);
       /*
-       * Adds an option to the prompt in the form of a <T> type
+       * Adds an option to the prompt as a string
        * @param option the option to add
        * @return this
        */
-      Prompt* AddOption(T option);
+      Prompt* AddOption(std::string option);
+      /*
+       * Adds an option to the prompt as an int
+       * @param option the option to add
+       * @return this
+       */
+      Prompt* AddOption(int option);
+      /*
+       * Adds an option to the prompt as a float
+       * @param option the option to add
+       * @return this
+       */
+      Prompt* AddOption(float option);
+      /*
+       * Adds an option to the prompt as a size_t
+       * @param option the option to add
+       * @return this
+       */
+      Prompt* AddOption(size_t option);
       /*
        * Sets the maximum length of the input
        * @param max_length the maximum length of the input
@@ -148,7 +162,7 @@ namespace Utils::CLI {
        * @param validator a function that takes a T and returns a bool
        * @return this
        */
-      Prompt* Validator(std::function<bool(T)> validator);
+      Prompt* Validator(std::function<bool(std::string)> validator);
       /*
        * Runs the prompt, asks for input and handles exceptions and validations
        * @return true if the prompt was successful
@@ -159,6 +173,10 @@ namespace Utils::CLI {
        */
       Prompt* PrintValidOptions();
       /*
+       * Sets the prompt to be a boolean prompt
+       */
+      Prompt* IsBool();
+      /*
        * runs the prompt
        */
       bool Run();
@@ -166,11 +184,17 @@ namespace Utils::CLI {
        * Gets the realized value of the prompt
        * @return the value of the prompt
        */
-      T Get();
+      template<typename T>
+      std::pair<bool,T> Get();
+
+
+      // template<>
+      // std::pair<bool,std::string> Get();
+      // template<>
+      // std::pair<bool,int> Get();
+      // template<>
+      // std::pair<bool,float> Get();
+      // template<>
+      // std::pair<bool,bool> Get();
   };
-  template class Prompt<std::string>;
-  template class Prompt<int>;
-  template class Prompt<float>;
-  template class Prompt<double>;
-  template class Prompt<bool>;
 }

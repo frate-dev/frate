@@ -4,7 +4,7 @@
 #include <Frate/Utils/General.hpp>
 #include <inja.hpp>
 
-namespace Generators::Toolchain{
+namespace Frate::Generators::Toolchain{
   using nlohmann::json;
   std::string something(std::string  toolchain){
     std::string toolchain_template = R"(

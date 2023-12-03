@@ -1,7 +1,17 @@
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Generators.hpp>
 
-namespace Command::Flags {
+namespace Frate::Command::Flags {
+  bool options(Interface* inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand"});
+    inter->options->allow_unrecognised_options().add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("m,mode", "mode to add flags", cxxopts::value<std::string>()->default_value("help"))
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
+    inter->options->help();
+    return inter->parse();
+  }
   //TODO: This should be moved to the flags module
   std::vector<std::string> makeFlags(Interface *inter){
     std::vector<std::string> raw_flags = inter->args->unmatched();
@@ -20,63 +30,9 @@ namespace Command::Flags {
       build_flags = "-" + build_flags;
       flags.push_back(build_flags);
     }
+    for(std::string &flag : flags){
+      flag.erase(std::remove(flag.begin(), flag.end(), ' '), flag.end());
+    }
     return flags;
-  }
-  bool add(Interface *inter) {
-    std::cout << "Adding flags" << std::endl; 
-    std::vector<std::string> flags = makeFlags(inter);
-
-    if (inter->args->count("mode") > 0) {
-      std::string mode = inter->args->operator[]("mode").as<std::string>();
-      for (Mode &m : inter->pro->modes) {
-        if (m.name == mode) {
-          for (std::string flag : flags) {
-            std::cout << "Adding flag: " << flag << std::endl;
-            m.flags.push_back(flag);
-          }
-          std::cout << "Writing config.json" << std::endl;
-          Generators::ConfigJson::writeConfig(inter->pro);
-          Generators::CMakeList::createCMakeListsExecutable(inter->pro);
-          return true;
-        }
-      }
-    }
-    for (std::string flag : flags) {
-      std::cout << "Adding flag: " << flag << std::endl;
-      inter->pro->flags.push_back(flag);
-    }
-    std::cout << "Writing config.json" << std::endl;
-    Generators::ConfigJson::writeConfig(inter->pro);
-    return true;
-  }
-  bool remove(Interface *inter){
-    std::cout << "Removing flags" << std::endl; 
-    std::vector<std::string> flags = makeFlags(inter);
-    if (inter->args->count("mode") > 0) {
-      std::string mode = inter->args->operator[]("mode").as<std::string>();
-      for (Mode &m : inter->pro->modes) {
-        if (m.name == mode) {
-          for (std::string flag : flags) {
-            std::cout << "Removing flag: " << flag << std::endl;
-            std::erase_if(m.flags, [&flag](auto &f) {
-                return f == flag;
-            });
-          }
-          std::cout << "Writing config.json" << std::endl;
-          Generators::ConfigJson::writeConfig(inter->pro);
-          Generators::CMakeList::createCMakeListsExecutable(inter->pro);
-          return true;
-        }
-      }
-    }
-    for (std::string flag : flags) {
-      std::cout << "Removing flag: " << flag << std::endl;
-      std::erase_if(inter->pro->flags, [&flag](auto &f) {
-          return f == flag;
-      });
-    }
-    std::cout << "Writing config.json" << std::endl;
-    Generators::ConfigJson::writeConfig(inter->pro);
-    return true;
   }
 } 

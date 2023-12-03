@@ -1,7 +1,7 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Utils/CLI.hpp>
 
-namespace Command::Packages {
+namespace Frate::Command::Packages {
   using namespace Utils::CLI;
 
  Package promptSearchResults(std::string &query){
@@ -25,14 +25,21 @@ namespace Command::Packages {
      packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
    }
    std::cout << packageList->Build() << std::endl;
-   Prompt<int> *prompt = new Prompt<int>("Select a package to install: ");
+   Prompt *prompt = new Prompt("Select a package to install: ");
    for(size_t i = 0; i < searchResults.size(); i++){
      prompt->AddOption(i);
    }
    prompt->Run();
-   int index = prompt->Get();
+   auto [valid,index] = prompt->Get<int>();
 
-   return searchResults[index];
+   if(!valid){
+     std::cout << "Invalid option" << std::endl;
+     exit(0);
+   }else{
+     return searchResults[index];
+   }
+
+
  }
 
   std::string promptForVersion(Package &chosen_package){
@@ -44,16 +51,23 @@ namespace Command::Packages {
 
     std::cout << list->Build() << std::endl;
 
-    Prompt<int> *prompt = new Prompt<int>("Select a version to install: ");
+    Prompt *prompt = new Prompt("Select a version to install: ");
 
     for(size_t i = 0; i < chosen_package.versions.size(); i++){
       prompt->AddOption(i);
     }
 
-    prompt->ExitOnFailure()->Run();
+    prompt->Run();
 
+    auto [valid, index] = prompt->Get<int>();
 
-    return chosen_package.versions[prompt->Get()];
+    if(!valid){
+      std::cout << "Invalid option" << std::endl;
+      exit(0);
+    }else{
+      return chosen_package.versions[index];
+    }
+
 
   }
 }

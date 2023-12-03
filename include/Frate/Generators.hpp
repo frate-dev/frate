@@ -2,8 +2,11 @@
 #include <vector>
 #include "./Command.hpp"
 
-namespace Generators{
+namespace Frate::Generators{
   namespace GitIgnore{
+    bool create(std::shared_ptr<Command::Project> pro);
+  }
+  namespace Readme{
     bool create(std::shared_ptr<Command::Project> pro);
   }
   namespace Toolchain{
@@ -41,7 +44,7 @@ namespace Generators{
      */
 
     bool create(std::shared_ptr<Command::Project> pro); 
-    bool createCMakeListsExecutable(std::shared_ptr<Command::Project> pro);
+    bool createCMakeLists(std::shared_ptr<Command::Project> pro);
   }
 
   namespace ConfigJson{
@@ -59,6 +62,7 @@ namespace Generators{
       std::string lang_version;
       std::string authors_str;
     } Config;
+    [[deprecated("Use project->writeConfig() instead")]]
     bool writeConfig(std::shared_ptr<Command::Project>& ctx);
   }
 

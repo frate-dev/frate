@@ -1,6 +1,6 @@
 #include <string>
 #include <vector>
-namespace Command::Toolchain {
+namespace Frate::Command::Toolchain {
   typedef struct CompileTarget {
     std::string os;
     std::string triple;

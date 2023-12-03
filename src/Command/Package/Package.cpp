@@ -4,9 +4,22 @@
 #include <Frate/Utils/General.hpp> 
 #include <Frate/Command/CommandMode.hpp>
 
-namespace Command::Packages {
+namespace Frate::Command::Packages {
   using namespace Utils::CLI;
   
+  bool options(Interface* inter) {
+    inter->InitHeader();
+    inter->options->parse_positional({"command", "subcommand", "args"});
+    inter->options->add_options()
+      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
+      ("m,mode", "make changes to compile mode", cxxopts::value<std::string>())
+      ("e,exact", "Exact package", cxxopts::value<bool>()->default_value("false"))
+      ("l,latest", "Latest package", cxxopts::value<bool>()->default_value("false"))
+      ("args", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>());
+    inter->options->help();
+    return inter->parse();
+  }
   bool dependenciesConflict(std::vector<Package> deps, std::string &name) {
     if (deps.size() == 0) {
       return false;
@@ -36,7 +49,7 @@ namespace Command::Packages {
 }
 
 
-namespace Command {
+namespace Frate::Command {
   using nlohmann::json;
 
   json Package::toJson() {

@@ -7,7 +7,7 @@
 
 
 
-namespace Utils::CLI {
+namespace Frate::Utils::CLI {
   ListItem::ListItem(std::string primary, std::string subtext){
     this->primary = primary;
     this->subtext = subtext;

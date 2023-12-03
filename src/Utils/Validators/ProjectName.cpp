@@ -6,7 +6,7 @@
 #include <Frate/Generators.hpp> 
 
 
-namespace Utils::Validation {
+namespace Frate::Utils::Validation {
   bool ProjectName(std::string project_name){
     if ((project_name.size() > 255)) {
       return false;

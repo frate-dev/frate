@@ -5,7 +5,7 @@
 #include <ctime>
 
 
-namespace Command::License {
+namespace Frate::Command::License {
   using nlohmann::json;
   License searchPrompt(std::string& query){
     License selected_license;
@@ -42,7 +42,7 @@ namespace Command::License {
 
     std::cout << license_list.Build() << std::endl;
 
-    Utils::CLI::Prompt<int> license_prompt("Select a license");
+    Utils::CLI::Prompt license_prompt("Select a license");
     license_prompt.ExitOnFailure();
 
     for(size_t i = 0; i < licenses.size(); i++){
@@ -50,8 +50,15 @@ namespace Command::License {
     }
 
     license_prompt.Run();
+
+    auto [valid, index] = license_prompt.Get<int>();
+
+    if(!valid){
+      Frate::error << "Invalid license" << std::endl;
+      return selected_license;
+    }
   
-    selected_license = licenses[license_prompt.Get()].first;
+    selected_license = licenses[index].first;
 
     return selected_license;
   }
@@ -66,15 +73,19 @@ namespace Command::License {
 
     std::string year = std::to_string(now_tm->tm_year + 1900);
 
-    Utils::replaceKey(license, "year", year);
+    Utils::replaceKey(license, "[year]", year);
 
-    Utils::CLI::Prompt<std::string> name_prompt("Enter your name or organization: ");
+    Utils::CLI::Prompt name_prompt("Enter your name or organization");
     name_prompt.ExitOnFailure();
     name_prompt.Run();
+    auto [valid, org] = name_prompt.Get<std::string>();
+    if(!valid){
+      Frate::error << "Invalid name" << std::endl;
+      return;
+    }
+    Utils::replaceKey(license, "[fullname]", org);
 
-    Utils::replaceKey(license, "fullname", name_prompt.Get());
-
-    Utils::replaceKey(license, "project", inter->pro->project_name);
+    Utils::replaceKey(license, "[project]", inter->pro->project_name);
 
     full_license.body = license;
   }
@@ -82,8 +93,7 @@ namespace Command::License {
   bool set(Interface* inter){
     std::string query;
     if(inter->args->count("args") == 0){
-      Utils::Error error;
-      error << "No license specified" << std::endl;
+      Frate::error << "No license specified" << std::endl;
       return false;
     }
     query = inter->args->operator[]("args").as<std::string>();
@@ -94,28 +104,26 @@ namespace Command::License {
     
     fillLicense(inter, full_license);
     if(std::filesystem::exists(inter->pro->project_path / "LICENSE")){
-      Utils::Error error;
-      error << "A license already exists in this project" << std::endl;
-      Utils::CLI::Prompt<bool> overwrite_prompt("Overwrite existing license?");
+      Frate::error << "A license already exists in this project" << std::endl;
+      Utils::CLI::Prompt overwrite_prompt("Overwrite existing license?");
       overwrite_prompt.Run();
-      if(!overwrite_prompt.Get()){
+      overwrite_prompt.IsBool();
+      if(!overwrite_prompt.Get<bool>().second){
         return false;
       }
     }
 
     inter->pro->license = full_license.spdx_id;
 
-    Utils::Info info;
-    info << "Writing license to " << inter->pro->project_path / "LICENSE" << std::endl;
-    info << "License: " << full_license.name << std::endl;
+    Frate::info << "Writing license to " << inter->pro->project_path / "LICENSE" << std::endl;
+    Frate::info << "License: " << full_license.name << std::endl;
 
     try{
       std::ofstream license_file(inter->pro->project_path / "LICENSE");
       license_file << full_license.body;
     }catch(std::exception& e){
-      Utils::Error error;
-      error << "Failed to write license to file" << std::endl;
-      error << e.what() << std::endl;
+      Frate::error << "Failed to write license to file" << std::endl;
+      Frate::error << e.what() << std::endl;
       return false;
     }
 

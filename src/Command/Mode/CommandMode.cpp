@@ -3,7 +3,7 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/CommandMode.hpp>
 
-namespace Command::ModeCommands {
+namespace Frate::Command::ModeCommands {
   bool addFlags(Interface* inter, std::string mode){
     //std::vector<std::string> flags = inter->args->operator[]("args").as<std::vector<std::string>>();
     std::vector<std::string>  flags = inter->args->unmatched();
@@ -25,7 +25,6 @@ namespace Command::ModeCommands {
   bool addPackages(Interface* inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep_str : dependencies) {
-
       auto [found,new_package] = Packages::searchWithPrompt(dep_str,false);
       if(found){
         //Push the found package to the dependencies
@@ -39,7 +38,7 @@ namespace Command::ModeCommands {
       }
     }
     Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
+    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
   bool removePackages(Interface* inter, std::string mode){
@@ -55,7 +54,7 @@ namespace Command::ModeCommands {
       }
     }
     Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeListsExecutable(inter->pro);
+    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
 };

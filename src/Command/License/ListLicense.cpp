@@ -2,7 +2,7 @@
 #include <Frate/Command/License.hpp>
 #include <Frate/Utils/General.hpp>
 
-namespace Command::License {
+namespace Frate::Command::License {
 using nlohmann::json;
 
 bool list(Interface *inter) {

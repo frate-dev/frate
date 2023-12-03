@@ -5,7 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-namespace Generators::Toolchain {
+namespace Frate::Generators::Toolchain {
   using nlohmann::json;
   std::string generateToolchain(std::string toolchain) {
     Command::Toolchain::CompileTarget compiletarget;

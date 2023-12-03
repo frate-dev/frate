@@ -7,7 +7,7 @@
 #include <Frate/Generators.hpp> 
 
 
-namespace Utils::Validation {
+namespace Frate::Utils::Validation {
   bool SourceDir(std::string src_dir){
     if (src_dir.size() > 255) {
       return false;

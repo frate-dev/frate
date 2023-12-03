@@ -3,7 +3,7 @@
 #include <Frate/Utils/General.hpp>
 #include <fstream>
 
-namespace Command{
+namespace Frate::Command{
   using nlohmann::json;
   using std::cout;
   using std::ifstream;
@@ -34,7 +34,7 @@ namespace Command{
       try {
         create_directories(string(std::getenv("HOME")) + "/.local/frate");
       }catch(std::exception& e){
-        std::cout << "Failed to create index file" << ENDL;
+        Frate::error << "Failed to create index file" << ENDL;
         Utils::debug(e.what());
         exit(-1);
       }
@@ -71,7 +71,7 @@ namespace Command{
         create_directories(string(std::getenv("HOME")) + "/.local/frate");
 
       }catch(std::exception& e){
-        std::cout << "Failed to create index file" << ENDL;
+        Frate::error << "Failed to create index file" << ENDL;
         Utils::debug(e.what());
         return false;
 

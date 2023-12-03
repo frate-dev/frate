@@ -17,7 +17,7 @@
 #endif
 
 
-namespace Utils {
+namespace Frate::Utils {
   using nlohmann::json;
   std::string getFolderName();
   /*
@@ -110,5 +110,8 @@ namespace Utils {
       }
   };
 
+  /*
+   * replaces the provided key with the value
+   */
   void replaceKey(std::string &str, std::string key, std::string value);
 }

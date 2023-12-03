@@ -3,7 +3,7 @@
 #include <Frate/Utils/General.hpp>
 
 
-namespace Utils {
+namespace Frate::Utils {
   void debug(std::string something){
 #ifdef DEBUG
     cpptrace::generate_trace().print();

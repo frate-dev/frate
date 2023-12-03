@@ -1,4 +1,5 @@
 #pragma once
+#include "Frate/Utils/General.hpp"
 #include "nlohmann/json_fwd.hpp"
 #include <memory>
 #include <string>
@@ -9,16 +10,17 @@
 #include <iostream>
 #include <cxxopts.hpp>
 #include <Frate/Utils/CLI.hpp>
+#include <Frate/Frate.hpp>
 
 
 #define ENDL "\n"
 
-namespace Command {
+namespace Frate::Command {
   using nlohmann::json;
   using Utils::CLI::Prompt;
   using namespace Utils::CLI::Ansi;
-
   using namespace cxxopts;
+
 
   /*
    * Package structure from index
@@ -82,6 +84,7 @@ namespace Command {
     std::string project_name;
     std::string project_description;
     std::string project_type = ProjectType::EXECUTABLE;
+    std::string template_name{"default-executable"};
     RemoteServer build_server;
     /*
      * This is the project path, it will be set to the current working directory and in debug mode if willl set the path to ./build/
@@ -93,12 +96,14 @@ namespace Command {
     std::string lang_version{"20"};
     std::string compiler{"g++"};
     std::string license{""};
+    std::string default_mode{"Release"};
     std::vector<Mode> modes{
       Mode{.name = "Release", .flags={"-O2 "}}, 
       Mode{.name= "Debug", .flags= {"-g"}},
       Mode{.name= "Test", .flags={"-g"}}
     };
     std::vector<std::string> authors;
+    std::vector<std::string> keywords;
     std::string src_dir{"src"};
     std::string include_dir{"include"};
     std::vector<RemoteServer> build_servers;
@@ -111,6 +116,8 @@ namespace Command {
     std::vector<std::string> toolchains {};
     void fromJson(json j);
     nlohmann::json toJson();
+    bool save();
+    void checkKeys(json j);
   } Project;
   typedef struct Handler_s Handler;
   typedef struct Handler_s {
@@ -126,41 +133,17 @@ namespace Command {
       }
     };
     bool implemented{true};
+    bool requires_project{true};
   } Handler;
 
   class Interface{
-    private:
-      //Commands;
-      bool init();
-      bool add();
-      bool get();
-      bool set();
-      bool remove();
-      bool update();
-      bool run();
-      bool help();
-      bool search();
-      bool ftp();
-      bool watch();
-      bool toolchains();
-      bool clean();
-      bool build();
-      bool list();
+    public:
       void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
       void getHelpString(Handler &handler);
       bool runCommand(std::string,std::vector<Handler>&);
-    public:
       std::shared_ptr<Project> pro;
       bool project_present{false};
       std::vector<Handler> commands{};
-      //All sub command getters
-      std::vector<Handler> getAddHandlers();
-      std::vector<Handler> getGetHandlers();
-      std::vector<Handler> getSetHandlers();
-      std::vector<Handler> getListHandlers();
-      std::vector<Handler> getSearchHandlers();
-      std::vector<Handler> getRemoveHandlers();
-      std::vector<Handler> getUpdateHandlers();
 
       bool execute();
       bool skip_prompts{false};
@@ -178,22 +161,7 @@ namespace Command {
   };
 
   namespace OptionsInit{
-      bool Init(Interface*);
-      bool Search(Interface*);
-      bool Add(Interface*);
-      bool Set(Interface*);
-      bool Remove(Interface*);
-      bool Server(Interface*);
-      bool Packages(Interface*);
-      bool Update(Interface*);
       bool Main(Interface*);
-      bool Modes(Interface*);
-      bool Flags(Interface*);
-      bool Mode(Interface*);
-      bool Watch(Interface*);
-      bool Clean(Interface*);
-      bool Build(Interface*);
-      bool List(Interface*);
   };
 
   std::string downloadIndex();

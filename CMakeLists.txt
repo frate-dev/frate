@@ -1,8 +1,26 @@
 cmake_minimum_required(VERSION 3.10)
 
+set(VMINOR 0)
+set(VMAJOR 0)
+set(VPATCH 1)
+
+
+if(DEFINED ENV{VBUILD})
+  set(VBUILD $ENV{VBUILD})
+else()
+  set(VBUILD 0)
+endif()
+
+add_definitions(-DVMINOR=${VMINOR})
+add_definitions(-DVMAJOR=${VMAJOR})
+add_definitions(-DVPATCH=${VPATCH})
+add_definitions(-DVBUILD=${VBUILD})
+
+set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+set(CMAKE_C_COMPILER /usr/bin/clang)
 project ( 
     frate
-    VERSION 0.0.1
+    VERSION ${VMAJOR}.${VMINOR}.${VPATCH}.${VBUILD}
     LANGUAGES CXX
 )
 set(CMAKE_CXX_STANDARD 20)
@@ -46,15 +64,15 @@ CPMAddPackage(
   GITHUB_REPOSITORY libgit2/libgit2
   GIT_TAG v1.7.1
   OPTIONS
-  "BUILD_TESTS OFF"
-  "BUILD_CLI OFF"
+    "BUILD_TESTS OFF"
+    "BUILD_CLI OFF"
 )
 CPMAddPackage(
   NAME curl
   GITHUB_REPOSITORY curl/curl
   GIT_TAG curl-8_3_0
   OPTIONS
-  "ENABLE_VERSIONED_SYMBOLS ON"
+    "ENABLE_VERSIONED_SYMBOLS ON"
 )
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
@@ -73,7 +91,6 @@ message("Sources: ${SOURCES}")
 if(NOT DEFINED RELEASE)
   set(RELEASE 0)
 endif()
-
 add_executable(${PROJECT_NAME} ${SOURCES}) #test mode
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")

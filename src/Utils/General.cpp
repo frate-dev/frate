@@ -5,7 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <curl/curl.h>
 
-namespace Utils{
+namespace Frate::Utils{
 
   struct CurlResponse {
     std::string text;
@@ -22,8 +22,7 @@ namespace Utils{
 
   CurlResponse HttpGet(std::string& url) {
     CurlResponse response;
-
-    CURL* curl = curl_easy_init();
+CURL* curl = curl_easy_init();
     if (!curl) {
         response.error = "Failed to initialize libcurl.";
         return response;
@@ -44,7 +43,7 @@ namespace Utils{
 
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
-        std::cout << "Failed to request " << url << std::endl;
+        Frate::error << "Failed to request " << url << std::endl;
         response.error = curl_easy_strerror(res);
         curl_easy_cleanup(curl);
         return response;
@@ -122,7 +121,7 @@ namespace Utils{
     } catch (json::parse_error& e) {
       std::cout << "At: " << e.byte << std::endl;
       std::cout << "Error: " << e.what() << std::endl;
-      std::cout << "Failed to parse index.json" << std::endl;
+      Frate::error << "Failed to parse index.json" << std::endl;
       std::cout << "Text: " << responseStr << std::endl;
       Utils::debug("Failed to parse index.json");
       exit(-1);
@@ -192,11 +191,8 @@ namespace Utils{
     }
     return score;
   }
-  /*
-   * replaces keys like [key] with values
-   */
   void replaceKey(std::string &str, std::string key, std::string value){
-    std::string key_start = "[" + key + "]";
+    std::string key_start = key;
     while(str.find(key_start) != std::string::npos){
       str.replace(str.find(key_start), key_start.length(), value);
     }

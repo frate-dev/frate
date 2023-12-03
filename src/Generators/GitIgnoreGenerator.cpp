@@ -4,7 +4,7 @@
 #include <Frate/Utils/CLI.hpp>
 
 
-namespace Generators::GitIgnore{
+namespace Frate::Generators::GitIgnore{
 
 bool write_gitignore(std::string gitignore, std::filesystem::path gitignore_path) {
     try{
@@ -13,7 +13,7 @@ bool write_gitignore(std::string gitignore, std::filesystem::path gitignore_path
       file << gitignore;
       file.close();
     }catch(std::exception &e){
-      std::cout << "Failed to create gitignore" << std::endl;
+      Frate::error << "Failed to create gitignore" << std::endl;
       Utils::debug(e.what());
       return false;
     }
@@ -57,14 +57,14 @@ compile_commands.json
 
     if(std::filesystem::exists(gitignore_path)){
       std::cout << "Gitignore already exists" << std::endl;
-      Prompt<bool> *prompt = new Prompt<bool>("Do you want to overwrite it?");
+      Prompt *prompt = new Prompt("Do you want to overwrite it?");
       prompt->Color(Ansi::RED)->ExitOnFailure()->Run();
-      if(prompt->Get()){
-      write_gitignore(gitignore, gitignore_path);
-        return true;
-      }else{
+      prompt->IsBool();
+      auto [valid, value] = prompt->Get<bool>();
+      if(!valid || !value){
         return false;
       }
+      write_gitignore(gitignore, gitignore_path);
     }else{
       write_gitignore(gitignore, gitignore_path);
     }

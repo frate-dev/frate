@@ -2,7 +2,20 @@
 #include <vector>
 
 
-namespace Constants {
+namespace Frate::Constants {
+  const std::string NAME = "frate";
+  const std::string DESCRIPTION = "CLI utility for managing your project, a modern touch for C/C++";
+  const std::string PROJECT_URL = "https://github.com/frate-dev/frate";
+  
+  const std::string VERSION = 
+    std::to_string(VMAJOR) + "." + 
+    std::to_string(VMINOR) + "." + 
+    std::to_string(VPATCH)
+#ifdef VBUILD
+    + "." + std::to_string(VBUILD)
+#endif
+    ;
+
   const std::vector<std::string> SUPPORTED_CMAKE_VERSIONS =
   {
     "3.0",
@@ -54,26 +67,26 @@ namespace Constants {
 
   const std::vector<std::string> SUPPORTED_C_STANDARDS =
   {
-    "c89",
-    "c90",
-    "c99",
-    "c11",
-    "c17",
-    "c18",
-    "c2x",
+    "89",
+    "90",
+    "99",
+    "11",
+    "17",
+    "18",
+    "2x",
   };
   
   const std::vector<std::string> SUPPORTED_CXX_STANDARDS =
   {
-    "c++98",
-    "c++03",
-    "c++11",
-    "c++1x",
-    "c++14",
-    "c++17",
-    "c++20",
-    "c++2x",
-    "c++23",
+    "98",
+    "03",
+    "11",
+    "1x",
+    "14",
+    "17",
+    "20",
+    "2x",
+    "23",
   };
 
   const std::vector<std::string> SUPPORTED_LANGUAGES =

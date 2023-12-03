@@ -1,8 +1,9 @@
 #include <Frate/Command.hpp>
 
-namespace Command::Packages {
+namespace Frate::Command::Packages {
 
 
+  bool options(Interface* inter);
 
   /*
    * Add package command adds a package to a project

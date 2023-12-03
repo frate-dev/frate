@@ -2,160 +2,213 @@
 #include <Frate/Utils/CLI.hpp>
 #include <exception>
 #include <string>
+#include <termios.h>
+#include <termio.h>
+#include <unistd.h>
 
-namespace Utils::CLI {
-  template <typename T>
-  Prompt<T>::Prompt(std::string prompt){
+namespace Frate::Utils::CLI {
+  Prompt::Prompt(std::string prompt){
     this->prompt = prompt;
     this->color = Ansi::GREEN;
   }
-  template <>
-  Prompt<std::string>::Prompt(std::string prompt){
+  Prompt::Prompt(std::string prompt, std::string default_input){
     this->prompt = prompt;
-    this->value = "";
+    this->input = default_input;
     this->color = Ansi::GREEN;
   }
-  template <>
-  Prompt<int>::Prompt(std::string prompt){
-    this->prompt = prompt;
-    this->value = 0;
-    this->color = Ansi::GREEN;
-  }
-  template <>
-  Prompt<float>::Prompt(std::string prompt){
-    this->prompt = prompt;
-    this->value = 0.0f;
-    this->color = Ansi::GREEN;
-  }
-  template <>
-  Prompt<double>::Prompt(std::string prompt){
-    this->prompt = prompt;
-    this->value = 0.0;
-    this->color = Ansi::GREEN;
-  }
-  
-  template <typename T>
-  Prompt<T>::Prompt(std::string prompt, T default_value){
-    this->prompt = prompt;
-    this->value = default_value;
-    this->color = Ansi::GREEN;
-  }
-
-  template <typename T>
-  Prompt<T>* Prompt<T>::AddOption(T option){
+  Prompt* Prompt::AddOption(std::string option){
     this->options.push_back(option);
     return this;
   }
-  template <typename T> 
-  Prompt<T>* Prompt<T>::MaxLength(int max_length){
+  Prompt* Prompt::AddOption(int option){
+    this->options.push_back(std::to_string(option));
+    return this;
+  }
+  Prompt* Prompt::AddOption(float option){
+    this->options.push_back(std::to_string(option));
+    return this;
+  }
+  Prompt* Prompt::AddOption(size_t option){
+    this->options.push_back(std::to_string(option));
+    return this;
+  }
+  Prompt* Prompt::MaxLength(int max_length){
     this->max_length = max_length;
     return this;
   }
-  template <typename T>
-  Prompt<T>* Prompt<T>::Options(std::vector<T> options){
+  Prompt* Prompt::Options(std::vector<std::string> options){
     this->options = options;
     return this;
   }
-  template <typename T>
-  Prompt<T>* Prompt<T>::Color(std::string color){
+  Prompt* Prompt::Color(std::string color){
     this->color = color;
     return this;
   }
-  template <typename T>
-  Prompt<T>* Prompt<T>::Validator(std::function<bool(T)> validator){
+  Prompt* Prompt::Validator(std::function<bool(std::string)> validator){
     this->validator = validator;
     return this;
   }
-  template <typename T>
-  bool Prompt<T>::has_options(){
+  bool Prompt::has_options(){
     return options.size() > 0;
   }
-  template <typename T>
-  bool Prompt<T>::has_max_length(){
+  bool Prompt::has_max_length(){
     return max_length > 0;
   }
-  template <typename T>
-  bool Prompt<T>::has_validator(){
+  bool Prompt::has_validator(){
     return validator != nullptr;
   }
-  template <>
-  bool Prompt<int>::yoink(){
-    try{
-      value = std::stoi(input);
-    }catch(std::exception& e){
-      Utils::debug("Failed to convert input to int");
-      return false;
+  bool Prompt::is_valid(){
+    if(has_max_length()){
+      if(input.length() > max_length){
+        return false;
+      }
+    }
+    if(has_options()){
+      if(!is_in_options(input)){
+        return false;
+      }
+    }
+    if(has_validator()){
+      if(!validator(input)){
+        return false;
+      }
     }
     return true;
   }
-  template <>
-  bool Prompt<float>::yoink(){
-    try{
-      value = std::stof(input);
-    }catch(std::exception& e){
-      Utils::debug("Failed to convert input to float");
-      return false;
+  void Prompt::current_input(){
+    if(is_valid()){
+      std::cout << termcolor::green << input << Ansi::RESET;
+    }else{
+      std::cout << termcolor::red << input << Ansi::RESET;
     }
-    return true;
   }
-  template <>
-  bool Prompt<double>::yoink(){
-    try{
-      value = std::stod(input);
-    }catch(std::exception& e){
-      Utils::debug("Failed to convert input to double");
-      return false;
-    }
-    return true;
-  }
-  template <>
-  bool Prompt<std::string>::yoink(){
-    if(value.size() == 0){
-      value = input;
-      return true;
-    }
-    return true;
-  }
-  template <>
-  bool Prompt<bool>::yoink(){
-#ifdef TEST 
-    return true;
-#endif
-    if(input == "y" || input == "Y"){
-      value = true;
-      return true;
-    }else if(input == "n" || input == "N"){
-      value = false;
-      return true;
-    }
-    return false;
-  }
-  template <typename T>
-  void Prompt<T>::get_input(){
-
-    if(std::is_same<T, bool>::value){
-      std::cout << color << prompt << Ansi::RESET;
-      std::cout << "[y/n]";
+  void Prompt::prompt_prefix(int term_width){
+    int text_length = 0;
+    if(is_bool){
+      std::cout << "is bool";
+      std::string  booloptions = "[y/n]";
+      std::cout << color << prompt << termcolor::white << booloptions << Ansi::RESET;
+      text_length += prompt.length() + booloptions.length();
     }else if(has_options()){
-      std::cout << color << prompt << termcolor::white << " [" << color << value << termcolor::white << "] : " << Ansi::RESET << "\n";
+      std::cout 
+        << color 
+        << prompt 
+        << termcolor::white 
+        << "[" << color 
+        << default_input 
+        << termcolor::white << "]:" 
+        << Ansi::RESET << "\n";
+      text_length = 0;
+      cursor_position++;
       if(print_valid_options){
         for(size_t i = 0; i < options.size(); i++){
-          std::cout << "[ " << options[i] << " ] ";
+          std::cout << "[" << options[i] << "]";
+          text_length += options[i].length() + 2;
           if(i % 3 == 2){
             std::cout << "\n";
+            text_length = 0;
+            cursor_position++;
           }else if(i == options.size() - 1){
+            text_length = 0;
+            cursor_position++;
             std::cout << "\n";
           }
         }
       }
       std::cout << ">";
+      text_length += 1;
     }else{
-      std::cout << color << prompt << termcolor::white << " [" << color << value << termcolor::white << "] : " << Ansi::RESET;
+      std::ostringstream size_fraction;
+      if(has_max_length()){
+        size_fraction << termcolor::green << "[" << input.size() << "/" << max_length << "]";
+      }else{
+        size_fraction << "";
+      }
+      std::cout << color << prompt << termcolor::white << size_fraction.str() << " : " << Ansi::RESET;
+      text_length += prompt.length() + size_fraction.str().length() + 3;
     }
-    std::getline(std::cin, input);
+    cursor_position += text_length / term_width;
+  }
+  void Prompt::get_input(){
+
+    #ifdef TEST
+      return;
+    #endif
+
+
+    struct termios oldt, newt;
+    struct winsize term_size;
+    tcgetattr( STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr( STDIN_FILENO, TCSANOW, &newt);
+
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &term_size);
+
+    prompt_prefix(term_size.ws_col);
+    std::cout << input;
+
+    char c;
+    std::string completion;
+    int completion_index = 0;
+    while(true){
+      c = getchar();
+      if(c == '\n'){
+        if(!is_valid()){
+          continue;
+        }
+        if(completion.size() > 0){
+          input = completion;
+        }
+        tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
+        return;
+      //Tab
+      }else if(c == 9){
+        if(has_options()){
+          if(completion.size() == 0){
+            if(options.size() > 1){
+              completion = options[1];
+            }else if(options.size() == 1){
+              completion = options[0];
+            }else{
+              completion = options[completion_index];
+            }
+          }else{
+            completion_index++;
+            if(completion_index >= options.size()){
+              completion_index = 0;
+            }
+            completion = options[completion_index];
+          }
+        }
+      }else if(c == 127){
+        if(completion.size() > 0){
+          input = completion;
+          completion = "";
+        }
+
+        if(input.size() > 0){
+          input.pop_back();
+        }
+      }else{
+        input += c;
+      }
+      for(int i = 0; i < cursor_position; i++){
+        std::cout << "\33[2K\r";
+        std::cout << "\33[A";
+      }
+      std::cout << "\33[2K\r";
+      cursor_position = 0;
+      prompt_prefix(term_size.ws_col);
+      if(completion.size() > 0){
+        std::cout << completion;
+      }else{
+        current_input();
+      }
+    }
+    //std::getline(std::cin, input);
   };
-  template <typename T>
-  bool Prompt<T>::is_in_options(T option){
+  bool Prompt::is_in_options(std::string option){
     for(size_t i = 0; i < options.size(); i++){
       if(options[i] == option){
         return true;
@@ -163,22 +216,89 @@ namespace Utils::CLI {
     }
     return false;
   }
-  template <typename T>
-  T Prompt<T>::Get(){
-    return value;
+  template <>
+  std::pair<bool, bool> Prompt::Get(){
+#ifdef TEST
+    return std::make_pair(true, true);
+#endif
+    if(input == "y" || input == "Y"){
+      return std::make_pair(true, true);
+    }else if(input == "n" || input == "N"){
+      return std::make_pair(true, false);
+    }else{
+      return std::make_pair(false, false);
+    }
   }
-  template <typename T>
-  Prompt<T>* Prompt<T>::ExitOnFailure(){
+  template <>
+  std::pair<bool, std::string> Prompt::Get(){
+    if(has_options()){
+      if(is_in_options(input)){
+        return std::make_pair(true, input);
+      }else{
+        std::cout << "Invalid option: " << input << std::endl;
+        return std::make_pair(false, "");
+      }
+    }else{
+      return std::make_pair(true, input);
+    }
+  }
+  template <>
+  std::pair<bool, int> Prompt::Get(){
+    if(has_options()){
+      if(is_in_options(input)){
+        try{
+          return std::make_pair(true, std::stoi(input));
+        }catch(std::exception& e){
+        std::cout << "Invalid int: " << input << std::endl;
+          return std::make_pair(false, 0);
+        }
+      }else{
+        return std::make_pair(false, 0);
+      }
+    }else{
+      try{
+        return std::make_pair(true, std::stoi(input));
+      }catch(std::exception& e){
+        std::cout << "Invalid int: " << input << std::endl;
+        return std::make_pair(false, 0);
+      }
+    }
+  }
+  template<>
+  std::pair<bool, float> Prompt::Get(){
+    if(has_options()){
+      if(is_in_options(input)){
+        try{
+          return std::make_pair(true, std::stof(input));
+        }catch(std::exception& e){
+        std::cout << "Invalid float: " << input << std::endl;
+          return std::make_pair(false, 0);
+        }
+      }else{
+        return std::make_pair(false, 0);
+      }
+    }else{
+      try{
+        return std::make_pair(true, std::stof(input));
+      }catch(std::exception& e){
+        std::cout << "Invalid float: " << input << std::endl;
+        return std::make_pair(false, 0);
+      }
+    }
+  }
+  Prompt* Prompt::IsBool(){
+    this->is_bool = true;
+    return this;
+  }
+  Prompt* Prompt::ExitOnFailure(){
     this->exit_on_failure = true;
     return this;
   }
-  template <typename T>
-  Prompt<T>* Prompt<T>::PrintValidOptions(){
+  Prompt* Prompt::PrintValidOptions(){
     print_valid_options = true;
     return this;
   }
-  template <typename T>
-  bool Prompt<T>::Run(){
+  bool Prompt::Run(){
     get_input();
     if(has_max_length()){
       while(input.length() > max_length){
@@ -189,29 +309,7 @@ namespace Utils::CLI {
         return false;
       }
     }
-    if(!Prompt<T>::yoink()){
-      std::cout << "Invalid input for type " << std::endl;
-      return false;
-    }
-    if(has_validator()){
-      while(!validator(value)){
-        std::cout << "Invalid input: " << std::endl;
-        if(exit_on_failure){
-          exit(1);
-        }
-        return false;
-      }
-    }
-
-    if(has_options() && !std::is_same<T, bool>::value){
-      if(!is_in_options(value)){
-        std::cout << "Invalid input: " << std::endl;
-        if(exit_on_failure){
-          exit(1);
-        }
-        return false;
-      }
-    }
+    std::cout << std::endl;
     return true;
   }
 }

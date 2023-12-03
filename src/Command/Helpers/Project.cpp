@@ -1,12 +1,30 @@
+#include "Frate/Utils/General.hpp"
 #include <Frate/Command.hpp>
+#include <Frate/Generators.hpp>
+#include <memory>
 
 
-namespace Command {
+namespace Frate::Command {
+
+  bool Project::save(){
+    std::ofstream file;
+    std::string file_name = "frate-project.json";
+    try {
+      file.open(this->project_path / file_name);
+    } catch (std::exception &e) {
+      std::cout << "Error opening file: " << e.what() << std::endl;
+      return false;
+    }
+    file << this->toJson().dump(2);
+    file << '\n';
+    file.close();
+    Generators::CMakeList::createCMakeLists(std::make_shared<Project>(*this));
+    return true;
+  }
   /*
    * Welp reflection is a bitch aint it
    */
     void Project::fromJson(json j){
-
       project_name = j["project_name"];
       cmake_version = j["cmake_version"];
       project_version = j["project_version"];
@@ -20,6 +38,8 @@ namespace Command {
       authors = j["authors"];
       project_type = j["project_type"];
       project_description = j["project_description"];
+      default_mode = j["default_mode"];
+      keywords = j["keywords"];
       for (auto &dep : j["dependencies"]) {
         Package d;
         d.name = dep["name"];
@@ -86,9 +106,11 @@ namespace Command {
       j["src_dir"] = src_dir;
       j["build_dir"] = build_dir;
       j["include_dir"] = include_dir;
+      j["default_mode"] = default_mode;
       j["modes"] = modes_json;
       j["dependencies"] = deps;
       j["flags"] = flags;
+      j["keywords"] = keywords;
       j["authors"] = authors;
       j["project_path"] = project_path;
       j["project_type"] = project_type;
@@ -97,4 +119,35 @@ namespace Command {
       return  j;
 
     };
+    void Project::checkKeys(json j){
+      std::vector<std::pair<std::string,bool>> required_keys = {
+          {"project_name", false},
+          {"project_type", false},
+          {"cmake_version", false},
+          {"project_version", false},
+          {"lang", false},
+          {"lang_version", false},
+          {"compiler", false},
+          {"src_dir", false},
+          {"build_dir", false},
+          {"include_dir", false},
+          {"default_mode", false},
+          {"modes", false},
+          {"dependencies", false},
+          {"flags", false},
+          {"keywords", false},
+          {"authors", false},
+          {"project_path", false},
+          {"project_type", false},
+          {"project_description", false},
+          {"toolchains", false}
+      };
+      for (std::pair<std::string, bool> &key: required_keys){
+        if (j.find(key.first) == j.end()){
+          Frate::error << "Missing required key: " << key.first << std::endl;
+        } else {
+          key.second = true;
+        }
+      }
+    }
 }

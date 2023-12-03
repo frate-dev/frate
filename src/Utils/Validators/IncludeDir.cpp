@@ -7,7 +7,7 @@
 #include <Frate/Command.hpp> 
 #include <Frate/Generators.hpp> 
 
-namespace Utils::Validation {
+namespace Frate::Utils::Validation {
   bool IncludeDir(std::string include_dir){
     if (include_dir.size() > 255) {
       return false;
