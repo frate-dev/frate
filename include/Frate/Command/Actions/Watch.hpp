@@ -7,3 +7,6 @@ namespace Frate::Command::Watch {
   bool run(Interface* inter);
   std::vector<Handler> handlers(Interface* inter);
 }
+namespace Frate::Command::UvWatch {
+  bool watch(Interface* inter);
+}

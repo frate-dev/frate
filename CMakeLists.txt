@@ -16,6 +16,7 @@ add_definitions(-DVMAJOR=${VMAJOR})
 add_definitions(-DVPATCH=${VPATCH})
 add_definitions(-DVBUILD=${VBUILD})
 
+
 set(CMAKE_CXX_COMPILER /usr/bin/clang++)
 set(CMAKE_C_COMPILER /usr/bin/clang)
 project ( 
@@ -25,23 +26,13 @@ project (
 )
 set(CMAKE_CXX_STANDARD 20)
 set(-DUSE_CCACHE=YES -DCCACHE_OPTIONS="CCACHE_CPP2=true;CCACHE_SLOPPINESS=clang_index_store")
-set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
-set(CMAKE_C_COMPILER_LAUNCHER ccache)
+set(CMAKE_CXX_COMPILER_LAUNCHER sccache)
+set(CMAKE_C_COMPILER_LAUNCHER sccache)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 include (cmake/CPM.cmake)
-CPMUsePackageLock(package-lock.cmake)
-CPMAddPackage(
-  NAME Ccache.cmake
-  GITHUB_REPOSITORY TheLartians/Ccache.cmake
-  VERSION 1.2
-)
-find_program(CCACHE_FOUND ccache)
-if(CCACHE_FOUND)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache) # Less useful to do it for linking, see edit2
-endif(CCACHE_FOUND)
+
 
 CPMAddPackage(
   NAME termcolor
@@ -74,6 +65,14 @@ CPMAddPackage(
   OPTIONS
     "ENABLE_VERSIONED_SYMBOLS ON"
 )
+
+CPMAddPackage(
+  NAME uv 
+  GITHUB_REPOSITORY libuv/libuv
+  GIT_TAG v1.47.0
+
+)
+
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
   "src/**.c"
@@ -120,6 +119,7 @@ target_link_libraries(${PROJECT_NAME} libcurl)
 target_link_libraries(${PROJECT_NAME} cxxopts)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
 target_link_libraries(${PROJECT_NAME} libgit2package)
+target_link_libraries(${PROJECT_NAME} uv)
 target_link_libraries(${PROJECT_NAME} termcolor)
 
 set(SOURCE_DIR src)

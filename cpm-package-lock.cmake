@@ -1,6 +1,7 @@
 # CPM Package Lock
 # This file should be committed to version control
 
+<<<<<<< HEAD
 # Ccache.cmake
 CPMDeclarePackage(Ccache.cmake
   NAME Ccache.cmake
@@ -56,3 +57,5 @@ CPMDeclarePackage(cpptrace
   SYSTEM YES
   EXCLUDE_FROM_ALL YES
 )
+=======
+>>>>>>> 511c5327d7c72198c9c181a033407d0989225c8e

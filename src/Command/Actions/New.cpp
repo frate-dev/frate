@@ -79,14 +79,14 @@ bool createJson(std::shared_ptr<Project> pro) {
   if(!Wizard::Project(pro)){
     return false;
   }
-  if (!Generators::ConfigJson::writeConfig(pro)) {
+  if (!pro->save()) {
     return false;
   }
   return true;
   }
 
   bool createHelloWorldCpp(std::shared_ptr<Project> pro) {
-
+    //TODO Check project_type to see what kind of project we are creating
     if(std::filesystem::exists(pro->project_path / pro->src_dir)){
       Prompt *overwrite_prompt = new Prompt("src directory already exists, overwrite?");
       overwrite_prompt->Color(RED);

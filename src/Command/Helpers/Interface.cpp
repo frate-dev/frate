@@ -6,7 +6,7 @@
 #include <Frate/Command/Actions/Search.hpp>
 #include "Frate/Command/Actions/Build.hpp"
 #include "Frate/Command/Actions/Clean.hpp"
-#include "Frate/Command/Actions/FTP.hpp"
+#include "Frate/Command/Actions/FTP.hpp" 
 #include "Frate/Command/Actions/Help.hpp"
 #include "Frate/Command/Actions/Run.hpp"
 #include "Frate/Command/Actions/Update.hpp"
@@ -223,7 +223,8 @@ namespace Frate::Command {
         .flags = {}, //TODO: Add flags
         .docs = "watches the project for changes",
         .callback = [this](){
-          return Watch::run(this);
+          return UvWatch::watch(this);
+          //return Watch::run(this);
         }
       },
     };

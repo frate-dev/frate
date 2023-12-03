@@ -80,6 +80,7 @@ namespace Frate::Command {
     std::vector<Package> dependencies{};
   } Mode;
 
+  //TODO: MAKE MOST OF THESE OPTIONAL
   typedef struct Project_s {
     std::string project_name;
     std::string project_description;
@@ -118,7 +119,12 @@ namespace Frate::Command {
     bool save();
     void checkKeys(json j);
   } Project;
+
+
+
+
   typedef struct Handler_s Handler;
+
   typedef struct Handler_s {
     std::vector<std::string> aliases;
     std::vector<std::string> flags{};
