@@ -112,7 +112,6 @@ namespace Frate::Command {
       j["flags"] = flags;
       j["keywords"] = keywords;
       j["authors"] = authors;
-      j["project_path"] = project_path;
       j["project_type"] = project_type;
       j["project_description"] = project_description;
       j["toolchains"] = toolchains;
@@ -137,7 +136,6 @@ namespace Frate::Command {
           {"flags", false},
           {"keywords", false},
           {"authors", false},
-          {"project_path", false},
           {"project_type", false},
           {"project_description", false},
           {"toolchains", false}

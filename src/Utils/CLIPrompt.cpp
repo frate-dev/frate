@@ -85,7 +85,6 @@ namespace Frate::Utils::CLI {
   void Prompt::prompt_prefix(int term_width){
     int text_length = 0;
     if(is_bool){
-      std::cout << "is bool";
       std::string  booloptions = "[y/n]";
       std::cout << color << prompt << termcolor::white << booloptions << Ansi::RESET;
       text_length += prompt.length() + booloptions.length();

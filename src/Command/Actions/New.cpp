@@ -14,7 +14,7 @@ using Utils::CLI::Prompt;
 using Utils::CLI::Ansi::RED;
  bool downloadCMakeListsTemplate(std::shared_ptr<Command::Project> _){
 
-    std::cout << "Downloading CMakeLists.txt" << std::endl;
+   Frate::info << "Downloading CMakeLists.txt" << std::endl;
     std::ofstream file;
     json CMakeListsTemplateIndex = Utils::fetchJson("https://github.com/frate-dev/templates/releases/latest/download/index.json");
     try{
@@ -38,9 +38,9 @@ bool downloadCMakeListsTemplate(Interface* inter){
     downloadCMakeListsTemplate(pro); 
   }
   std::string repo_url;
-  std::cout << "file: " << template_index << std::endl;
+  if(inter->verbose) Frate::info << "file: " << template_index << std::endl;
   json templateIndex = json::parse(std::ifstream(template_index));
-  std::cout << templateIndex.dump(2) << std::endl;
+  if(inter->verbose) info << templateIndex.dump(2) << std::endl;
   for(json temp: templateIndex){
     if (temp["name"] == pro->template_name){
       repo_url = temp["git"];
@@ -49,7 +49,7 @@ bool downloadCMakeListsTemplate(Interface* inter){
 
 
  git_repository *repo = NULL; 
-  std::cout << "Cloning " << repo_url << " into " << (pro->project_path / "templates").c_str() << std::endl;
+ Frate::info << "Cloning " << repo_url << " into " << (pro->project_path / "templates").c_str() << std::endl;
   git_clone(&repo, repo_url.c_str(), (pro->project_path / "templates").c_str(), NULL);
   std::filesystem::remove_all(pro->project_path / "templates" / ".git");
   return true;
@@ -250,7 +250,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     if(inter->args->operator[]("type").count() > 0){
       inter->pro->project_type = inter->args->operator[]("type").as<std::string>();
       if(!ProjectType::validate(inter->pro->project_type)){
-        std::cout << termcolor::red << "Invalid project type" << termcolor::reset << ENDL;
+        Frate::error << "Invalid project type" << ENDL;
         return false;
       }
     }
@@ -274,8 +274,8 @@ bool createJson(std::shared_ptr<Project> pro) {
 
     downloadCMakeListsTemplate(inter);
     if(defaults){
-      std::cout << "Skipping init" << ENDL;
-      std::cout << "Creating project" << ENDL;
+      Frate::info << "Using defaults" << ENDL;
+      Frate::info << "Creating project" << ENDL;
       if (language == "cpp" || language == "c++"){
 
         if(!createHelloWorldCpp(inter->pro)){
@@ -294,8 +294,8 @@ bool createJson(std::shared_ptr<Project> pro) {
         }
       }
     }else{
-      std::cout << "Creating project" << ENDL;
-      std::cout << "Creating frate-project.json" << ENDL;
+      Frate::info << "Creating project" << ENDL;
+      Frate::info << "Creating frate-project.json" << ENDL;
       if(!createProjectWizard(inter)){
         return false;
       }
@@ -307,22 +307,22 @@ bool createJson(std::shared_ptr<Project> pro) {
         return false;
       }
     }else if(project_type == ProjectType::HEADER_ONLY){
-      std::cout << "Header only projects are not supported yet" << ENDL;
+      Frate::error << "Header only projects are not supported yet" << ENDL;
       return false;
       //TODO: header only
     }else if(project_type == ProjectType::STATIC_LIBRARY){
-      std::cout << "Static library projects are not supported yet" << ENDL;
+      Frate::error << "Static library projects are not supported yet" << ENDL;
       return false;
       //TODO: static library
     }else if(project_type == ProjectType::SHARED_LIBRARY){
-      std::cout << "Shared library projects are not supported yet" << ENDL;
+      Frate::error << "Shared library projects are not supported yet" << ENDL;
       return false;
       //TODO: shared library
     }
-    std::cout << "CMakeLists.txt created" << ENDL;
-    std::cout << "Initializing git" << ENDL;
+    Frate::info << "CMakeLists.txt created" << ENDL;
+    Frate::info << "Initializing git" << ENDL;
     gitInit(inter);
-    std::cout << "Done" << ENDL;
+    Frate::info << "Done" << ENDL;
 
     return true;
   }

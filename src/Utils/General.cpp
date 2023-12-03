@@ -91,24 +91,23 @@ CURL* curl = curl_easy_init();
     }
   }
   //"https://github.com/frate-dev/index/releases/latest/download/index.json"
-  std::string fetchText(std::string url) {
+  std::string fetchText(std::string url,bool verbose) {
     std::string requrl = url;
     CurlResponse r = HttpGet(requrl);
-    std::cout << "Attempting to download: " << termcolor::bright_blue << url << termcolor::reset << std::endl;
+    if(verbose) Frate::info << "Attempting to download: " << termcolor::bright_blue << url << std::endl;
     
     switch(r.status_code){
       case 200:
-        std::cout << termcolor::bright_green << "Successfully downloaded: "
-        << termcolor::bright_blue << url << termcolor::reset << std::endl;
+        if(verbose) Frate::info << "Successfully downloaded: " << url << std::endl;
         break;
       case 404:
-        std::cout << termcolor::bright_red << "Failed to download: " << url << termcolor::reset << std::endl;
-        std::cout << "Error: " << r.error << std::endl;
+        Frate::error << "Failed to download: " << url <<std::endl;
+        Frate::error << "Error: " << r.error << std::endl;
         exit(-1);
         break;
       default:
-        std::cout << termcolor::bright_red << "Failed to download: " << url << termcolor::reset << std::endl;
-        std::cout << "Error: " << r.error << std::endl;
+        Frate::error << "Failed to download: " << url << std::endl;
+        Frate::error << "Error: " << r.error << std::endl;
         exit(-1);
         break;
     }
@@ -119,10 +118,10 @@ CURL* curl = curl_easy_init();
     try {
       return json::parse(responseStr);
     } catch (json::parse_error& e) {
-      std::cout << "At: " << e.byte << std::endl;
-      std::cout << "Error: " << e.what() << std::endl;
+      Frate::error << "At: " << e.byte << std::endl;
+      Frate::error << "Error: " << e.what() << std::endl;
       Frate::error << "Failed to parse index.json" << std::endl;
-      std::cout << "Text: " << responseStr << std::endl;
+      Frate::error << "Text: " << responseStr << std::endl;
       Utils::debug("Failed to parse index.json");
       exit(-1);
     }

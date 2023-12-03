@@ -13,6 +13,7 @@ namespace Frate {
      * example2: "Example command 2"
      * )
      */
+    //TODO: make this work
     void genOptions(std::vector<Handler> top_level_commands,std::string cmd, std::string &script,int level=0){
       std::string indent = "";
       for(int i = 0; i < level; i++){
