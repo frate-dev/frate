@@ -1,4 +1,4 @@
-
+#include <uv.h>
 #include <Frate/Command.hpp>
 #include <functional>
 #include <iostream>
@@ -63,8 +63,7 @@ namespace Frate::Command::Watch {
     ev.data.fd = inotify_fd;
     // TODO: Add recursive directory watching
 
-    int watch_desc = inotify_add_watch(inotify_fd, path.c_str(),
-        IN_MODIFY | IN_CREATE | IN_DELETE);
+    int watch_desc = inotify_add_watch(inotify_fd, path.c_str(), IN_MODIFY | IN_CREATE | IN_DELETE);
     if (watch_desc < 0) {
       std::cout << "Error adding watch" << std::endl;
       return;

@@ -232,7 +232,8 @@ namespace Frate::Command {
         .flags = {}, //TODO: Add flags
         .docs = "watches the project for changes",
         .callback = [this](){
-          return Watch::run(this);
+          return UvWatch::watch(this);
+          //return Watch::run(this);
         }
       },
     };

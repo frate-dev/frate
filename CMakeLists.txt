@@ -16,6 +16,7 @@ add_definitions(-DVMAJOR=${VMAJOR})
 add_definitions(-DVPATCH=${VPATCH})
 add_definitions(-DVBUILD=${VBUILD})
 
+
 set(CMAKE_CXX_COMPILER /usr/bin/clang++)
 set(CMAKE_C_COMPILER /usr/bin/clang)
 project ( 
@@ -74,6 +75,14 @@ CPMAddPackage(
   OPTIONS
     "ENABLE_VERSIONED_SYMBOLS ON"
 )
+
+CPMAddPackage(
+  NAME uv 
+  GITHUB_REPOSITORY libuv/libuv
+  GIT_TAG v1.47.0
+
+)
+
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
   "src/**.c"
@@ -120,6 +129,7 @@ target_link_libraries(${PROJECT_NAME} libcurl)
 target_link_libraries(${PROJECT_NAME} cxxopts)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)
 target_link_libraries(${PROJECT_NAME} libgit2package)
+target_link_libraries(${PROJECT_NAME} uv)
 target_link_libraries(${PROJECT_NAME} termcolor)
 
 set(SOURCE_DIR src)
