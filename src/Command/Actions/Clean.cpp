@@ -13,7 +13,7 @@ namespace Frate::Command::Clean {
   }
 
 using namespace std::filesystem;
-bool cleanCache(std::shared_ptr<Project> pro) {
+bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
   const std::vector<path> files_to_delete = {
       pro->project_path / "CMakeCache.txt",
       pro->project_path / "install_manifest.txt",
@@ -27,7 +27,9 @@ bool cleanCache(std::shared_ptr<Project> pro) {
   for (auto &file : files_to_delete) {
     if (exists(file)) {
       try {
-        std::cout << "Deleting: " << file << std::endl;
+        if(verbose){
+          Frate::info << "Deleting: " << file << std::endl;
+        }
         std::filesystem::remove(file);
       } catch (std::exception &e) {
         Utils::debug(e.what());
@@ -37,7 +39,9 @@ bool cleanCache(std::shared_ptr<Project> pro) {
   for (auto &dir : dirs_to_delete) {
     if (exists(dir)) {
       try {
-        std::cout << "Deleting: " << dir << std::endl;
+        if(verbose){
+          info << "Deleting: " << dir << std::endl;
+        }
         remove_all(dir);
       } catch (std::exception &e) {
         Utils::debug(e.what());
@@ -57,7 +61,7 @@ bool cleanCache(std::shared_ptr<Project> pro) {
     }
   
     if(clean_cache){
-      if(!cleanCache(inter->pro)){
+      if(!cleanCache(inter->pro,inter->verbose)){
         //WE HAD A FUCKING PROBLEM BRUH
         return false;
       }
@@ -68,7 +72,9 @@ bool cleanCache(std::shared_ptr<Project> pro) {
     std::cout << "Cleaning: " << std::endl;
     if(exists(inter->pro->project_path / "build")){
       for (directory_entry p : directory_iterator(inter->pro->project_path / "build")) {
-        std::cout << "Deleting" << p.path() << std::endl;
+        if(inter->verbose){
+          Frate::info << "Deleting" << p.path() << std::endl;
+        }
         if(p.is_directory()){
           remove_all(p.path());
         } else {
@@ -76,7 +82,7 @@ bool cleanCache(std::shared_ptr<Project> pro) {
         }
       }
     }else{
-      std::cout << "Could not find ./build" << std::endl;
+      Frate::error << "Could not find ./build" << std::endl;
     }
 
     return true;

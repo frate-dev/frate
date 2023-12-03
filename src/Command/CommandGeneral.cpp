@@ -10,7 +10,11 @@ namespace Frate::Command {
     using nlohmann::json;
     std::fstream file;
     std::string file_name = "frate-project.json";
-    std::cout << "Loading: " << (pro->project_path / file_name) << std::endl;
+
+    if(project_present) return true;
+
+
+    Frate::info << "Loading: " << (pro->project_path / file_name) << std::endl;
     try{
       file.open((pro->project_path / file_name).string());
     }catch(std::exception &e){
@@ -24,13 +28,13 @@ namespace Frate::Command {
       pro->checkKeys(data);
       pro->fromJson(data);
       //Simplfied this fucking code
-      std::cout << "loadedJson = "  << pro->toJson() << ENDL;
     } catch (json::exception &e) {
       Frate::error << e.what() << std::endl;
       Frate::error << "Error: Could not load: " << (pro->project_path / file_name) << std::endl;
       return false;
     }
     file.close();
+    project_present = true;
     return true;
   };
 } // namespace Command

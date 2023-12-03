@@ -112,7 +112,6 @@ namespace Frate::Command {
     Package testing_lib;
     std::string project_version{"0.0.1"};
     std::vector<std::string> flags; 
-    std::shared_ptr<cxxopts::ParseResult> args;
     std::vector<std::string> toolchains {};
     void fromJson(json j);
     nlohmann::json toJson();
@@ -144,6 +143,7 @@ namespace Frate::Command {
       bool runCommand(std::string,std::vector<Handler>&);
       std::shared_ptr<Project> pro;
       bool project_present{false};
+      bool verbose{false};
       std::vector<Handler> commands{};
 
       bool execute();

@@ -67,22 +67,25 @@ namespace Frate::Command {
       std::cout << Constants::VERSION << ENDL;
       exit(0);
     }
-    //After the parse we can set the context args
-    this->pro->args = this->args;
+    if(this->args->count("verbose")){
+      this->verbose = true;
+      std::cout << "Verbose mode enabled" << ENDL;
+    }
 
 #ifdef DEBUG
-    std::cout << "DEBUG MODE ENABLED\n";
+#ifndef TEST
+    verbose = true;
 #endif
-#ifdef DEBUG
+    std::cout << "DEBUG MODE ENABLED\n";
     pro->project_path = std::filesystem::current_path() / "build";
 #else
     pro->project_path = std::filesystem::current_path();
 #endif
   }
   bool Interface::execute(){
-    if(LoadProjectJson()){
-      project_present = true;
-    }
+    // if(LoadProjectJson()){
+    //   project_present = true;
+    // }
     if(this->args->count("yes")){
       this->skip_prompts = true;
       std::cout << "Skipping prompts" << ENDL;
@@ -226,6 +229,7 @@ namespace Frate::Command {
         .callback = [this](){
           return Completions::ZshCompletions(this);
         },
+        .implemented = false
       },
       Handler{
         .aliases = {"watch"},
@@ -242,7 +246,7 @@ namespace Frate::Command {
     for(Handler& handler : commands){
       for(std::string& alias : handler.aliases){
         if(alias == command){
-          if(handler.requires_project && !project_present){
+          if(handler.requires_project && !LoadProjectJson()){
             Frate::error << "Error: Project not found and is required for this command" << ENDL;
             return false;
           }
@@ -284,7 +288,7 @@ namespace Frate::Command {
             Frate::error << "Command not implemented: " << command;
             return false;
           }
-          if(handler.requires_project && !project_present){
+          if(handler.requires_project && !LoadProjectJson()){
             Frate::error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
             return false;
           }

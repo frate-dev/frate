@@ -13,7 +13,9 @@ namespace Frate::Generators::CMakeList {
     std::cout << "Creating CMakeLists.txt" << std::endl;
 
 #ifdef DEBUG
+#ifndef TEST
     std::cout << pro->toJson().dump(2) << std::endl;
+#endif
 #endif
     std::string CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
     std::ofstream CPMFile;

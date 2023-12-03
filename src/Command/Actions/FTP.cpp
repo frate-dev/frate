@@ -13,7 +13,7 @@ namespace Frate::Command::FTP {
     prompt->Color(RED)->IsBool()->Run();
     auto [valid, value] = prompt->Get<bool>();
     if (!valid || !value) {
-      std::cout << "Aborting..." << std::endl;
+      Frate::error << "Aborting..." << std::endl;
       return false;
     }
     for (const directory_entry &p : directory_iterator(inter->pro->project_path)  
@@ -24,10 +24,10 @@ namespace Frate::Command::FTP {
       try{
         if(std::filesystem::is_directory(path)){
           std::filesystem::remove_all(path);
-          std::cout << "Deleting: " << path << std::endl;
+          if(inter->verbose) Frate::info << "Deleting: " << path << std::endl;
         }else{
           std::filesystem::remove(path);
-          std::cout << "Deleting: " << path << std::endl;
+          if(inter->verbose) Frate::info << "Deleting: " << path << std::endl;
         }
       }catch(std::exception &e){
         Frate::error << "Failed to delete: " << path << std::endl;
