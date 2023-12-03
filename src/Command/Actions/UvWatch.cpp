@@ -35,7 +35,12 @@ namespace Frate::Command::UvWatch{
 
   bool runCommand(Interface* inter){
     //TODO  CLEAN UP THIS SHIT
-    std::string command = "cmake . && make  && " + inter->pro->project_path.string() + inter->pro->build_dir + "/" +inter->pro->project_name;
+    std::string command = "cmake . && make  && " + inter->pro->project_path.string() + "/" + inter->pro->build_dir + "/" +inter->pro->project_name;
+#ifdef DEBUG
+    command = "cd build && cmake . && make  && " + inter->pro->build_dir + "/" +inter->pro->project_name;
+#endif
+
+
     bool build_server =inter->args->operator[]("remote-build").as<bool>();
     if (build_server == true) {
       std::string current_build_server = std::string(std::getenv("HOME")) +
@@ -137,7 +142,7 @@ namespace Frate::Command::UvWatch{
 #ifdef __linux__
     start_watchers_for_directory(inter->pro->src_dir, loop, watchers, inter);
 #endif
-    if (uv_fs_event_start(&fs_event, fs_event_callback, inter->pro->src_dir.c_str(), UV_FS_EVENT_RECURSIVE)!=0) {
+    if (uv_fs_event_start(&fs_event, fs_event_callback, (inter->pro->project_path / inter->pro->src_dir).c_str(), UV_FS_EVENT_RECURSIVE)!=0) {
       fprintf(stderr, "Error starting filesystem watcher.\n");
       return 1;
     }
