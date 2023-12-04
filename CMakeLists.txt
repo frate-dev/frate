@@ -5,6 +5,7 @@ set(VMAJOR 0)
 set(VPATCH 1)
 
 
+
 if(DEFINED ENV{VBUILD})
   set(VBUILD $ENV{VBUILD})
 else()
@@ -26,8 +27,28 @@ project (
 )
 set(CMAKE_CXX_STANDARD 20)
 set(-DUSE_CCACHE=YES -DCCACHE_OPTIONS="CCACHE_CPP2=true;CCACHE_SLOPPINESS=clang_index_store")
-set(CMAKE_CXX_COMPILER_LAUNCHER sccache)
-set(CMAKE_C_COMPILER_LAUNCHER sccache)
+
+find_program(SCCACHE_FOUND sccache)
+find_program(CCACHE_FOUND ccache)
+
+set(SCCACHE_FOUND 0)
+
+if(SCCACHE_FOUND)
+  message("Using sccache")
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE sccache)
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK sccache)
+  set(CMAKE_CXX_COMPILER_LAUNCHER sccache)
+  set(CMAKE_C_COMPILER_LAUNCHER sccache)
+elseif(CCACHE_FOUND)
+  message("Using ccache")
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
+  set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+  set(CMAKE_C_COMPILER_LAUNCHER ccache)
+else()
+  message("No cache found")
+endif()
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
