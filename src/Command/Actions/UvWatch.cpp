@@ -95,10 +95,10 @@ namespace Frate::Command::UvWatch{
 
     event_triggered = 1;
     std::cout << "Filesystem change detected, rebuilding..." << std::endl;
-    runCommand(inter);
+    runCommand(inter); std::cout << "\nWatching for changes..." << std::endl;
 
     // Reset the flag after a delay
-    uv_timer_t *timer = static_cast<uv_timer_t*>(malloc(sizeof(uv_timer_t)));
+    uv_timer_t *timer = new uv_timer_t;
     uv_timer_init(handle->loop, timer);
     timer->data = handle;
 
@@ -107,7 +107,7 @@ namespace Frate::Command::UvWatch{
         uv_close((uv_handle_t *)timer, [](uv_handle_t *handle) {
             free(handle);
             });
-        }, 1000, 0); // 1000 ms delay
+        }, 2000, 0); // 1000 ms delay
   }
 
 
@@ -146,7 +146,7 @@ namespace Frate::Command::UvWatch{
       fprintf(stderr, "Error starting filesystem watcher.\n");
       return 1;
     }
-
+    std::cout << "Watching for changes in " << inter->pro->src_dir << std::endl;
     return uv_run(loop, UV_RUN_DEFAULT) == 0;
   };
 }
