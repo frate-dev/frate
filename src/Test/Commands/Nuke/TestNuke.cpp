@@ -5,7 +5,7 @@
 namespace Tests::Command {
   bool testNuke(){
     std::cout << "Testing nuke command" << std::endl;
-    cleanUp(test_path);
+    
     if(!testNew()){
       Frate::error << "Failed to create new project" << std::endl;
       return false;
@@ -25,11 +25,11 @@ namespace Tests::Command {
 
     if(count != 0){
       Frate::error << "Failed to nuke project had: " << count << " files left" << std::endl;
-      cleanUp(test_path);
+      
       return false;
     }
 
-    cleanUp(test_path);
+    
     return true;
   }
 }

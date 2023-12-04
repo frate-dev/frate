@@ -11,6 +11,20 @@ namespace Tests::Command {
   extern Frate::Utils::Info info =Frate::Utils::Info();
   extern Frate::Utils::Warning warning =Frate::Utils::Warning();
 
+  std::filesystem::path genTestDirectory(){
+    std::string random_string = genBase64String(10);
+    std::filesystem::path test_path =
+      std::filesystem::path("/tmp/frate-test-" + random_string);
+
+    while(std::filesystem::exists(test_path)){
+      random_string = genBase64String(10);
+      test_path =
+        std::filesystem::path("/tmp/frate-test-" + random_string);
+    }
+
+    std::filesystem::create_directory(test_path);
+    return test_path;
+  }
   void cleanUp(path test_path) {
     try {
       std::filesystem::remove_all(test_path);
@@ -62,25 +76,25 @@ namespace Tests::Command {
     inter->pro->project_path = std::filesystem::path(test_path);
 
     if (!inter->execute()) {
-      cleanUp(test_path);
       error << "Failed to run command: " << command << std::endl;
       return std::make_pair(true,inter);
     }
     if(check_config){
       std::ifstream config_file(test_path / "frate-project.json");
-
       nlohmann::json config;
+
+
       try {
         info << "attempting to read config file" << std::endl;
         config_file >> config;
       } catch (...) {
-        cleanUp(test_path);
-        error << "Failed to add package : could not open file - file possibly never created" << std::endl;
+        error << 
+          "Failed to add package : could not open file - file possibly never created" 
+          << std::endl;
         return std::make_pair(true,inter);
       }
 
       if(!validateProjectJson(inter)){
-        cleanUp(test_path);
         error << "Failed to run command : " << command << " : invalid json" << std::endl;
         return std::make_pair(true,inter);
       }

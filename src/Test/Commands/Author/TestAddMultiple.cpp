@@ -4,7 +4,7 @@
 
 namespace Tests::Command {
   bool testAddAuthorMultiple(std::vector<std::string> names) {
-    cleanUp(test_path);
+    
 
     info << "Testing add author command with names: " << std::endl;
     for(auto name : names){
@@ -25,12 +25,12 @@ namespace Tests::Command {
 
     if (failed) {
       error << "Failed to init" << std::endl;
-      cleanUp(test_path);
+      
       return false;
     }
 
     if (inter->pro->authors.size() != names.size()) {
-      cleanUp(test_path);
+      
       error << "Failed to add author project wrong number of authors" << std::endl;
       error << "Got: " << inter->pro->authors.size() << std::endl;
       return false;
@@ -45,13 +45,13 @@ namespace Tests::Command {
       if(!found){
         error << "Failed to add author project" << std::endl;
         error << "Got: " << inter->pro->authors[0] << std::endl;
-        cleanUp(test_path);
+        
         return false;
       }
     }
 
 
-    cleanUp(test_path);
+    
     return true;
   }
 }

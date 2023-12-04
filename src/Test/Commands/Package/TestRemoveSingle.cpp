@@ -5,7 +5,7 @@
 bool Tests::Command::testRemovePackage(std::string package_name){
   std::cout << "Testing remove package command" << std::endl;
 
-  cleanUp(test_path);
+  
   
   if(!testNew()){
     Frate::error << "Failed to create new project" << std::endl;
@@ -32,7 +32,7 @@ bool Tests::Command::testRemovePackage(std::string package_name){
   try {
     config_file >> config;
   } catch (...) {
-    cleanUp(test_path);
+    
     Frate::error << "Failed to remove package : could not open file - file possibly never created" << std::endl;
     return false;
   }
@@ -41,7 +41,7 @@ bool Tests::Command::testRemovePackage(std::string package_name){
   for (auto& dep : config["dependencies"]) {
     if (dep["name"] == package_name) {
       Frate::error << "Failed to remove package : " << package_name << " still in frate-project.json" << std::endl;
-      cleanUp(test_path);
+      
       return false;
     }
   }

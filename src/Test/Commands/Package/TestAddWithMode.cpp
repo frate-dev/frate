@@ -3,7 +3,7 @@
 bool Tests::Command::testAddPackageToMode(std::string mode_name, std::string package_name){
   using nlohmann::json;
   std::cout << "Testing add package to mode command" << std::endl;
-  cleanUp(test_path);
+  
   if(!testNew()){
     Frate::error << "Failed to create new project" << std::endl;
     return false;

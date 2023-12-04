@@ -21,6 +21,11 @@ int main(int argc, char **argv) {
     if (returnCode != 0) // Indicates a command line error
       return returnCode;
     int numFailed = session.run();
+    for(auto &p : std::filesystem::directory_iterator("/tmp")){
+      if(p.path().string().find("frate-test-") != std::string::npos){
+        std::filesystem::remove_all(p.path());
+      }
+    }
     return (numFailed < 0xff ? numFailed : 0xff);
   #else
 

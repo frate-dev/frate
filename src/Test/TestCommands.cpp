@@ -1,6 +1,5 @@
 #ifdef TEST
 #include <cstdio>
-#include <fstream>
 #include <filesystem>
 #include <catch2/catch_test_macros.hpp>
 #include <Frate/Command.hpp>
@@ -30,7 +29,7 @@ namespace Tests{
 namespace Tests::Command {
   using nlohmann::json;
 
-  extern const std::filesystem::path test_path = std::filesystem::path("/tmp/frate-test");
+  extern std::filesystem::path test_path = std::filesystem::path("/tmp/frate-test");
   
 
   TEST_CASE("TestCommands", "[commands]"){

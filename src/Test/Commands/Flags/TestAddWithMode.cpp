@@ -18,12 +18,12 @@ namespace Tests::Command {
     }
     if (inter->pro->modes[0].flags[1] != "-O3") {
       std::cout << inter->pro->modes[0].flags[0] << std::endl;
-      cleanUp(test_path);
+      
       Frate::error << "Failed to add flags project" << std::endl;
       return false;
     }
 
-    cleanUp(test_path);
+    
 
     return true;
 

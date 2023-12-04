@@ -24,7 +24,7 @@ bool Tests::Command::testAddPackageMultiple() {
   }
 
   if(!foundSDL){
-    cleanUp(test_path);
+    
     Frate::error << "Failed to add package : could not find SDL2 in frate-project.json" << std::endl;
     return false;
   }
@@ -38,7 +38,7 @@ bool Tests::Command::testAddPackageMultiple() {
   }
 
   if(!foundfmt){
-    cleanUp(test_path);
+    
     Frate::error << "Failed to add package : could not find fmt in frate-project.json" << std::endl;
     return false;
   }

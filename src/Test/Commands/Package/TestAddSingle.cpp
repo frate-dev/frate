@@ -15,12 +15,12 @@ bool Tests::Command::testAddPackage(std::string package_name) {
     nlohmann::json config;
     config_file >> config;
     if(config["dependencies"].size() != 1){
-      cleanUp(test_path);
+      
       Frate::error << "Failed to add package : no pacakge add dected frate-project.json" << std::endl;
       return false;
     }
   }catch(...){
-    cleanUp(test_path);
+    
     Frate::error << "Failed to add package : could not open file - file possibly never created" << std::endl;
     return false;
   }
