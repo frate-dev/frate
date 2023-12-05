@@ -5,7 +5,10 @@ bool Tests::Command::testNew(){
 
   test_path = genTestDirectory();
   auto [failed, inter] = init("frate new test -d");
-  if(failed) return false;
+  if(failed){
+    Frate::error << "Failed to create new project" << std::endl;
+    return false;
+  }
 
   return true;
 

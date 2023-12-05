@@ -36,7 +36,7 @@ namespace Frate::Command::Remove {
         .unlimited_args = true,
       },
       {
-        .aliases = {"flag", "f"},
+        .aliases = {"flags", "f"},
         .flags = {"-m,--mode"},
         .positional_args = {"flags"},
         .docs = "Remove a flag from the project",

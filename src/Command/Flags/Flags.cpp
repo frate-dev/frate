@@ -12,7 +12,6 @@ namespace Frate::Command::Flags {
     inter->options->help();
     return inter->parse();
   }
-  //TODO: This should be moved to the flags module
   std::vector<std::string> makeFlags(Interface *inter){
     std::vector<std::string> raw_flags = inter->args->unmatched();
     std::vector<std::string> flags;

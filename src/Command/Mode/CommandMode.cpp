@@ -21,7 +21,7 @@ namespace Frate::Command::ModeCommands {
     (void) inter, (void) mode;
     return true;
   }
-
+  [[deprecated("Use addPackage in the package module")]]
   bool addPackages(Interface* inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep_str : dependencies) {
@@ -41,6 +41,7 @@ namespace Frate::Command::ModeCommands {
     Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
+  [[deprecated("Use removePackage in the package module")]]
   bool removePackages(Interface* inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep : dependencies) {

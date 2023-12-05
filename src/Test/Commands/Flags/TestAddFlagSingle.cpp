@@ -5,9 +5,7 @@
 namespace Tests::Command {
   bool testAddFlagsSingle(){
     info  << "Testing add flags command" << std::endl;
-    if(!testNew()){
-      return false;
-    }
+    if(!testNew()) return false;
     info << "Testing add flags command normal conditions" << std::endl;
     auto [failed, inter] = init("frate add flags '-O3'");
 

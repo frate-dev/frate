@@ -36,13 +36,9 @@ namespace Frate:: Command::Modes{
     interface->pro->modes.push_back(mode);
 
     std::cout << "Writing frate-project.json" << std::endl;
-    if(!Generators::ConfigJson::writeConfig(interface->pro)){
-      Frate::error << "Failed to write frate-project.json" << std::endl;
-    }
 
-    if(!Generators::CMakeList::createCMakeLists(interface->pro)){
-      Frate::error << "Failed to write CMakeLists.txt" << std::endl;
-    }
+    if(!interface->pro->save()) return false;
+
     return true;
   }
   bool remove(Interface* interface){
@@ -51,8 +47,8 @@ namespace Frate:: Command::Modes{
     std::erase_if(interface->pro->modes, [&mode_name](Mode &mode){
         return mode.name == mode_name;
         });
-    Generators::ConfigJson::writeConfig(interface->pro);
-    Generators::CMakeList::createCMakeLists(interface->pro);
+    if(!interface->pro->save()) return false;
+
     return true;
   }
   bool list(Interface* interface){

@@ -1,8 +1,7 @@
-#include "Frate/Utils/General.hpp"
 #ifdef TEST
 #pragma once
 #include "../Command.hpp"
-
+#include "Frate/Utils/General.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <cxxopts.hpp>
 
@@ -25,27 +24,61 @@ namespace Tests::Command {
 
   std::filesystem::path genTestDirectory();
   std::pair<int, char**> genCommand(std::string args);
-
-  bool testCommandInit();
-  bool testNew();
+  /*
+   * ------------------
+   * Test Init Commands
+   * ------------------
+   */
+  bool testNew(); // Used to create new project in all tests integ tests
   bool testNewWithLang(std::string lang);
   bool testNewWithType(std::string type);
 
+  /*
+   * ------------------
+   * Test Flag commands
+   * ------------------
+   */
   bool testAddFlagsMultiple();
   bool testAddFlagsSingle();
   bool testAddFlagsWithMode();
 
+  bool testRemoveFlagsSingle(std::string flag);
+  
+  /* --------------------
+   * Test Package Commands
+   * --------------------
+   */
   bool testAddPackage(std::string package_name);
-  bool testAddPackageMultiple();
+  bool testAddPackageMultiple(std::vector<std::string> packages);
+  bool testAddPackageWithDuplicate(std::string package_name);
   bool testAddPackageToMode(std::string mode_name, std::string package_name);
+
   bool testRemovePackage(std::string package_name);
   bool testRemovePackageMultiple(std::vector<std::string> package_names);
 
+  /*
+   * --------------------
+   *  Test Mode Commands
+   *  -------------------
+   */
+  bool testAddMode(std::string mode_name);
+  bool testAddDuplicateMode(std::string mode_name);
+
+  bool testRemoveMode(std::string mode_name);
+
+  /* --------------------
+   * Test Author Commands
+   * --------------------
+   */
   bool testAddAuthorMultiple(std::vector<std::string> name);
   bool testAddAuthorSingle(std::string name);
   bool testAddDuplicateAuthor(std::string name);
   bool testRemoveAuthor(std::string name);
 
+  /* --------------------
+   * Test Nuke Command
+   * --------------------
+   */
   bool testNuke();
 }
 

@@ -40,6 +40,8 @@ namespace Tests::Command {
     REQUIRE(testAddFlagsSingle());
     REQUIRE(testAddFlagsMultiple());
     REQUIRE(testAddFlagsWithMode());
+    REQUIRE(testRemoveFlagsSingle("-Wall"));
+    REQUIRE(testRemoveFlagsSingle("-Wall -Werror"));
 
     REQUIRE(testNewWithType("static_library"));
     REQUIRE(testNewWithType("executable"));
@@ -47,11 +49,17 @@ namespace Tests::Command {
     REQUIRE(testNewWithType("header_only"));
 
     REQUIRE(testAddPackage("cxxopts"));
-    REQUIRE(testAddPackageMultiple());
-    REQUIRE(testRemovePackage("cxxopts"));
+    REQUIRE(testAddPackageMultiple({"cxxopts","fmt"}));
+    REQUIRE(testAddPackageWithDuplicate("cxxopts"));
+
     REQUIRE(testAddPackageToMode("Debug","cxxopts"));
     REQUIRE(testAddPackageToMode("Test","cxxopts"));
     REQUIRE(testAddPackageToMode("Release","cxxopts"));
+
+    REQUIRE(testRemoveMode("Debug"));
+
+    REQUIRE(testRemovePackage("cxxopts"));
+    REQUIRE(testRemovePackageMultiple({"fmt","cxxopts","SDL2"}));
 
     REQUIRE(testAddAuthorSingle("test"));
     REQUIRE(testAddAuthorMultiple({"test1","test2","test3"}));
