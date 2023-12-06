@@ -31,6 +31,10 @@ set(-DUSE_CCACHE=YES -DCCACHE_OPTIONS="CCACHE_CPP2=true;CCACHE_SLOPPINESS=clang_
 find_program(SCCACHE_FOUND sccache)
 find_program(CCACHE_FOUND ccache)
 
+find_library(LUA_FOUND lua)
+
+
+
 set(SCCACHE_FOUND 0)
 
 if(SCCACHE_FOUND)
@@ -91,8 +95,20 @@ CPMAddPackage(
   NAME uv 
   GITHUB_REPOSITORY libuv/libuv
   GIT_TAG v1.47.0
-
 )
+
+CPMAddPackage(
+  lua
+  GITHUB_REPOSITORY lua/lua
+  GIT_TAG v5.4.3
+)
+
+CPMAddPackage(
+  NAME sol2
+  GITHUB_REPOSITORY ThePhD/sol2
+  GIT_TAG v3.3.1
+)
+
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
@@ -142,6 +158,8 @@ target_link_libraries(${PROJECT_NAME} nlohmann_json)
 target_link_libraries(${PROJECT_NAME} libgit2package)
 target_link_libraries(${PROJECT_NAME} uv)
 target_link_libraries(${PROJECT_NAME} termcolor)
+target_link_libraries(${PROJECT_NAME} lua)
+target_link_libraries(${PROJECT_NAME} sol2::sol2)
 
 set(SOURCE_DIR src)
 set(BUILD_DIR build)

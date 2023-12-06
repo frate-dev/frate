@@ -72,7 +72,7 @@ bool options(Interface* inter) {
 bool createJson(std::shared_ptr<Project> pro) {
   // Lucas did it again
   std::shared_ptr<Generators::ConfigJson::Config> config_json =
-      std::make_shared<Generators::ConfigJson::Config>();
+    std::make_shared<Generators::ConfigJson::Config>();
   // if (!Generators::ConfigJson::readUserInput(pro, config_json)) {
   //   return false;
   // }
@@ -83,7 +83,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     return false;
   }
   return true;
-  }
+}
 
   bool createHelloWorldCpp(std::shared_ptr<Project> pro) {
     //TODO Check project_type to see what kind of project we are creating
@@ -123,6 +123,8 @@ bool createJson(std::shared_ptr<Project> pro) {
     file_stream.close();
     return true;
   }
+
+
   bool createHelloWorldC(std::shared_ptr<Project> pro) {
     if(std::filesystem::exists(pro->project_path / pro->src_dir)){
       Prompt *overwrite_prompt = new Prompt("src directory already exists, overwrite?");
@@ -158,6 +160,8 @@ bool createJson(std::shared_ptr<Project> pro) {
     file_stream.close();
     return true;
   }
+
+
   void gitInit(Interface *inter){
     #ifdef RELEASE 
       Generators::GitIgnore::create(inter);
@@ -173,6 +177,8 @@ bool createJson(std::shared_ptr<Project> pro) {
     #endif
     (void)inter;
   }
+
+
 
   bool createProjectWizard(Interface *inter){
     createJson(inter->pro);
@@ -190,6 +196,7 @@ bool createJson(std::shared_ptr<Project> pro) {
     gitInit(inter);
     return true;
   }
+
 
 
   bool defaultJson(std::shared_ptr<Project> pro) {

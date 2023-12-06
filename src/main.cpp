@@ -15,6 +15,7 @@ namespace Frate {
 int main(int argc, char **argv) {
   // LUCAS MAKE SURE YOU INITIALIZE YOUR F@*KING STRUCT YOU TW@T
   //std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();
+  
   #ifdef TEST
     Catch::Session session;
     int returnCode = session.applyCommandLine(argc, argv);
