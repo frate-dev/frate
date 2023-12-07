@@ -107,7 +107,8 @@ namespace Frate::Command {
   } ProjectOption;
 
   //TODO: MAKE MOST OF THESE OPTIONAL
-  typedef struct Project_s {
+  struct Project {
+
     std::string project_name;
     std::string project_description;
     std::string project_type = ProjectType::EXECUTABLE;
@@ -185,7 +186,7 @@ namespace Frate::Command {
         }
       }
     };
-  } Project;
+  };
 
 
   typedef struct Handler_s Handler;
