@@ -40,9 +40,10 @@ namespace Frate::Generators::CMakeList {
     lua.script(R"(
         print()
     )");
-    env.add_callback("deps", 0, [&lua, &pro](inja::Arguments& args){
+    env.add_callback("packages", 0, [&lua, &pro](inja::Arguments& args){
         (void)args;
         lua.new_usertype<Command::Project>("project");
+        lua["project"] = pro;
         lua.set("project", pro);
         std::string result = lua.script(R"(
             local result = ""
