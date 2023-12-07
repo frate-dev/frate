@@ -1,7 +1,7 @@
 #include <Frate/Command/Actions/List.hpp>
 #include <Frate/Command/License.hpp>
 #include <Frate/Command/Modes.hpp>
-#include <Frate/Command/Author.hpp>.hpp>
+#include <Frate/Command/Author.hpp>
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/RemoteServers.hpp>

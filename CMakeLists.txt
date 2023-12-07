@@ -100,7 +100,7 @@ CPMAddPackage(
 CPMAddPackage(
   lua
   GITHUB_REPOSITORY lua/lua
-  GIT_TAG v5.4.3
+  GIT_TAG v5.4.4
 )
 
 CPMAddPackage(
@@ -151,7 +151,6 @@ else()
   add_definitions(-DDEBUG)
   message("Default mode")
 endif()
-
 target_link_libraries(${PROJECT_NAME} libcurl)
 target_link_libraries(${PROJECT_NAME} cxxopts)
 target_link_libraries(${PROJECT_NAME} nlohmann_json)

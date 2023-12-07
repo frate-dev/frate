@@ -1,8 +1,10 @@
 #include <filesystem>
+#include <map>
 #include <string>
 #include <nlohmann/json.hpp>
 #include <Frate/Command.hpp>
 #include <Frate/Utils/General.hpp>
+#include <sol/sol.hpp>
 #include <git2.h>
 #include <inja.hpp>
 
@@ -30,7 +32,23 @@ namespace Frate::Generators::CMakeList {
 
     CPMFile << CPM;
     inja::Environment env;
-
+    sol::state lua;
+    lua.open_libraries(sol::lib::base, sol::lib::package);
+    
+    auto render = [&env](std::string str, sol::table data){
+      json j;
+      data.for_each([&j](sol::object key, sol::object value){
+        j[key.as<std::string>()] = value.as<std::string>();
+      });
+      std::cout << j.dump(2) << std::endl;
+      std::cout << str << std::endl;
+      return env.render(str, j);
+    };
+    lua["render"] = render;
+    lua.script(R"(
+        print(render("{{name}}", {name = "Frate"}))
+    )");
+    //env.add_callback()
     std::string CMakeListsExecutable =  env.render_file(pro->project_path /"templates" /"CMakeLists.tmpl", pro->toJson());
     std::ofstream file;
     std::string file_name = "CMakeLists.txt";
