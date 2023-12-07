@@ -80,6 +80,32 @@ namespace Frate::Command {
     std::vector<Package> dependencies{};
   } Mode;
 
+  typedef struct ProjectOption_s {
+    std::string value{""};
+    std::string type{"string"};
+    // std::string key{""};
+    std::string default_value{""};
+    bool required{false};
+    bool prompt{false};
+    std::vector<std::string> options{};
+    std::function<bool(std::string)> validator{
+      [this](std::string s) -> bool {
+        if(options.size() == 0) {
+          return true;
+        }else{
+          for (std::string option: options){
+            if (s == option){
+              return true;
+            }
+          }
+          return false;
+        }
+      }
+    };
+    template<typename T>
+      T get();
+  } ProjectOption;
+
   //TODO: MAKE MOST OF THESE OPTIONAL
   typedef struct Project_s {
     std::string project_name;
@@ -118,9 +144,48 @@ namespace Frate::Command {
     nlohmann::json toJson();
     bool save();
     void checkKeys(json j);
+    std::unordered_map<std::string,ProjectOption> options{
+      {"lang",
+        {
+          .value = "",
+          .type = "string",
+          .default_value = "cpp",
+          .required = false,
+          .prompt = true,
+          .options = {
+            "cpp",
+            "c",
+          },
+        }
+      },
+      {"c_compiler",
+        {
+          .value = "",
+          .type = "string",
+          .default_value = "g++",
+          .required = false,
+          .prompt = true,
+          .options = {
+            "gcc",
+            "clang",
+          },
+        }
+      },
+      {"cpp_compiler",
+        {
+          .value = "",
+          .type = "string",
+          .default_value = "g++",
+          .required = false,
+          .prompt = true,
+          .options = {
+            "g++",
+            "clang++",
+          },
+        }
+      }
+    };
   } Project;
-
-
 
 
   typedef struct Handler_s Handler;
