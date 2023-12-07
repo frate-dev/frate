@@ -31,24 +31,44 @@ namespace Frate::Generators::CMakeList {
     }
 
     CPMFile << CPM;
+
     inja::Environment env;
     sol::state lua;
     lua.open_libraries(sol::lib::base, sol::lib::package);
     
-    auto render = [&env](std::string str, sol::table data){
-      json j;
-      data.for_each([&j](sol::object key, sol::object value){
-        j[key.as<std::string>()] = value.as<std::string>();
-      });
-      std::cout << j.dump(2) << std::endl;
-      std::cout << str << std::endl;
-      return env.render(str, j);
-    };
-    lua["render"] = render;
+
     lua.script(R"(
-        print(render("{{name}}", {name = "Frate"}))
+        print()
     )");
-    //env.add_callback()
+    env.add_callback("deps", 0, [&lua, &pro](inja::Arguments& args){
+        (void)args;
+        lua.new_usertype<Command::Project>("project");
+        lua.set("project", pro);
+        std::string result = lua.script(R"(
+            local result = ""
+            print("Adding deps")
+            print(project.dependencies)
+            if project.dependencies == nil then
+              return ""
+            end
+            for _, dep in pairs(project.dependencies) do
+              result = result .. "CPMAddPackage(" ..
+                "\nNAME " .. dep.name .. 
+                "\nGITHUB_REPOSITORY " .. dep.github .. 
+                "\nGIT_TAG " .. dep.tag .. 
+              "\n)\n"
+            end
+            print(result)
+            return result
+        )");
+        return result;
+    });
+    env.add_callback("lua", 1, [&lua, &pro](inja::Arguments& args){
+        std::string path = args.at(0)->get<std::string>(); 
+        lua["project"] = pro;
+        std::string result = lua.script_file((pro->project_path / "templates/lua" / path).string());
+        return result;
+    }); 
     std::string CMakeListsExecutable =  env.render_file(pro->project_path /"templates" /"CMakeLists.tmpl", pro->toJson());
     std::ofstream file;
     std::string file_name = "CMakeLists.txt";
