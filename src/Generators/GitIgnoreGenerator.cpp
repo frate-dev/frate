@@ -1,6 +1,7 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
 #include <format>
+#include <fstream>
 #include <Frate/Utils/CLI.hpp>
 
 

@@ -1,6 +1,7 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
 #include <Frate/Constants.hpp>
+#include <fstream>
 namespace Frate::Generators::Readme {
     bool create(Command::Interface* inter){
       std::string readme = R"(

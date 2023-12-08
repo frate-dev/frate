@@ -1,6 +1,4 @@
-#include <stdint.h> 
 #include "Frate/Utils/General.hpp"
-#include "termcolor/termcolor.hpp"
 #include <Frate/Command.hpp>
 #include <fstream>
 #include <iostream>

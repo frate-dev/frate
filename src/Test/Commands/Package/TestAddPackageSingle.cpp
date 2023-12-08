@@ -1,5 +1,6 @@
 #ifdef TEST
 #include <Frate/Test/Test.hpp>
+#include <fstream>
 
 bool Tests::Command::testAddPackage(std::string package_name) {
   std::cout << "Testing add package command" << std::endl;

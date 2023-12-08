@@ -1,16 +1,14 @@
 #pragma once
 #include <nlohmann/json.hpp>
 #include <sol/sol.hpp>
-#include <string>
 
 
 
 
-namespace Frate::Command::LuaAPI {
+namespace Frate::LuaAPI {
 
 
-//   void to_table(sol::table& out_table,const nlohmann::json& json);
-// 
-//   void to_json(nlohmann::json& json,const sol::table& table);
+  sol::table to_table(const nlohmann::json& json);
+  nlohmann::json to_json(const sol::table& table);
 
 }

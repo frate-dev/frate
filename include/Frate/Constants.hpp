@@ -3,6 +3,19 @@
 
 
 namespace Frate::Constants {
+
+  #ifdef __linux__
+  const std::string BUILD_OS = "linux";
+  #elif _WIN32
+  const std::string BUILD_OS = "windows32";
+  #elif _WIN64
+  const std::string BUILD_OS = "windows64";
+  #elif __APPLE__
+  const std::string BUILD_OS = "macos";
+  #else
+  const std::string BUILD_OS = "unknown";
+  #endif
+
   const std::string NAME = "frate";
   const std::string DESCRIPTION = "CLI utility for managing your project, a modern touch for C/C++";
   const std::string PROJECT_URL = "https://github.com/frate-dev/frate";
@@ -19,8 +32,7 @@ namespace Frate::Constants {
   const std::vector<std::string> SUPPORTED_CMAKE_VERSIONS =
   {
     "3.0",
-    "3.1",
-    "3.2",
+    "3.1", "3.2",
     "3.3",
     "3.4",
     "3.5",

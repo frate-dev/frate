@@ -2,6 +2,7 @@
 #include <Frate/Utils/General.hpp>
 #include <Frate/Command/AvailableTriples.hpp>
 #include <Frate/Generators.hpp>
+#include <fstream>
 
 
 

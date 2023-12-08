@@ -3,7 +3,7 @@
 
 namespace Frate::Command {
 
-  void to_json(json &j, const ProjectOption &p){
+  void to_json(json &j, const ProjectPrompt &p){
     j = json{
       {"value", p.value},
       {"default_value", p.default_value},
@@ -12,15 +12,14 @@ namespace Frate::Command {
       // {"validator", p.validator}
     };
   }
-  void from_json(const json &j, ProjectOption &p){
-    j.at("value").get_to(p.value);
+  void from_json(const json &j, ProjectPrompt &p){ j.at("value").get_to(p.value);
     j.at("default_value").get_to(p.default_value);
     j.at("type").get_to(p.type);
     j.at("required").get_to(p.required);
     //j.at("validator").get_to(p.validator); need a way to make this a lua function
   }
   template<>
-  std::string ProjectOption::get<std::string>(){
+  std::string ProjectPrompt::get<std::string>(){
 
     if(this->type != "string"){ 
       Frate::error <<
@@ -41,7 +40,7 @@ namespace Frate::Command {
   }
 
   template<>
-  bool ProjectOption::get<bool>(){
+  bool ProjectPrompt::get<bool>(){
 
     if(this->type != "bool"){ 
       Frate::error <<
@@ -61,7 +60,7 @@ namespace Frate::Command {
   }
 
   template<>
-  float ProjectOption::get<float>(){
+  float ProjectPrompt::get<float>(){
 
     if(this->type != "float"){ 
       Frate::error <<
@@ -82,7 +81,7 @@ namespace Frate::Command {
   }
 
   template<>
-  int ProjectOption::get<int>(){
+  int ProjectPrompt::get<int>(){
 
     if(this->type != "int"){ 
       Frate::error <<

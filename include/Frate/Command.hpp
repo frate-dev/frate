@@ -1,12 +1,9 @@
 #pragma once
-#include "Frate/Utils/General.hpp"
-#include "nlohmann/json_fwd.hpp"
-#include <memory>
 #include <string>
-#include <fstream>
 #include <vector>
 #include <filesystem>
 #include <nlohmann/json.hpp>
+#include <sol/sol.hpp>
 #include <iostream>
 #include <cxxopts.hpp>
 #include <Frate/Utils/CLI.hpp>
@@ -52,6 +49,7 @@ namespace Frate::Command {
     int score;
     json toJson();
     void fromJson(json j);
+    bool addCallback(sol::state &lua);
   } Package;//Deez nuts
 
   typedef struct RemoteServer{
@@ -70,7 +68,10 @@ namespace Frate::Command {
     const std::string STATIC_LIBRARY = "static_library";
     const std::string SHARED_LIBRARY = "shared_library";
     constexpr bool validate(std::string type) {
-      return type == EXECUTABLE || type == HEADER_ONLY || type == STATIC_LIBRARY || type == SHARED_LIBRARY;
+      return type == EXECUTABLE 
+        || type == HEADER_ONLY 
+        || type == STATIC_LIBRARY 
+        || type == SHARED_LIBRARY;
     }
   };
 
@@ -80,13 +81,12 @@ namespace Frate::Command {
     std::vector<Package> dependencies{};
   } Mode;
 
-  typedef struct ProjectOption_s {
+  typedef struct ProjectPrompt_s {
     std::string value{""};
     std::string type{"string"};
     // std::string key{""};
     std::string default_value{""};
     bool required{false};
-    bool prompt{false};
     std::vector<std::string> options{};
     std::function<bool(std::string)> validator{
       [this](std::string s) -> bool {
@@ -103,11 +103,11 @@ namespace Frate::Command {
       }
     };
     template<typename T>
-      T get();
-  } ProjectOption;
+    T get();
+  } ProjectPrompt;
 
   //TODO: MAKE MOST OF THESE OPTIONAL
-  struct Project {
+  typedef struct Project_s {
 
     std::string project_name;
     std::string project_description;
@@ -145,48 +145,8 @@ namespace Frate::Command {
     nlohmann::json toJson();
     bool save();
     void checkKeys(json j);
-    std::unordered_map<std::string,ProjectOption> options{
-      {"lang",
-        {
-          .value = "",
-          .type = "string",
-          .default_value = "cpp",
-          .required = false,
-          .prompt = true,
-          .options = {
-            "cpp",
-            "c",
-          },
-        }
-      },
-      {"c_compiler",
-        {
-          .value = "",
-          .type = "string",
-          .default_value = "g++",
-          .required = false,
-          .prompt = true,
-          .options = {
-            "gcc",
-            "clang",
-          },
-        }
-      },
-      {"cpp_compiler",
-        {
-          .value = "",
-          .type = "string",
-          .default_value = "g++",
-          .required = false,
-          .prompt = true,
-          .options = {
-            "g++",
-            "clang++",
-          },
-        }
-      }
-    };
-  };
+    std::unordered_map<std::string,ProjectPrompt> prompts{};
+  } Project;
 
 
   typedef struct Handler_s Handler;

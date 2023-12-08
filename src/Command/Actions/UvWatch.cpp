@@ -1,6 +1,7 @@
 #include <uv.h>
 #include <Frate/Command.hpp>
 #include <filesystem>
+#include <fstream>
 
 
 namespace Frate::Command::UvWatch{

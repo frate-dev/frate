@@ -2,6 +2,7 @@
 #include <Frate/Command.hpp>
 #include <Frate/Generators.hpp>
 #include <memory>
+#include <fstream>
 
 
 namespace Frate::Command {

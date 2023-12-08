@@ -1,4 +1,3 @@
-#include "Frate/Command/Actions/Help.hpp"
 #include <cxxopts.hpp>
 #include <fstream>
 #include <iostream> 

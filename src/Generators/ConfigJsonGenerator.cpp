@@ -1,6 +1,7 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Command.hpp>
 #include <string>
+#include <fstream>
 #include <termcolor/termcolor.hpp>
 
 namespace Frate::Generators::ConfigJson{

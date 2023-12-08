@@ -2,6 +2,7 @@
 #include <Frate/Command/License.hpp>
 #include <Frate/Utils/General.hpp>
 #include <chrono>
+#include <fstream>
 #include <ctime>
 
 
