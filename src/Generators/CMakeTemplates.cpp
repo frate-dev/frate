@@ -113,18 +113,30 @@ namespace Frate::Generators::CMakeList {
     
     lua.set("project", pro);
 
-
-
     for(auto& [key, script_str]: scripts){
       std::cout << "Adding script: " << key << std::endl;
-      env.add_callback(key, 0, [&lua, &script_str](inja::Arguments& args){
-        auto result = lua.script(script_str);
-        if(result.valid()){
+      env.add_callback(key, -1, [&lua, &script_str](inja::Arguments input_args){
+          sol::table args_table = lua.create_table();
+          for(const nlohmann::json* arg: input_args){
+            if(arg->is_string()){
+              args_table.add(arg->get<std::string>());
+            }else if(arg->is_number()){
+              args_table.add(arg->get<int>());
+            }else if(arg->is_boolean()){
+              args_table.add(arg->get<bool>());
+            }else{
+              std::cout << "Error while executing lua script" << std::endl;
+              exit(1);
+            }
+          }
+          lua.set("args", args_table); 
+          auto result = lua.script(script_str);
+          if(result.valid()){
           return result;
-        }else{
+          }else{
           std::cout << "Error while executing lua script" << std::endl;
           exit(1);
-        }
+          }
       });
     }
 
