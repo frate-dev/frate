@@ -62,6 +62,7 @@ namespace Frate::Generators::CMakeList {
 
 
     lua.open_libraries(sol::lib::base, sol::lib::package);
+    lua["project"] = pro;
     lua.new_usertype<Command::Package>("Package",
         "new", sol::no_constructor,
         "name", &Command::Package::name,

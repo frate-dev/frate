@@ -5,21 +5,23 @@ set(VMAJOR 0)
 set(VPATCH 1)
 
 
-
 if(DEFINED ENV{VBUILD})
   set(VBUILD $ENV{VBUILD})
 else()
   set(VBUILD 0)
 endif()
+#set(CMAKE_EXE_LINKER_FLAGS "-static")
 
+set(BUILD_SHARED_LIBS OFF)
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 add_definitions(-DVMINOR=${VMINOR})
 add_definitions(-DVMAJOR=${VMAJOR})
 add_definitions(-DVPATCH=${VPATCH})
 add_definitions(-DVBUILD=${VBUILD})
 
 
-set(CMAKE_CXX_COMPILER /usr/bin/clang++)
-set(CMAKE_C_COMPILER /usr/bin/clang)
+#set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+#set(CMAKE_C_COMPILER /usr/bin/clang)
 project ( 
     frate
     VERSION ${VMAJOR}.${VMINOR}.${VPATCH}.${VBUILD}
@@ -63,17 +65,25 @@ CPMAddPackage(
   NAME termcolor
   GITHUB_REPOSITORY ikalnytskyi/termcolor
   GIT_TAG v2.1.0
+  OPTIONS
+  "BUILD_STATIC_LIBS ON"
 )
 
 CPMAddPackage(
   NAME cxxopts
   GITHUB_REPOSITORY jarro2783/cxxopts
   GIT_TAG origin/master
+  OPTIONS
+  "BUILD_STATIC_LIBS ON"
+
 )
 CPMAddPackage(
   NAME nlohmann_json
   GITHUB_REPOSITORY nlohmann/json
   GIT_TAG origin/master
+  OPTIONS
+  "BUILD_STATIC_LIBS ON"
+
 )
 CPMAddPackage(
   name libgit2
@@ -81,6 +91,7 @@ CPMAddPackage(
   GIT_TAG v1.7.1
   OPTIONS
     "BUILD_TESTS OFF"
+    "BUILD_STATIC_LIBS ON"
     "BUILD_CLI OFF"
 )
 CPMAddPackage(
@@ -89,25 +100,36 @@ CPMAddPackage(
   GIT_TAG curl-8_3_0
   OPTIONS
     "ENABLE_VERSIONED_SYMBOLS ON"
+    "BUILD_CURL_EXE OFF"
+    "BUILD_STATIC_LIBS ON"
+    "BUILD_STATIC_CURL  ON"
+    "ENABLE_STATIC ON"
+    "CURL_STATICLIB ON"
 )
 
 CPMAddPackage(
   NAME uv 
   GITHUB_REPOSITORY libuv/libuv
   GIT_TAG v1.47.0
+  OPTIONS
+    "BUILD_STATIC_LIBS ON"
+    "LIBUV_BUILD_SHARED OFF"
+    "LIBUV_STATIC_LIBRARY O"
 )
 
 CPMAddPackage(
   lua
   GITHUB_REPOSITORY lua/lua
   GIT_TAG v5.4.4
-)
+  OPTIONS
+    "BUILD_STATIC_LIBS ON"
+)  
 
-CPMAddPackage(
-  NAME sol2
-  GITHUB_REPOSITORY ThePhD/sol2
-  GIT_TAG v3.3.1
-)
+#CPMAddPackage(
+#  NAME sol2
+#  GITHUB_REPOSITORY ThePhD/sol2
+#  GIT_TAG v3.3.1
+#)
 
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
@@ -142,8 +164,12 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
   message("Test mode")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g -O0 -Wextra -Wpedantic -Wall")
-  CPMAddPackage("gh:catchorg/Catch2@3.4.0")
-  CPMAddPackage("gh:jeremy-rifkin/cpptrace@0.2.1")
+  CPMAddPackage("gh:catchorg/Catch2@3.4.0"
+    OPTIONS "BUILD_STATIC_LIBS ON"
+  )
+  CPMAddPackage("gh:jeremy-rifkin/cpptrace@0.2.1"
+    OPTIONS "BUILD_STATIC_LIBS ON"
+  )
   add_definitions(-DTEST -DDEBUG) #test mode
   target_link_libraries(${PROJECT_NAME} Catch2::Catch2WithMain) #test mode fuck you cmake
   target_link_libraries(${PROJECT_NAME} cpptrace)
@@ -158,7 +184,7 @@ target_link_libraries(${PROJECT_NAME} libgit2package)
 target_link_libraries(${PROJECT_NAME} uv)
 target_link_libraries(${PROJECT_NAME} termcolor)
 target_link_libraries(${PROJECT_NAME} lua)
-target_link_libraries(${PROJECT_NAME} sol2::sol2)
+#target_link_libraries(${PROJECT_NAME} sol2::sol2)
 
 
 set(SOURCE_DIR src)
