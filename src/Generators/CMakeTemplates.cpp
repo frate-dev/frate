@@ -84,32 +84,26 @@ namespace Frate::Generators::CMakeList {
         "open_issues", &Command::Package::open_issues,
         "watchers", &Command::Package::watchers
     ); 
+
+    lua.new_usertype<Command::Mode>("Mode",
+        "new", sol::no_constructor,
+        "name", &Command::Mode::name,
+        "flags", &Command::Mode::flags,
+        "dependencies", &Command::Mode::dependencies
+    );
+
     lua.new_usertype<Command::Project>("Project"
         "new", sol::no_constructor,
         "name", &Command::Project::project_name,
         "version", &Command::Project::project_version,
         "description", &Command::Project::project_description,
         "authors", &Command::Project::authors,
-        "dependencies", &Command::Project::dependencies
+        "dependencies", &Command::Project::dependencies,
+        "toolchains", &Command::Project::toolchains,
+        "flags", &Command::Project::flags,
+        "modes", &Command::Project::modes
     );
-    pro->dependencies.push_back(Command::Package{
-        .name = "Frate",
-        .git = "https://github.com/frateproject/frate",
-        .git_short = "frateproject/frate",
-        .git_prefixed = "gh:frateproject/frate",
-        .target_link = "Frate::Frate",
-        .description = "Frate is a C++ package manager",
-        .selected_version = "0.0.1",
-        .git_description = "Frate is a C++ package manager",
-        .language = "C++",
-        .license = "MIT",
-        .owner = "frateproject",
-        .owner_type = "organization",
-        .stars = 0,
-        .forks = 0,
-        .open_issues = 0,
-        .watchers = 0,
-    });
+
 
     
     lua.set("project", pro);
