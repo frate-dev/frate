@@ -125,11 +125,11 @@ CPMAddPackage(
     "BUILD_STATIC_LIBS ON"
 )  
 
-#CPMAddPackage(
-#  NAME sol2
-#  GITHUB_REPOSITORY ThePhD/sol2
-#  GIT_TAG v3.3.1
-#)
+CPMAddPackage(
+  NAME sol2
+  GITHUB_REPOSITORY ThePhD/sol2
+  GIT_TAG v3.3.1
+)
 
 
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
@@ -184,7 +184,7 @@ target_link_libraries(${PROJECT_NAME} libgit2package)
 target_link_libraries(${PROJECT_NAME} uv)
 target_link_libraries(${PROJECT_NAME} termcolor)
 target_link_libraries(${PROJECT_NAME} lua)
-#target_link_libraries(${PROJECT_NAME} sol2::sol2)
+target_link_libraries(${PROJECT_NAME} sol2::sol2)
 
 
 set(SOURCE_DIR src)
