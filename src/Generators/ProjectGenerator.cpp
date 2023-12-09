@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <git2/types.h>
 #include <git2/clone.h>
+
 namespace Frate::Generators::Project {
 using inja::Environment;
 using nlohmann::json;
@@ -147,38 +148,8 @@ json getTemplateIndex() {
       }
     }
     
-
-
-
-//     for(const path& p: std::filesystem::recursive_directory_iterator(pro->project_path / "template")){
-//       std::cout << "Path: " << p << std::endl;
-// 
-// 
-// 
-//       if(std::filesystem::is_directory(p)){
-//         std::string new_dir = p.string();
-//         new_dir = new_dir.substr((pro->project_path / "template").string().length());
-// 
-//         std::cout << "Creating directory: " << pro->project_path.string() + new_dir << std::endl;
-//         std::cout << "Project path: " << pro->project_path << std::endl;
-// 
-//         if(std::filesystem::exists(pro->project_path.string() + new_dir)) continue;
-//         
-//         std::filesystem::create_directories(pro->project_path.string() + new_dir);
-//       }else{
-//         std::string new_file = p.string();
-//         new_file = new_file.substr((pro->project_path / "template").string().length());
-//         std::cout << "Copying file: " << new_file << std::endl;
-//         std::filesystem::copy_file(
-//             p,
-//             pro->project_path / new_file);
-// 
-//       }
-//     }
     return true;
   }
-
-
   bool create(std::shared_ptr<Command::Project> pro){
     info << "Creating Project" << std::endl;
     json index = getTemplateIndex();
