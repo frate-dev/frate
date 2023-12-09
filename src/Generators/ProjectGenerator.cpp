@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <git2/types.h>
 #include <git2/clone.h>
+
 namespace Frate::Generators::Project {
 using inja::Environment;
 using nlohmann::json;
@@ -200,10 +201,10 @@ json getTemplateIndex() {
 // 
 //       }
     }
+    
+  }
     return true;
   }
-
-
   bool create(std::shared_ptr<Command::Project> pro){
     info << "Creating Project" << std::endl;
     json index = getTemplateIndex();
