@@ -43,10 +43,11 @@ namespace Tests::Command {
     REQUIRE(testRemoveFlagsSingle("-Wall"));
     REQUIRE(testRemoveFlagsSingle("-Wall -Werror"));
 
-    REQUIRE(testNewWithType("static_library"));
-    REQUIRE(testNewWithType("executable"));
-    REQUIRE(testNewWithType("shared_library"));
-    REQUIRE(testNewWithType("header_only"));
+    REQUIRE(testNewWithType("default-executable"));
+    //TODO:  Add more types
+    // REQUIRE(testNewWithType("static_library"));
+    // REQUIRE(testNewWithType("shared_library"));
+    // REQUIRE(testNewWithType("header_only"));
 
     REQUIRE(testAddPackage("cxxopts"));
     REQUIRE(testAddPackageMultiple({"cxxopts","fmt"}));

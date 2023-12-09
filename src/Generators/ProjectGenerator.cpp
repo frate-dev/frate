@@ -129,7 +129,7 @@ json getTemplateIndex() {
       std::shared_ptr<Command::Project> pro){
 
 
-    info << "Rendering templates to tmp" << std::endl;
+    info << "Rendering templates" << std::endl;
 
     LuaAPI::registerAPI(lua);
     
@@ -168,16 +168,13 @@ json getTemplateIndex() {
     std::vector<path> paths_to_remove;
 
     for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->project_path)){
-      std::cout << current_p.string() << std::endl;
       if(current_p.string().find("template/") != std::string::npos){
         continue;
       }
       if(current_p.extension() == ".inja"){
-        std::cout << "Rendering file: " << current_p << std::endl;
         std::string rendered_file = env.render_file(current_p, pro->toJson());
         std::string new_file = current_p.string();
         new_file = new_file.replace(new_file.find(".inja"), 5, "");
-        std::cout << "Writing file: " << new_file << std::endl;
         std::ofstream file;
         try{
           file.open(new_file);
@@ -189,11 +186,15 @@ json getTemplateIndex() {
         paths_to_remove.push_back(current_p);
       }
       if (current_p.extension() == ".json"){
-        std::filesystem::copy(
-            current_p,
-            pro->project_path / "frate-project.json",
-            std::filesystem::copy_options::overwrite_existing
-            );
+        try{
+          std::filesystem::rename(
+              current_p,
+              pro->project_path / "frate-project.json"
+              );
+        }catch(...){
+          error << "Error while copying frate-project.json" << std::endl;
+          return false;
+        }
         pro->save();
       }
       if(current_p.string().find("/scripts") != std::string::npos){
@@ -220,16 +221,32 @@ json getTemplateIndex() {
   }
   bool create(std::shared_ptr<Command::Project> pro){
     info << "Creating Project" << std::endl;
+    
+
     json index = getTemplateIndex();
+    bool has_template = false;
 
-    auto [success, templ] = promptForProjectName(index);
-    if(!success){
-      error << "Error while prompting for project name" << std::endl;
-      return false;
+    Template current_template;
+
+    for(Template templ: index){
+      if(pro->project_type == templ.name){
+        has_template = true;
+        current_template = templ;
+        break;
+      }
     }
-    info << "Creating project from template: " << templ.name << std::endl;
 
-    if(!downloadTemplate(templ.git, pro->project_path)){
+    if(!has_template){
+      auto [success, templ] = promptForProjectName(index);
+      if(!success){
+        error << "Error while prompting for project name" << std::endl;
+        return false;
+      }
+      current_template = templ;
+      info << "Creating project from template: " << templ.name << std::endl;
+    }
+
+    if(!downloadTemplate(current_template.git, pro->project_path)){
       error << "Error while downloading template" << std::endl;
       return false;
     }

@@ -12,6 +12,7 @@ namespace Tests::Command {
   extern Frate::Utils::Warning warning =Frate::Utils::Warning();
 
   std::filesystem::path genTestDirectory(){
+    info << "Generating test directory" << std::endl;
     std::string random_string = genBase64String(10);
     std::filesystem::path test_path =
       std::filesystem::path("/tmp/frate-test-" + random_string);
@@ -23,6 +24,7 @@ namespace Tests::Command {
     }
 
     std::filesystem::create_directory(test_path);
+    info << "Test directory generated at" << test_path << std::endl;
     return test_path;
   }
   void cleanUp(path test_path) {
