@@ -19,7 +19,7 @@ namespace Frate::Command {
     file << this->toJson().dump(2);
     file << '\n';
     file.close();
-    Generators::CMakeList::createCMakeLists(std::make_shared<Project>(*this));
+    //Generators::CMakeList::createCMakeLists(std::make_shared<Project>(*this));
     return true;
   }
   /*

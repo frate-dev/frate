@@ -89,6 +89,18 @@ json getTemplateIndex() {
 
     LuaAPI::registerAPI(lua);
 
+    std::string CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
+    std::ofstream CPMFile;
+    try{
+      if(!std::filesystem::exists(pro->project_path / "cmake"))
+        std::filesystem::create_directories(pro->project_path / "cmake");
+      CPMFile.open(pro->project_path / "cmake/CPM.cmake");
+    }catch(...){
+      Utils::debug("Error while opening file: CPM.cmake");
+      return false;
+    }
+
+    CPMFile << CPM;
     if(!LuaAPI::registerProject(lua, pro)){
       error << "Error while registering project" << std::endl;
       return false;
@@ -121,7 +133,7 @@ json getTemplateIndex() {
     std::filesystem::copy(
         pro->project_path / "template",
         pro->project_path,
-        std::filesystem::copy_options::recursive
+        std::filesystem::copy_options::recursive  | std::filesystem::copy_options::overwrite_existing
         );
 
     for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->project_path)){
@@ -146,6 +158,11 @@ json getTemplateIndex() {
 
         std::filesystem::remove(current_p);
       }
+      if (current_p.extension() == ".json"){
+        //std::filesystem::copy(current_p, pro->project_path / "frate-project.json", std::filesystem::copy_options::overwrite_existing);
+        pro->save();
+      }
+
     }
     
     return true;
