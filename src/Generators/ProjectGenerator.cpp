@@ -115,47 +115,46 @@ json getTemplateIndex() {
       allowed_source_extensions["cpp"] = true;
     }else if(pro->lang == "c"){
       allowed_source_extensions["c"] = true;
-    }else{
+    }
 
+    std::filesystem::copy(
+        pro->project_path / "template",
+        pro->project_path,
+        std::filesystem::copy_options::recursive
+        );
 
-
-    for(const path& p: std::filesystem::recursive_directory_iterator(pro->project_path / "template")){
-      std::cout << "Path: " << p << std::endl;
-      if(std::filesystem::is_directory(p)){
-        std::string new_dir = p.string();
-        new_dir = new_dir.substr((pro->project_path / "template").string().length());
-
-        std::cout << "Creating directory: " << pro->project_path.string() + new_dir << std::endl;
-        std::cout << "Project path: " << pro->project_path << std::endl;
-
-        if(std::filesystem::exists(pro->project_path.string() + new_dir)) continue;
-        
-        std::filesystem::create_directories(pro->project_path.string() + new_dir);
-      }else if(p.extension() == ".inja"){
-        std::string file_name = p.filename();
-        //Yoinkin off the inja extension
-        file_name = file_name.substr(0, file_name.find(".inja"));
-        std::string file_path = p.string();
-        std::string file_contents = env.render_file(file_path, pro->toJson());
-        std::string file_extension = file_name.substr(file_name.find_last_of(".") + 1);
-
-        if(possible_source_extensions.size() > 0){
-          if(std::find(
-            possible_source_extensions.begin(),
-            possible_source_extensions.end(), file_extension) != possible_source_extensions.end()
-            ){
-            continue;
-          }
-        }
-      }else{
-        std::string new_file = p.string();
-        new_file = new_file.substr((pro->project_path / "template").string().length());
-        std::cout << "Copying file: " << new_file << std::endl;
-        std::filesystem::copy_file(
-            p,
-            pro->project_path / new_file);
-
+    for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->project_path)){
+      
+      if(current_p.string().find("template/") != std::string::npos){
+        continue;
       }
+      if(current_p.extension() == ".inja"){
+        std::cout << "Rendering file: " << current_p << std::endl;
+        std::string rendered_file = env.render_file(current_p, pro->toJson());
+        std::string new_file = current_p.string();
+        new_file = new_file.replace(new_file.find(".inja"), 5, "");
+        std::cout << "Writing file: " << new_file << std::endl;
+        std::ofstream file;
+        try{
+          file.open(new_file);
+        }catch(...){
+          error << "Error while opening file: " << new_file << std::endl;
+          return false;
+        }
+        file << rendered_file;
+
+        std::filesystem::remove(current_p);
+      }
+    }
+    
+
+
+
+//     for(const path& p: std::filesystem::recursive_directory_iterator(pro->project_path / "template")){
+//       std::cout << "Path: " << p << std::endl;
+// 
+// 
+// 
 //       if(std::filesystem::is_directory(p)){
 //         std::string new_dir = p.string();
 //         new_dir = new_dir.substr((pro->project_path / "template").string().length());
@@ -166,30 +165,6 @@ json getTemplateIndex() {
 //         if(std::filesystem::exists(pro->project_path.string() + new_dir)) continue;
 //         
 //         std::filesystem::create_directories(pro->project_path.string() + new_dir);
-//       }else if(p.extension() == ".inja"){
-//         std::string file_name = p.filename();
-//         //Yoinkin off the inja extension
-//         file_name = file_name.substr(0, file_name.find(".inja"));
-//         std::string file_path = p.string();
-//         std::string file_contents = env.render_file(file_path, pro->toJson());
-//         std::string file_extension = file_name.substr(file_name.find_last_of(".") + 1);
-// 
-// 
-//         if(file_extension == "cpp" && pro->lang == "c"){
-//           continue;
-//         }else if(file_extension == "c" && pro->lang == "cpp"){
-//           continue;
-//         }
-//         std::cout << "Creating file: " << pro->project_path / file_name << std::endl;
-//         std::ofstream file;
-//         try{
-//           file.open(pro->project_path / file_name);
-//         }catch(...){
-//           error << "Error while opening file: " << file_name << std::endl;
-//           return false;
-//         }
-//         file << file_contents;
-//         file.close();
 //       }else{
 //         std::string new_file = p.string();
 //         new_file = new_file.substr((pro->project_path / "template").string().length());
@@ -199,7 +174,7 @@ json getTemplateIndex() {
 //             pro->project_path / new_file);
 // 
 //       }
-    }
+//     }
     return true;
   }
 
@@ -226,5 +201,6 @@ json getTemplateIndex() {
       error << "Error while rendering template to tmp" << std::endl;
       return false;
     }
+    return true;
   }
 }
