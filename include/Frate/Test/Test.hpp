@@ -4,6 +4,7 @@
 #include "Frate/Utils/General.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <cxxopts.hpp>
+#include <fstream>
 
 namespace Tests{
   std::string genBase64String(int random_string_length);

@@ -16,8 +16,6 @@ namespace Frate::Command::Packages {
         }
       }
     }
-    Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
   bool remove(Interface *inter) {
@@ -49,8 +47,6 @@ Usage remove dep:
         return false;
     });
 
-    Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
 

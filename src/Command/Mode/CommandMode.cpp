@@ -37,8 +37,6 @@ namespace Frate::Command::ModeCommands {
         std::cout << "Package " << dep_str << " not found" << std::endl;
       }
     }
-    Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
   [[deprecated("Use removePackage in the package module")]]
@@ -54,8 +52,6 @@ namespace Frate::Command::ModeCommands {
         }
       }
     }
-    Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
 };

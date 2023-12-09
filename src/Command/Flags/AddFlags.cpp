@@ -14,8 +14,6 @@ namespace Frate::Command::Flags {
             m.flags.push_back(flag);
           }
           std::cout << "Writing frate-project.json" << std::endl;
-          Generators::ConfigJson::writeConfig(inter->pro);
-          Generators::CMakeList::createCMakeLists(inter->pro);
           return true;
         }
       }
@@ -25,8 +23,6 @@ namespace Frate::Command::Flags {
       inter->pro->flags.push_back(flag);
     }
     std::cout << "Writing frate-project.json" << std::endl;
-    Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
 }

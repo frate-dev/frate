@@ -19,6 +19,8 @@ namespace Frate::Generators{
     std::pair<bool, Template> promptForProjectName(json index);
 
     bool create(std::shared_ptr<Command::Project> pro);
+
+    bool refresh(std::shared_ptr<Command::Project> pro);
   }
   namespace GitIgnore{
     bool create(Command::Interface* inter);

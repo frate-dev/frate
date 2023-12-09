@@ -35,8 +35,6 @@ namespace Frate::Command::Toolchains{
     std::cout << toolchain_template << std::endl;
     file << toolchain_template;
     inter->pro->toolchains.push_back(toolchain);
-    Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
   bool remove(std::string toolchain_name, Interface* interface){

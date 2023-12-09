@@ -95,13 +95,14 @@ namespace Frate::Command::Packages {
       }
 
       Frate::info << "Writing frate-project.json" << std::endl;
-      if (!writeConfig(inter->pro)) {
-        Frate::error << "Failed to write frate-project.json" << std::endl;
-      }
-
-      if (!createCMakeLists(inter->pro)) {
-        Frate::error << "Failed to write CMakeLists.txt" << std::endl;
-      }
+      // if(!inter->pro->save()){
+      //   Frate::error << "Failed to write frate-project.json" << std::endl;
+      //   return false;
+      // }
+      // if(!Generators::Project::refresh(inter->pro)){
+      //   Frate::error << "Failed to refresh project" << std::endl;
+      //   return false;
+      // }
     }
 
     return true;
