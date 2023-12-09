@@ -3,6 +3,23 @@
 #include "./Command.hpp"
 
 namespace Frate::Generators{
+  namespace Project {
+    using nlohmann::json;
+    using Utils::CLI::Prompt;
+    json getTemplateIndex();
+
+    typedef struct Template {
+      std::string name;
+      std::string git;
+      std::string description;
+    } Template;
+
+    void from_json(const json& j, Template& t);
+
+    std::pair<bool, Template> promptForProjectName(json index);
+
+    bool create(std::shared_ptr<Command::Project> pro);
+  }
   namespace GitIgnore{
     bool create(Command::Interface* inter);
   }

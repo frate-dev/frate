@@ -153,11 +153,11 @@ namespace Frate::Utils::CLI {
     while(true){
       c = getchar();
       if(c == '\n'){
-        if(!is_valid()){
-          continue;
-        }
         if(completion.size() > 0){
           input = completion;
+        }
+        if(!is_valid()){
+          continue;
         }
         tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
         return;
