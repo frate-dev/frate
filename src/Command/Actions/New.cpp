@@ -1,4 +1,5 @@
 #include <cxxopts.hpp>
+#include <filesystem>
 #include <fstream>
 #include <iostream> 
 #include <string>
@@ -26,33 +27,33 @@ using Utils::CLI::Ansi::RED;
       
     return true;
   }
-bool downloadCMakeListsTemplate(Interface* inter){
-  std::shared_ptr<Project> pro = inter->pro;
-  std::string template_index = static_cast<std::string>(std::getenv("HOME"))+ "/.config/frate/templates.json";
+ bool downloadCMakeListsTemplate(Interface* inter){
+   std::shared_ptr<Project> pro = inter->pro;
+   std::string template_index = static_cast<std::string>(std::getenv("HOME"))+ "/.config/frate/templates.json";
 
-  std::filesystem::create_directories(static_cast<std::string>(std::getenv("HOME")) + "/.config/frate");
-  std::ifstream  template_index_file;
+   std::filesystem::create_directories(static_cast<std::string>(std::getenv("HOME")) + "/.config/frate");
+   std::ifstream  template_index_file;
 
-  if (!std::filesystem::exists(template_index)){
-    downloadCMakeListsTemplate(pro); 
-  }
-  std::string repo_url;
-  if(inter->verbose) Frate::info << "file: " << template_index << std::endl;
-  json templateIndex = json::parse(std::ifstream(template_index));
-  if(inter->verbose) info << templateIndex.dump(2) << std::endl;
-  for(json temp: templateIndex){
-    if (temp["name"] == pro->template_name){
-      repo_url = temp["git"];
-    }
-  }
+   if (!std::filesystem::exists(template_index)){
+     downloadCMakeListsTemplate(pro); 
+   }
+   std::string repo_url;
+   if(inter->verbose) Frate::info << "file: " << template_index << std::endl;
+   json templateIndex = json::parse(std::ifstream(template_index));
+   if(inter->verbose) info << templateIndex.dump(2) << std::endl;
+   for(json temp: templateIndex){
+     if (temp["name"] == pro->template_name){
+       repo_url = temp["git"];
+     }
+   }
 
 
- git_repository *repo = NULL; 
- Frate::info << "Cloning " << repo_url << " into " << (pro->project_path / "templates").c_str() << std::endl;
-  git_clone(&repo, repo_url.c_str(), (pro->project_path / "templates").c_str(), NULL);
-  std::filesystem::remove_all(pro->project_path / "templates" / ".git");
-  return true;
-}
+   git_repository *repo = NULL; 
+   Frate::info << "Cloning " << repo_url << " into " << (pro->project_path / "templates").c_str() << std::endl;
+   git_clone(&repo, repo_url.c_str(), (pro->project_path / "templates").c_str(), NULL);
+   std::filesystem::remove_all(pro->project_path / "templates" / ".git");
+   return true;
+ }
 
 bool options(Interface* inter) {
   inter->InitHeader();
@@ -105,8 +106,8 @@ bool createJson(std::shared_ptr<Project> pro) {
     std::ofstream file_stream;
     std::string file_path = pro->project_path / pro->src_dir;
     try{
-
-      std::filesystem::rename(pro->project_path / "templates" / "src", file_path);
+      std::filesystem::remove_all(file_path);
+      std::filesystem::copy(pro->project_path / "templates" / "src", file_path);
       inja::Environment env;
       std::string file_content = env.render_file(pro->project_path / pro->src_dir / "main.tmpl", pro->toJson());
       std::ofstream file_stream;

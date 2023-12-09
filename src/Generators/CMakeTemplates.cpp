@@ -51,7 +51,7 @@ namespace Frate::Generators::CMakeList {
 
     std::string CMakeListsExecutable;
     try{
-      CMakeListsExecutable = env.render_file(pro->project_path /"templates" /"CMakeLists.txt.inja", pro->toJson());
+      CMakeListsExecutable = env.render_file(pro->project_path /"templates" / "CMakeLists.txt.inja", pro->toJson());
     }catch(...){
       Utils::debug("Error while rendering CMakeLists.txt");
       return false;
