@@ -108,7 +108,6 @@ namespace Frate::Command {
 
   //TODO: MAKE MOST OF THESE OPTIONAL
   typedef struct Project_s {
-
     std::string project_name;
     std::string project_description;
     std::string project_type = ProjectType::EXECUTABLE;
@@ -141,6 +140,7 @@ namespace Frate::Command {
     std::string project_version{"0.0.1"};
     std::vector<std::string> flags; 
     std::vector<std::string> toolchains {};
+    std::vector<std::string> libs{};
     void fromJson(json j);
     nlohmann::json toJson();
     bool save();
