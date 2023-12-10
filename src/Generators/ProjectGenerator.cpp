@@ -24,6 +24,11 @@ json getTemplateIndex() {
   } 
 
 
+
+
+
+
+
   void from_json(const json& j, Template& t){
     t.name = j.at("name").get<std::string>();
     t.git = j.at("git").get<std::string>();
