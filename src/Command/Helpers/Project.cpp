@@ -66,6 +66,16 @@ namespace Frate::Command {
       }
       modes = temp_modes;
       flags = j["flags"];
+      for(auto [key, value] : j["prompts"].items()){
+        ProjectPrompt prompt;
+        prompt.value = value["value"];
+        prompt.type = value["type"];
+        for(auto &option : value["options"]){
+          prompt.options.push_back(option);
+        }
+        prompt.default_value = value["default_value"];
+        prompts[key] = prompt;
+      }
     }
     nlohmann::json Project::toJson(){
       using nlohmann::json;

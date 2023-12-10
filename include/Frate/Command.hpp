@@ -110,8 +110,7 @@ namespace Frate::Command {
   typedef struct Project_s {
     std::string project_name;
     std::string project_description;
-    std::string project_type = ProjectType::EXECUTABLE;
-    std::string template_name{"default-executable"};
+    std::string project_type{"default-executable"};
     RemoteServer build_server;
     /*
      * This is the project path, it will be set to the current working directory and in debug mode if willl set the path to ./build/

@@ -2,12 +2,10 @@
 #include "Frate/Utils/General.hpp"
 #include "inja.hpp"
 #include <Frate/LuaAPI.hpp>
-#include <format>
-#include <fstream>
+#include <filesystem>
 #include <memory>
 #include <sol/forward.hpp>
 #include <sol/variadic_args.hpp>
-#include <sstream>
 
 namespace Frate::LuaAPI {
 using std::filesystem::path;
@@ -75,18 +73,39 @@ std::string format(const std::string &str, sol::variadic_args var_args) {
     std::unordered_map<std::string, std::string> scripts = {};
 
 
-    for(const std::filesystem::path& p: std::filesystem::directory_iterator(
-          script_path
-          )){
+    for(const std::filesystem::path& p: std::filesystem::recursive_directory_iterator(script_path)){
+      // if(p.filename() == "__global__.lua"){
+      //   lua.script_file(p.string());
+      // }
       if(p.extension() == ".lua"){
         std::string file_name = p.filename();
+        std::string full_script_path = p.string();
         //Yoinkin off the lua extension
         file_name = file_name.substr(0, file_name.find(".lua"));
-        scripts[file_name] = p.string();
+        
+        std::string prefix;
+
+        //Remove the script path
+        Utils::replaceKey(full_script_path, script_path.string(), "");
+
+        //Remove the file name
+        Utils::replaceKey(full_script_path, file_name + ".lua", "");
+
+        //Remove the first slash
+        Utils::replaceKey(full_script_path, "/", ".");
+
+        //Remove the first dot
+        full_script_path = full_script_path.substr(1, full_script_path.size());
+
+
+        prefix = full_script_path;
+
+
+        scripts[prefix + file_name] = p.string();
       }
     }
     for(auto& [key, script_path]: scripts){
-      env.add_callback(key, -1, [&lua, script_path](inja::Arguments input_args){
+      env.add_callback( key, -1, [&lua, script_path](inja::Arguments input_args){
           sol::table args_table = lua.create_table();
           for(const nlohmann::json* arg: input_args){
             if(arg->is_string()){
@@ -158,7 +177,19 @@ std::string format(const std::string &str, sol::variadic_args var_args) {
         "dependencies", &Command::Project::dependencies,
         "toolchains", &Command::Project::toolchains,
         "flags", &Command::Project::flags,
-        "modes", &Command::Project::modes
+        "modes", &Command::Project::modes,
+        "libs", &Command::Project::libs,
+        "license", &Command::Project::license,
+        "git", &Command::Project::git,
+        "cmake_version", &Command::Project::cmake_version,
+        "build_dir", &Command::Project::build_dir,
+        "src_dir", &Command::Project::src_dir,
+        "include_dir", &Command::Project::include_dir,
+        "lang_version", &Command::Project::lang_version,
+        "lang", &Command::Project::lang,
+        "project_type", &Command::Project::project_type,
+        "keywords", &Command::Project::keywords,
+        "prompts", &Command::Project::prompts
     );
 
     lua.new_usertype<Command::ProjectPrompt>("ProjectPrompt",
@@ -175,7 +206,7 @@ std::string format(const std::string &str, sol::variadic_args var_args) {
   }
 
   void registerAPI(sol::state &lua) {
-    //lua.set_function("format", &format);
+    lua.set_function("format", &format);
     initLua(lua);
   }
 }

@@ -31,18 +31,10 @@ bool options(Interface* inter) {
 
 
   void gitInit(Interface *inter){
-    #ifdef RELEASE 
-      Generators::GitIgnore::create(inter);
-      //TODO: make this work on windows
-      git_repository *repo = nullptr;
-      git_repository_init(&repo, inter->pro->project_path.string().c_str(),0);
-      //int gitinit = Utils::hSystem("cd "+inter->pro->project_path.string()+";git init");
-      
-      
-      //if(gitinit != 0){
-      //  std::cout << "git init failed" << std::endl;
-      //}
-    #endif
+    Generators::GitIgnore::create(inter);
+    //TODO: make this work on windows
+    git_repository *repo = nullptr;
+    git_repository_init(&repo, inter->pro->project_path.string().c_str(),0);
     (void)inter;
   }
 
@@ -52,7 +44,9 @@ bool options(Interface* inter) {
     if(!Generators::Project::create(inter->pro)){
       return false;
     } 
+#ifdef RELEASE
     gitInit(inter);
+#endif
     return true;
   }
 
@@ -96,10 +90,6 @@ bool options(Interface* inter) {
     }
     if(inter->args->operator[]("type").count() > 0){
       inter->pro->project_type = inter->args->operator[]("type").as<std::string>();
-      // if(!ProjectType::validate(inter->pro->project_type)){
-      //   Frate::error << "Invalid project type" << ENDL;
-      //   return false;
-      // }
     }
     if(inter->args->operator[]("language").count() > 0){
       language = inter->args->operator[]("language").as<std::string>();
@@ -130,6 +120,8 @@ bool options(Interface* inter) {
     }else{
       Frate::info << "Creating project" << ENDL;
       Frate::info << "Creating frate-project.json" << ENDL;
+
+      Wizard::Project(inter->pro);
       if(!createProjectWizard(inter)){
         return false;
       }
