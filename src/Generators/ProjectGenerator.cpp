@@ -79,17 +79,65 @@ json getTemplateIndex() {
       return false;
     }
     git_repository_free(repo);
+    try{
+      std::filesystem::remove(project_path / "template/.git");
+    }catch(...){
+      Frate::error << "could not find .git folder in template/" << std::endl;
+    }
+
     return true;
   }
 
-  bool renderTemplate(Environment &env, sol::state &lua, std::shared_ptr<Command::Project> pro){
-
-
-    info << "Rendering templates to tmp" << std::endl;
+  bool refreshTemplate(Environment &env, sol::state &lua, std::shared_ptr<Command::Project> pro) {
+    info << "Refreshing template" << std::endl;
+    std::vector<path> paths_to_refresh{
+      pro->project_path / "template/CMakeLists.txt.inja",
+    };
 
     LuaAPI::registerAPI(lua);
 
-    std::string CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
+    if(!LuaAPI::registerProject(lua, pro)){
+      error << "Error while registering project" << std::endl;
+      return false;
+    }
+
+    if(!LuaAPI::registerProjectScripts(env, lua,pro->project_path / "template/scripts")){
+      error << "Error while registering project scripts" << std::endl;
+      return false;
+    }
+
+    for(const path& current_p: paths_to_refresh){
+      std::string rendered_file = env.render_file(current_p, pro->toJson());
+      std::string new_file = current_p.string();
+      new_file = new_file.replace(new_file.find(".inja"), 5, "");
+      Utils::replaceKey(new_file, "template/", "");
+      std::ofstream file;
+      try{
+        file.open(new_file);
+      }catch(...){
+        error << "Error while opening file: " << new_file << std::endl;
+        return false;
+      }
+      file << rendered_file;
+      file.close();
+    }
+    return true;
+  }
+      
+
+  bool renderTemplate(
+      Environment &env,
+      sol::state &lua,
+      std::shared_ptr<Command::Project> pro){
+
+
+    info << "Rendering templates" << std::endl;
+
+    LuaAPI::registerAPI(lua);
+    
+    std::string CPM;
+
+    CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
     std::ofstream CPMFile;
     try{
       if(!std::filesystem::exists(pro->project_path / "cmake"))
@@ -110,43 +158,25 @@ json getTemplateIndex() {
       error << "Error while registering project scripts" << std::endl;
       return false;
     } 
+  
 
-    std::unordered_map<std::string, bool> allowed_source_extensions = {
-      {"cpp", false},
-      {"c", false},
-    };
-
-    std::vector<std::string> possible_source_extensions;
-
-    for(auto& [key, value]: allowed_source_extensions){
-      if(value){
-        possible_source_extensions.push_back(key);
-      }
-    }
-
-    if(pro->lang == "cpp"){
-      allowed_source_extensions["cpp"] = true;
-    }else if(pro->lang == "c"){
-      allowed_source_extensions["c"] = true;
-    }
-
+    
     std::filesystem::copy(
         pro->project_path / "template",
         pro->project_path,
         std::filesystem::copy_options::recursive  | std::filesystem::copy_options::overwrite_existing
         );
 
+    std::vector<path> paths_to_remove;
+
     for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->project_path)){
-      
       if(current_p.string().find("template/") != std::string::npos){
         continue;
       }
       if(current_p.extension() == ".inja"){
-        std::cout << "Rendering file: " << current_p << std::endl;
         std::string rendered_file = env.render_file(current_p, pro->toJson());
         std::string new_file = current_p.string();
         new_file = new_file.replace(new_file.find(".inja"), 5, "");
-        std::cout << "Writing file: " << new_file << std::endl;
         std::ofstream file;
         try{
           file.open(new_file);
@@ -155,30 +185,70 @@ json getTemplateIndex() {
           return false;
         }
         file << rendered_file;
-
-        std::filesystem::remove(current_p);
+        paths_to_remove.push_back(current_p);
       }
       if (current_p.extension() == ".json"){
-        //std::filesystem::copy(current_p, pro->project_path / "frate-project.json", std::filesystem::copy_options::overwrite_existing);
+        try{
+          std::filesystem::rename(
+              current_p,
+              pro->project_path / "frate-project.json"
+              );
+        }catch(...){
+          error << "Error while copying frate-project.json" << std::endl;
+          return false;
+        }
         pro->save();
       }
-
+      if(current_p.string().find("/scripts") != std::string::npos){
+        paths_to_remove.push_back(current_p);
+      }
     }
+
+    for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->project_path / pro->src_dir)){
+      if(current_p.extension() != "." + pro->lang){
+        paths_to_remove.push_back(current_p);
+      }
+    }
+
+    for(const path& p: paths_to_remove){
+      if(std::filesystem::is_directory(p)){
+        std::filesystem::remove_all(p);
+      }else{
+        std::filesystem::remove(p);
+      }
+    }
+
     
     return true;
   }
   bool create(std::shared_ptr<Command::Project> pro){
     info << "Creating Project" << std::endl;
+    
+
     json index = getTemplateIndex();
+    bool has_template = false;
 
-    auto [success, templ] = promptForProjectName(index);
-    if(!success){
-      error << "Error while prompting for project name" << std::endl;
-      return false;
+    Template current_template;
+
+    for(Template templ: index){
+      if(pro->project_type == templ.name){
+        has_template = true;
+        current_template = templ;
+        break;
+      }
     }
-    info << "Creating project from template: " << templ.name << std::endl;
 
-    if(!downloadTemplate(templ.git, pro->project_path)){
+    if(!has_template){
+      auto [success, templ] = promptForProjectName(index);
+      if(!success){
+        error << "Error while prompting for project name" << std::endl;
+        return false;
+      }
+      current_template = templ;
+      info << "Creating project from template: " << templ.name << std::endl;
+    }
+
+    if(!downloadTemplate(current_template.git, pro->project_path)){
       error << "Error while downloading template" << std::endl;
       return false;
     }
@@ -186,6 +256,16 @@ json getTemplateIndex() {
     Environment env;
     sol::state lua;
     if(!renderTemplate(env, lua,  pro)){
+      error << "Error while rendering template to tmp" << std::endl;
+      return false;
+    }
+    return true;
+  }
+
+  bool refresh(std::shared_ptr<Command::Project> pro){
+    Environment env;
+    sol::state lua;
+    if(!refreshTemplate(env, lua,  pro)){
       error << "Error while rendering template to tmp" << std::endl;
       return false;
     }

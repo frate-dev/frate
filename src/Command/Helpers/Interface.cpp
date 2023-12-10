@@ -14,6 +14,7 @@
 #include "Frate/Command/Actions/New.hpp"
 #include <Frate/Command/Actions/Completions.hpp>
 #include "Frate/Utils/General.hpp"
+#include <Frate/Generators.hpp>
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
 #include <Frate/Constants.hpp>  
@@ -241,16 +242,28 @@ namespace Frate::Command {
           found_alias = true;
           if(!handler.callback()){
             return false;
-            // std::cout << termcolor::red << "Error: Could not run: " << handler.aliases[0] << termcolor::reset << ENDL;
           }
         }
       }
     }
     if(!found_alias){
       std::cout << "Error: Command not found: " << command << ENDL;
+      return false;
     }
-    return true;
+    for(Handler& handler : commands){
+      for(std::string& alias : handler.aliases){
+        if(alias == command){
+          if(handler.requires_project){
+            pro->save();
+            Generators::Project::refresh(pro);
+            break;
+          }
+        }
+      }
+    }
 
+
+    return true;
   }
   void renderFlags(std::vector<std::string> flags){
     std::cout << "  [";
