@@ -38,24 +38,24 @@ namespace Frate::Wizard {
     }
 
 
-    Prompt project_type_prompt("Project type",pro->project_type);
-    project_type_prompt.AddOption(Command::ProjectType::EXECUTABLE);
-    project_type_prompt.AddOption(Command::ProjectType::STATIC_LIBRARY);
-    project_type_prompt.AddOption(Command::ProjectType::SHARED_LIBRARY);
-    project_type_prompt.AddOption(Command::ProjectType::HEADER_ONLY);
-    project_type_prompt.PrintValidOptions();
-    project_type_prompt.Validator(Utils::Validation::ProjectType);
-    project_type_prompt.Color(Utils::CLI::Ansi::GREEN);
-    project_type_prompt.Run();
-
-    {
-      auto [valid,project_type]= project_type_prompt.Get<std::string>();
-      if(valid){
-        pro->project_type = project_type;
-      }else{
-        return false;
-      }
-    }
+//     Prompt project_type_prompt("Project type",pro->project_type);
+//     project_type_prompt.AddOption(Command::ProjectType::EXECUTABLE);
+//     project_type_prompt.AddOption(Command::ProjectType::STATIC_LIBRARY);
+//     project_type_prompt.AddOption(Command::ProjectType::SHARED_LIBRARY);
+//     project_type_prompt.AddOption(Command::ProjectType::HEADER_ONLY);
+//     project_type_prompt.PrintValidOptions();
+//     project_type_prompt.Validator(Utils::Validation::ProjectType);
+//     project_type_prompt.Color(Utils::CLI::Ansi::GREEN);
+//     project_type_prompt.Run();
+// 
+//     {
+//       auto [valid,project_type]= project_type_prompt.Get<std::string>();
+//       if(valid){
+//         pro->project_type = project_type;
+//       }else{
+//         return false;
+//       }
+//     }
 
     Prompt language("Language",pro->lang);
     for(std::string lang: Constants::SUPPORTED_LANGUAGES){
