@@ -186,7 +186,7 @@ target_link_libraries(${PROJECT_NAME} libgit2package)
 target_link_libraries(${PROJECT_NAME} uv)
 target_link_libraries(${PROJECT_NAME} termcolor)
 target_link_libraries(${PROJECT_NAME} lua)
-target_link_libraries(${PROJECT_NAME} sol2::sol2)
+target_link_libraries(${PROJECT_NAME} sol2)
 
 
 set(SOURCE_DIR src)
