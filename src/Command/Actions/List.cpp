@@ -6,6 +6,7 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Command/Toolchains.hpp>
+#include "Frate/Command/Library.hpp"
 
 namespace Frate::Command::List{
   bool options(Interface* inter) {
@@ -53,6 +54,15 @@ namespace Frate::Command::List{
         .callback = [inter]() {
           Flags::list(inter);
           return true;
+        },
+        .requires_project = true
+      },
+      Handler{
+        .aliases = 
+        {"libraries","l"},
+        .docs = "List flags",
+        .callback = [inter]() {
+          return Library::list(inter);
         },
         .requires_project = true
       },

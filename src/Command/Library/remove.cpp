@@ -1,9 +1,15 @@
 #include <Frate/Command/Library.hpp>
 
 namespace Frate::Command::Library{
-  bool remove(Interface* inter, std::string link){
-    std::erase_if(inter->pro->libs, [&](std::string& lib){
-      return lib == link;
+  bool remove(Interface* inter){
+    std::vector<std::string> libs = inter->args->operator[]("lib").as<std::vector<std::string>>();
+    std::erase_if(inter->pro->libs, [&libs](std::string& lib){
+        for (std::string& lib2 : libs){
+          if (lib == lib2){
+            return true;
+          }
+        }
+        return false;
     });
     return inter->pro->save();
   }

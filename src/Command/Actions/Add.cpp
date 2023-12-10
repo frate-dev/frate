@@ -5,6 +5,7 @@
 #include <Frate/Command/Keywords.hpp>
 #include <Frate/Command/Author.hpp>
 #include <Frate/Command/Modes.hpp>
+#include <Frate/Command/Library.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Utils/General.hpp>
 namespace Frate::Command::Add {
@@ -64,10 +65,9 @@ namespace Frate::Command::Add {
           .docs = "Add a library to link to your project",
           .callback = [inter]() {
             //TODO implement library
-            // OptionsInit::Libraries(inter);
+            Library::options(inter);
             // Libraries::add(inter);
-            (void)inter;
-            return false;
+            return Library::add(inter);
           },
           .implemented = false,
         },

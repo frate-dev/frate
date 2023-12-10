@@ -1,3 +1,4 @@
+#include "Frate/Command/Library.hpp"
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/Remove.hpp>
 #include <Frate/Command/Flags.hpp>
@@ -52,6 +53,15 @@ namespace Frate::Command::Remove {
         .callback = [inter]() {
           Modes::options(inter);
           return Modes::remove(inter);
+        },
+      },
+      {
+        .aliases = {"libraries", "l"},
+        .positional_args = {"mode"},
+        .docs = "Remove a mode from the project",
+        .callback = [inter]() {
+          Library::options(inter);
+          return Library::remove(inter); 
         },
       },
       {
