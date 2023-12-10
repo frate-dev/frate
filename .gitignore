@@ -8,8 +8,11 @@ build/*
 DartConfiguration.tcl
 config.toml
 CMakeFiles
+_CPack_Packages
 CMakeCache.txt
 cmake_install.cmake
+CPackConfig.cmake
+CPackSourceConfig.cmake
 libCommand.a
 .vscode/*
 compile_commands.json

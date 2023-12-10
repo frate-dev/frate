@@ -2,7 +2,8 @@
 #include <Frate/Command.hpp>
 
 namespace Frate::Command::Library{
-  bool add(Interface* inter, std::string link);
-  bool remove(Interface* inter, std::string link);
+  bool options(Interface* inter);
+  bool add(Interface* inter);
+  bool remove(Interface* inter);
   bool list(Interface* inter);
 }
