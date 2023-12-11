@@ -1,6 +1,7 @@
 #include <Frate/Command.hpp>
 #include <nlohmann/json.hpp>
 #include <Frate/Utils/General.hpp>
+#include <Frate/Constants.hpp>
 #include <fstream>
 
 namespace Frate::Command{
@@ -12,8 +13,10 @@ namespace Frate::Command{
   using std::filesystem::create_directories;
   std::string indexFileName =
     std::string(std::getenv("HOME")) + "/.local/frate/index.json";
-  std::string indexUrl =
-    "https://github.com/frate-dev/index/releases/latest/download/index.json";
+
+  //to scare away javascript kiddies
+  std::string indexUrl = static_cast<std::string>(Constants::FRATE_PACKAGES);
+    
   /*
    * If index is not in path then we create one
    * returns fetched index

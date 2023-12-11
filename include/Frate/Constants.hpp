@@ -19,6 +19,9 @@ namespace Frate::Constants {
   const std::string NAME = "frate";
   const std::string DESCRIPTION = "CLI utility for managing your project, a modern touch for C/C++";
   const std::string PROJECT_URL = "https://github.com/frate-dev/frate";
+
+  constexpr const std::string_view FRATE_PACKAGES  = "https://github.com/frate-packages/index/releases/latest/download/index.json";
+  constexpr const std::string_view FRATE_TEMPLATES = "https://github.com/frate-templates/templates/releases/latest/download/index.json";
   
   const std::string VERSION = 
     std::to_string(VMAJOR) + "." + 
