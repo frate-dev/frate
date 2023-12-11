@@ -84,11 +84,13 @@ namespace Frate::Command {
 #else
     pro->project_path = std::filesystem::current_path();
 #endif
+
+  }
+  bool Interface::execute(){
+
     if(LoadProjectJson()){
       this->project_present = true;
     }
-  }
-  bool Interface::execute(){
 
     std::string command = this->args->operator[]("command").as<std::string>();
     std::cout << "Project Path: " << pro->project_path << ENDL;
@@ -300,6 +302,10 @@ namespace Frate::Command {
             getHelpString(handler);
             return false;
           }else{
+            if(handler.requires_project){
+              pro->save();
+              Generators::Project::refresh(pro);
+            }
             return true;
           }
         }

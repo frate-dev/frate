@@ -81,20 +81,13 @@ namespace Frate::Command::Packages {
         return false;
       }
 
-
-      Frate::info << "Adding dependency to frate-project.json" << std::endl;
-      //Reflecing the package to dependency
-      // info << chosen_package.toJson() << ENDL;
       if(mode != ""){
         if(!addPackageToMode(inter, chosen_package, mode)){
           error << "Failed to add package to mode" << std::endl;
           return false;
         }
-      }else{
-        inter->pro->dependencies.push_back(chosen_package);
       }
-
-      Frate::info << "Writing frate-project.json" << std::endl;
+      inter->pro->dependencies.push_back(chosen_package);
       // if(!inter->pro->save()){
       //   Frate::error << "Failed to write frate-project.json" << std::endl;
       //   return false;

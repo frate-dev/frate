@@ -113,7 +113,9 @@ bool options(Interface* inter) {
     if(defaults){
       Frate::info << "Using defaults" << ENDL;
       Frate::info << "Creating project" << ENDL;
-      inter->pro->project_type = "default-executable";
+      if(inter->pro->project_type.empty()){
+        inter->pro->project_type = "executable";
+      }
       if(!createProjectWizard(inter)){
         return false;
       }

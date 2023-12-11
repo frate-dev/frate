@@ -179,8 +179,11 @@ json getTemplateIndex() {
 
     }
 
-
+    json current_j = pro->toJson();
     json j = json::parse(file);
+
+    j.merge_patch(current_j);
+
     pro->fromJson(j);
 
 

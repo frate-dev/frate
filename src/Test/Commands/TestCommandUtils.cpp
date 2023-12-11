@@ -78,23 +78,28 @@ namespace Tests::Command {
     inter->pro->project_path = std::filesystem::path(test_path);
 
     if (!inter->execute()) {
-      error << "Failed to run command: " << command << std::endl;
+      error << "Failed to run command: " << command << " : could not execute" << std::endl;
       return std::make_pair(true,inter);
     }
     if(check_config){
       std::ifstream config_file(test_path / "frate-project.json");
       nlohmann::json config;
 
-
-      try {
-        info << "attempting to read config file" << std::endl;
-        config_file >> config;
-      } catch (...) {
-        error << 
-          "Failed to add package : could not open file - file possibly never created" 
-          << std::endl;
+      if(!std::filesystem::exists(test_path / "frate-project.json")){
+        error << "Failed to run command : " << command << " : no config file" << std::endl;
         return std::make_pair(true,inter);
       }
+
+
+      // try {
+      //   info << "attempting to read config file" << std::endl;
+      //   config_file >> config;
+      // } catch (...) {
+      //   error << 
+      //     "Failed to add package : could not open file - file possibly never created" 
+      //     << std::endl;
+      //   return std::make_pair(true,inter);
+      // }
 
       if(!validateProjectJson(inter)){
         error << "Failed to run command : " << command << " : invalid json" << std::endl;

@@ -4,7 +4,7 @@
 bool Tests::Command::testNewWithType(std::string type){
   info << "Testing new command with type: " << type << std::endl;
   test_path = genTestDirectory(); 
-  auto[failed,inter] = init("frate new -t " + type);
+  auto[failed,inter] = init("frate new -d -t " + type);
 
   if(failed) return false;
 
