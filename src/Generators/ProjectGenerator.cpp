@@ -5,6 +5,7 @@
 #include "inja.hpp"
 #include "nlohmann/json_fwd.hpp"
 #include <Frate/Generators.hpp>
+#include <Frate/Constants.hpp>
 #include <filesystem>
 #include <git2/types.h>
 #include <git2/clone.h>
@@ -16,8 +17,7 @@ using std::filesystem::path;
 using Utils::CLI::Prompt;
 json getTemplateIndex() {
   std::cout << "Getting Template Index" << std::endl;
-  std::string index_url = "https://github.com/frate-dev/templates/releases/"
-                          "latest/download/index.json";
+  std::string index_url = static_cast<std::string>(Constants::FRATE_TEMPLATES);
 
   json index = json::parse(Utils::fetchText(index_url));
   return index;

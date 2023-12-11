@@ -9,10 +9,10 @@
 #include <Frate/Utils/CLI.hpp>
 #include <Frate/Frate.hpp>
 
-
 #define ENDL "\n"
 
 namespace Frate::Command {
+
   using nlohmann::json;
   using Utils::CLI::Prompt;
   using namespace Utils::CLI::Ansi;

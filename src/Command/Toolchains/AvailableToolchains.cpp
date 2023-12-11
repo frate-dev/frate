@@ -11,7 +11,8 @@ namespace Frate::Command::Toolchain {
       .triple = "aarch64-apple-ios"
     },
     {
-      .os = "iOS", .triple = "aarch64-apple-ios-macabi"
+      .os = "iOS", 
+      .triple = "aarch64-apple-ios-macabi"
     },
     {
       .os = "iOS",

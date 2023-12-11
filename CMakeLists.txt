@@ -84,6 +84,8 @@ CPMAddPackage(
   GIT_TAG origin/master
   OPTIONS
   "BUILD_STATIC_LIBS ON"
+  "JSON_BuildTests OFF"
+
 
 )
 CPMAddPackage(
@@ -242,6 +244,14 @@ if(DIST_RPM)
   set(CPACK_PACKAGE_DESCRIPTION "Frate a package/build system manager for C/C++")
   set(CPACK_PACKAGE_CONTACT "Lucas Sproule frate@frate.dev")
 endif()
+  set(CPACK_GENERATOR "DEB")
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Lucas Sproule & Jon-Michael Hartway")
+  set(CPACK_PACKAGE_VERSION_MAJOR ${VMAJOR})
+  set(CPACK_PACKAGE_VERSION_MINOR ${VMINOR})
+  set(CPACK_DEBIAN_PACKAGE_DEPENDS "build-essential, cmake, git,  ccache,  libssh2-1,  lua5.4, liblua5.4-dev")
+  set(CPACK_PACKAGE_DESCRIPTION "Frate a package/build system manager for C/C++")
+  set(CPACK_PACKAGE_CONTACT "Lucas Sproule frate@frate.dev")
+
 include(CPack)
 
 

@@ -52,10 +52,10 @@ namespace Frate::Command::UvWatch{
         "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " +
         std::to_string(inter->pro->build_server.port) + "' --progress . " +
         inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
-        ":/tmp/frate && ssh -p " +
+        ":/tmp/frate2 && ssh -p " +
         std::to_string(inter->pro->build_server.port) + " " +
         inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
-        "  'cd /tmp/frate && cmake . && make -j ${nproc} && " + inter->pro->build_dir +
+        "  'cd /tmp/frate2 && cmake . && make -j ${nproc} && " + inter->pro->build_dir +
         inter->pro->project_name + "'";
     }
     if (inter->args->count("args") != 0) {
