@@ -48,6 +48,7 @@ namespace Frate::Command::Add {
             Packages::options(inter);
             return Packages::add(inter);
           },
+          .requires_project = true,
           .unlimited_args = true,
       },
         Handler{
@@ -58,6 +59,7 @@ namespace Frate::Command::Add {
             Flags::options(inter);
             return Flags::add(inter);
           },
+          .requires_project = true,
         },
         Handler{
           .aliases = {"lib","l"},
@@ -70,6 +72,7 @@ namespace Frate::Command::Add {
             return Library::add(inter);
           },
           .implemented = false,
+          .requires_project = true,
         },
         Handler{
           .aliases = {"mode","m"},
@@ -79,6 +82,7 @@ namespace Frate::Command::Add {
             Modes::options(inter);
             return Modes::add(inter);
           },
+          .requires_project = true,
         },
         Handler{
           .aliases = {"server","s"},
@@ -87,6 +91,7 @@ namespace Frate::Command::Add {
           .callback = [inter]() {
             return RemoteServers::add(inter);
           },
+          .requires_project = true,
         },
         Handler{
           .aliases = {"toolchain","t"},
@@ -104,6 +109,7 @@ namespace Frate::Command::Add {
               return Toolchains::add(toolchain_name, inter);
             }
           },
+          .requires_project = true,
         },
         Handler{
           .aliases = {"author","a"},
@@ -112,6 +118,7 @@ namespace Frate::Command::Add {
           .callback = [inter]() {
             return Author::add(inter);
           },
+          .requires_project = true,
           .unlimited_args = true,
         },
         Handler{
@@ -122,6 +129,7 @@ namespace Frate::Command::Add {
             Keywords::add(inter);
             return false;
           },
+          .requires_project = true,
           .unlimited_args = true,
         },
     };

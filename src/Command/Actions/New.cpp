@@ -120,7 +120,7 @@ bool options(Interface* inter) {
     }else{
       Frate::info << "Creating project" << ENDL;
       Frate::info << "Creating frate-project.json" << ENDL;
-
+      inter->pro->project_type = "";
       Wizard::Project(inter->pro);
       if(!createProjectWizard(inter)){
         return false;

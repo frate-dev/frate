@@ -25,6 +25,7 @@ namespace Frate::Command::Set {
         .callback = [inter]() {
           return License::set(inter);
         },
+        .requires_project = true,
       },
       Handler{
         .aliases = {"name","n"},
@@ -33,6 +34,7 @@ namespace Frate::Command::Set {
           Name::set(inter);
           return true;//Name::set(inter);
         },
+        .requires_project = true,
       },
       Handler{
         .aliases = {"version","ver","v"},
@@ -41,7 +43,8 @@ namespace Frate::Command::Set {
 
           return true;//Version::set(inter);
         },
-        .implemented = false
+        .implemented = false,
+        .requires_project = true,
       },
       Handler{
         .aliases = {"server","s"},
@@ -51,6 +54,7 @@ namespace Frate::Command::Set {
           RemoteServers::set(inter);
           return true; //Server::set(inter);
         },
+        .requires_project = true,
       }
     };
   }

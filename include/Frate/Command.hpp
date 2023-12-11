@@ -83,6 +83,7 @@ namespace Frate::Command {
 
   typedef struct ProjectPrompt_s {
     std::string value{""};
+    std::string text{""};
     std::string type{"string"};
     // std::string key{""};
     std::string default_value{""};
