@@ -30,7 +30,7 @@ namespace Frate::Command {
     inter->options->allow_unrecognised_options().add_options()
       ("command", "Command to run",cxxopts::value<std::string>()->default_value("help"))
       ("verbose", "Verbose output",cxxopts::value<bool>()->default_value("false"))
-      ("y,confim-all", "skip all y/n prompts",cxxopts::value<bool>()->default_value("false"))
+      ("y,confirm-all", "skip all y/n prompts",cxxopts::value<bool>()->default_value("false"))
       ("version", "Print version");
     return inter->parse();
   }

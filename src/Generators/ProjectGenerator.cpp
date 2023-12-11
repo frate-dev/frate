@@ -209,6 +209,8 @@ json getTemplateIndex() {
     std::string CPM;
 
     CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
+
+
     std::ofstream CPMFile;
     try{
       if(!std::filesystem::exists(pro->project_path / "cmake"))
@@ -224,7 +226,7 @@ json getTemplateIndex() {
       error << "Error while registering project" << std::endl;
       return false;
     }
-
+    
     if(!LuaAPI::registerProjectScripts(env, lua,pro->project_path / "template/scripts")){
       error << "Error while registering project scripts" << std::endl;
       return false;
@@ -232,8 +234,37 @@ json getTemplateIndex() {
   
 
     
-
+    //Array to store all the paths to remove at the end of the function
     std::vector<path> paths_to_remove;
+
+    //Array of all the file extensions that we're going to ignore when copying files
+    std::vector<std::string> source_file_extensions_to_remove;
+    
+    //Map of all the source file extensions that are related to the project language
+    std::unordered_map<std::string, std::vector<std::string>> related_source_exts = {};
+      
+    related_source_exts["cpp"] = {
+      ".cpp",
+      ".cxx",
+      ".cc",
+      ".C",
+      ".c++",
+      ".hpp",
+      ".hxx",
+      ".hh"
+    };
+    related_source_exts["c"] = {
+      ".c",
+      ".h"
+    };
+    //Removes all source files that are not related to the project language
+    for(auto [key, source_files]: related_source_exts){
+      if(pro->lang != key){
+        for(std::string source_file: source_files){
+          source_file_extensions_to_remove.push_back(source_file);
+        }
+      }
+    }
 
     for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->project_path)){
       if(current_p.string().find("template/") != std::string::npos){
@@ -242,6 +273,7 @@ json getTemplateIndex() {
       if(current_p.extension() == ".inja"){
         std::string rendered_file = env.render_file(current_p, pro->toJson());
         std::string new_file = current_p.string();
+        //Removes the .inja extension from the file
         new_file = new_file.replace(new_file.find(".inja"), 5, "");
         std::ofstream file;
         try{
@@ -253,17 +285,23 @@ json getTemplateIndex() {
         file << rendered_file;
         paths_to_remove.push_back(current_p);
       }
+      //Removes the scripts from the project directory
       if(current_p.string().find("/scripts") != std::string::npos){
         paths_to_remove.push_back(current_p);
       }
     }
 
+    //Removes all unrelated source files from the project directory
+    //Frate does allow you to make both a c and cpp project on top of each other
     for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->project_path / pro->src_dir)){
-      if(current_p.extension() != "." + pro->lang){
-        paths_to_remove.push_back(current_p);
+      for(std::string ext: source_file_extensions_to_remove){
+        if(current_p.extension() == ext){
+          paths_to_remove.push_back(current_p);
+        }
       }
     }
-
+    
+    //Iterates through all projects we marked for removal and removes them
     for(const path& p: paths_to_remove){
       if(std::filesystem::is_directory(p)){
         std::filesystem::remove_all(p);
