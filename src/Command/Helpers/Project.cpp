@@ -25,7 +25,9 @@ namespace Frate::Command {
   /*
    * Welp reflection is a bitch aint it
    */
-    void Project::fromJson(json j){
+  void Project::fromJson(json j){
+    checkKeys(j);
+    try{
       project_name = j["project_name"];
       cmake_version = j["cmake_version"];
       project_version = j["project_version"];
@@ -43,40 +45,74 @@ namespace Frate::Command {
       keywords = j["keywords"];
       for (auto &dep : j["dependencies"]) {
         Package d;
-        d.name = dep["name"];
-        d.git = dep["git"];
-        d.selected_version = dep["version"];
-        d.target_link = dep["target_link"];
+        d.name = dep["name"].is_null() ? "" : dep["name"].is_null() ? "" : dep["name"];
+        d.git = dep["git"].is_null() ? "" : dep["git"].is_null() ? "" : dep["git"];
+        d.selected_version = dep["version"].is_null() ? "" : dep["version"];
+        d.target_link = dep["target_link"].is_null() ? "" : dep["target_link"];
+        if(d.target_link.empty()){
+          warning <<
+            "Warning: target_link is empty for dependency: " << d.name << std::endl;
+        }
         dependencies.push_back(d);
       }
       std::vector<Mode> temp_modes;
       for (auto &mode: j["modes"]){
         Mode m;
-        m.name = mode["name"];
+        m.name = mode["name"].is_null() ? "" : mode["name"];
         m.flags = mode["flags"];
         for (auto &dep : mode["dependencies"]) {
-          Package d;
-          d.name = dep["name"];
-          d.git = dep["git"];
-          d.selected_version = dep["version"];
-          d.target_link = dep["target_link"];
-          m.dependencies.push_back(d);
+          Package new_dep;
+          new_dep.name = dep["name"].is_null() ? "" : dep["name"];
+          new_dep.git = dep["git"].is_null() ? "" : dep["git"];
+          new_dep.selected_version = dep["version"].is_null() ? "" : dep["version"];
+          new_dep.target_link = dep["target_link"].is_null() ? "" : dep["target_link"];
+          if(new_dep.target_link == ""){
+            warning <<
+              "Warning: target_link is empty for dependency: " << new_dep.name <<
+              " in mode: " << m.name << std::endl;
+          }
+          
+          m.dependencies.push_back(new_dep);
         }
         temp_modes.push_back(m);
       }
       modes = temp_modes;
       flags = j["flags"];
-      for(auto [key, value] : j["prompts"].items()){
-        ProjectPrompt prompt;
-        prompt.value = value["value"];
-        prompt.type = value["type"];
-        for(auto &option : value["options"]){
-          prompt.options.push_back(option);
+      toolchains = j["toolchains"];
+      if(!j.contains("prompts")){
+        prompts = {};
+      }else{
+        for(auto [key, value] : j["prompts"].items()){
+          ProjectPrompt prompt;
+
+          prompt.type = value["type"].is_null() ? "string" : value["type"];
+
+          prompt.text = value["text"].is_null() ? "missing prompt text" : value["text"];
+
+
+          if(value["options"].is_null()){
+            prompt.options = {};
+          }else{
+            for(auto &option : value["options"]){
+              prompt.options.push_back(option);
+            }
+          }
+
+
+          if(value["default_value"].is_null()){
+            prompt.default_value = "";
+          }else{
+            prompt.default_value = value["default_value"];
+          }
+
+          prompts[key] = prompt;
         }
-        prompt.default_value = value["default_value"];
-        prompts[key] = prompt;
       }
+    } catch (std::exception &e){
+      Utils::debug(e.what());
+      error << "Error while parsing json for project" << std::endl;
     }
+  }
     nlohmann::json Project::toJson(){
       using nlohmann::json;
       std::vector<json> deps;
@@ -126,6 +162,15 @@ namespace Frate::Command {
       j["project_type"] = project_type;
       j["project_description"] = project_description;
       j["toolchains"] = toolchains;
+      j["prompts"] = json::object();
+      for(auto [key, value] : prompts){
+        json prompt;
+        prompt["type"] = value.type;
+        prompt["text"] = value.text;
+        prompt["options"] = value.options;
+        prompt["default_value"] = value.default_value;
+        j["prompts"][key] = prompt;
+      }
       return  j;
 
     };
@@ -149,10 +194,11 @@ namespace Frate::Command {
           {"authors", false},
           {"project_type", false},
           {"project_description", false},
-          {"toolchains", false}
+          {"toolchains", false},
+          {"prompts", false}
       };
       for (std::pair<std::string, bool> &key: required_keys){
-        if (j.find(key.first) == j.end()){
+        if (!j.contains(key.first)){
           Frate::error << "Missing required key: " << key.first << std::endl;
         } else {
           key.second = true;

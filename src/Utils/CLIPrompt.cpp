@@ -153,6 +153,12 @@ namespace Frate::Utils::CLI {
     while(true){
       c = getchar();
       if(c == '\n'){
+        for(std::string &option : options){
+          if(option == input){
+            completion = option;
+            break;
+          }
+        }
         if(completion.size() > 0){
           input = completion;
         }
@@ -164,10 +170,8 @@ namespace Frate::Utils::CLI {
       //Tab
       }else if(c == 9){
         if(has_options()){
-          if(completion.size() == 0){
-            if(options.size() > 1){
-              completion = options[1];
-            }else if(options.size() == 1){
+          if(completion.empty()){
+            if(options.size() == 1){
               completion = options[0];
             }else{
               completion = options[completion_index];

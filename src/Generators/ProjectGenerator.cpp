@@ -35,7 +35,7 @@ json getTemplateIndex() {
     t.description = j.at("description").get<std::string>();
   }
 
-  std::pair<bool, Template> promptForProjectName(json index){
+  std::pair<bool, Template> promptForTemplateName(json index){
     Prompt template_name_prompt("Project type: ");
     for(Template templ: index){
       template_name_prompt.AddOption(templ.name);
@@ -93,6 +93,30 @@ json getTemplateIndex() {
     return true;
   }
 
+  bool runTemplatePrompts(std::shared_ptr<Command::Project> pro){
+    for(auto [key, tmpl_prompt] : pro->prompts){
+      Prompt prompt(tmpl_prompt.text, tmpl_prompt.default_value);
+      if(tmpl_prompt.type == "bool"){
+        prompt.IsBool();
+      }
+
+      for(std::string option: tmpl_prompt.options){
+        prompt.AddOption(option);
+      }
+
+      prompt.PrintValidOptions();
+
+      prompt.Run();
+      auto [valid, value] = prompt.Get<std::string>();  
+      if(!valid){
+        error << "Error while getting prompt: " << key << std::endl;
+        return false;
+      }
+      pro->prompts[key].value = value;
+    }
+    return true;
+  }
+
   bool refreshTemplate(Environment &env, sol::state &lua, std::shared_ptr<Command::Project> pro) {
     info << "Refreshing template" << std::endl;
     std::vector<path> paths_to_refresh{
@@ -126,6 +150,45 @@ json getTemplateIndex() {
       file << rendered_file;
       file.close();
     }
+    return true;
+  }
+  bool loadTemplateConfig(std::shared_ptr<Command::Project> pro){
+
+
+    try{
+
+      std::filesystem::copy(
+          pro->project_path / "template/default.json",
+          pro->project_path / "frate-project.json"
+          );
+
+    }catch(...){
+
+      error << "Error while copying frate-project.json" << std::endl;
+      return false;
+
+    }
+  
+
+    std::ifstream file;
+
+
+    try{
+
+      file.open(pro->project_path / "frate-project.json");
+
+    }catch(...){
+
+      error << "Error while opening file: " << pro->project_path / "frate-project.json" << std::endl;
+      return false;
+
+    }
+
+
+    json j = json::parse(file);
+    pro->fromJson(j);
+
+
     return true;
   }
       
@@ -166,11 +229,6 @@ json getTemplateIndex() {
   
 
     
-    std::filesystem::copy(
-        pro->project_path / "template",
-        pro->project_path,
-        std::filesystem::copy_options::recursive  | std::filesystem::copy_options::overwrite_existing
-        );
 
     std::vector<path> paths_to_remove;
 
@@ -191,18 +249,6 @@ json getTemplateIndex() {
         }
         file << rendered_file;
         paths_to_remove.push_back(current_p);
-      }
-      if (current_p.extension() == ".json"){
-        try{
-          std::filesystem::rename(
-              current_p,
-              pro->project_path / "frate-project.json"
-              );
-        }catch(...){
-          error << "Error while copying frate-project.json" << std::endl;
-          return false;
-        }
-        pro->save();
       }
       if(current_p.string().find("/scripts") != std::string::npos){
         paths_to_remove.push_back(current_p);
@@ -244,7 +290,7 @@ json getTemplateIndex() {
     }
 
     if(!has_template){
-      auto [success, templ] = promptForProjectName(index);
+      auto [success, templ] = promptForTemplateName(index);
       if(!success){
         error << "Error while prompting for project name" << std::endl;
         return false;
@@ -258,12 +304,31 @@ json getTemplateIndex() {
       return false;
     }
 
+    std::filesystem::copy(
+        pro->project_path / "template",
+        pro->project_path,
+        std::filesystem::copy_options::recursive  | std::filesystem::copy_options::overwrite_existing
+        );
+
+    if(!loadTemplateConfig(pro)){
+      error << "Error while loading template config" << std::endl;
+      return false;
+    }
+
+    if(!runTemplatePrompts(pro)){
+      error << "Error while running template prompts" << std::endl;
+      return false;
+    }
+
     Environment env;
     sol::state lua;
     if(!renderTemplate(env, lua,  pro)){
       error << "Error while rendering template to tmp" << std::endl;
       return false;
     }
+
+    pro->save();
+
     return true;
   }
 

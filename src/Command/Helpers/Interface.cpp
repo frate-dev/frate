@@ -84,6 +84,9 @@ namespace Frate::Command {
 #else
     pro->project_path = std::filesystem::current_path();
 #endif
+    if(LoadProjectJson()){
+      this->project_present = true;
+    }
   }
   bool Interface::execute(){
 
@@ -235,8 +238,8 @@ namespace Frate::Command {
     for(Handler& handler : commands){
       for(std::string& alias : handler.aliases){
         if(alias == command){
-          if(handler.requires_project && !LoadProjectJson()){
-            Frate::error << "Error: Project not found and is required for this command" << ENDL;
+          if(!project_present && handler.requires_project){
+            std::cout << "Error: Project not found and command: " << command << " requires a project" << ENDL;
             return false;
           }
           found_alias = true;
@@ -289,7 +292,7 @@ namespace Frate::Command {
             Frate::error << "Command not implemented: " << command;
             return false;
           }
-          if(handler.requires_project && !LoadProjectJson()){
+          if(handler.requires_project && !project_present){
             Frate::error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
             return false;
           }
