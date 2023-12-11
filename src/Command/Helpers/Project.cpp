@@ -167,6 +167,7 @@ namespace Frate::Command {
       new_json["prompts"] = json::object();
       for(auto [key, value] : prompts){
         json prompt;
+        prompt["value"] = value.value;
         prompt["type"] = value.type;
         prompt["text"] = value.text;
         prompt["options"] = value.options;
