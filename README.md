@@ -62,6 +62,7 @@ sudo make install
 ```
 
 ### Why use Frate
+
 - Easy project creation and maintenance
 - Simple default configurations that are easy to extend
 - Get the functionality of utilities like cargo, npm , or yarn and use a language you're already familiar with
