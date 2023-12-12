@@ -6,15 +6,31 @@
 #include <memory>
 #include <sol/forward.hpp>
 #include <sol/variadic_args.hpp>
+#include <Frate/Constants.hpp>
 
 namespace Frate::LuaAPI {
   using std::filesystem::path;
-  std::vector<std::string> get_paths_recurse(std::string input_path) {
-
+  class FrateApi {
+    public:
+      FrateApi() = default;
+      ~FrateApi() = default;
+      static std::string get_os();
+      static std::vector<std::string> get_paths_recurse(std::string input_path);
+      static std::string get_path();
+      static std::string format(const std::string &str, sol::variadic_args var_args);
+  };
+  std::string FrateApi::get_os() {
+    return Frate::Constants::BUILD_OS;
+  }
+  std::string FrateApi::get_path() {
+      return std::filesystem::current_path().string()
+      #ifdef DEBUG
+        + "/build"
+      #endif
+      ; 
+  }
+  std::vector<std::string> FrateApi::get_paths_recurse(std::string input_path) {
     std::filesystem::path deepest_path = std::filesystem::current_path();
-
-
-    
     info << "Getting paths from " << input_path << std::endl;
     //check if path is absolute
     if (input_path[0] != '/') {
@@ -35,7 +51,7 @@ namespace Frate::LuaAPI {
 
     return paths;
   }
-  std::string format(const std::string &str, sol::variadic_args var_args) {
+  std::string FrateApi::format(const std::string &str, sol::variadic_args var_args) {
     std::vector<std::string> args;
     std::string result;
 
@@ -227,21 +243,19 @@ namespace Frate::LuaAPI {
         "getfloat", &Command::ProjectPrompt::get<float>
         );
 
+    lua.new_usertype<FrateApi>("frate",
+        "new", sol::no_constructor,
+        "get_os", &FrateApi::get_os,
+        "get_path", &FrateApi::get_path,
+        "get_paths_recurse", &FrateApi::get_paths_recurse,
+        "format", &FrateApi::format
+        );
+
 
     return true;
   }
 
   void registerAPI(sol::state &lua) {
-    lua.set_function("format", &format);
-    lua.set_function("get_paths_recurse", &get_paths_recurse);
-    //lua.set_function("get_project_path", &Command::Project::getPath);
-    lua.set_function("get_path", []() { 
-        return std::filesystem::current_path().string()
-#ifdef DEBUG
-        + "/build"
-#endif
-        ; 
-        });
     initLua(lua);
   }
 }
