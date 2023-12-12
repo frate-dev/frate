@@ -30,6 +30,7 @@ cmake >= 3
 ```
 
 ### Basic Usage
+
 ```bash
 frate new #optional -d for defaults
 # ... Prompts you for information about your project
