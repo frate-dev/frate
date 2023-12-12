@@ -6,64 +6,105 @@
 #include <memory>
 #include <sol/forward.hpp>
 #include <sol/variadic_args.hpp>
+#include <Frate/Constants.hpp>
 
 namespace Frate::LuaAPI {
-using std::filesystem::path;
-
-std::string format(const std::string &str, sol::variadic_args var_args) {
-  std::vector<std::string> args;
-  std::string result;
-
-  for (const auto &arg : var_args) {
-    if (arg.is<std::string>()) {
-      args.push_back(arg.as<std::string>());
-    } else if (arg.is<int>()) {
-      args.push_back(std::to_string(arg.as<int>()));
-    } else if (arg.is<bool>()) {
-      args.push_back(arg.as<bool>() ? "true" : "false");
-    } else if (arg.is<float>()) {
-      args.push_back(std::to_string(arg.as<float>()));
-    } else {
-      args.push_back("nil");
-    }
+  using std::filesystem::path;
+  class FrateApi {
+    public:
+      FrateApi() = default;
+      ~FrateApi() = default;
+      static std::string get_os();
+      static std::vector<std::string> get_paths_recurse(std::string input_path);
+      static std::string get_path();
+      static std::string format(const std::string &str, sol::variadic_args var_args);
+  };
+  std::string FrateApi::get_os() {
+    return Frate::Constants::BUILD_OS;
   }
+  std::string FrateApi::get_path() {
+      return std::filesystem::current_path().string()
+      #ifdef DEBUG
+        + "/build"
+      #endif
+      ; 
+  }
+  std::vector<std::string> FrateApi::get_paths_recurse(std::string input_path) {
+    std::filesystem::path deepest_path = std::filesystem::current_path();
+    info << "Getting paths from " << input_path << std::endl;
+    //check if path is absolute
+    if (input_path[0] != '/') {
+      error << "Frate Lua Api Error: Path in get_paths_recurse must be absolute" << std::endl;
+      exit(1);
+    }
 
-  for (size_t i = 0; i < str.size(); i++) {
-    if (str[i] == '{') {
-      if (str[i + 1] == '{') {
-        result += '{';
-        i++;
+    if(input_path.find(deepest_path.string()) == std::string::npos){
+      error << "Frate Lua Api Error: Path in get_paths_recurse must be in project directory" << std::endl;
+      exit(1);
+    }
+    
+
+    std::vector<std::string> paths;
+    for (const auto &p : std::filesystem::recursive_directory_iterator(input_path)) {
+      paths.push_back(p.path().string());
+    }
+
+    return paths;
+  }
+  std::string FrateApi::format(const std::string &str, sol::variadic_args var_args) {
+    std::vector<std::string> args;
+    std::string result;
+
+    for (const auto &arg : var_args) {
+      if (arg.is<std::string>()) {
+        args.push_back(arg.as<std::string>());
+      } else if (arg.is<int>()) {
+        args.push_back(std::to_string(arg.as<int>()));
+      } else if (arg.is<bool>()) {
+        args.push_back(arg.as<bool>() ? "true" : "false");
+      } else if (arg.is<float>()) {
+        args.push_back(std::to_string(arg.as<float>()));
       } else {
-        size_t j = i + 1;
-        while (j < str.size() && str[j] != '}') {
-          j++;
-        }
-        if (j == str.size()) {
-          throw std::runtime_error("Invalid format string");
-        }
-        std::string index = str.substr(i + 1, j - i - 1);
-        if (index == "0") {
-          result += args[0];
+        args.push_back("nil");
+      }
+    }
+
+    for (size_t i = 0; i < str.size(); i++) {
+      if (str[i] == '{') {
+        if (str[i + 1] == '{') {
+          result += '{';
+          i++;
         } else {
-          int idx = std::stoi(index);
-          if (idx < 1 || idx > args.size()) {
+          size_t j = i + 1;
+          while (j < str.size() && str[j] != '}') {
+            j++;
+          }
+          if (j == str.size()) {
             throw std::runtime_error("Invalid format string");
           }
-          result += args[idx - 1];
+          std::string index = str.substr(i + 1, j - i - 1);
+          if (index == "0") {
+            result += args[0];
+          } else {
+            int idx = std::stoi(index);
+            if (idx < 1 || idx > args.size()) {
+              throw std::runtime_error("Invalid format string");
+            }
+            result += args[idx - 1];
+          }
+          i = j;
         }
-        i = j;
+      } else {
+        result += str[i];
       }
-    } else {
-      result += str[i];
     }
-  }
 
-  return result;
+    return result;
   }
 
   bool initLua(sol::state &lua){
-    
-    lua.open_libraries(sol::lib::base, sol::lib::package);
+
+    lua.open_libraries(sol::lib::base, sol::lib::package,sol::lib::string);
 
     return true;
   }
@@ -82,7 +123,7 @@ std::string format(const std::string &str, sol::variadic_args var_args) {
         std::string full_script_path = p.string();
         //Yoinkin off the lua extension
         file_name = file_name.substr(0, file_name.find(".lua"));
-        
+
         std::string prefix;
 
         //Remove the script path
@@ -108,21 +149,21 @@ std::string format(const std::string &str, sol::variadic_args var_args) {
       env.add_callback( key, -1, [&lua, script_path](inja::Arguments input_args){
           sol::table args_table = lua.create_table();
           for(const nlohmann::json* arg: input_args){
-            if(arg->is_string()){
-              args_table.add(arg->get<std::string>());
-            }else if(arg->is_number()){
-              args_table.add(arg->get<int>());
-            }else if(arg->is_boolean()){
-              args_table.add(arg->get<bool>());
-            }else{
-              error << "Error while executing lua script" << std::endl;
-              exit(1);
-            }
+          if(arg->is_string()){
+          args_table.add(arg->get<std::string>());
+          }else if(arg->is_number()){
+          args_table.add(arg->get<int>());
+          }else if(arg->is_boolean()){
+          args_table.add(arg->get<bool>());
+          }else{
+          error << "Error while executing lua script" << std::endl;
+          exit(1);
+          }
           }
           lua.set("args", args_table); 
           if(!std::filesystem::exists(script_path)){
-            error << "Lua script not found at path: " << script_path << std::endl;
-            exit(1);
+          error << "Lua script not found at path: " << script_path << std::endl;
+          exit(1);
           }
           auto result = lua.script_file(script_path);
           if(result.valid()){
@@ -159,14 +200,15 @@ std::string format(const std::string &str, sol::variadic_args var_args) {
         "forks", &Command::Package::forks,
         "open_issues", &Command::Package::open_issues,
         "watchers", &Command::Package::watchers
-    ); 
+        ); 
 
     lua.new_usertype<Command::Mode>("Mode",
         "new", sol::no_constructor,
         "name", &Command::Mode::name,
         "flags", &Command::Mode::flags,
         "dependencies", &Command::Mode::dependencies
-    );
+        );
+
 
     lua.new_usertype<Command::Project>("Project"
         "new", sol::no_constructor,
@@ -190,7 +232,7 @@ std::string format(const std::string &str, sol::variadic_args var_args) {
         "project_type", &Command::Project::project_type,
         "keywords", &Command::Project::keywords,
         "prompts", &Command::Project::prompts
-    );
+          );
 
     lua.new_usertype<Command::ProjectPrompt>("ProjectPrompt",
         "value", &Command::ProjectPrompt::value,
@@ -199,14 +241,21 @@ std::string format(const std::string &str, sol::variadic_args var_args) {
         "getint", &Command::ProjectPrompt::get<int>,
         "getbool", &Command::ProjectPrompt::get<bool>,
         "getfloat", &Command::ProjectPrompt::get<float>
-    );
+        );
 
-    
+    lua.new_usertype<FrateApi>("frate",
+        "new", sol::no_constructor,
+        "get_os", &FrateApi::get_os,
+        "get_path", &FrateApi::get_path,
+        "get_paths_recurse", &FrateApi::get_paths_recurse,
+        "format", &FrateApi::format
+        );
+
+
     return true;
   }
 
   void registerAPI(sol::state &lua) {
-    lua.set_function("format", &format);
     initLua(lua);
   }
 }
