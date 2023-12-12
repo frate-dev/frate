@@ -53,6 +53,7 @@ frate watch #watches the project for changes and automatically builds and runs
 
 
 ### Installation
+
 ```bash
 git clone https://github.com/frate-dev/frate.git
 cd frate
