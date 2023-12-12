@@ -149,6 +149,7 @@ namespace Frate::Command {
       return project_path.string();
     };
     std::unordered_map<std::string,ProjectPrompt> prompts{};
+    std::unordered_map<std::string,json> variables{};
   } Project;
 
 

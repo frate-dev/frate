@@ -1,7 +1,6 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command.hpp>
 #include <Frate/Generators.hpp>
-#include <memory>
 #include <fstream>
 
 
@@ -22,8 +21,12 @@ namespace Frate::Command {
 
     info << "Writing to file: " << this->project_path / file_name << std::endl;
 
-
-    file.open(this->project_path / file_name);
+    try{
+      file.open(this->project_path / file_name);
+    }catch(std::exception &e){
+      Utils::debug(e.what());
+      return false;
+    }
     file << new_json.dump(2);
 
     //Generators::CMakeList::createCMakeLists(std::make_shared<Project>(*this));
@@ -86,6 +89,14 @@ namespace Frate::Command {
     modes = temp_modes;
     flags = j["flags"];
     toolchains = j["toolchains"];
+    if(j.contains("variables")){
+      for(auto [key, value] : j["variables"].items()){
+        variables[key] = value;
+      }
+    }else{
+      variables = json::object();
+    }
+
     if(!j.contains("prompts")){
       prompts = {};
     }else{
@@ -111,7 +122,6 @@ namespace Frate::Command {
         }else{
           prompt.default_value = value["default_value"];
         }
-
         prompts[key] = prompt;
       }
     }
@@ -175,6 +185,9 @@ namespace Frate::Command {
         prompt["options"] = value.options;
         prompt["default_value"] = value.default_value;
         new_json["prompts"][key] = prompt;
+      }
+      for(auto [key, value] : variables){
+        new_json["variables"][key] = value;
       }
 
 

@@ -10,6 +10,8 @@
 
 namespace Frate::LuaAPI {
   using std::filesystem::path;
+  using nlohmann::json;
+  using Command::Project;
 
   class FrateApi {
     public:
@@ -21,13 +23,14 @@ namespace Frate::LuaAPI {
       static std::string format(const std::string &str, sol::variadic_args var_args);
   };
 
-  sol::table to_table(const nlohmann::json& json);
+  sol::table to_table(nlohmann::json json, sol::state &lua);
   nlohmann::json from_table(sol::table in_table);
 
   /*
    * Registers the project scripts with the project that is specifed
    */
-  bool registerProjectScripts(inja::Environment &env, sol::state &lua, path script_path);
+  bool registerProjectScripts(inja::Environment &env, sol::state &lua,
+      path script_path, std::shared_ptr<Project> project);
   /*
    * Registers the project with the user types for the project struct
    */

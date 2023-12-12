@@ -130,7 +130,7 @@ json getTemplateIndex() {
       return false;
     }
 
-    if(!LuaAPI::registerProjectScripts(env, lua,pro->project_path / "template/scripts")){
+    if(!LuaAPI::registerProjectScripts(env, lua,pro->project_path / "template/scripts", pro)){
       error << "Error while registering project scripts" << std::endl;
       return false;
     }
@@ -227,7 +227,7 @@ json getTemplateIndex() {
       return false;
     }
     
-    if(!LuaAPI::registerProjectScripts(env, lua,pro->project_path / "template/scripts")){
+    if(!LuaAPI::registerProjectScripts(env, lua,pro->project_path / "template/scripts",pro)){
       error << "Error while registering project scripts" << std::endl;
       return false;
     } 

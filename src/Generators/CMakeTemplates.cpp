@@ -42,7 +42,7 @@ namespace Frate::Generators::CMakeList {
       return false;
     }
 
-    if(!LuaAPI::registerProjectScripts(env, lua,pro->project_path / "templates/scripts")){
+    if(!LuaAPI::registerProjectScripts(env, lua,pro->project_path / "templates/scripts",pro)){
       Utils::debug("Error while registering project scripts");
       return false;
     }
