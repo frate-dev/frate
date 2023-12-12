@@ -59,7 +59,7 @@ namespace Frate::Command::List{
       },
       Handler{
         .aliases = 
-        {"libraries","l"},
+        {"libraries", "lib", "l"},
         .docs = "List flags",
         .callback = [inter]() {
           return Library::list(inter);

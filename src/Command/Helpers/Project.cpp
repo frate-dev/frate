@@ -49,6 +49,7 @@ namespace Frate::Command {
     project_description = j["project_description"];
     default_mode = j["default_mode"];
     keywords = j["keywords"];
+    libs = j["libs"];
     for (auto &dep : j["dependencies"]) {
       Package d;
       d.name = dep["name"].is_null() ? "" : dep["name"].is_null() ? "" : dep["name"];
@@ -165,6 +166,7 @@ namespace Frate::Command {
       new_json["project_description"] = project_description;
       new_json["toolchains"] = toolchains;
       new_json["prompts"] = json::object();
+      new_json["libs"] = libs;
       for(auto [key, value] : prompts){
         json prompt;
         prompt["value"] = value.value;

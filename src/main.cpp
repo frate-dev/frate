@@ -12,6 +12,7 @@ namespace Frate {
   Utils::Info info = Utils::Info();
   Utils::Warning warning = Utils::Warning();
 }
+
 int main(int argc, char **argv) {
   // LUCAS MAKE SURE YOU INITIALIZE YOUR F@*KING STRUCT YOU TW@T
   //std::shared_ptr<Command::Context> ctx = std::make_shared<Command::Context>();

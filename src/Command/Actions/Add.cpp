@@ -63,15 +63,12 @@ namespace Frate::Command::Add {
         },
         Handler{
           .aliases = {"lib","l"},
-          .positional_args = {"library-name"},
+          .positional_args = {"lib"},
           .docs = "Add a library to link to your project",
           .callback = [inter]() {
-            //TODO implement library
             Library::options(inter);
-            // Libraries::add(inter);
             return Library::add(inter);
           },
-          .implemented = false,
           .requires_project = true,
         },
         Handler{
