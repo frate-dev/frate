@@ -56,8 +56,8 @@ namespace Frate::Command::Remove {
         },
       },
       {
-        .aliases = {"libraries", "l"},
-        .positional_args = {"mode"},
+        .aliases = {"libraries", "l", "lib"},
+        .positional_args = {"lib"},
         .docs = "Remove a mode from the project",
         .callback = [inter]() {
           Library::options(inter);
