@@ -20,6 +20,7 @@
 - vscode
 
 ## Build the binary from source
+
 ### Prerequisites
 
 
