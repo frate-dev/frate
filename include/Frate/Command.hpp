@@ -145,6 +145,9 @@ namespace Frate::Command {
     nlohmann::json toJson();
     bool save();
     void checkKeys(json j);
+    std::string getPath(){
+      return project_path.string();
+    };
     std::unordered_map<std::string,ProjectPrompt> prompts{};
   } Project;
 
