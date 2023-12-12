@@ -70,6 +70,7 @@ sudo make install
 
 
 ### Your friend in the world of C/C++
+
 frate is a command line utility used to expedite building modern c/c++ applications.
 
 - [x] Easy project initialization
