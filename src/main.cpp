@@ -7,6 +7,7 @@
   #include <Frate/Test/Test.hpp>
 #endif
 
+
 namespace Frate {
   Utils::Error error = Utils::Error();
   Utils::Info info = Utils::Info();

@@ -98,7 +98,10 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
         "get_os", &FrateApi::get_os,
         "get_path", &FrateApi::get_path,
         "get_paths_recurse", &FrateApi::get_paths_recurse,
-        "format", &FrateApi::format
+        "format", &FrateApi::format,
+        "print_table", &FrateApi::print_table,
+        "fetch_text", &FrateApi::fetch_text,
+        "fetch_json", &FrateApi::fetch_json
         );
   }
 }

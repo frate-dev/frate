@@ -2,6 +2,7 @@
 #include "Frate/Command.hpp"
 #include "inja.hpp"
 #include <nlohmann/json.hpp>
+#include <sol/forward.hpp>
 #include <sol/sol.hpp>
 #include <filesystem>
 
@@ -20,10 +21,18 @@ namespace Frate::LuaAPI {
       static std::string get_os();
       static std::vector<std::string> get_paths_recurse(std::string input_path);
       static std::string get_path();
-      static std::string format(const std::string &str, sol::variadic_args var_args);
+
+      static std::string format(
+          const std::string &str,
+          sol::table in_table,
+          sol::this_state s);
+      
+      static void print_table(sol::table in_table);
+      static std::string fetch_text(const std::string &url);
+      static sol::table fetch_json(const std::string &url, sol::this_state lua);
   };
 
-  sol::table to_table(nlohmann::json json, sol::state &lua);
+  sol::table to_table(nlohmann::json json, sol::state_view &lua);
   nlohmann::json from_table(sol::table in_table);
 
   /*

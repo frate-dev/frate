@@ -2,7 +2,7 @@
 #include <sol/types.hpp>
 
 namespace Frate::LuaAPI {
-  sol::table to_table(nlohmann::json in_json, sol::state &lua){
+  sol::table to_table(nlohmann::json in_json, sol::state_view &lua){
     sol::table out_table = lua.create_table();
     if(in_json.is_null()){
       return out_table;
