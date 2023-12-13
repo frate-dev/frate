@@ -174,6 +174,7 @@ namespace Frate::Command {
 
   class Interface{
     public:
+      Interface(int argc, char **argv);
       void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
       void getHelpString(Handler &handler);
       bool runCommand(std::string,std::vector<Handler>&);
@@ -189,11 +190,10 @@ namespace Frate::Command {
       char** argv;
       int argc;
       bool confirm_all{false};
-      Interface(int argc, char **argv);
-      ~Interface();
       bool InitHeader();
       bool CreateCMakelists();
       bool LoadProjectJson();
+      ~Interface();
   };
 
   namespace OptionsInit{
