@@ -14,6 +14,10 @@ namespace Frate::Command::Packages {
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
       ("m,mode", "make changes to compile mode", cxxopts::value<std::string>())
+      //TODO: make git version, and stuff like that work to make packages more relaxed
+      ("g,git", "git repo to clone", cxxopts::value<std::string>())
+      ("v,version", "version for package", cxxopts::value<std::string>())
+      ("t,target_link", "how to link to package", cxxopts::value<std::string>())
       ("e,exact", "Exact package", cxxopts::value<bool>()->default_value("false"))
       ("l,latest", "Latest package", cxxopts::value<bool>()->default_value("false"))
       ("args", "Arguments to pass to subcommand", cxxopts::value<std::vector<std::string>>());

@@ -25,6 +25,9 @@ namespace Frate::Command::Packages {
     bool latest = false;
     std::string mode = "";
     std::string query = "";
+    std::string version = ""; 
+    std::string git = "";
+    std::string target_link = "";
     //TODO: Add support for multiple dependencies
     if (inter->args->count("args") == 0) {
       Frate::error << "No packages specified" << std::endl;
@@ -33,21 +36,25 @@ namespace Frate::Command::Packages {
     if (inter->args->count("mode") != 0){
       mode = inter->args->operator[]("mode").as<std::string>();
     }
+    if (inter->args->count("git") != 0) {
+      git = inter->args->operator[]("args").as<std::string>();
+    }
+    if (inter->args->count("version") != 0) {
+      version = inter->args->operator[]("version").as<std::string>();
+    }
+    if (inter->args->count("target_link") != 0) {
+      target_link = inter->args->operator[]("target_link").as<std::string>();
+    }
+
     if(inter->args->operator[]("latest").as<bool>()){
       latest = true;
     }
 
-
-
-
-
-
     std::vector<std::string> package_names = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string package_name : package_names) { 
       info <<  "Searching for " << package_name << std::endl;
+      
       auto [exact, exact_package] = getExact(package_name);
-  
-
       Package chosen_package;
 
       if(!exact){
@@ -60,14 +67,14 @@ namespace Frate::Command::Packages {
       Frate::info << "Installing " << chosen_package.name << std::endl;
 
 
-      std::string version = ""; 
       std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
       std::vector<std::string> versions = chosen_package.versions;
 
       if(!latest){
         version = promptForVersion(chosen_package);
         chosen_package.selected_version = version;
-      }else{
+      }
+      else{
         if(chosen_package.versions.size() == 0){
           Frate::error << "No versions found" << std::endl;
           return false;
@@ -88,19 +95,8 @@ namespace Frate::Command::Packages {
         }
       }
       inter->pro->dependencies.push_back(chosen_package);
-      // if(!inter->pro->save()){
-      //   Frate::error << "Failed to write frate-project.json" << std::endl;
-      //   return false;
-      // }
-      // if(!Generators::Project::refresh(inter->pro)){
-      //   Frate::error << "Failed to refresh project" << std::endl;
-      //   return false;
-      // }
     }
 
     return true;
   }
-
-
-
 }
