@@ -86,7 +86,8 @@ json getTemplateIndex() {
     }
     git_repository_free(template_repo);
 
-    int callbacks_clone_status= git_clone(&callbacks_repo, git_url.c_str(), (project_path / "template/frate-callbacks").c_str(), NULL);
+    Frate::info << "Cloning " << git_url << " into " << (project_path / "template").c_str() << std::endl;
+    int callbacks_clone_status= git_clone(&callbacks_repo, "https://github.com/frate-templates/frate-callbacks.git", (project_path / "template/frate-callbacks").c_str(), NULL);
     if(callbacks_clone_status != 0){
       Frate::error << "Error while cloning repository" << std::endl;
       return false;
