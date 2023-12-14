@@ -3,7 +3,7 @@
 
 namespace Frate::Command::Help {
 
-  bool options(Interface* inter);
-  bool run(Interface* inter);
-  std::vector<Handler> handlers(Interface* inter);
+  bool options(std::shared_ptr<Interface> inter);
+  bool run(std::shared_ptr<Interface> inter);
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter);
 }

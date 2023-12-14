@@ -35,13 +35,16 @@ int main(int argc, char **argv) {
   #else
 
     //TODO: Get some path checking in this bitch
-    using namespace Frate;
-    Command::Interface* inter = new Command::Interface(argc,argv);
-    if(inter->execute()){
+    using namespace Frate::Command;
+
+    Interface *inter_ptr = new Interface(argc,argv);
+    auto inter = std::make_shared<Interface>(*inter_ptr);
+    if(execute(inter)){
       return 0;
     }else{
       return -1;
     }
+
 
   #endif
 }

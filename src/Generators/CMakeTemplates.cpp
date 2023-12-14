@@ -24,9 +24,9 @@ namespace Frate::Generators::CMakeList {
     std::string CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
     std::ofstream CPMFile;
     try{
-      if(!std::filesystem::exists(pro->project_path / "cmake"))
-        std::filesystem::create_directories(pro->project_path / "cmake");
-      CPMFile.open(pro->project_path / "cmake/CPM.cmake");
+      if(!std::filesystem::exists(pro->path / "cmake"))
+        std::filesystem::create_directories(pro->path / "cmake");
+      CPMFile.open(pro->path / "cmake/CPM.cmake");
     }catch(...){
       Utils::debug("Error while opening file: CPM.cmake");
       return false;
@@ -42,7 +42,7 @@ namespace Frate::Generators::CMakeList {
       return false;
     }
 
-    if(!LuaAPI::registerProjectScripts(env, lua,pro->project_path / "templates/scripts",pro)){
+    if(!LuaAPI::registerProjectScripts(env, lua,pro->path / "templates/scripts",pro)){
       Utils::debug("Error while registering project scripts");
       return false;
     }
@@ -51,7 +51,7 @@ namespace Frate::Generators::CMakeList {
 
     std::string CMakeListsExecutable;
     try{
-      CMakeListsExecutable = env.render_file(pro->project_path /"templates" / "CMakeLists.txt.inja", pro->toJson());
+      CMakeListsExecutable = env.render_file(pro->path /"templates" / "CMakeLists.txt.inja", pro->toJson());
     }catch(...){
       Utils::debug("Error while rendering CMakeLists.txt");
       return false;
@@ -61,15 +61,15 @@ namespace Frate::Generators::CMakeList {
     std::ofstream file;
     std::string file_name = "CMakeLists.txt";
     
-    if(std::filesystem::exists(pro->project_path / file_name)){
+    if(std::filesystem::exists(pro->path / file_name)){
 
-      std::filesystem::remove(pro->project_path / file_name);
+      std::filesystem::remove(pro->path / file_name);
 
     }
 
 
     try{
-      file.open(pro->project_path / file_name);
+      file.open(pro->path / file_name);
     }catch(...){
       Utils::debug("Error while opening file: " + file_name);
       return false;

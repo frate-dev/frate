@@ -4,7 +4,7 @@ namespace Frate::Command::FTP {
   using namespace std::filesystem;
   using Utils::CLI::Prompt;
   using namespace Utils::CLI::Ansi;
-  bool run(Interface* inter) {
+  bool run(std::shared_ptr<Interface> inter) {
 
     Prompt *prompt = new Prompt(
         "Are you sure you would like to delete the entire project?"
@@ -16,7 +16,7 @@ namespace Frate::Command::FTP {
       Frate::error << "Aborting..." << std::endl;
       return false;
     }
-    for (const directory_entry &p : directory_iterator(inter->pro->project_path)  
+    for (const directory_entry &p : directory_iterator(inter->pro->path)  
           | std::views::filter(
             [](const directory_entry &p) { return p.path().filename() != "frate"; })
         ){

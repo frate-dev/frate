@@ -109,15 +109,17 @@ namespace Frate::Command {
 
   //TODO: MAKE MOST OF THESE OPTIONAL
   typedef struct Project_s {
-    std::string project_name;
-    std::string project_description;
-    std::string project_type{""};
+    std::string name;
+    std::string description;
+    std::string type{""};
     RemoteServer build_server;
     /*
      * This is the project path, it will be set to the current working directory and in debug mode if willl set the path to ./build/
      */
-    std::filesystem::path project_path;
+    std::filesystem::path path;
     std::string git{"null"};
+    std::string homepage{"null"};
+    std::string bugs{"null"};
     std::string lang{"cpp"};
     std::string cmake_version{"3.10"};
     std::string lang_version{"20"};
@@ -137,7 +139,7 @@ namespace Frate::Command {
     std::vector<Package> dependencies;
     std::string build_dir{"build"};
     Package testing_lib;
-    std::string project_version{"0.0.1"};
+    std::string version{"0.0.1"};
     std::vector<std::string> flags; 
     std::vector<std::string> toolchains {};
     std::vector<std::string> libs{};
@@ -146,7 +148,7 @@ namespace Frate::Command {
     bool save();
     void checkKeys(json j);
     std::string getPath(){
-      return project_path.string();
+      return path.string();
     };
     std::unordered_map<std::string,ProjectPrompt> prompts{};
     std::unordered_map<std::string,json> variables{};
@@ -154,6 +156,7 @@ namespace Frate::Command {
 
 
   typedef struct Handler_s Handler;
+  class Interface;
 
   typedef struct Handler_s {
     std::vector<std::string> aliases;
@@ -161,8 +164,8 @@ namespace Frate::Command {
     std::vector<Handler> subcommands{};
     std::vector<std::string> positional_args{};
     std::string docs{""};
-    std::function<bool()> callback{
-      []() -> bool {
+    std::function<bool(std::shared_ptr<Interface> )> callback{
+      [](std::shared_ptr<Interface> inter) -> bool {
         std::cout << "This command has not been implemented yet" << std::endl;
         return false;
       }
@@ -172,7 +175,7 @@ namespace Frate::Command {
     bool unlimited_args{false};
   } Handler;
 
-  class Interface{
+  class Interface : public std::enable_shared_from_this<Interface>{
     public:
       Interface(int argc, char **argv);
       void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
@@ -183,7 +186,7 @@ namespace Frate::Command {
       bool verbose{false};
       std::vector<Handler> commands{};
 
-      bool execute();
+      //bool execute();
       bool parse();
       std::shared_ptr<cxxopts::Options> options;
       std::shared_ptr<cxxopts::ParseResult> args;
@@ -196,8 +199,11 @@ namespace Frate::Command {
       ~Interface();
   };
 
+  bool execute(std::shared_ptr<Interface> inter);
+
+
   namespace OptionsInit{
-      bool Main(Interface*);
+      bool Main(std::shared_ptr<Interface> inter);
   };
 
   std::string downloadIndex();

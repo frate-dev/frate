@@ -2,6 +2,6 @@
 
 
 namespace Frate::Command::Set{
-  bool options(Interface* inter);
-  bool set(Interface* inter);
+  bool options(std::shared_ptr<Interface> inter);
+  bool set(std::shared_ptr<Interface> inter);
 }

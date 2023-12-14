@@ -10,7 +10,7 @@
 #include <sys/inotify.h>
 
 namespace Frate::Command::Watch {
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command"});
     inter->options->add_options()
@@ -108,7 +108,7 @@ namespace Frate::Command::Watch {
       close(epoll_fd);
     }
 
-    bool run(Interface* inter) {
+    bool run(std::shared_ptr<Interface> inter) {
       options(inter);
       // This is where you call the watcher function and provide a lambda for the
       // callback
@@ -125,7 +125,7 @@ namespace Frate::Command::Watch {
 #ifdef DEBUG
           // TODO: please use project path
           std::string command = "cmake ./build/ && ./build/make && ./build/" +
-          inter->pro->build_dir + "/" + inter->pro->project_name;
+          inter->pro->build_dir + "/" + inter->pro->name;
           if (inter->args->count("args") != 0) {
           std::vector<std::string> args_vec =
           inter->args->operator[]("args").as<std::vector<std::string>>();
@@ -168,7 +168,7 @@ namespace Frate::Command::Watch {
               std::to_string(inter->pro->build_server.port) + " " +
               inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
               "  'cd /tmp/frate && cmake . && make && ./build/" +
-              inter->pro->project_name + "'";
+              inter->pro->name + "'";
           }
 
 #else

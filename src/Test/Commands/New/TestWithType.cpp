@@ -8,7 +8,7 @@ bool Tests::Command::testNewWithType(std::string type){
 
   if(failed) return false;
 
-  if(inter->pro->project_type != type){
+  if(inter->pro->type != type){
     
     error << "Failed to create new project : project type: " 
       << type << " not set" 

@@ -3,7 +3,7 @@
 
 
 namespace Frate::Command::Keywords{
-  bool add(Interface* inter){
+  bool add(std::shared_ptr<Interface> inter){
     options(inter);
     if(inter->args->count("keywords")< 1){
       std::cout << "No keyword specified" << std::endl;

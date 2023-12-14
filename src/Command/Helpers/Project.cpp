@@ -9,20 +9,20 @@ namespace Frate::Command {
   bool Project::save(){
     std::ofstream file;
     std::string file_name = "frate-project.json";
-    if(!std::filesystem::exists(this->project_path)){
-      std::filesystem::create_directory(this->project_path);
+    if(!std::filesystem::exists(this->path)){
+      std::filesystem::create_directory(this->path);
     }
 
-    if(!std::filesystem::exists(this->project_path / file_name)){
+    if(!std::filesystem::exists(this->path / file_name)){
       std::cout << "Creating new project file" << std::endl;
     }
 
     json new_json = this->toJson();
 
-    info << "Writing to file: " << this->project_path / file_name << std::endl;
+    info << "Writing to file: " << this->path / file_name << std::endl;
 
     try{
-      file.open(this->project_path / file_name);
+      file.open(this->path / file_name);
     }catch(std::exception &e){
       Utils::debug(e.what());
       return false;
@@ -37,10 +37,10 @@ namespace Frate::Command {
    */
   void Project::fromJson(json j){
     checkKeys(j);
-    project_name = j["project_name"];
+    name = j["project_name"];
     cmake_version = j["cmake_version"];
-    project_version = j["project_version"];
-    project_type = j["project_type"];
+    version = j["project_version"];
+    type = j["project_type"];
     lang = j["lang"];
     lang_version = j["lang_version"];
     compiler = j["compiler"];
@@ -48,8 +48,8 @@ namespace Frate::Command {
     build_dir = j["build_dir"];
     include_dir = j["include_dir"];
     authors = j["authors"];
-    project_type = j["project_type"];
-    project_description = j["project_description"];
+    type = j["project_type"];
+    description = j["project_description"];
     default_mode = j["default_mode"];
     keywords = j["keywords"];
     libs = j["libs"];
@@ -157,10 +157,10 @@ namespace Frate::Command {
         mode_json["dependencies"] = mode_deps;
         modes_json.push_back(mode_json);
       }
-      new_json["project_name"] = project_name;
-      new_json["project_type"] = project_type;
+      new_json["project_name"] = name;
+      new_json["project_type"] = type;
       new_json["cmake_version"] = cmake_version;
-      new_json["project_version"] = project_version;
+      new_json["project_version"] = version;
       new_json["lang"] = lang;
       new_json["lang_version"] = lang_version;
       new_json["compiler"] = compiler;
@@ -172,8 +172,8 @@ namespace Frate::Command {
       new_json["flags"] = flags;
       new_json["keywords"] = keywords;
       new_json["authors"] = authors;
-      new_json["project_type"] = project_type;
-      new_json["project_description"] = project_description;
+      new_json["project_type"] = type;
+      new_json["project_description"] = description;
       new_json["toolchains"] = toolchains;
       new_json["prompts"] = json::object();
       new_json["libs"] = libs;
@@ -230,15 +230,15 @@ namespace Frate::Command {
     std::fstream file;
     std::string file_name = "frate-project.json";
 
-    Frate::info << "Loading: " << (pro->project_path / file_name) << std::endl;
+    Frate::info << "Loading: " << (pro->path / file_name) << std::endl;
 
-    if(!std::filesystem::exists(pro->project_path / file_name)){
+    if(!std::filesystem::exists(pro->path / file_name)){
       return false;
     }
 
 
     try{
-      file.open(pro->project_path / file_name);
+      file.open(pro->path / file_name);
     }catch(std::exception &e){
       Utils::debug(e.what());
       return false;

@@ -7,7 +7,7 @@
 #include <Frate/Command/Author.hpp>
 namespace Frate::Command::Remove {
 
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
     inter->options->allow_unrecognised_options().add_options()
@@ -18,12 +18,12 @@ namespace Frate::Command::Remove {
     return inter->parse();
   }
  
-  bool removeFlag(Interface *inter) {
+  bool removeFlag(std::shared_ptr<Interface> inter) {
     if (inter->args->count("args") == 0) {
     }
     return true;
   }
-  std::vector<Handler> handlers(Interface* inter){
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter){
     return {
       {
         .aliases = {"packages","p","package"},
@@ -76,7 +76,7 @@ namespace Frate::Command::Remove {
       }
     };
   }
-  bool run(Interface* inter){ 
+  bool run(std::shared_ptr<Interface> inter){ 
     options(inter);
     std::vector<Handler> removeHandlers = handlers(inter);
     std::string subcommand;

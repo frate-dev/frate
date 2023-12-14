@@ -23,10 +23,10 @@ namespace Frate::Generators{
     bool refresh(std::shared_ptr<Command::Project> pro);
   }
   namespace GitIgnore{
-    bool create(Command::Interface* inter);
+    bool create(std::shared_ptr<Command::Interface> inter);
   }
   namespace Readme{
-    bool create(Command::Interface* inter);
+    bool create(std::shared_ptr<Command::Interface> inter);
   }
   namespace Toolchain{
     std::string generateToolchain(std::string toolchain);

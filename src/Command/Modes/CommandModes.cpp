@@ -18,7 +18,7 @@ namespace Frate:: Command::Modes{
     mode.name = mode_name;
     return true;
   }
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
     inter->options->add_options()
@@ -28,7 +28,7 @@ namespace Frate:: Command::Modes{
     return inter->parse();
   }
 
-  bool add(Interface* interface){
+  bool add(std::shared_ptr<Interface> interface){
     std::cout << "Adding mode" << std::endl; 
     Mode mode;
     mode.name = interface->args->operator[]("args").as<std::string>();
@@ -41,7 +41,7 @@ namespace Frate:: Command::Modes{
 
     return true;
   }
-  bool remove(Interface* interface){
+  bool remove(std::shared_ptr<Interface> interface){
     std::string mode_name = interface->args->operator[]("args").as<std::string>(); 
     std::cout << "Removing mode: " << mode_name << std::endl;
     std::erase_if(interface->pro->modes, [&mode_name](Mode &mode){
@@ -51,7 +51,7 @@ namespace Frate:: Command::Modes{
 
     return true;
   }
-  bool list(Interface* interface){
+  bool list(std::shared_ptr<Interface> interface){
     for(auto mode : interface->pro->modes){
       std::cout << mode.name << std::endl;
     }

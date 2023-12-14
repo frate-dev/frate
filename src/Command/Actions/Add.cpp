@@ -9,7 +9,7 @@
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Utils/General.hpp>
 namespace Frate::Command::Add {
-  bool options(Interface* inter){
+  bool options(std::shared_ptr<Interface> inter){
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->allow_unrecognised_options().add_options()
@@ -17,7 +17,7 @@ namespace Frate::Command::Add {
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage"); inter->options->help();
     return inter->parse();
   }
-  bool run(Interface* inter){
+  bool run(std::shared_ptr<Interface> inter){
     options(inter);
     std::vector<Handler> addHandlers = handlers(inter);
     std::string subcommand;
@@ -37,7 +37,7 @@ namespace Frate::Command::Add {
 
     return true;
   }
-  std::vector<Handler> handlers(Interface* inter){
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter){
     return {
       Handler{
         .aliases = {"packages","p","package"},

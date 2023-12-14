@@ -171,7 +171,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
   CPMAddPackage(
     "gh:jeremy-rifkin/cpptrace@0.2.1"
   )
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g -O0 -Wextra -Wpedantic -Wall -Wredundant-decls -Wunused -Wunused-parameter -Wunused-function -Wunused-macros")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g -O0 -Wextra -Wpedantic -Wall -Wredundant-decls -Wunused -Wunused-parameter -Wunused-function -Wunused-macros -fsanitize=address -fno-omit-frame-pointer")
   target_link_libraries(${PROJECT_NAME} PRIVATE cpptrace)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
   message("Test mode")

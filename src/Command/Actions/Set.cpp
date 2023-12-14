@@ -6,7 +6,7 @@
 #include <Frate/Command/RemoteServers.hpp>
 namespace Frate::Command::Set {
 
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
 
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
@@ -16,7 +16,7 @@ namespace Frate::Command::Set {
       ("args", "Arguments to pass to subcommand", cxxopts::value<std::string>());
     return inter->parse();
   }
-  std::vector<Handler> handlers(Interface *inter) {
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter) {
     return {
       Handler{
         .aliases = {"license","lc"},
@@ -58,7 +58,7 @@ namespace Frate::Command::Set {
       }
     };
   }
-  bool run(Interface *inter) {
+  bool run(std::shared_ptr<Interface> inter) {
     options(inter);
     std::vector<Handler> setHandlers = handlers(inter);
     std::string subcommand;

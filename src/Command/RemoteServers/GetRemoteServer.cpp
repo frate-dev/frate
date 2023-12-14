@@ -3,7 +3,7 @@
 
 namespace Frate::Command::RemoteServers {
 
-  bool  get(Interface* inter){
+  bool  get(std::shared_ptr<Interface> inter){
     Utils::TableFormat table;
     table.width = 20;
     table << "Name" << "Address" << "Port" << "Username" << "AuthMethod" << ENDL;

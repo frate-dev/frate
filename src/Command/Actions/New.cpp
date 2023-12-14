@@ -14,7 +14,7 @@ namespace Frate::Command::New {
 using Utils::CLI::Prompt;
 using Utils::CLI::Ansi::RED;
 
-bool options(Interface* inter) {
+bool options(std::shared_ptr<Interface> inter) {
   inter->InitHeader();
   inter->options->parse_positional({"command", "subcommand"});
   inter->options->add_options()
@@ -30,17 +30,17 @@ bool options(Interface* inter) {
 
 
 
-  void gitInit(Interface *inter){
+  void gitInit(std::shared_ptr<Interface> inter){
     Generators::GitIgnore::create(inter);
     //TODO: make this work on windows
     git_repository *repo = nullptr;
-    git_repository_init(&repo, inter->pro->project_path.string().c_str(),0);
+    git_repository_init(&repo, inter->pro->path.string().c_str(),0);
     (void)inter;
   }
 
 
 
-  bool createProjectWizard(Interface *inter){
+  bool createProjectWizard(std::shared_ptr<Interface> inter){
     if(!Generators::Project::create(inter->pro)){
       return false;
     } 
@@ -57,7 +57,7 @@ bool options(Interface* inter) {
     return true;
   }
 
-  bool run(Interface* inter) {
+  bool run(std::shared_ptr<Interface> inter) {
     options(inter);
 #ifdef RELEASE
     if(!inter->args->count("subcommand")){
@@ -89,7 +89,7 @@ bool options(Interface* inter) {
       project_name = inter->args->operator[]("name").as<std::string>();
     }
     if(inter->args->operator[]("type").count() > 0){
-      inter->pro->project_type = inter->args->operator[]("type").as<std::string>();
+      inter->pro->type = inter->args->operator[]("type").as<std::string>();
     }
     if(inter->args->operator[]("language").count() > 0){
       language = inter->args->operator[]("language").as<std::string>();
@@ -105,7 +105,7 @@ bool options(Interface* inter) {
 
 
 
-    inter->pro->project_name = project_name;
+    inter->pro->name = project_name;
     inter->pro->lang = language;
 
 
@@ -113,8 +113,8 @@ bool options(Interface* inter) {
     if(defaults){
       Frate::info << "Using defaults" << ENDL;
       Frate::info << "Creating project" << ENDL;
-      if(inter->pro->project_type.empty()){
-        inter->pro->project_type = "executable";
+      if(inter->pro->type.empty()){
+        inter->pro->type = "executable";
       }
       if(!createProjectWizard(inter)){
         return false;
@@ -122,7 +122,7 @@ bool options(Interface* inter) {
     }else{
       Frate::info << "Creating project" << ENDL;
       Frate::info << "Creating frate-project.json" << ENDL;
-      inter->pro->project_type = "";
+      inter->pro->type = "";
       Wizard::Project(inter->pro);
       if(!createProjectWizard(inter)){
         return false;

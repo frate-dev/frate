@@ -64,7 +64,7 @@ namespace Frate::Command::Packages {
     return {false, Package()};
   }
 
-  bool search(Interface* inter){
+  bool search(std::shared_ptr<Interface> inter){
     std::string query;
     if(inter->args->operator[]("query").count() == 0){
       std::cout << "No query provided" << ENDL;

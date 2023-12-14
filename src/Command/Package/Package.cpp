@@ -7,7 +7,7 @@
 namespace Frate::Command::Packages {
   using namespace Utils::CLI;
   
-  bool options(Interface* inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
     inter->options->add_options()

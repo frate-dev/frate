@@ -10,7 +10,7 @@ namespace Frate::Command::Packages {
   using Generators::ConfigJson::writeConfig;
 
 
-  bool addPackageToMode(Interface* inter, Package package, std::string selected_mode){
+  bool addPackageToMode(std::shared_ptr<Interface> inter, Package package, std::string selected_mode){
     Frate::info << "Adding package to mode " << selected_mode << std::endl;
     for(Mode &mode : inter->pro->modes){
       if(selected_mode == mode.name){
@@ -21,7 +21,7 @@ namespace Frate::Command::Packages {
     Frate::error << "Mode " << selected_mode << " not found";
     return false;
   }
-  bool add(Interface* inter) {
+  bool add(std::shared_ptr<Interface> inter) {
     bool latest = false;
     std::string mode = "";
     std::string query = "";

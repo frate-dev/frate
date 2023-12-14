@@ -35,7 +35,7 @@ namespace Frate {
       script += indent + ")\n";
     }
 
-    bool ZshCompletions(Interface* inter){
+    bool ZshCompletions(std::shared_ptr<Interface> inter){
       std::string script;
       script += "#compdef frate\n";
       script += "function _frate() {\n";

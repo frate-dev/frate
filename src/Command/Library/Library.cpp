@@ -2,7 +2,7 @@
 
 
 namespace Frate::Command::Library{
-  bool options(Interface* inter){
+  bool options(std::shared_ptr<Interface> inter){
     inter->InitHeader();
     inter->options->parse_positional({"command","subcommand","lib"});
     inter->options->add_options()

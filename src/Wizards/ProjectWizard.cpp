@@ -8,7 +8,7 @@ namespace Frate::Wizard {
   using Utils::CLI::Prompt;
   bool Project(std::shared_ptr<Command::Project> pro){
 
-    Prompt prompt("Project name",pro->project_name);
+    Prompt prompt("Project name",pro->name);
     prompt.Validator(Utils::Validation::ProjectName);
     prompt.MaxLength(30);
     prompt.Color(Utils::CLI::Ansi::GREEN);
@@ -18,12 +18,12 @@ namespace Frate::Wizard {
       auto [valid, project_name] = prompt.Get<std::string>();
 
       if(valid){
-        pro->project_name = project_name;
+        pro->name = project_name;
       }else{
         return false;
       }
     }
-    Prompt description_prompt("Description",pro->project_description);
+    Prompt description_prompt("Description",pro->description);
     description_prompt.MaxLength(255);
     description_prompt.Color(Utils::CLI::Ansi::GREEN);
     description_prompt.Run();
@@ -31,7 +31,7 @@ namespace Frate::Wizard {
     {
       auto [valid, project_description] = description_prompt.Get<std::string>();
       if(valid){
-        pro->project_description = project_description;
+        pro->description = project_description;
       }else{
         return false;
       }
@@ -179,14 +179,14 @@ namespace Frate::Wizard {
     }
 
 
-    Prompt project_version_prompt("Project Version",pro->project_version);
+    Prompt project_version_prompt("Project Version",pro->version);
     project_version_prompt.Validator(Utils::Validation::ProjectVersion);
     project_version_prompt.Color(Utils::CLI::Ansi::GREEN);
     project_version_prompt.Run();
     {
       auto [valid,project_version] = project_version_prompt.Get<std::string>();
       if(valid){
-        pro->project_version = project_version;
+        pro->version = project_version;
       }else{
         return false;
       }

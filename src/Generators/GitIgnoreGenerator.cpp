@@ -2,6 +2,7 @@
 #include <Frate/Generators.hpp>
 #include <fstream>
 #include <Frate/Utils/CLI.hpp>
+#include <memory>
 
 
 namespace Frate::Generators::GitIgnore{
@@ -21,8 +22,8 @@ bool write_gitignore(std::string gitignore, std::filesystem::path gitignore_path
 }
 
   using namespace Utils::CLI;
-  bool create(Command::Interface* inter){
-    std::filesystem::path gitignore_path = inter->pro->project_path / ".gitignore";
+  bool create(std::shared_ptr<Command::Interface> inter){
+    std::filesystem::path gitignore_path = inter->pro->path / ".gitignore";
     std::string gitignore = R"VOG(
 # CMake
 CMakeLists.txt.user

@@ -16,7 +16,7 @@ namespace Tests::Command {
       valid = false;
       error << "language is not cpp or c" << std::endl;
     }
-    if(inter->pro->project_name == ""){
+    if(inter->pro->name == ""){
       valid = false;
       error << "project name is empty" << std::endl;
     }

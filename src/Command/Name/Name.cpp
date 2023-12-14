@@ -3,7 +3,7 @@
 
 namespace Frate::Command::Name {
 
-  bool options(Interface* inter){
+  bool options(std::shared_ptr<Interface> inter){
     inter->InitHeader();
     inter->options->parse_positional({"command","subcommand","name"});
     inter->options->add_options()

@@ -39,6 +39,8 @@ namespace Frate::LuaAPI {
           result += std::to_string(value.as<bool>());
         }else if(value.is<sol::table>()){
           result += resolveSpecifier(specifiers, value.as<sol::table>(), result, index+1);
+        }else if(value.is<sol::object>()){
+          result += resolveSpecifier(specifiers, value.as<sol::table>(), result, index+1);
         }else{
           error << "LuaAPI Error: Unrecognized type while resolving specifier" << std::endl;
           exit(1);
@@ -108,6 +110,7 @@ namespace Frate::LuaAPI {
       //If we have a specifier then we start recording it in the specifier vector
       if(tokens[i].type == specifier){
         specifiers.push_back(tokens[i].value);
+        info << tokens[i].value << std::endl;
         //If we have a close bracket then we resolve the specifier
         //By recursively looking through the table
       }else if(tokens[i].type == close_bracket){

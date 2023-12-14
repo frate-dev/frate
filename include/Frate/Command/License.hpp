@@ -34,13 +34,13 @@ namespace Frate::Command::License {
   /*
    * set the current projet's license
    */
-  bool set(Interface*);
+  bool set(std::shared_ptr<Interface> inter);
   /*
    * remove the current project's license
    */
-  bool remove(Interface*);
+  bool remove(std::shared_ptr<Interface> inter);
   /*
    * list all available licenses
    */
-  bool list(Interface*);
+  bool list(std::shared_ptr<Interface> inter);
 }

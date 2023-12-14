@@ -2,8 +2,9 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Constants.hpp>
 #include <fstream>
+#include <memory>
 namespace Frate::Generators::Readme {
-    bool create(Command::Interface* inter){
+    bool create(std::shared_ptr<Command::Interface> inter){
       std::string readme = R"(
 # {project_name} with {name}
 - {description}
@@ -37,9 +38,9 @@ Find more information at the [Frate Github]({help_url})
 
 )";
 
-      Utils::replaceKey(readme, "{project_name}", inter->pro->project_name + Constants::VERSION);
+      Utils::replaceKey(readme, "{project_name}", inter->pro->name + Constants::VERSION);
       Utils::replaceKey(readme, "{name}", Constants::NAME);
-      Utils::replaceKey(readme, "{description}", inter->pro->project_description);
+      Utils::replaceKey(readme, "{description}", inter->pro->description);
       Utils::replaceKey(readme, "{author}", inter->pro->authors.size() > 0 ? inter->pro->authors[0] : "");
 
       std::time_t t = std::time(nullptr);
@@ -48,7 +49,7 @@ Find more information at the [Frate Github]({help_url})
       ss << std::put_time(&tm, "%d/%m/%Y");
       Utils::replaceKey(readme, "{date}", ss.str());
       Utils::replaceKey(readme, "{help_url}", Constants::PROJECT_URL);
-      std::ofstream readme_file(inter->pro->project_path / "README.md");
+      std::ofstream readme_file(inter->pro->path / "README.md");
 
       try{
         readme_file << readme;

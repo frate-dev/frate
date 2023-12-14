@@ -36,9 +36,9 @@ namespace Frate::LuaAPI {
 
     lua.new_usertype<Command::Project>("Project"
         "new", sol::no_constructor,
-        "name", &Command::Project::project_name,
-        "version", &Command::Project::project_version,
-        "description", &Command::Project::project_description,
+        "name", &Command::Project::name,
+        "version", &Command::Project::version,
+        "description", &Command::Project::description,
         "authors", &Command::Project::authors,
         "dependencies", &Command::Project::dependencies,
         "toolchains", &Command::Project::toolchains,
@@ -53,7 +53,7 @@ namespace Frate::LuaAPI {
         "include_dir", &Command::Project::include_dir,
         "lang_version", &Command::Project::lang_version,
         "lang", &Command::Project::lang,
-        "project_type", &Command::Project::project_type,
+        "project_type", &Command::Project::type,
         "keywords", &Command::Project::keywords,
         "prompts", &Command::Project::prompts
           );

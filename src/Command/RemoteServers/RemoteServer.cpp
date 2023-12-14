@@ -5,7 +5,7 @@
 
 namespace Frate::Command::RemoteServers{
   using namespace Utils::CLI;
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->add_options()
@@ -14,7 +14,7 @@ namespace Frate::Command::RemoteServers{
     return inter->parse();
   }
 
-  std::vector<RemoteServer> remoteServerData(Interface* inter){
+  std::vector<RemoteServer> remoteServerData(std::shared_ptr<Interface> inter){
     std::fstream file;
     std::string build_servers_dir= std::string(std::getenv("HOME"))  + "/.config/frate/";
     if (!std::filesystem::exists(build_servers_dir)){

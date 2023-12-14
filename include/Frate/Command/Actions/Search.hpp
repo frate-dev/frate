@@ -2,7 +2,7 @@
 #include <Frate/Command.hpp>
 
 namespace Frate::Command::Search {
-  bool options(Interface* inter);
-  bool run(Interface* inter);
-  std::vector<Handler> handlers(Interface* inter);
+  bool options(std::shared_ptr<Interface> inter);
+  bool run(std::shared_ptr<Interface> inter);
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter);
 }

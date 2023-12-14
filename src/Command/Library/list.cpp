@@ -1,7 +1,7 @@
 #include <Frate/Command/Library.hpp>
 
 namespace Frate::Command::Library{
-  bool list(Interface* inter){
+  bool list(std::shared_ptr<Interface> inter){
     for(std::string& lib : inter->pro->libs){
       std::cout << lib << std::endl;
     }

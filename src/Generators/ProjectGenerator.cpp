@@ -120,7 +120,7 @@ json getTemplateIndex() {
   bool refreshTemplate(Environment &env, sol::state &lua, std::shared_ptr<Command::Project> pro) {
     info << "Refreshing template" << std::endl;
     std::vector<path> paths_to_refresh{
-      pro->project_path / "template/CMakeLists.txt.inja",
+      pro->path / "template/CMakeLists.txt.inja",
     };
 
     LuaAPI::registerAPI(lua);
@@ -130,7 +130,7 @@ json getTemplateIndex() {
       return false;
     }
 
-    if(!LuaAPI::registerProjectScripts(env, lua,pro->project_path / "template/scripts", pro)){
+    if(!LuaAPI::registerProjectScripts(env, lua,pro->path / "template/scripts", pro)){
       error << "Error while registering project scripts" << std::endl;
       return false;
     }
@@ -158,8 +158,8 @@ json getTemplateIndex() {
     try{
 
       std::filesystem::copy(
-          pro->project_path / "template/default.json",
-          pro->project_path / "frate-project.json"
+          pro->path / "template/default.json",
+          pro->path / "frate-project.json"
           );
 
     }catch(...){
@@ -175,11 +175,11 @@ json getTemplateIndex() {
 
     try{
 
-      file.open(pro->project_path / "frate-project.json");
+      file.open(pro->path / "frate-project.json");
 
     }catch(...){
 
-      error << "Error while opening file: " << pro->project_path / "frate-project.json" << std::endl;
+      error << "Error while opening file: " << pro->path / "frate-project.json" << std::endl;
       return false;
 
     }
@@ -213,9 +213,9 @@ json getTemplateIndex() {
 
     std::ofstream CPMFile;
     try{
-      if(!std::filesystem::exists(pro->project_path / "cmake"))
-        std::filesystem::create_directories(pro->project_path / "cmake");
-      CPMFile.open(pro->project_path / "cmake/CPM.cmake");
+      if(!std::filesystem::exists(pro->path / "cmake"))
+        std::filesystem::create_directories(pro->path / "cmake");
+      CPMFile.open(pro->path / "cmake/CPM.cmake");
     }catch(...){
       Utils::debug("Error while opening file: CPM.cmake");
       return false;
@@ -227,7 +227,7 @@ json getTemplateIndex() {
       return false;
     }
     
-    if(!LuaAPI::registerProjectScripts(env, lua,pro->project_path / "template/scripts",pro)){
+    if(!LuaAPI::registerProjectScripts(env, lua,pro->path / "template/scripts",pro)){
       error << "Error while registering project scripts" << std::endl;
       return false;
     } 
@@ -266,7 +266,7 @@ json getTemplateIndex() {
       }
     }
 
-    for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->project_path)){
+    for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->path)){
       if(current_p.string().find("template/") != std::string::npos){
         continue;
       }
@@ -293,7 +293,7 @@ json getTemplateIndex() {
 
     //Removes all unrelated source files from the project directory
     //Frate does allow you to make both a c and cpp project on top of each other
-    for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->project_path / pro->src_dir)){
+    for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->path / pro->src_dir)){
       for(std::string ext: source_file_extensions_to_remove){
         if(current_p.extension() == ext){
           paths_to_remove.push_back(current_p);
@@ -323,7 +323,7 @@ json getTemplateIndex() {
     Template current_template;
 
     for(Template templ: index){
-      if(pro->project_type == templ.name){
+      if(pro->type == templ.name){
         has_template = true;
         current_template = templ;
         break;
@@ -340,14 +340,14 @@ json getTemplateIndex() {
       info << "Creating project from template: " << templ.name << std::endl;
     }
 
-    if(!downloadTemplate(current_template.git, pro->project_path)){
+    if(!downloadTemplate(current_template.git, pro->path)){
       error << "Error while downloading template" << std::endl;
       return false;
     }
 
     std::filesystem::copy(
-        pro->project_path / "template",
-        pro->project_path,
+        pro->path / "template",
+        pro->path,
         std::filesystem::copy_options::recursive  | std::filesystem::copy_options::overwrite_existing
         );
 

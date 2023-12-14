@@ -9,7 +9,7 @@
 #include "Frate/Command/Library.hpp"
 
 namespace Frate::Command::List{
-  bool options(Interface* inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->allow_unrecognised_options().add_options()
@@ -19,7 +19,7 @@ namespace Frate::Command::List{
     return inter->parse();
   }
   
-  std::vector<Handler> handlers(Interface *inter) {
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter) {
     return {
       Handler{
         .aliases = 
@@ -100,7 +100,7 @@ namespace Frate::Command::List{
   }
 
 
-  bool run(Interface* inter){
+  bool run(std::shared_ptr<Interface> inter){
     options(inter);
     std::vector<Handler> listHandlers = handlers(inter);
     std::string target;

@@ -4,7 +4,7 @@
 #include <Frate/Command/CommandMode.hpp>
 
 namespace Frate::Command::ModeCommands {
-  bool addFlags(Interface* inter, std::string mode){
+  bool addFlags(std::shared_ptr<Interface> inter, std::string mode){
     //std::vector<std::string> flags = inter->args->operator[]("args").as<std::vector<std::string>>();
     std::vector<std::string>  flags = inter->args->unmatched();
     for(Mode m : inter->pro->modes){
@@ -17,12 +17,12 @@ namespace Frate::Command::ModeCommands {
     return true;
   }
   //TODO: Implement this
-  bool removeFlags(Interface *inter, std::string mode){
+  bool removeFlags(std::shared_ptr<Interface> inter, std::string mode){
     (void) inter, (void) mode;
     return true;
   }
   [[deprecated("Use addPackage in the package module")]]
-  bool addPackages(Interface* inter, std::string mode){
+  bool addPackages(std::shared_ptr<Interface> inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep_str : dependencies) {
       auto [found,new_package] = Packages::searchWithPrompt(dep_str,false);
@@ -40,7 +40,7 @@ namespace Frate::Command::ModeCommands {
     return true;
   }
   [[deprecated("Use removePackage in the package module")]]
-  bool removePackages(Interface* inter, std::string mode){
+  bool removePackages(std::shared_ptr<Interface> inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep : dependencies) {
       for(Mode &m : inter->pro->modes){

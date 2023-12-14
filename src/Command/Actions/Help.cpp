@@ -4,7 +4,7 @@
 #include <sys/ioctl.h>
 namespace Frate::Command::Help {
   //We're keeping this for our long lost friend ryan aka fired docs guy
-  bool run(Interface* inter) {
+  bool run(std::shared_ptr<Interface> inter) {
    // if((static_cast<std::string>(std::getenv("TERM")) == "xterm-kitty")){
    //   struct winsize w = {500, 500, 0, 0};
    //   ioctl(0, TIOCGWINSZ, &w);

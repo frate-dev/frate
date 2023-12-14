@@ -4,7 +4,7 @@
 
 namespace Frate::Command::Packages {
 
-  bool removePackagesByMode(Interface* inter, std::string mode){
+  bool removePackagesByMode(std::shared_ptr<Interface> inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep : dependencies) {
       for(Mode &m : inter->pro->modes){
@@ -18,7 +18,7 @@ namespace Frate::Command::Packages {
     }
     return true;
   }
-  bool remove(Interface *inter) {
+  bool remove(std::shared_ptr<Interface> inter) {
 
     if (inter->args->count("args") == 0) {
       std::cout << R"EOF(

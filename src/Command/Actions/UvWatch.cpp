@@ -5,7 +5,7 @@
 
 
 namespace Frate::Command::UvWatch{
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command"});
     inter->options->add_options()
@@ -36,9 +36,9 @@ namespace Frate::Command::UvWatch{
 
   bool runCommand(Interface* inter){
     //TODO  CLEAN UP THIS SHIT
-    std::string command = "cmake . && make  && " + inter->pro->project_path.string() + "/" + inter->pro->build_dir + "/" +inter->pro->project_name;
+    std::string command = "cmake . && make  && " + inter->pro->path.string() + "/" + inter->pro->build_dir + "/" +inter->pro->name;
 #ifdef DEBUG
-    command = "cd build && cmake . && make  && " + inter->pro->build_dir + "/" +inter->pro->project_name;
+    command = "cd build && cmake . && make  && " + inter->pro->build_dir + "/" +inter->pro->name;
 #endif
 
 
@@ -56,7 +56,7 @@ namespace Frate::Command::UvWatch{
         std::to_string(inter->pro->build_server.port) + " " +
         inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
         "  'cd /tmp/frate2 && cmake . && make -j ${nproc} && " + inter->pro->build_dir +
-        inter->pro->project_name + "'";
+        inter->pro->name + "'";
     }
     if (inter->args->count("args") != 0) {
       std::cout << "estamos aqui" << std::endl;
@@ -73,7 +73,7 @@ namespace Frate::Command::UvWatch{
 
       std::cout << "command_args: " << command_args << std::endl;
       command = "cmake . && make && ./" + inter->pro->build_dir + "/" +
-        inter->pro->project_name + "  " + command_args;
+        inter->pro->name + "  " + command_args;
     }
     Utils::hSystem(command);
 
@@ -116,11 +116,11 @@ namespace Frate::Command::UvWatch{
 #ifdef __linux__
   namespace fs = std::filesystem;
 
-  void start_watchers_for_directory(const fs::path& path, uv_loop_t* loop, std::vector<uv_fs_event_t*>& watchers, Interface* inter) {
+  void start_watchers_for_directory(const fs::path& path, uv_loop_t* loop, std::vector<uv_fs_event_t*>& watchers,std::shared_ptr<Interface> inter) {
     for (const auto& entry : fs::directory_iterator(path)) {
       if (fs::is_directory(entry)) {
         uv_fs_event_t* watcher = new uv_fs_event_t{
-          .data = inter
+          .data = inter.get()
         };
         uv_fs_event_init(loop, watcher);
         uv_fs_event_start(watcher, fs_event_callback, entry.path().c_str(), 0);
@@ -131,19 +131,19 @@ namespace Frate::Command::UvWatch{
   }
 #endif
 
-  bool watch(Interface* inter){
+  bool watch(std::shared_ptr<Interface> inter){
 
     options(inter);
     uv_loop_t *loop = uv_default_loop();
         std::vector<uv_fs_event_t*> watchers;
 
 
-    uv_fs_event_t fs_event{.data = inter};
+    uv_fs_event_t fs_event{.data = inter.get()};
     uv_fs_event_init(loop, &fs_event);
 #ifdef __linux__
     start_watchers_for_directory(inter->pro->src_dir, loop, watchers, inter);
 #endif
-    if (uv_fs_event_start(&fs_event, fs_event_callback, (inter->pro->project_path / inter->pro->src_dir).c_str(), UV_FS_EVENT_RECURSIVE)!=0) {
+    if (uv_fs_event_start(&fs_event, fs_event_callback, (inter->pro->path / inter->pro->src_dir).c_str(), UV_FS_EVENT_RECURSIVE)!=0) {
       fprintf(stderr, "Error starting filesystem watcher.\n");
       return 1;
     }

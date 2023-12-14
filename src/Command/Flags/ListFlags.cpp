@@ -2,7 +2,7 @@
 #include <Frate/Command.hpp>
 namespace Frate::Command::Flags {
 
-  bool list(Interface *inter) {
+  bool list(std::shared_ptr<Interface> inter) {
     if (inter->args->count("mode") > 0) {
       std::string mode = inter->args->operator[]("mode").as<std::string>();
       std::cout << "Flags for mode: " << mode << std::endl;

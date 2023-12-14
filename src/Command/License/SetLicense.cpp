@@ -64,7 +64,7 @@ namespace Frate::Command::License {
     return selected_license;
   }
   
-  void fillLicense(Interface* inter, FullLicense& full_license){
+  void fillLicense(std::shared_ptr<Interface> inter, FullLicense& full_license){
     std::string license = full_license.body;
     auto now = std::chrono::system_clock::now();
 
@@ -86,12 +86,12 @@ namespace Frate::Command::License {
     }
     Utils::replaceKey(license, "[fullname]", org);
 
-    Utils::replaceKey(license, "[project]", inter->pro->project_name);
+    Utils::replaceKey(license, "[project]", inter->pro->name);
 
     full_license.body = license;
   }
 
-  bool set(Interface* inter){
+  bool set(std::shared_ptr<Interface> inter){
     std::string query;
     if(inter->args->count("args") == 0){
       Frate::error << "No license specified" << std::endl;
@@ -104,7 +104,7 @@ namespace Frate::Command::License {
     FullLicense full_license = Utils::fetchJson(license.url);
     
     fillLicense(inter, full_license);
-    if(std::filesystem::exists(inter->pro->project_path / "LICENSE")){
+    if(std::filesystem::exists(inter->pro->path / "LICENSE")){
       Frate::error << "A license already exists in this project" << std::endl;
       Utils::CLI::Prompt overwrite_prompt("Overwrite existing license?");
       overwrite_prompt.Run();
@@ -116,11 +116,11 @@ namespace Frate::Command::License {
 
     inter->pro->license = full_license.spdx_id;
 
-    Frate::info << "Writing license to " << inter->pro->project_path / "LICENSE" << std::endl;
+    Frate::info << "Writing license to " << inter->pro->path / "LICENSE" << std::endl;
     Frate::info << "License: " << full_license.name << std::endl;
 
     try{
-      std::ofstream license_file(inter->pro->project_path / "LICENSE");
+      std::ofstream license_file(inter->pro->path / "LICENSE");
       license_file << full_license.body;
     }catch(std::exception& e){
       Frate::error << "Failed to write license to file" << std::endl;

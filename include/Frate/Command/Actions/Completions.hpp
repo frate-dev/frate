@@ -2,7 +2,7 @@
 
 namespace Frate {
   namespace Command::Completions {
-    bool ZshCompletions(Interface* inter);
-    bool BashCompletions(Interface* inter);
+    bool ZshCompletions(std::shared_ptr<Interface> inter);
+    bool BashCompletions(std::shared_ptr<Interface> inter);
   }
 }
