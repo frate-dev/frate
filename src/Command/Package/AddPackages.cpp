@@ -22,6 +22,7 @@ namespace Frate::Command::Packages {
     return false;
   }
   bool add(std::shared_ptr<Interface> inter) {
+    options(inter);
     bool latest = false;
     std::string mode = "";
     std::string query = "";

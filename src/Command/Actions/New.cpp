@@ -68,7 +68,7 @@ bool options(std::shared_ptr<Interface> inter) {
     if (directory != "."){
       std::filesystem::create_directories(directory);
       std::filesystem::current_path(directory);
-      inter->pro->project_path = std::filesystem::current_path();
+      inter->pro->path = std::filesystem::current_path();
     }
 #endif
     std::string project_config_file = "frate-project.json";

@@ -4,6 +4,7 @@
 
 namespace Frate::Command::Flags {
   bool remove(std::shared_ptr<Interface> inter){
+    options(inter);
     std::cout << "Removing flags" << std::endl; 
     std::vector<std::string> flags = makeFlags(inter);
     if (inter->args->count("mode") > 0) {

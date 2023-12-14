@@ -69,7 +69,7 @@ namespace Frate::Command {
     std::cout << "DEBUG MODE ENABLED\n";
     pro->path = std::filesystem::current_path() / "build";
 #else
-    pro->project_path = std::filesystem::current_path();
+    pro->path = std::filesystem::current_path();
 #endif
 
   }
@@ -132,7 +132,7 @@ namespace Frate::Command {
     inter->commands.push_back({
       .aliases = {"add"},
       .flags = {}, //TODO: Add flags
-      //.subcommands = Add::handlers(inter),
+      .subcommands = Add::handlers(inter),
       .docs = "add sub command",
       .callback = &Add::run
     });
@@ -140,7 +140,7 @@ namespace Frate::Command {
     inter->commands.push_back({
       .aliases = {"set"},
       .flags = {}, //TODO: Add flags
-      //.subcommands = Set::handlers(inter),
+      .subcommands = Set::handlers(inter),
       .docs = "set sub command",
       .callback = &Set::run
     });
@@ -148,7 +148,7 @@ namespace Frate::Command {
     inter->commands.push_back({
       .aliases = {"search"},
       .flags = {}, //TODO: Add flags
-      //.subcommands = Search::handlers(inter),
+      .subcommands = Search::handlers(inter),
       .docs = "search sub command",
       .callback = &Search::run,
       .requires_project = false
@@ -156,7 +156,7 @@ namespace Frate::Command {
     inter->commands.push_back({
       .aliases = {"list", "ls"},
       .flags = {}, //TODO: Add flags
-      //.subcommands = List::handlers(inter),
+      .subcommands = List::handlers(inter),
       .docs = "list sub command",
       .callback = &List::run,
       .requires_project = false
@@ -165,7 +165,7 @@ namespace Frate::Command {
     inter->commands.push_back({
       .aliases = {"remove", "rm"},
       .flags = {}, //TODO: Add flags
-      //.subcommands = Remove::handlers(inter),
+      .subcommands = Remove::handlers(inter),
       .docs = "remove sub command",
       .callback = &Remove::run
     });
@@ -173,7 +173,7 @@ namespace Frate::Command {
     inter->commands.push_back({
       .aliases = {"update"},
       .flags = {}, //TODO: Add flags
-      //.subcommands = Update::handlers(inter),
+      .subcommands = Update::handlers(inter),
       .docs = "update sub command",
       .callback = &Update::run
     });

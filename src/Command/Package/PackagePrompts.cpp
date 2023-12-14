@@ -6,7 +6,7 @@ namespace Frate::Command::Packages {
 
  Package promptSearchResults(std::string &query){
 
-   std::vector<Package> searchResults = search(query);
+   std::vector<Package> searchResults = _search(query);
 
    if(searchResults.size() == 1){
      std::cout << "Installing " << searchResults[0].name << std::endl;

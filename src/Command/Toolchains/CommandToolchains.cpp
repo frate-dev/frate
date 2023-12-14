@@ -11,7 +11,7 @@ namespace Frate::Command::Toolchains{
     std::filesystem::path  path = std::string(std::getenv("HOME")) + "/.config/" + "frate/" + "toolchains.json";
     return json{};
   }
-  bool list(){
+  bool list(std::shared_ptr<Interface> inter){
     json data = load();
     for (Command::Toolchain::CompileTarget toolchain : Command::Toolchain::CompileTargets){
       std::cout << toolchain.triple << std::endl;
@@ -21,7 +21,14 @@ namespace Frate::Command::Toolchains{
   bool fuckit(){
     return false;
   };
-  bool add(std::string toolchain, std::shared_ptr<Interface> inter){
+  bool add(std::shared_ptr<Interface> inter){
+    Prompt *toolchain_prompt = new Prompt("Toolchain");
+    toolchain_prompt->Run();
+    auto [valid, toolchain] = toolchain_prompt->Get<std::string>();
+    if(!valid){
+      std::cout << "Invalid toolchain" << std::endl;
+      return false;
+    }
     json data = load();
     Generators::Toolchain::generateToolchain(toolchain);
     std::ofstream file;

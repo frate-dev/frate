@@ -85,7 +85,7 @@ namespace Frate::Command::Packages {
     }
   }
 
-  std::vector<Package> search(std::string &query){
+  std::vector<Package> _search(std::string &query){
     std::vector<Package> results = calculatePackageScores(query);
     return results;
   }

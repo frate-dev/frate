@@ -166,6 +166,7 @@ namespace Frate::Command {
     std::string docs{""};
     std::function<bool(std::shared_ptr<Interface> )> callback{
       [](std::shared_ptr<Interface> inter) -> bool {
+        (void)inter;
         std::cout << "This command has not been implemented yet" << std::endl;
         return false;
       }

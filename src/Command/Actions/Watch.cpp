@@ -173,7 +173,7 @@ namespace Frate::Command::Watch {
 
 #else
           std::string command =
-            "cmake . && make  && ./" + inter->pro->build_dir + "/" +inter->pro->project_name;
+            "cmake . && make  && ./" + inter->pro->build_dir + "/" +inter->pro->name;
 
           bool build_server =inter->args->operator[]("remote-build").as<bool>();
           if (build_server == true) {
@@ -200,7 +200,7 @@ namespace Frate::Command::Watch {
               std::to_string(inter->pro->build_server.port) + " " +
               inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
               "  'cd /tmp/frate && cmake . && make -j ${nproc} && ./build/" +
-              inter->pro->project_name + "'";
+              inter->pro->name + "'";
           }
           if (inter->args->count("args") != 0) {
             std::cout << "estamos aqui" << std::endl;
@@ -217,7 +217,7 @@ namespace Frate::Command::Watch {
 
             std::cout << "command_args: " << command_args << std::endl;
             command = "cmake . && make && ./" + inter->pro->build_dir + "/" +
-              inter->pro->project_name + "  " + command_args;
+              inter->pro->name + "  " + command_args;
           }
 #endif
           std::cout << "Running command: " << command << std::endl;

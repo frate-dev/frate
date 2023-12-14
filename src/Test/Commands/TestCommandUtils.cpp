@@ -75,9 +75,12 @@ namespace Tests::Command {
 
    Frate::Command::Interface *inter = new Frate::Command::Interface(argc, argv);
 
-    inter->pro->project_path = std::filesystem::path(test_path);
+    inter->pro->path = std::filesystem::path(test_path);
 
-    if (!inter->execute()) {
+    if (!Frate::Command::execute(
+          std::make_shared<Frate::Command::Interface>(*inter))) {
+
+
       error << "Failed to run command: " << command << " : could not execute" << std::endl;
       return std::make_pair(true,inter);
     }

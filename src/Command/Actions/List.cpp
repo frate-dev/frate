@@ -25,75 +25,54 @@ namespace Frate::Command::List{
         .aliases = 
         {"modes","m"},
         .docs = "List modes",
-        .callback = [inter]() {
-          return Modes::list(inter);
-        },
+        .callback = &Modes::list,
         .requires_project = true
       },
       Handler{
         .aliases = 
         {"servers","remote-servers"},
         .docs = "List remote servers",
-        .callback = [inter]() {
-          return RemoteServers::list(inter);
-        }
+        .callback = &RemoteServers::list,
       },
       Handler{
         .aliases = {"installed-packages","packages","p"},
         .flags = {"-m","--mode"},
         .docs = "List installed packages",
-        .callback = [inter]() {
-          return Packages::list(inter);
-        },
+        .callback = &Command::Packages::list,
         .requires_project = true
       },
       Handler{
         .aliases = 
         {"flags","f"},
         .docs = "List flags",
-        .callback = [inter]() {
-          Flags::list(inter);
-          return true;
-        },
+        .callback = &Flags::list,
         .requires_project = true
       },
       Handler{
         .aliases = 
         {"libraries", "lib", "l"},
         .docs = "List flags",
-        .callback = [inter]() {
-          return Library::list(inter);
-        },
+        .callback = &Library::list,
         .requires_project = true
       },
       Handler{
         .aliases = 
         {"authors","a"},
         .docs = "List authors",
-        .callback = [inter]() {
-          //TODO: List authors
-          Author::list(inter);
-          return true;
-        },
+        .callback = &Author::list,
         .requires_project = true
       },
       Handler{
         .aliases = 
         {"available-targets","at"},
         .docs = "List available targets",
-        .callback = [inter]() {
-          (void)inter;
-          Command::Toolchains::list();
-          return true;
-        }
+        .callback = &Toolchains::list,
       },
       Handler{
         .aliases = 
         {"licenses","lc"},
         .docs = "List possible licenses",
-        .callback = [inter]() {
-          return License::list(inter);
-        },
+        .callback = &License::list,
         .requires_project = true
       },
     };

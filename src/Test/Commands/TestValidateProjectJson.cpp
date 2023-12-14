@@ -20,11 +20,11 @@ namespace Tests::Command {
       valid = false;
       error << "project name is empty" << std::endl;
     }
-    if(inter->pro->project_path == ""){
+    if(inter->pro->path == ""){
       valid = false;
       error << "project path is empty" << std::endl;
     }
-    if(inter->pro->project_version == ""){
+    if(inter->pro->version == ""){
       valid = false;
       error << "project version is empty" << std::endl;
     }

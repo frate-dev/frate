@@ -30,10 +30,7 @@ namespace Frate::Command::Remove {
         .flags = {"-l,--latest","-m,--mode","-t,--target"},
         .positional_args = {"package_name"},
         .docs = "Remove a package from the project",
-        .callback = [inter]() {
-          Packages::options(inter);
-          return Packages::remove(inter);
-        },
+        .callback = &Packages::remove,
         .unlimited_args = true,
       },
       {
@@ -41,37 +38,25 @@ namespace Frate::Command::Remove {
         .flags = {"-m,--mode"},
         .positional_args = {"flags"},
         .docs = "Remove a flag from the project",
-        .callback = [inter]() {
-          Flags::options(inter);
-          return Flags::remove(inter);
-        },
+        .callback = &Flags::remove,
       },
       {
         .aliases = {"mode", "m"},
         .positional_args = {"mode"},
         .docs = "Remove a mode from the project",
-        .callback = [inter]() {
-          Modes::options(inter);
-          return Modes::remove(inter);
-        },
+        .callback = &Modes::remove,
       },
       {
         .aliases = {"libraries", "l", "lib"},
         .positional_args = {"lib"},
         .docs = "Remove a mode from the project",
-        .callback = [inter]() {
-          Library::options(inter);
-          return Library::remove(inter); 
-        },
+        .callback = &Library::remove,
       },
       {
         .aliases = {"author", "auth"},
         .positional_args = {"author_name"},
         .docs = "Remove an author from the project",
-        .callback = [inter]() {
-          Author::options(inter);
-          return Author::remove(inter);
-        },
+        .callback = &Author::remove,
         .unlimited_args = true,
       }
     };

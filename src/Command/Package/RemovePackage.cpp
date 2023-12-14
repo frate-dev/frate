@@ -19,6 +19,7 @@ namespace Frate::Command::Packages {
     return true;
   }
   bool remove(std::shared_ptr<Interface> inter) {
+    options(inter);
 
     if (inter->args->count("args") == 0) {
       std::cout << R"EOF(

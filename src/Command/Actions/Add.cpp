@@ -44,10 +44,7 @@ namespace Frate::Command::Add {
           .flags = {"-l,--latest","-m,--mode","-t,--target"},
           .positional_args = {"package_name"},
           .docs = "Add a package to the project",
-          .callback = [inter]() {
-            Packages::options(inter);
-            return Packages::add(inter);
-          },
+          .callback = &Packages::add,
           .requires_project = true,
           .unlimited_args = true,
       },
@@ -55,66 +52,42 @@ namespace Frate::Command::Add {
           .aliases = {"flags","f"},
           .positional_args = {"\"flag\""},
           .docs = "Add a flag to the project",
-          .callback = [inter]() {
-            Flags::options(inter);
-            return Flags::add(inter);
-          },
+          .callback = &Flags::add,
           .requires_project = true,
         },
         Handler{
           .aliases = {"lib","l"},
           .positional_args = {"lib"},
           .docs = "Add a library to link to your project",
-          .callback = [inter]() {
-            Library::options(inter);
-            return Library::add(inter);
-          },
+          .callback = &Library::add,
           .requires_project = true,
         },
         Handler{
           .aliases = {"mode","m"},
           .positional_args = {"mode-name"},
           .docs = "Adds a build mode to your project",
-          .callback = [inter]() {
-            Modes::options(inter);
-            return Modes::add(inter);
-          },
+          .callback = &Modes::add,
           .requires_project = true,
         },
         Handler{
           .aliases = {"server","s"},
           //TODO: Don't know what inter requires
           .docs = "Add a remote server to your local config that you can later build to",
-          .callback = [inter]() {
-            return RemoteServers::add(inter);
-          },
+          .callback = &RemoteServers::add,
           .requires_project = true,
         },
         Handler{
           .aliases = {"toolchain","t"},
           .positional_args = {},
           .docs = "Add a crosscompile toolchain to your project",
-          .callback = [inter]() {
-            //What is inter????
-            Prompt *toolchain_prompt = new Prompt("Toolchain");
-            toolchain_prompt->Run();
-            auto [valid, toolchain_name] = toolchain_prompt->Get<std::string>();
-            if(!valid){
-              std::cout << "Invalid toolchain" << std::endl;
-              return false;
-            }else{
-              return Toolchains::add(toolchain_name, inter);
-            }
-          },
+          .callback = &Toolchains::add,
           .requires_project = true,
         },
         Handler{
           .aliases = {"author","a"},
           .positional_args = {"author-name"},
           .docs = "Add an author to your project",
-          .callback = [inter]() {
-            return Author::add(inter);
-          },
+          .callback = &Author::add,
           .requires_project = true,
           .unlimited_args = true,
         },
@@ -122,10 +95,7 @@ namespace Frate::Command::Add {
           .aliases = {"keywords","kw"},
           .positional_args = {"keyword"},
           .docs = "Add keywords to your project",
-          .callback = [inter]() {
-            Keywords::add(inter);
-            return false;
-          },
+          .callback = &Keywords::add,
           .requires_project = true,
           .unlimited_args = true,
         },

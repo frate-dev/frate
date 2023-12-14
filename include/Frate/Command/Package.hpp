@@ -36,7 +36,7 @@ namespace Frate::Command::Packages {
 
   //MOSTLY INTERNAL STUFF
   //Search for a packages and return a vector of results
-  std::vector<Package> search(std::string& query);
+  std::vector<Package> _search(std::string& query);
 
   //Get the first result from the search
   std::pair<bool,Package> searchGetFirst(std::string& query);

@@ -29,6 +29,7 @@ namespace Frate:: Command::Modes{
   }
 
   bool add(std::shared_ptr<Interface> interface){
+    options(interface);
     std::cout << "Adding mode" << std::endl; 
     Mode mode;
     mode.name = interface->args->operator[]("args").as<std::string>();
@@ -41,13 +42,14 @@ namespace Frate:: Command::Modes{
 
     return true;
   }
-  bool remove(std::shared_ptr<Interface> interface){
-    std::string mode_name = interface->args->operator[]("args").as<std::string>(); 
+  bool remove(std::shared_ptr<Interface> inter){
+    options(inter);
+    std::string mode_name = inter->args->operator[]("args").as<std::string>(); 
     std::cout << "Removing mode: " << mode_name << std::endl;
-    std::erase_if(interface->pro->modes, [&mode_name](Mode &mode){
+    std::erase_if(inter->pro->modes, [&mode_name](Mode &mode){
         return mode.name == mode_name;
         });
-    if(!interface->pro->save()) return false;
+    if(!inter->pro->save()) return false;
 
     return true;
   }

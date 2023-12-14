@@ -37,8 +37,8 @@ int main(int argc, char **argv) {
     //TODO: Get some path checking in this bitch
     using namespace Frate::Command;
 
-    Interface *inter_ptr = new Interface(argc,argv);
-    auto inter = std::make_shared<Interface>(*inter_ptr);
+    Interface inter_ptr = Interface(argc,argv);
+    auto inter = std::make_shared<Interface>(inter_ptr);
     if(execute(inter)){
       return 0;
     }else{

@@ -17,7 +17,7 @@ namespace Frate::Command::Update {
         .aliases = 
         {"index"},
         .docs = "Update package index",
-        .callback = [inter]() {
+        .callback = [](std::shared_ptr<Interface> inter) {
           (void)inter;
           return updateIndex();
         }
