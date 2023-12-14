@@ -90,6 +90,7 @@ namespace Frate::Command {
 
     if(LoadProjectJson()){
       this->project_present = true;
+      Generators::Project::refresh(pro);
     }
 
     std::string command = this->args->operator[]("command").as<std::string>();
