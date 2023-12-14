@@ -76,14 +76,26 @@ json getTemplateIndex() {
 
 
     info << "Downloading template" << std::endl;
-    git_repository *repo = NULL; 
+    git_repository* template_repo = NULL; 
+    git_repository* callbacks_repo = NULL;
     Frate::info << "Cloning " << git_url << " into " << (project_path / "template").c_str() << std::endl;
-    int clone_status = git_clone(&repo, git_url.c_str(), (project_path / "template").c_str(), NULL);
-    if(clone_status != 0){
+    int template_clone_status = git_clone(&template_repo, git_url.c_str(), (project_path / "template").c_str(), NULL);
+    if(template_clone_status != 0){
       Frate::error << "Error while cloning repository" << std::endl;
       return false;
     }
-    git_repository_free(repo);
+    git_repository_free(template_repo);
+
+    int callbacks_clone_status= git_clone(&callbacks_repo, git_url.c_str(), (project_path / "template/frate-callbacks").c_str(), NULL);
+    if(callbacks_clone_status != 0){
+      Frate::error << "Error while cloning repository" << std::endl;
+      return false;
+    }
+    git_repository_free(callbacks_repo);
+
+    std::filesystem::rename(project_path / "template/frate-callbacks/callbacks", project_path / "template/scripts");
+    std::filesystem::remove_all(project_path / "template/frate-callbacks");
+
     try{
       std::filesystem::remove(project_path / "template/.git");
     }catch(...){

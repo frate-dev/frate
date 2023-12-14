@@ -55,7 +55,7 @@ namespace Frate::Command::UvWatch{
         ":/tmp/frate2 && ssh -p " +
         std::to_string(inter->pro->build_server.port) + " " +
         inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
-        "  'cd /tmp/frate2 && cmake . && make -j ${nproc} && " + inter->pro->build_dir +
+        "  'cd /tmp/frate2 && cmake . && make -j ${nproc} && " + inter->pro->build_dir + "/" +
         inter->pro->name + "'";
     }
     if (inter->args->count("args") != 0) {
