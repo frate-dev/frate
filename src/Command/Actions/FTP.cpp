@@ -16,6 +16,9 @@ namespace Frate::Command::FTP {
       Frate::error << "Aborting..." << std::endl;
       return false;
     }
+
+    delete prompt;
+
     for (const directory_entry &p : directory_iterator(inter->pro->path)  
           | std::views::filter(
             [](const directory_entry &p) { return p.path().filename() != "frate"; })

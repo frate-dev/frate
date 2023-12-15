@@ -113,9 +113,6 @@ namespace Frate::Command {
     std::string description;
     std::string type{""};
     RemoteServer build_server;
-    /*
-     * This is the project path, it will be set to the current working directory and in debug mode if willl set the path to ./build/
-     */
     std::filesystem::path path;
     std::string git{"null"};
     std::string homepage{"null"};
@@ -126,6 +123,7 @@ namespace Frate::Command {
     std::string compiler{"g++"};
     std::string license{""};
     std::string default_mode{"Release"};
+    std::string build_command;
     std::vector<Mode> modes{
       Mode{.name = "Release", .flags={"-O2 "}}, 
       Mode{.name= "Debug", .flags= {"-g"}},

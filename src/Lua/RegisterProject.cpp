@@ -48,6 +48,7 @@ namespace Frate::LuaAPI {
         "license", &Command::Project::license,
         "git", &Command::Project::git,
         "cmake_version", &Command::Project::cmake_version,
+        "build_command", &Command::Project::build_command,
         "build_dir", &Command::Project::build_dir,
         "src_dir", &Command::Project::src_dir,
         "include_dir", &Command::Project::include_dir,

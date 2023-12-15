@@ -23,6 +23,10 @@ namespace Frate::Constants {
   constexpr const std::string_view FRATE_PACKAGES  = "https://github.com/frate-packages/index/releases/latest/download/index.json";
   constexpr const std::string_view FRATE_TEMPLATES = "https://github.com/frate-templates/templates/releases/latest/download/index.json";
   
+  const std::string TEMPLATE_PATH = "template/";
+  const std::string INIT_SCRIPTS_PATH = "__init__/";
+  const std::string POST_SCRIPTS_PATH = "__post__/";
+  
   const std::string VERSION = 
     std::to_string(VMAJOR) + "." + 
     std::to_string(VMINOR) + "." + 

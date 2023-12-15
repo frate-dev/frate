@@ -17,7 +17,7 @@ using std::filesystem::path;
 using Utils::CLI::Prompt;
 json getTemplateIndex() {
   std::cout << "Getting Template Index" << std::endl;
-  std::string index_url = static_cast<std::string>(Constants::FRATE_TEMPLATES);
+std::string index_url = static_cast<std::string>(Constants::FRATE_TEMPLATES);
 
   json index = json::parse(Utils::fetchText(index_url));
   return index;
@@ -74,27 +74,50 @@ json getTemplateIndex() {
       std::filesystem::remove_all(project_path / "template");
     }
 
+    std::filesystem::create_directories(project_path / "template");
+
 
     info << "Downloading template" << std::endl;
     git_repository* template_repo = NULL; 
     git_repository* callbacks_repo = NULL;
-    Frate::info << "Cloning " << git_url << " into " << (project_path / "template").c_str() << std::endl;
-    int template_clone_status = git_clone(&template_repo, git_url.c_str(), (project_path / "template").c_str(), NULL);
+    Frate::info << "Cloning " << git_url << " into " 
+      << (project_path / "template").c_str() << std::endl;
+
+
+    int template_clone_status = git_clone(&template_repo,
+        git_url.c_str(), (project_path / "template").c_str(), NULL);
+
+
     if(template_clone_status != 0){
       Frate::error << "Error while cloning repository" << std::endl;
       return false;
     }
+
+
     git_repository_free(template_repo);
 
-    Frate::info << "Cloning " << git_url << " into " << (project_path / "template").c_str() << std::endl;
-    int callbacks_clone_status= git_clone(&callbacks_repo, "https://github.com/frate-templates/frate-callbacks.git", (project_path / "template/frate-callbacks").c_str(), NULL);
+    const std::string callbacks_url = "https://github.com/frate-templates/frate-callbacks.git";
+
+    Frate::info << "Cloning " << callbacks_url << " into " 
+      << (project_path / "template/frate-callbacks").c_str() << std::endl;
+
+
+    int callbacks_clone_status= git_clone(&callbacks_repo,
+        callbacks_url.c_str(),
+        (project_path / "template/frate-callbacks").c_str(), NULL);
+
+
     if(callbacks_clone_status != 0){
       Frate::error << "Error while cloning repository" << std::endl;
       return false;
     }
+
+
     git_repository_free(callbacks_repo);
 
-    std::filesystem::rename(project_path / "template/frate-callbacks/callbacks", project_path / "template/scripts");
+    std::filesystem::rename(project_path / "template/frate-callbacks/scripts",
+        project_path / "template/scripts");
+
     std::filesystem::remove_all(project_path / "template/frate-callbacks");
 
     try{
@@ -207,6 +230,19 @@ json getTemplateIndex() {
 
     return true;
   }
+
+  bool initializeLua(Environment &env, sol::state &lua, std::shared_ptr<Command::Project> pro){
+    LuaAPI::registerAPI(lua);
+    if(!LuaAPI::registerProject(lua, pro)){
+      error << "Error while registering project" << std::endl;
+      return false;
+    }
+    if(!LuaAPI::registerProjectScripts(env,lua, pro->path / "template/scripts", pro)){
+      error << "Error while registering project scripts" << std::endl;
+      return false;
+    }
+    return true;
+  }
       
 
   bool renderTemplate(
@@ -217,8 +253,6 @@ json getTemplateIndex() {
 
     info << "Rendering templates" << std::endl;
 
-    LuaAPI::registerAPI(lua);
-    
     std::string CPM;
 
     CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
@@ -235,20 +269,13 @@ json getTemplateIndex() {
     }
 
     CPMFile << CPM;
-    if(!LuaAPI::registerProject(lua, pro)){
-      error << "Error while registering project" << std::endl;
-      return false;
-    }
-    
-    if(!LuaAPI::registerProjectScripts(env, lua,pro->path / "template/scripts",pro)){
-      error << "Error while registering project scripts" << std::endl;
-      return false;
-    } 
   
-
     
     //Array to store all the paths to remove at the end of the function
-    std::vector<path> paths_to_remove;
+    std::vector<path> paths_to_remove = {
+      pro->path / "template/__init__",
+      pro->path / "template/__post__",
+    };
 
     //Array of all the file extensions that we're going to ignore when copying files
     std::vector<std::string> source_file_extensions_to_remove;
@@ -376,8 +403,24 @@ json getTemplateIndex() {
 
     Environment env;
     sol::state lua;
+
+    if(!initializeLua(env, lua, pro)){
+      error << "Error while initializing lua" << std::endl;
+      return false;
+    }
+
+    if(!LuaAPI::initScripts(lua, pro)){
+      error << "Error while running init scripts" << std::endl;
+      return false;
+    }
+
     if(!renderTemplate(env, lua,  pro)){
       error << "Error while rendering template to tmp" << std::endl;
+      return false;
+    }
+
+    if(!LuaAPI::postScripts(lua, pro)){
+      error << "Error while running post scripts" << std::endl;
       return false;
     }
 
@@ -389,10 +432,22 @@ json getTemplateIndex() {
   bool refresh(std::shared_ptr<Command::Project> pro){
     Environment env;
     sol::state lua;
+
+    LuaAPI::initScripts(lua, pro);
+
+    if(!initializeLua(env, lua, pro)){
+      error << "Error while initializing lua" << std::endl;
+      return false;
+    }
+
     if(!refreshTemplate(env, lua,  pro)){
       error << "Error while rendering template to tmp" << std::endl;
       return false;
     }
+
+    LuaAPI::postScripts(lua, pro);
+
+
     return true;
   }
 }

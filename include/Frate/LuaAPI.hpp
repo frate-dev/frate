@@ -49,4 +49,14 @@ namespace Frate::LuaAPI {
    * and initializes the lua state
    */
   void registerAPI(sol::state &lua);
+
+  /*
+   * Runs __init__ scripts
+   */
+  bool initScripts(sol::state &lua, std::shared_ptr<Project> project);
+
+  /*
+   * Runs __post__ scripts
+   */
+  bool postScripts(sol::state &lua, std::shared_ptr<Project> project);
 }

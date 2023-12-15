@@ -104,4 +104,80 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
         "fetch_json", &FrateApi::fetch_json
         );
   }
+
+  bool initScripts(sol::state &lua, std::shared_ptr<Project> project){
+    path script_path = project->path 
+      / (Constants::TEMPLATE_PATH + Constants::INIT_SCRIPTS_PATH);
+
+    if(!std::filesystem::exists(script_path)){
+      warning << "No init scripts found" << " at: " << script_path << std::endl;
+      return false;
+    }
+
+    std::vector<path> scripts = {};
+
+    for(const path& current_path :
+        std::filesystem::recursive_directory_iterator(script_path)){
+      if(current_path.extension() == ".lua"){
+        scripts.push_back(current_path);
+      }
+    }
+    
+
+
+    for(const path& script : scripts){
+
+      lua.set("project", project);
+      if(!std::filesystem::exists(script)){
+        error << "Script not found: " << script << " at: " << script_path << std::endl;
+        return false;
+      }
+      auto result = lua.script_file(script);
+      if(!result.valid()){
+        error << "Error while executing lua script" << std::endl;
+        return false;
+      }
+
+      project = lua.get<std::shared_ptr<Project>>("project");
+
+    }
+    return true;
+  }
+
+  bool postScripts(sol::state &lua, std::shared_ptr<Project> project){
+    path script_path = project->path / 
+      (Constants::TEMPLATE_PATH + Constants::POST_SCRIPTS_PATH);
+
+    if(!std::filesystem::exists(script_path)){
+      warning << "No post scripts found" << " at: " << script_path << std::endl;
+      return false;
+    }
+
+    std::vector<path> scripts = {};
+
+    for(const path& current_path :
+        std::filesystem::recursive_directory_iterator(script_path)){
+      if(current_path.extension() == ".lua"){
+        scripts.push_back(current_path);
+      }
+    }
+
+    for(const path& script : scripts){
+
+      lua.set("project", project);
+
+      if(!std::filesystem::exists(script)){
+        error << "Script not found: " << script << " at path: " << script_path << std::endl;
+        return false;
+      }
+      auto result = lua.script_file(script);
+      if(!result.valid()){
+        error << "Error while executing lua script" << std::endl;
+        return false;
+      }
+
+      project = lua.get<std::shared_ptr<Project>>("project");
+    }
+    return true;
+  }
 }
