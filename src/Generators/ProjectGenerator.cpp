@@ -409,20 +409,14 @@ std::string index_url = static_cast<std::string>(Constants::FRATE_TEMPLATES);
       return false;
     }
 
-    if(!LuaAPI::initScripts(lua, pro)){
-      error << "Error while running init scripts" << std::endl;
-      return false;
-    }
+    LuaAPI::initScripts(lua, pro);
 
     if(!renderTemplate(env, lua,  pro)){
       error << "Error while rendering template to tmp" << std::endl;
       return false;
     }
 
-    if(!LuaAPI::postScripts(lua, pro)){
-      error << "Error while running post scripts" << std::endl;
-      return false;
-    }
+    LuaAPI::postScripts(lua, pro);
 
     pro->save();
 
