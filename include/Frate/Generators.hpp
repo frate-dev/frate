@@ -1,11 +1,16 @@
 #include <memory>
 #include <vector>
 #include "./Command.hpp"
+#include <inja.hpp>
 
 namespace Frate::Generators{
   namespace Project {
     using nlohmann::json;
     using Utils::CLI::Prompt;
+    using nlohmann::json;
+    using std::filesystem::path;
+    using Utils::CLI::Prompt;
+    using inja::Environment;
     json getTemplateIndex();
 
     typedef struct Template {
@@ -14,13 +19,33 @@ namespace Frate::Generators{
       std::string description;
     } Template;
 
-    void from_json(const json& j, Template& t);
+    static void from_json(const json& j, Template& t){
+      t.name = j.at("name").get<std::string>();
+      t.git = j.at("git").get<std::string>();
+      t.description = j.at("description").get<std::string>();
+    }
 
     std::pair<bool, Template> promptForProjectName(json index);
 
     bool create(std::shared_ptr<Command::Project> pro);
 
     bool refresh(std::shared_ptr<Command::Project> pro);
+
+    std::pair<bool, Template> promptForTemplateName(json index);
+
+    bool renderTemplate(
+        Environment &env,
+        std::shared_ptr<Command::Project> pro);
+
+  bool refreshTemplate(Environment &env, std::shared_ptr<Command::Project> pro);
+
+    bool runTemplatePrompts(std::shared_ptr<Command::Project> pro);
+
+    bool downloadTemplate(std::string git_url, path project_path);
+
+    bool loadTemplateConfig(std::shared_ptr<Command::Project> pro);
+
+    bool initializeLua(Environment &env, sol::state &lua, std::shared_ptr<Command::Project> pro);
   }
   namespace GitIgnore{
     bool create(std::shared_ptr<Command::Interface> inter);
