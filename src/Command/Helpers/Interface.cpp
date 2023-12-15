@@ -90,9 +90,9 @@ namespace Frate::Command {
       std::cout << "Skipping prompts" << ENDL;
     }
 
-    if(inter->LoadProjectJson()){
-      inter->project_present = true;
-    }
+    // if(inter->LoadProjectJson()){
+    //   inter->project_present = true;
+    // }
 
     std::string command = inter->args->operator[]("command").as<std::string>();
     std::cout << "Project Path: " << inter->pro->path << ENDL;
@@ -206,41 +206,41 @@ namespace Frate::Command {
     });
 
 
-    bool found_alias = false;
     for(Handler& handler : inter->commands){
       for(std::string& alias : handler.aliases){
         if(alias == command){
-          if(!inter->project_present && handler.requires_project){
-            std::cout << "Error: Project not found and command: " << command << " requires a project" << ENDL;
-            return false;
-          }
+
           if(handler.requires_project){
+
+            //Check if project loads successfully
+            if(!inter->LoadProjectJson()){
+              error <<
+                "Error: Project not found and command: " 
+                << command << " requires a project" << ENDL;
+              return false;
+            }
+
+            //if so refresh the project templates
             Generators::Project::refresh(inter->pro);
-            inter->pro->save();
           }
-          found_alias = true;
+          
+          //Checks if the callback ran successfully
           if(!handler.callback(inter)){
             return false;
           }
+
+          //Save the project if the command has the possibility of changing it
+          if(handler.requires_project){
+            inter->pro->save();
+          }
+
+          return true;
         }
       }
     }
-    if(!found_alias){
-      std::cout << "Error: Command not found: " << command << ENDL;
-      return false;
-    }
-    // for(Handler& handler : inter->commands){
-    //   for(std::string& alias : handler.aliases){
-    //     if(alias == command){
-    //       if(handler.requires_project){
-    //         inter->pro->save();
-    //         Generators::Project::refresh(inter->pro);
-    //         break;
-    //       }
-    //     }
-    //   }
-    // }
 
+    //if we get here we know the command was not found
+    error << "Error: Command not found: " << command << ENDL;
 
     return true;
   }

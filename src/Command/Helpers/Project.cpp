@@ -232,6 +232,10 @@ namespace Frate::Command {
 
     Frate::info << "Loading: " << (pro->path / file_name) << std::endl;
 
+    if(project_present){
+      return true;
+    }
+
     if(!std::filesystem::exists(pro->path / file_name)){
       return false;
     }
@@ -251,6 +255,8 @@ namespace Frate::Command {
       Utils::debug(e.what());
       return false;
     }
+
+    project_present = true;
 
     return true;
   };

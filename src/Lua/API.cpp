@@ -75,7 +75,6 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
             exit(1);
           }
           
-          info << "Executing lua script at: " << script_path << std::endl;
           //lua.set("global", global_table);
           auto result = lua.script_file(script_path);
 
