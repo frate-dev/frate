@@ -216,6 +216,7 @@ namespace Frate::Command {
           }
           if(handler.requires_project){
             Generators::Project::refresh(inter->pro);
+            inter->pro->save();
           }
           found_alias = true;
           if(!handler.callback(inter)){
@@ -228,17 +229,17 @@ namespace Frate::Command {
       std::cout << "Error: Command not found: " << command << ENDL;
       return false;
     }
-    for(Handler& handler : inter->commands){
-      for(std::string& alias : handler.aliases){
-        if(alias == command){
-          if(handler.requires_project){
-            inter->pro->save();
-            Generators::Project::refresh(inter->pro);
-            break;
-          }
-        }
-      }
-    }
+    // for(Handler& handler : inter->commands){
+    //   for(std::string& alias : handler.aliases){
+    //     if(alias == command){
+    //       if(handler.requires_project){
+    //         inter->pro->save();
+    //         Generators::Project::refresh(inter->pro);
+    //         break;
+    //       }
+    //     }
+    //   }
+    // }
 
 
     return true;
@@ -274,13 +275,12 @@ namespace Frate::Command {
           if(!handler.callback(shared_from_this())){
             getHelpString(handler);
             return false;
-          }else{
-            if(handler.requires_project){
-              pro->save();
-              Generators::Project::refresh(pro);
-            }
-            return true;
           }
+          if(handler.requires_project){
+            pro->save();
+            Generators::Project::refresh(pro);
+          }
+          return true;
         }
       }
     }

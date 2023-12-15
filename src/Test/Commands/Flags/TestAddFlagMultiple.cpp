@@ -9,7 +9,6 @@ namespace Tests::Command {
     if(!testNew()) return false;
 
 
-    std::cout << "Testing add flags command normal conditions" << std::endl;
     auto [failed, inter] = init("frate add flags '-g -O3'");
 
     if(failed) return false;

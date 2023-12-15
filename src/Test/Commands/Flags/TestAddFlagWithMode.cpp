@@ -4,12 +4,11 @@
 
 namespace Tests::Command {
   bool testAddFlagsWithMode(){
-    std::cout << "Testing add flags command" << std::endl;
+    std::cout << "Testing add flags command with a mode specified" << std::endl;
     if(!testNew()){
       Frate::error << "Failed to create new project" << std::endl;
       return false;
     }
-    std::cout << "Testing add flags command normal conditions" << std::endl;
 
     auto [failed, inter] = init("frate add flags -m Release '-O3'");
     if (failed) {

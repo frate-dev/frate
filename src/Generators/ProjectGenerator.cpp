@@ -153,23 +153,11 @@ std::string index_url = static_cast<std::string>(Constants::FRATE_TEMPLATES);
     return true;
   }
 
-  bool refreshTemplate(Environment &env, sol::state &lua, std::shared_ptr<Command::Project> pro) {
+  bool refreshTemplate(Environment &env, std::shared_ptr<Command::Project> pro) {
     info << "Refreshing template" << std::endl;
     std::vector<path> paths_to_refresh{
       pro->path / "template/CMakeLists.txt.inja",
     };
-
-    LuaAPI::registerAPI(lua);
-
-    if(!LuaAPI::registerProject(lua, pro)){
-      error << "Error while registering project" << std::endl;
-      return false;
-    }
-
-    if(!LuaAPI::registerProjectScripts(env, lua,pro->path / "template/scripts", pro)){
-      error << "Error while registering project scripts" << std::endl;
-      return false;
-    }
 
     for(const path& current_p: paths_to_refresh){
       std::string rendered_file = env.render_file(current_p, pro->toJson());
@@ -247,7 +235,6 @@ std::string index_url = static_cast<std::string>(Constants::FRATE_TEMPLATES);
 
   bool renderTemplate(
       Environment &env,
-      sol::state &lua,
       std::shared_ptr<Command::Project> pro){
 
 
@@ -411,7 +398,7 @@ std::string index_url = static_cast<std::string>(Constants::FRATE_TEMPLATES);
 
     LuaAPI::initScripts(lua, pro);
 
-    if(!renderTemplate(env, lua,  pro)){
+    if(!renderTemplate(env,  pro)){
       error << "Error while rendering template to tmp" << std::endl;
       return false;
     }
@@ -427,14 +414,15 @@ std::string index_url = static_cast<std::string>(Constants::FRATE_TEMPLATES);
     Environment env;
     sol::state lua;
 
-    LuaAPI::initScripts(lua, pro);
 
     if(!initializeLua(env, lua, pro)){
       error << "Error while initializing lua" << std::endl;
       return false;
     }
 
-    if(!refreshTemplate(env, lua,  pro)){
+    LuaAPI::initScripts(lua, pro);
+
+    if(!refreshTemplate(env,pro)){
       error << "Error while rendering template to tmp" << std::endl;
       return false;
     }

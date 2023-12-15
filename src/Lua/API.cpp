@@ -61,7 +61,9 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
             } else if (arg->is_boolean()) {
               args_table.add(arg->get<bool>());
             } else {
-              error << "Error while executing lua script" << std::endl;
+              error 
+              << "Error while converting arguments in inja callback for script at: " 
+              << script_path << std::endl;
               exit(1);
             }
           }
@@ -72,14 +74,15 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
                   << std::endl;
             exit(1);
           }
-
+          
+          info << "Executing lua script at: " << script_path << std::endl;
           //lua.set("global", global_table);
           auto result = lua.script_file(script_path);
 
           if (result.valid()) {
             return result;
           } else {
-            error << "Error while executing lua script" << std::endl;
+            error << "Error while executing lua script at: " << script_path << std::endl;
             exit(1);
           }
         });
@@ -110,31 +113,31 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
       / (Constants::TEMPLATE_PATH + Constants::INIT_SCRIPTS_PATH);
 
     if(!std::filesystem::exists(script_path)){
-      warning << "No init scripts found" << " at: " << script_path << std::endl;
+      warning << "No init scripts found at: " << script_path << std::endl;
       return false;
     }
 
-    std::vector<path> scripts = {};
+    std::vector<path> script_paths = {};
 
     for(const path& current_path :
         std::filesystem::recursive_directory_iterator(script_path)){
       if(current_path.extension() == ".lua"){
-        scripts.push_back(current_path);
+        script_paths.push_back(current_path);
       }
     }
     
 
 
-    for(const path& script : scripts){
+    for(const path& current_script_path : script_paths){
 
       lua.set("project", project);
-      if(!std::filesystem::exists(script)){
-        error << "Script not found: " << script << " at: " << script_path << std::endl;
+      if(!std::filesystem::exists(current_script_path)){
+        error << "Script not found: " << current_script_path << " at: " << script_path << std::endl;
         return false;
       }
-      auto result = lua.script_file(script);
+      auto result = lua.script_file(current_script_path);
       if(!result.valid()){
-        error << "Error while executing lua script" << std::endl;
+        error << "Error while executing lua script at: " << current_script_path << std::endl;
         return false;
       }
 

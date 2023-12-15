@@ -175,7 +175,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
   target_link_libraries(${PROJECT_NAME} PRIVATE cpptrace)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
   message("Test mode")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g -O0 -Wextra -Wpedantic -Wall")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g -O0 -Wextra -Wpedantic -Wall -fno-omit-frame-pointer")
   CPMAddPackage(
     "gh:catchorg/Catch2@3.4.0"
   )
