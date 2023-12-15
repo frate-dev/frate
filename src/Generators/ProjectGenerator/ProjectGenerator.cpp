@@ -9,6 +9,11 @@
 #include <git2/clone.h>
 
 namespace Frate::Generators::Project {
+  void from_json(const json& j, Template& t){
+    t.name = j.at("name").get<std::string>();
+    t.git = j.at("git").get<std::string>();
+    t.description = j.at("description").get<std::string>();
+  }
   json getTemplateIndex() {
     std::cout << "Getting Template Index" << std::endl;
     std::string index_url = static_cast<std::string>(Constants::FRATE_TEMPLATES);
