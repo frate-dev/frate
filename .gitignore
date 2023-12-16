@@ -5,6 +5,7 @@ CPM_modules/*
 .cmake
 Makefile
 build/*
+build/.*
 DartConfiguration.tcl
 config.toml
 CMakeFiles
