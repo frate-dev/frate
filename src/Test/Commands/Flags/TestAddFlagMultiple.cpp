@@ -15,18 +15,18 @@ namespace Tests::Command {
 
     if(inter->pro->flags.size() != 2){
       
-      Utils::error << "Failed to add flags project wrong number of flags" << std::endl;
+      Frate::Utils::error << "Failed to add flags project wrong number of flags" << std::endl;
       return false;
     }
 
     if(inter->pro->flags[0] != "-g"){
       
-      Utils::error << "Failed to add flags project" << std::endl;
+      Frate::Utils::error << "Failed to add flags project" << std::endl;
       return false;
     }
     if(inter->pro->flags[1] != "-O3"){
       
-      Utils::error << "Failed to add flags project" << std::endl;
+      Frate::Utils::error << "Failed to add flags project" << std::endl;
       return false;
     }
 

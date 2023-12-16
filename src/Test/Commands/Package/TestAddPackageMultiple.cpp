@@ -40,7 +40,7 @@ bool Tests::Command::testAddPackageMultiple(std::vector<std::string> packages) {
 
   for(auto &p : package_results){
     if(!p.second){
-      Utils::error << "Failed to add package : could not find " << p.first << " in frate-project.json" << std::endl;
+      Frate::Utils::error << "Failed to add package : could not find " << p.first << " in frate-project.json" << std::endl;
       return false;
     }
   }

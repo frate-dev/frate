@@ -23,7 +23,7 @@ namespace Tests::Command {
     for(auto &dep : config["dependencies"]){
       for(auto &p : packages){
         if(dep["name"] == p){
-          Utils::error << "Failed to remove package : found " << p << " in frate-project.json" << std::endl;
+          Frate::Utils::error << "Failed to remove package : found " << p << " in frate-project.json" << std::endl;
           return false;
         }
       }

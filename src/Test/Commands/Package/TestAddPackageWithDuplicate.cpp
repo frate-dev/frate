@@ -4,7 +4,7 @@
 namespace Tests::Command {
 
   bool testAddPackageWithDuplicate(std::string package_name){
-    Utils::info << "Testing add package command with duplicate package" << std::endl;
+    Frate::Utils::info << "Testing add package command with duplicate package" << std::endl;
     if(!testNew()) return false;
 
     auto [failed, inter] = init("frate add package " + package_name + " -l");

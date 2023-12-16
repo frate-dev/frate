@@ -7,7 +7,7 @@ bool Tests::Command::testAddPackage(std::string package_name) {
   auto [failed, inter] = init("frate add p "+package_name+" -l");
 
   if(failed){
-    Utils::error << "Failed to add package : could not initialize interface" << std::endl;
+    Frate::Utils::error << "Failed to add package : could not initialize interface" << std::endl;
     return false;
   }
 
@@ -17,12 +17,12 @@ bool Tests::Command::testAddPackage(std::string package_name) {
     config_file >> config;
     if(config["dependencies"].size() != 1){
       
-      Utils::error << "Failed to add package : no pacakge add dected frate-project.json" << std::endl;
+      Frate::Utils::error << "Failed to add package : no pacakge add dected frate-project.json" << std::endl;
       return false;
     }
   }catch(...){
     
-    Utils::error << "Failed to add package : could not open file - file possibly never created" << std::endl;
+    Frate::Utils::error << "Failed to add package : could not open file - file possibly never created" << std::endl;
     return false;
   }
 

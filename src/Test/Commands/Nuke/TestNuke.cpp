@@ -7,14 +7,14 @@ namespace Tests::Command {
     std::cout << "Testing nuke command" << std::endl;
     
     if(!testNew()){
-      Utils::error << "Failed to create new project" << std::endl;
+      Frate::Utils::error << "Failed to create new project" << std::endl;
       return false;
     }
     std::cout << "Testing nuke command normal conditions" << std::endl;
     auto [failed, inter] = init("frate nuke",false);
 
     if(failed){
-      Utils::error << "Failed to init nuke command" << std::endl;
+      Frate::Utils::error << "Failed to init nuke command" << std::endl;
       return false;
     }
 
@@ -24,11 +24,10 @@ namespace Tests::Command {
     }
 
     if(count != 0){
-      Utils::error << "Failed to nuke project had: " << count << " files left" << std::endl;
+      Frate::Utils::error << "Failed to nuke project had: " << count << " files left" << std::endl;
       
       return false;
     }
-
     
     return true;
   }
