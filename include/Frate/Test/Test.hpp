@@ -64,7 +64,6 @@ namespace Tests::Command {
    */
   bool testAddMode(std::string mode_name);
   bool testAddDuplicateMode(std::string mode_name);
-
   bool testRemoveMode(std::string mode_name);
 
   /* --------------------

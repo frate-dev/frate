@@ -60,8 +60,6 @@ namespace Frate::Generators::Project {
     std::filesystem::rename(project_path / "template/frate-callbacks/scripts",
         project_path / "template/scripts");
 
-    path tmp_path = Utils::copyToTmpPath(project_path / "template/frate-callbacks",
-        "frate-callbacks-");
 
     std::filesystem::remove_all(project_path / "template/frate-callbacks");
 

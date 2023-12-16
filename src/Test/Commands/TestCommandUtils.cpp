@@ -12,7 +12,7 @@ namespace Tests::Command {
   extern Frate::Utils::Warning warning =Frate::Utils::Warning();
 
   std::filesystem::path genTestDirectory(){
-    Utils::info << "Generating test directory" << std::endl;
+    Frate::Utils::info << "Generating test directory" << std::endl;
     std::string random_string = genBase64String(10);
     std::filesystem::path test_path =
       std::filesystem::path("/tmp/frate-test-" + random_string);
@@ -24,14 +24,14 @@ namespace Tests::Command {
     }
 
     std::filesystem::create_directory(test_path);
-    Utils::info << "Test directory generated at" << test_path << std::endl;
+    Frate::Utils::info << "Test directory generated at" << test_path << std::endl;
     return test_path;
   }
   void cleanUp(path test_path) {
     try {
       std::filesystem::remove_all(test_path);
     } catch (...) {
-      Utils::error << "Failed to clean up test directory" << std::endl;
+      Frate::Utils::error << "Failed to clean up test directory" << std::endl;
     }
   }
   std::vector<std::string> parseArguments(const std::string& input) {
@@ -81,7 +81,7 @@ namespace Tests::Command {
           std::make_shared<Frate::Command::Interface>(*inter))) {
 
 
-      Utils::error << "Failed to run command: " << command << " : could not execute" << std::endl;
+      Frate::Utils::error << "Failed to run command: " << command << " : could not execute" << std::endl;
       return std::make_pair(true,inter);
     }
     if(check_config){
@@ -89,23 +89,23 @@ namespace Tests::Command {
       nlohmann::json config;
 
       if(!std::filesystem::exists(test_path / "frate-project.json")){
-        Utils::error << "Failed to run command : " << command << " : no config file" << std::endl;
+        Frate::Utils::error << "Failed to run command : " << command << " : no config file" << std::endl;
         return std::make_pair(true,inter);
       }
 
 
       // try {
-      //   Utils::info << "attempting to read config file" << std::endl;
+      //   Frate::Utilsinfo << "attempting to read config file" << std::endl;
       //   config_file >> config;
       // } catch (...) {
-      //   Utils::error << 
+      //   Frate::Utils::error << 
       //     "Failed to add package : could not open file - file possibly never created" 
       //     << std::endl;
       //   return std::make_pair(true,inter);
       // }
 
       if(!validateProjectJson(inter)){
-        Utils::error << "Failed to run command : " << command << " : invalid json" << std::endl;
+        Frate::Utils::error << "Failed to run command : " << command << " : invalid json" << std::endl;
         return std::make_pair(true,inter);
       }
     }

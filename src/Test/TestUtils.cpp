@@ -3,7 +3,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <vector>
 #include <iostream>
-#include <Frate/Frate.hpp>
+#include <Frate/Utils/Logging.hpp>
 
 
 namespace Tests::Utils {
@@ -26,7 +26,7 @@ namespace Tests::Utils {
 
     for(size_t i = 0; i < mock_strings.size() ; i++){
       if(!(Frate::Utils::split(mock_strings[i],' ').size() == expected_results[i])){
-        Utils::info << "Expected: " << expected_results[i] << "Got: " << Frate::Utils::split(mock_strings[i],' ').size() << std::endl;
+        Frate::Utils::info << "Expected: " << expected_results[i] << "Got: " << Frate::Utils::split(mock_strings[i],' ').size() << std::endl;
         return false;
       }
     }
@@ -49,7 +49,7 @@ namespace Tests::Utils {
     }
     for(size_t i = 0; i < mock_strings.size() ; i ++){
       if(mock_strings[i] != expected_strings[i]){
-        Utils::info << "Expected: " << expected_strings[i] << " Got: " << mock_strings[i] << std::endl;
+        Frate::Utils::info << "Expected: " << expected_strings[i] << " Got: " << mock_strings[i] << std::endl;
         return false;
       }
     }

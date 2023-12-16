@@ -3,7 +3,7 @@
 #ifdef TEST
 
 bool Tests::Command::testAddMode(std::string mode_name){
-  Utils::info << "Testing add mode command normal conditions" << std::endl;
+  Frate::Utils::info << "Testing add mode command normal conditions" << std::endl;
   if(!testNew()) return false;
 
   auto [failed, inter] = init("frate add mode " + mode_name);
@@ -18,7 +18,7 @@ bool Tests::Command::testAddMode(std::string mode_name){
     }
   }
   
-  Utils::error << "Failed to add mode : could not find " << mode_name << " in frate-project.json" << std::endl;
+  Frate::Utils::error << "Failed to add mode : could not find " << mode_name << " in frate-project.json" << std::endl;
   return true;
 }
 #endif
