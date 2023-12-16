@@ -29,6 +29,7 @@ namespace Frate::Command::Packages {
     std::string version = ""; 
     std::string git = "";
     std::string target_link = "";
+
     //TODO: Add support for multiple dependencies
     if (inter->args->count("args") == 0) {
       Frate::error << "No packages specified" << std::endl;

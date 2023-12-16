@@ -18,13 +18,13 @@ namespace Frate::Command::Toolchains{
     }
     return true;
   }
-  bool fuckit(){
-    return false;
-  };
   bool add(std::shared_ptr<Interface> inter){
-    Prompt *toolchain_prompt = new Prompt("Toolchain");
-    toolchain_prompt->Run();
-    auto [valid, toolchain] = toolchain_prompt->Get<std::string>();
+    Prompt toolchain_prompt("Toolchain");
+    for (Command::Toolchain::CompileTarget toolchain : Command::Toolchain::CompileTargets){
+      toolchain_prompt.AddOption(toolchain.triple);
+    }
+    toolchain_prompt.PrintValidOptions().Run();
+    auto [valid, toolchain] = toolchain_prompt.Get<std::string>();
     if(!valid){
       std::cout << "Invalid toolchain" << std::endl;
       return false;

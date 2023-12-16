@@ -6,18 +6,17 @@ namespace Frate::Command::FTP {
   using namespace Utils::CLI::Ansi;
   bool run(std::shared_ptr<Interface> inter) {
 
-    Prompt *prompt = new Prompt(
+    Prompt prompt(
         "Are you sure you would like to delete the entire project?"
         );
 
-    prompt->Color(RED)->IsBool()->Run();
-    auto [valid, value] = prompt->Get<bool>();
+    prompt.Color(RED).IsBool().Run();
+    auto [valid, value] = prompt.Get<bool>();
     if (!valid || !value) {
       Frate::error << "Aborting..." << std::endl;
       return false;
     }
 
-    delete prompt;
 
     for (const directory_entry &p : directory_iterator(inter->pro->path)  
           | std::views::filter(

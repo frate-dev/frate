@@ -16,37 +16,37 @@ namespace Frate::Utils::CLI {
     this->input = default_input;
     this->color = Ansi::GREEN;
   }
-  Prompt* Prompt::AddOption(std::string option){
+  Prompt& Prompt::AddOption(std::string option){
     this->options.push_back(option);
-    return this;
+    return *this;
   }
-  Prompt* Prompt::AddOption(int option){
+  Prompt& Prompt::AddOption(int option){
     this->options.push_back(std::to_string(option));
-    return this;
+    return *this;
   }
-  Prompt* Prompt::AddOption(float option){
+  Prompt& Prompt::AddOption(float option){
     this->options.push_back(std::to_string(option));
-    return this;
+    return *this;
   }
-  Prompt* Prompt::AddOption(size_t option){
+  Prompt& Prompt::AddOption(size_t option){
     this->options.push_back(std::to_string(option));
-    return this;
+    return *this;
   }
-  Prompt* Prompt::MaxLength(int max_length){
+  Prompt& Prompt::MaxLength(int max_length){
     this->max_length = max_length;
-    return this;
+    return *this;
   }
-  Prompt* Prompt::Options(std::vector<std::string> options){
+  Prompt& Prompt::Options(std::vector<std::string> options){
     this->options = options;
-    return this;
+    return *this;
   }
-  Prompt* Prompt::Color(std::string color){
+  Prompt& Prompt::Color(std::string color){
     this->color = color;
-    return this;
+    return *this;
   }
-  Prompt* Prompt::Validator(std::function<bool(std::string)> validator){
+  Prompt& Prompt::Validator(std::function<bool(std::string)> validator){
     this->validator = validator;
-    return this;
+    return *this;
   }
   bool Prompt::has_options(){
     return options.size() > 0;
@@ -289,17 +289,17 @@ namespace Frate::Utils::CLI {
       }
     }
   }
-  Prompt* Prompt::IsBool(){
+  Prompt& Prompt::IsBool(){
     this->is_bool = true;
-    return this;
+    return *this;
   }
-  Prompt* Prompt::ExitOnFailure(){
+  Prompt& Prompt::ExitOnFailure(){
     this->exit_on_failure = true;
-    return this;
+    return *this;
   }
-  Prompt* Prompt::PrintValidOptions(){
+  Prompt& Prompt::PrintValidOptions(){
     print_valid_options = true;
-    return this;
+    return *this;
   }
   bool Prompt::Run(){
     get_input();

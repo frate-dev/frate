@@ -25,12 +25,12 @@ namespace Frate::Command::Packages {
      packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
    }
    std::cout << packageList->Build() << std::endl;
-   Prompt *prompt = new Prompt("Select a package to install: ");
+   Prompt prompt("Select a package to install: ");
    for(size_t i = 0; i < searchResults.size(); i++){
-     prompt->AddOption(i);
+     prompt.AddOption(i);
    }
-   prompt->Run();
-   auto [valid,index] = prompt->Get<int>();
+   prompt.Run();
+   auto [valid,index] = prompt.Get<int>();
 
    if(!valid){
      std::cout << "Invalid option" << std::endl;
@@ -51,15 +51,15 @@ namespace Frate::Command::Packages {
 
     std::cout << list->Build() << std::endl;
 
-    Prompt *prompt = new Prompt("Select a version to install: ");
+    Prompt prompt("Select a version to install: ");
 
     for(size_t i = 0; i < chosen_package.versions.size(); i++){
-      prompt->AddOption(i);
+      prompt.AddOption(i);
     }
 
-    prompt->Run();
+    prompt.Run();
 
-    auto [valid, index] = prompt->Get<int>();
+    auto [valid, index] = prompt.Get<int>();
 
     if(!valid){
       std::cout << "Invalid option" << std::endl;
