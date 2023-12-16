@@ -20,19 +20,19 @@ namespace Frate::Command::Author {
     // Utils::Info info;
     // Utils::Error error;
     if(inter->args->count("authors") == 0){
-      info << "No authors specified" << std::endl;
+      Utils::info << "No authors specified" << std::endl;
       return false;
     }
     authors = inter->args->operator[]("authors").as<std::vector<std::string>>();
     for (std::string author : authors) {
       for(auto current_author : inter->pro->authors){
         if(current_author == author){
-          Frate::error << "Author " << author << " already exists" << std::endl;
+          Utils::error << "Author " << author << " already exists" << std::endl;
           return false;
         }
       }
       inter->pro->authors.push_back(author);
-      Frate::info << "Added author " << author << std::endl;
+      Utils::info << "Added author " << author << std::endl;
     }
     inter->pro->save();
     return true;
@@ -41,7 +41,7 @@ namespace Frate::Command::Author {
     options(inter);
     std::vector<std::string> authors;
     if(inter->args->count("authors") == 0){
-      info << "No authors specified" << std::endl;
+      Utils::info << "No authors specified" << std::endl;
       return false;
     }
     authors = inter->args->operator[]("authors").as<std::vector<std::string>>();
@@ -53,12 +53,12 @@ namespace Frate::Command::Author {
                 inter->pro->authors.begin(), inter->pro->authors.end(), author
                 ), inter->pro->authors.end()
               );
-          info << "Removed author " << author << std::endl;
+          Utils::info << "Removed author " << author << std::endl;
           inter->pro->save();
           return true;
         }
       }
-      Frate::error << "Author " << author << " does not exist" << std::endl;
+      Utils::error << "Author " << author << " does not exist" << std::endl;
       return false;
     }
     return true;

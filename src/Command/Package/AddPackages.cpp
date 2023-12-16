@@ -11,14 +11,14 @@ namespace Frate::Command::Packages {
 
 
   bool addPackageToMode(std::shared_ptr<Interface> inter, Package package, std::string selected_mode){
-    Frate::info << "Adding package to mode " << selected_mode << std::endl;
+    Utils::info << "Adding package to mode " << selected_mode << std::endl;
     for(Mode &mode : inter->pro->modes){
       if(selected_mode == mode.name){
         mode.dependencies.push_back(package);
         return true;
       }
     }
-    Frate::error << "Mode " << selected_mode << " not found";
+    Utils::error << "Mode " << selected_mode << " not found";
     return false;
   }
   bool add(std::shared_ptr<Interface> inter) {
@@ -32,7 +32,7 @@ namespace Frate::Command::Packages {
 
     //TODO: Add support for multiple dependencies
     if (inter->args->count("args") == 0) {
-      Frate::error << "No packages specified" << std::endl;
+      Utils::error << "No packages specified" << std::endl;
       return false;
     }
     if (inter->args->count("mode") != 0){
@@ -54,19 +54,19 @@ namespace Frate::Command::Packages {
 
     std::vector<std::string> package_names = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string package_name : package_names) { 
-      info <<  "Searching for " << package_name << std::endl;
+      Utils::info <<  "Searching for " << package_name << std::endl;
       
       auto [exact, exact_package] = getExact(package_name);
       Package chosen_package;
 
       if(!exact){
-        Frate::error << "No exact match found" << std::endl;
+        Utils::error << "No exact match found" << std::endl;
         chosen_package = promptSearchResults(package_name);
       }else{
-        Frate::info << "Exact match found" << std::endl;
+        Utils::info << "Exact match found" << std::endl;
         chosen_package = exact_package;
       }
-      Frate::info << "Installing " << chosen_package.name << std::endl;
+      Utils::info << "Installing " << chosen_package.name << std::endl;
 
 
       std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
@@ -78,7 +78,7 @@ namespace Frate::Command::Packages {
       }
       else{
         if(chosen_package.versions.size() == 0){
-          Frate::error << "No versions found" << std::endl;
+          Utils::error << "No versions found" << std::endl;
           return false;
         }
         version = chosen_package.versions[0];
@@ -86,13 +86,13 @@ namespace Frate::Command::Packages {
       }
 
       if(dependenciesConflict(inter->pro->dependencies, chosen_package.name)){
-        Frate::error << "Package already installed" << std::endl;
+        Utils::error << "Package already installed" << std::endl;
         return false;
       }
 
       if(mode != ""){
         if(!addPackageToMode(inter, chosen_package, mode)){
-          error << "Failed to add package to mode" << std::endl;
+          Utils::error << "Failed to add package to mode" << std::endl;
           return false;
         }
       }

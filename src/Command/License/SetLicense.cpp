@@ -55,7 +55,7 @@ namespace Frate::Command::License {
     auto [valid, index] = license_prompt.get<int>();
 
     if(!valid){
-      Frate::error << "Invalid license" << std::endl;
+      Utils::error << "Invalid license" << std::endl;
       return selected_license;
     }
   
@@ -81,7 +81,7 @@ namespace Frate::Command::License {
     name_prompt.run();
     auto [valid, org] = name_prompt.get<std::string>();
     if(!valid){
-      Frate::error << "Invalid name" << std::endl;
+      Utils::error << "Invalid name" << std::endl;
       return;
     }
     Utils::replaceKey(license, "[fullname]", org);
@@ -94,7 +94,7 @@ namespace Frate::Command::License {
   bool set(std::shared_ptr<Interface> inter){
     std::string query;
     if(inter->args->count("args") == 0){
-      Frate::error << "No license specified" << std::endl;
+      Utils::error << "No license specified" << std::endl;
       return false;
     }
     query = inter->args->operator[]("args").as<std::string>();
@@ -105,7 +105,7 @@ namespace Frate::Command::License {
     
     fillLicense(inter, full_license);
     if(std::filesystem::exists(inter->pro->path / "LICENSE")){
-      Frate::error << "A license already exists in this project" << std::endl;
+      Utils::error << "A license already exists in this project" << std::endl;
       Utils::CLI::Prompt overwrite_prompt("Overwrite existing license?");
       overwrite_prompt.run();
       overwrite_prompt.isBool();
@@ -116,15 +116,15 @@ namespace Frate::Command::License {
 
     inter->pro->license = full_license.spdx_id;
 
-    Frate::info << "Writing license to " << inter->pro->path / "LICENSE" << std::endl;
-    Frate::info << "License: " << full_license.name << std::endl;
+    Utils::info << "Writing license to " << inter->pro->path / "LICENSE" << std::endl;
+    Utils::info << "License: " << full_license.name << std::endl;
 
     try{
       std::ofstream license_file(inter->pro->path / "LICENSE");
       license_file << full_license.body;
     }catch(std::exception& e){
-      Frate::error << "Failed to write license to file" << std::endl;
-      Frate::error << e.what() << std::endl;
+      Utils::error << "Failed to write license to file" << std::endl;
+      Utils::error << e.what() << std::endl;
       return false;
     }
 

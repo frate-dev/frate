@@ -14,7 +14,7 @@ namespace Frate::Command::Keywords{
     for(auto& keyword : keywords){
       for(std::string& current_keyword : inter->pro->keywords){
         if(current_keyword == keyword){
-          Frate::error << "Keyword already exists" << std::endl;
+          Utils::error << "Keyword already exists" << std::endl;
           return false;
         }
       }

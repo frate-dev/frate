@@ -1,7 +1,7 @@
 #ifdef TEST
 #include <Frate/Test/Test.hpp>
 bool Tests::Command::testRemoveFlagsSingle(std::string name){
-  info << "Testing remove flags command normal conditions" << std::endl;
+  Utils::info << "Testing remove flags command normal conditions" << std::endl;
   if(!testNew()){
     return false;
   }

@@ -14,7 +14,7 @@ namespace Frate::Generators::Project {
     auto [success,template_id] = template_name_prompt.get<std::string>();
 
     if(!success){
-      error << "Error while getting template name" << std::endl;
+      Utils::error << "Error while getting template name" << std::endl;
       return {false, Template()};
     }
 
@@ -27,7 +27,7 @@ namespace Frate::Generators::Project {
     }
 
     if(templ.name.empty()){
-      error << "Template not found" << std::endl;
+      Utils::error << "Template not found" << std::endl;
       return {false, Template()};
     }
     return {true, templ};
@@ -48,7 +48,7 @@ namespace Frate::Generators::Project {
       prompt.run();
       auto [valid, value] = prompt.get<std::string>();  
       if(!valid){
-        error << "Error while getting prompt: " << key << std::endl;
+        Utils::error << "Error while getting prompt: " << key << std::endl;
         return false;
       }
       pro->prompts[key].value = value;

@@ -37,7 +37,7 @@ namespace Frate::Command{
       try {
         create_directories(string(std::getenv("HOME")) + "/.local/frate");
       }catch(std::exception& e){
-        Frate::error << "Failed to create index file" << ENDL;
+        Utils::error << "Failed to create index file" << ENDL;
         Utils::debug(e.what());
         exit(-1);
       }
@@ -74,7 +74,7 @@ namespace Frate::Command{
         create_directories(string(std::getenv("HOME")) + "/.local/frate");
 
       }catch(std::exception& e){
-        Frate::error << "Failed to create index file" << ENDL;
+        Utils::error << "Failed to create index file" << ENDL;
         Utils::debug(e.what());
         return false;
 

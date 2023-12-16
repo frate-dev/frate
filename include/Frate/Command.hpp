@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cxxopts.hpp>
 #include <Frate/Utils/CLI.hpp>
+#include <Frate/Utils/Logging.hpp>
 #include <Frate/Frate.hpp>
 
 #define ENDL "\n"

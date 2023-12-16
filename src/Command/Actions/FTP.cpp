@@ -13,13 +13,13 @@ namespace Frate::Command::FTP {
     prompt.setColor(RED).isBool().run();
     auto [valid, value] = prompt.get<bool>();
     if (!valid || !value) {
-      Frate::error << "Aborting..." << std::endl;
+      Utils::error << "Aborting..." << std::endl;
       return false;
     }
 
     path tmp_path = Utils::copyToTmpPath(inter->pro->path,"nuke-delete-frate-project-");
 
-    info << "Deleting project" << ENDL;
+    Utils::info << "Deleting project" << ENDL;
 
     for (const directory_entry &p : 
         directory_iterator(inter->pro->path) | std::views::filter(
@@ -29,13 +29,13 @@ namespace Frate::Command::FTP {
       try{
         if(std::filesystem::is_directory(path)){
           std::filesystem::remove_all(path);
-          if(verbose_mode) Frate::info << "Deleting: " << path << std::endl;
+          if(verbose_mode) Utils::info << "Deleting: " << path << std::endl;
         }else{
           std::filesystem::remove(path);
-          if(verbose_mode) Frate::info << "Deleting: " << path << std::endl;
+          if(verbose_mode) Utils::info << "Deleting: " << path << std::endl;
         }
       }catch(std::exception &e){
-        Frate::error << "Failed to delete: " << path << std::endl;
+        Utils::error << "Failed to delete: " << path << std::endl;
         Utils::debug(e.what());
         return false;
       }

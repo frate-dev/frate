@@ -5,7 +5,7 @@
 namespace Frate::Generators::Project {
   using inja::Environment;
   bool refreshTemplate(Environment &env, std::shared_ptr<Command::Project> pro) {
-    info << "Refreshing template" << std::endl;
+    Utils::info << "Refreshing template" << std::endl;
     std::vector<path> paths_to_refresh{
       pro->path / "template/CMakeLists.txt.inja",
     };
@@ -19,7 +19,7 @@ namespace Frate::Generators::Project {
       try{
         file.open(new_file);
       }catch(...){
-        error << "Error while opening file: " << new_file << std::endl;
+        Utils::error << "Error while opening file: " << new_file << std::endl;
         return false;
       }
       file << rendered_file;

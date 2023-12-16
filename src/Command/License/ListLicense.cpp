@@ -10,7 +10,7 @@ bool list(std::shared_ptr<Interface> inter) {
   json github_licenses = Utils::fetchJson("https://api.github.com/licenses");
 
   for (License license : github_licenses) {
-    info << license.name << std::endl;
+    Utils::info << license.name << std::endl;
   }
 
   return true;

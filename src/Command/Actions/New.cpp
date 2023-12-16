@@ -60,7 +60,7 @@ bool options(std::shared_ptr<Interface> inter) {
 
   bool checkForProject(std::shared_ptr<Interface> inter){
     if(std::filesystem::exists(inter->pro->path / "frate-project.json")){
-      Frate::error << "Project already exists" << ENDL;
+      Utils::error << "Project already exists" << ENDL;
       return true;
     }
     return false;
@@ -127,7 +127,7 @@ bool options(std::shared_ptr<Interface> inter) {
 
         for(const auto& entry : std::filesystem::directory_iterator(inter->pro->path)){
           if(entry.path().filename() != "frate"){
-            info << "Removing " << entry.path() << ENDL;
+            Utils::info << "Removing " << entry.path() << ENDL;
             std::filesystem::remove_all(entry.path());
           }
         }
@@ -136,7 +136,7 @@ bool options(std::shared_ptr<Interface> inter) {
       }else{
 
 
-        error 
+        Utils::error 
           << "Aborting: can't initialize a new project on top of a existing one" << ENDL;
         return false;
 
@@ -157,8 +157,8 @@ bool options(std::shared_ptr<Interface> inter) {
 
     //downloadCMakeListsTemplate(inter);
     if(defaults){
-      Frate::info << "Using defaults" << ENDL;
-      Frate::info << "Creating project" << ENDL;
+      Utils::info << "Using defaults" << ENDL;
+      Utils::info << "Creating project" << ENDL;
       if(inter->pro->type.empty()){
         inter->pro->type = "executable";
       }
@@ -166,8 +166,8 @@ bool options(std::shared_ptr<Interface> inter) {
         return false;
       }
     }else{
-      Frate::info << "Creating project" << ENDL;
-      Frate::info << "Creating frate-project.json" << ENDL;
+      Utils::info << "Creating project" << ENDL;
+      Utils::info << "Creating frate-project.json" << ENDL;
       inter->pro->type = "";
       Wizard::Project(inter->pro);
       if(!createProjectWizard(inter)){

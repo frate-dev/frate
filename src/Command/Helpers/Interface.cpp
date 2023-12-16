@@ -83,7 +83,7 @@ namespace Frate::Command {
       exit(0);
     }
     if(inter->args->count("verbose")){
-      verbose_mode = true;
+      Utils::verbose_mode = true;
       std::cout << "Verbose mode enabled" << ENDL;
     }
     if(inter->args->count("confirm-all")){
@@ -236,7 +236,7 @@ namespace Frate::Command {
     }
 
     //if we get here we know the command was not found
-    error << "Error: Command not found: " << command << ENDL;
+    Utils::error << "Error: Command not found: " << command << ENDL;
 
     return true;
   }
@@ -261,11 +261,11 @@ namespace Frate::Command {
       for(std::string alias : handler.aliases){
         if(alias == command){
           if(!handler.implemented){
-            Frate::error << "Command not implemented: " << command;
+            Utils::error << "Command not implemented: " << command;
             return false;
           }
           if(handler.requires_project && !project_present){
-            Frate::error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
+            Utils::error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
             return false;
           }
           if(!handler.callback(shared_from_this())){

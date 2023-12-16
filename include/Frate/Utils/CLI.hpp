@@ -93,7 +93,7 @@ namespace Frate::Utils::CLI {
       std::string default_input;
       int cursor_position{0};
       size_t max_length{0};
-      int columns{2};
+      int columns{1};
       int result_limit{static_cast<int>(std::floor(6.9))};
       bool print_valid_options{false};
       bool exit_on_failure{false};

@@ -28,7 +28,7 @@ bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
     if (exists(file)) {
       try {
         if(verbose){
-          Frate::info << "Deleting: " << file << std::endl;
+          Utils::info << "Deleting: " << file << std::endl;
         }
         std::filesystem::remove(file);
       } catch (std::exception &e) {
@@ -40,7 +40,7 @@ bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
     if (exists(dir)) {
       try {
         if(verbose){
-          info << "Deleting: " << dir << std::endl;
+          Utils::info << "Deleting: " << dir << std::endl;
         }
         remove_all(dir);
       } catch (std::exception &e) {
@@ -73,7 +73,7 @@ bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
     if(exists(inter->pro->path / "build")){
       for (directory_entry p : directory_iterator(inter->pro->path / "build")) {
         if(verbose_mode){
-          Frate::info << "Deleting" << p.path() << std::endl;
+          Utils::info << "Deleting" << p.path() << std::endl;
         }
         if(p.is_directory()){
           remove_all(p.path());
@@ -82,7 +82,7 @@ bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
         }
       }
     }else{
-      Frate::error << "Could not find ./build" << std::endl;
+      Utils::error << "Could not find ./build" << std::endl;
     }
 
     return true;

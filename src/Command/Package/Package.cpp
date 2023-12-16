@@ -26,7 +26,7 @@ namespace Frate::Command::Packages {
   }
   bool dependenciesConflict(std::vector<Package> deps, std::string &name) {
     if (deps.size() == 0) {
-      error << "No dependencies found" << std::endl;
+      Utils::error << "No dependencies found" << std::endl;
       return false;
     }
     for (Package dep : deps) {

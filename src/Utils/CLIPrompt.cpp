@@ -49,9 +49,7 @@ namespace Frate::Utils::CLI {
   }
   Prompt& Prompt::isBool(){
     this->is_bool = true;
-    return *this;
-  }
-  Prompt& Prompt::exitOnFailure(){
+    return *this; } Prompt& Prompt::exitOnFailure(){
     this->exit_on_failure = true;
     return *this;
   }
@@ -216,7 +214,7 @@ namespace Frate::Utils::CLI {
             }
           }else{
             completion_index++;
-            if(completion_index >= visible_options.size()){
+            if(completion_index > visible_options.size()){
               completion_index = 0;
             }
             completion = visible_options[completion_index];

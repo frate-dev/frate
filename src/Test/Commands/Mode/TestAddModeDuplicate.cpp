@@ -2,7 +2,7 @@
 #include <Frate/Test/Test.hpp>
 
 bool Tests::Command::testAddDuplicateMode(std::string mode_name){
-  info << "Testing add mode command with duplicate mode" << std::endl;
+  Utils::info << "Testing add mode command with duplicate mode" << std::endl;
   if(!testNew()) return false;
 
   auto [failed, inter] = init("frate add mode " + mode_name );

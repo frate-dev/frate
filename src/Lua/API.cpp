@@ -61,7 +61,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
             } else if (arg->is_boolean()) {
               args_table.add(arg->get<bool>());
             } else {
-              error 
+            Utils::error 
               << "Error while converting arguments in inja callback for script at: " 
               << script_path << std::endl;
               exit(1);
@@ -70,7 +70,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
           lua.set("args", args_table);
 
           if (!std::filesystem::exists(script_path)) {
-            error << "Lua script not found at path: " << script_path
+            Utils::error << "Lua script not found at path: " << script_path
                   << std::endl;
             exit(1);
           }
@@ -81,7 +81,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
           if (result.valid()) {
             return result;
           } else {
-            error << "Error while executing lua script at: " << script_path << std::endl;
+            Utils::error << "Error while executing lua script at: " << script_path << std::endl;
             exit(1);
           }
         });
@@ -112,7 +112,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
       / (Constants::TEMPLATE_PATH + Constants::INIT_SCRIPTS_PATH);
 
     if(!std::filesystem::exists(script_path)){
-      verbose << "No init scripts found at: " << script_path << std::endl;
+      Utils::verbose << "No init scripts found at: " << script_path << std::endl;
       return false;
     }
 
@@ -133,7 +133,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
 
 
       if(!std::filesystem::exists(current_script_path)){
-        error << "Script not found: " << current_script_path << " at: " << script_path << std::endl;
+        Utils::error << "Script not found: " << current_script_path << " at: " << script_path << std::endl;
         return false;
       }
 
@@ -142,7 +142,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
 
 
       if(!result.valid()){
-        error << "Error while executing lua script at: " << current_script_path << std::endl;
+        Utils::error << "Error while executing lua script at: " << current_script_path << std::endl;
         return false;
       }
 
@@ -157,7 +157,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
       (Constants::TEMPLATE_PATH + Constants::POST_SCRIPTS_PATH);
 
     if(!std::filesystem::exists(script_path)){
-      verbose << "No post scripts found" << " at: " << script_path << std::endl;
+      Utils::verbose << "No post scripts found" << " at: " << script_path << std::endl;
       return false;
     }
 
@@ -177,14 +177,14 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
       lua.set("project", project);
 
       if(!std::filesystem::exists(script)){
-        error << "Script not found: " << script << " at path: " << script_path << std::endl;
+        Utils::error << "Script not found: " << script << " at path: " << script_path << std::endl;
         return false;
       }
 
 
       auto result = lua.script_file(script);
       if(!result.valid()){
-        error << "Error while executing lua script" << std::endl;
+        Utils::error << "Error while executing lua script" << std::endl;
         return false;
       }
 

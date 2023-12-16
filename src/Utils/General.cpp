@@ -43,7 +43,7 @@ CURL* curl = curl_easy_init();
 
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
-        Frate::error << "Failed to request " << url << std::endl;
+        Utils::error << "Failed to request " << url << std::endl;
         response.error = curl_easy_strerror(res);
         curl_easy_cleanup(curl);
         return response;
@@ -94,20 +94,20 @@ CURL* curl = curl_easy_init();
   std::string fetchText(std::string url,bool verbose) {
     std::string requrl = url;
     CurlResponse r = HttpGet(requrl);
-    if(verbose) Frate::info << "Attempting to download: " << termcolor::bright_blue << url << std::endl;
+    if(verbose) Utils::info << "Attempting to download: " << termcolor::bright_blue << url << std::endl;
     
     switch(r.status_code){
       case 200:
-        if(verbose) Frate::info << "Successfully downloaded: " << url << std::endl;
+        if(verbose) Utils::info << "Successfully downloaded: " << url << std::endl;
         break;
       case 404:
-        Frate::error << "Failed to download: " << url <<std::endl;
-        Frate::error << "Error: " << r.error << std::endl;
+        Utils::error << "Failed to download: " << url <<std::endl;
+        Utils::error << "Error: " << r.error << std::endl;
         exit(-1);
         break;
       default:
-        Frate::error << "Failed to download: " << url << std::endl;
-        Frate::error << "Error: " << r.error << std::endl;
+        Utils::error << "Failed to download: " << url << std::endl;
+        Utils::error << "Error: " << r.error << std::endl;
         exit(-1);
         break;
     }
@@ -118,10 +118,10 @@ CURL* curl = curl_easy_init();
     try {
       return json::parse(responseStr);
     } catch (json::parse_error& e) {
-      Frate::error << "At: " << e.byte << std::endl;
-      Frate::error << "Error: " << e.what() << std::endl;
-      Frate::error << "Failed to parse index.json" << std::endl;
-      Frate::error << "Text: " << responseStr << std::endl;
+      Utils::error << "At: " << e.byte << std::endl;
+      Utils::error << "Error: " << e.what() << std::endl;
+      Utils::error << "Failed to parse index.json" << std::endl;
+      Utils::error << "Text: " << responseStr << std::endl;
       Utils::debug("Failed to parse index.json");
       exit(-1);
     }
@@ -174,19 +174,19 @@ CURL* curl = curl_easy_init();
 
   path copyToTmpPath(path p,std::string prefix){
     path tmp_path = randomTmpPath(prefix);
-    info << "Copying " << p << " to " << tmp_path << std::endl;
+    Utils::info << "Copying " << p << " to " << tmp_path << std::endl;
     if(!std::filesystem::exists(p)){
-      Frate::error << "Failed to copy " << p << " to " << tmp_path 
+      Utils::error << "Failed to copy " << p << " to " << tmp_path 
         << " when attempting to non destructively delete" << std::endl;
       return tmp_path;
     }
     try{
       std::filesystem::copy(p, tmp_path, std::filesystem::copy_options::recursive | std::filesystem::copy_options::overwrite_existing);
     }catch(std::filesystem::filesystem_error& e){
-      Frate::error << "Failed to copy " << p << " to " << tmp_path 
+      Utils::error << "Failed to copy " << p << " to " << tmp_path 
         << " when attempting to non destructively delete" << std::endl;
 
-      Frate::error << "Error: " << e.what() << std::endl;
+      Utils::error << "Error: " << e.what() << std::endl;
       exit(-1);
     }
     return tmp_path;

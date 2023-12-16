@@ -42,7 +42,7 @@ namespace Frate::LuaAPI {
         }else if(value.is<sol::object>()){
           result += resolveSpecifier(specifiers, value.as<sol::table>(), result, index+1);
         }else{
-          error << "LuaAPI Error: Unrecognized type while resolving specifier" << std::endl;
+          Utils::error << "LuaAPI Error: Unrecognized type while resolving specifier" << std::endl;
           exit(1);
         }
       }
@@ -53,7 +53,7 @@ namespace Frate::LuaAPI {
 
   std::string FrateApi::format(const std::string &str, sol::table in_table, sol::this_state s) {
 
-    warning << str << std::endl;
+    Utils::warning << str << std::endl;
     std::string result = "";
 
     sol::state_view lua(s);
@@ -76,7 +76,7 @@ namespace Frate::LuaAPI {
           //Start of the opening bracket
           while(str[i] != '%'){
             if(i == str.size()){
-              error << 
+              Utils::error << 
                 "LuaAPI Error: while parsing format string no closing brace" 
                 << std::endl;
               exit(1);
@@ -110,7 +110,7 @@ namespace Frate::LuaAPI {
       //If we have a specifier then we start recording it in the specifier vector
       if(tokens[i].type == specifier){
         specifiers.push_back(tokens[i].value);
-        info << tokens[i].value << std::endl;
+        Utils::info << tokens[i].value << std::endl;
         //If we have a close bracket then we resolve the specifier
         //By recursively looking through the table
       }else if(tokens[i].type == close_bracket){
@@ -121,7 +121,7 @@ namespace Frate::LuaAPI {
         result += tokens[i].value;
       }
     }
-    info << result << std::endl;
+    Utils::info << result << std::endl;
     return result;
   }
 }

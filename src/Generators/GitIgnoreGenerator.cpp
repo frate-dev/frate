@@ -14,7 +14,7 @@ bool write_gitignore(std::string gitignore, std::filesystem::path gitignore_path
       file << gitignore;
       file.close();
     }catch(std::exception &e){
-      Frate::error << "Failed to create gitignore" << std::endl;
+      Utils::error << "Failed to create gitignore" << std::endl;
       Utils::debug(e.what());
       return false;
     }

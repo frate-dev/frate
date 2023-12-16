@@ -23,7 +23,7 @@ namespace Frate::Generators::Project {
   } 
 
   bool create(std::shared_ptr<Command::Project> pro){
-    info << "Creating Project" << std::endl;
+    Utils::info << "Creating Project" << std::endl;
     
 
     json index = getTemplateIndex();
@@ -42,15 +42,15 @@ namespace Frate::Generators::Project {
     if(!has_template){
       auto [success, templ] = promptForTemplateName(index);
       if(!success){
-        error << "Error while prompting for project name" << std::endl;
+        Utils::error << "Error while prompting for project name" << std::endl;
         return false;
       }
       current_template = templ;
-      info << "Creating project from template: " << templ.name << std::endl;
+      Utils::info << "Creating project from template: " << templ.name << std::endl;
     }
 
     if(!downloadTemplate(current_template.git, pro->path)){
-      error << "Error while downloading template" << std::endl;
+      Utils::error << "Error while downloading template" << std::endl;
       return false;
     }
 
@@ -61,12 +61,12 @@ namespace Frate::Generators::Project {
         );
 
     if(!loadTemplateConfig(pro)){
-      error << "Error while loading template config" << std::endl;
+      Utils::error << "Error while loading template config" << std::endl;
       return false;
     }
 
     if(!runTemplatePrompts(pro)){
-      error << "Error while running template prompts" << std::endl;
+      Utils::error << "Error while running template prompts" << std::endl;
       return false;
     }
 
@@ -74,14 +74,14 @@ namespace Frate::Generators::Project {
     sol::state lua;
 
     if(!initializeLua(env, lua, pro)){
-      error << "Error while initializing lua" << std::endl;
+      Utils::error << "Error while initializing lua" << std::endl;
       return false;
     }
 
     LuaAPI::initScripts(lua, pro);
 
     if(!renderTemplate(env,  pro)){
-      error << "Error while rendering template to tmp" << std::endl;
+      Utils::error << "Error while rendering template to tmp" << std::endl;
       return false;
     }
 
@@ -98,14 +98,14 @@ namespace Frate::Generators::Project {
 
 
     if(!initializeLua(env, lua, pro)){
-      error << "Error while initializing lua" << std::endl;
+      Utils::error << "Error while initializing lua" << std::endl;
       return false;
     }
 
     LuaAPI::initScripts(lua, pro);
 
     if(!refreshTemplate(env,pro)){
-      error << "Error while rendering template to tmp" << std::endl;
+      Utils::error << "Error while rendering template to tmp" << std::endl;
       return false;
     }
 

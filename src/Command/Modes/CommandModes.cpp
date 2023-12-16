@@ -12,7 +12,7 @@ namespace Frate:: Command::Modes{
     name->run();
     auto [valid,mode_name] = name->get<std::string>();
     if(!valid){
-      Frate::error << "Failed to get mode name" << std::endl;
+      Utils::error << "Failed to get mode name" << std::endl;
       return false;
     }
     mode.name = mode_name;

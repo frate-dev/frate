@@ -19,7 +19,7 @@ namespace Frate::Generators::Project {
 
     }catch(...){
 
-      error << "Error while copying frate-project.json" << std::endl;
+      Utils::error << "Error while copying frate-project.json" << std::endl;
       return false;
 
     }
@@ -34,7 +34,7 @@ namespace Frate::Generators::Project {
 
     }catch(...){
 
-      error << "Error while opening file: " << pro->path / "frate-project.json" << std::endl;
+      Utils::error << "Error while opening file: " << pro->path / "frate-project.json" << std::endl;
       return false;
 
     }

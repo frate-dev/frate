@@ -28,10 +28,10 @@ namespace Frate::Command::Build {
     }
 
     Utils::Info info;
-    info << "Building project with: " << std::endl;
-    info << "Target: " << target << std::endl;
-    info << "Mode: " << mode << std::endl;
-    info << "Jobs: " << jobs << std::endl;
+    Utils::info << "Building project with: " << std::endl;
+    Utils::info << "Target: " << target << std::endl;
+    Utils::info << "Mode: " << mode << std::endl;
+    Utils::info << "Jobs: " << jobs << std::endl;
     //TODO: Handle different targets
 
     for(Mode &m : inter->pro->modes){

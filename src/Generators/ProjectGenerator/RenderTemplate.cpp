@@ -9,7 +9,7 @@ namespace Frate::Generators::Project {
       std::shared_ptr<Command::Project> pro){
 
 
-    info << "Rendering templates" << std::endl;
+    Utils::info << "Rendering templates" << std::endl;
 
     std::string CPM;
 
@@ -77,7 +77,7 @@ namespace Frate::Generators::Project {
         try{
           file.open(new_file);
         }catch(...){
-          error << "Error while opening file: " << new_file << std::endl;
+          Utils::error << "Error while opening file: " << new_file << std::endl;
           return false;
         }
         file << rendered_file;

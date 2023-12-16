@@ -9,20 +9,20 @@ namespace Frate::Generators::Project {
     //Delete old template before downloading new one
     if(std::filesystem::exists(project_path / "template")){
 
-      Frate::info << "Copying old template to tmp directory" << std::endl;
+      Utils::info << "Copying old template to tmp directory" << std::endl;
       path tmp_path = Utils::copyToTmpPath(project_path / "template", "frate-template-");
 
-      Frate::info << "Deleting old template" << std::endl;
+      Utils::info << "Deleting old template" << std::endl;
       std::filesystem::remove_all(project_path / "template");
     }
 
     std::filesystem::create_directories(project_path / "template");
 
 
-    info << "Downloading template" << std::endl;
+    Utils::info << "Downloading template" << std::endl;
     git_repository* template_repo = NULL; 
     git_repository* callbacks_repo = NULL;
-    Frate::info << "Cloning " << git_url << " into " 
+    Utils::info << "Cloning " << git_url << " into " 
       << (project_path / "template").c_str() << std::endl;
 
 
@@ -31,7 +31,7 @@ namespace Frate::Generators::Project {
 
 
     if(template_clone_status != 0){
-      Frate::error << "Error while cloning repository" << std::endl;
+      Utils::error << "Error while cloning repository" << std::endl;
       return false;
     }
 
@@ -40,7 +40,7 @@ namespace Frate::Generators::Project {
 
     const std::string callbacks_url = "https://github.com/frate-templates/frate-callbacks.git";
 
-    Frate::info << "Cloning " << callbacks_url << " into " 
+    Utils::info << "Cloning " << callbacks_url << " into " 
       << (project_path / "template/frate-callbacks").c_str() << std::endl;
 
 
@@ -50,7 +50,7 @@ namespace Frate::Generators::Project {
 
 
     if(callbacks_clone_status != 0){
-      Frate::error << "Error while cloning repository" << std::endl;
+      Utils::error << "Error while cloning repository" << std::endl;
       return false;
     }
 
@@ -68,7 +68,7 @@ namespace Frate::Generators::Project {
     try{
       std::filesystem::remove(project_path / "template/.git");
     }catch(...){
-      Frate::error << "could not find .git folder in template/" << std::endl;
+      Utils::error << "could not find .git folder in template/" << std::endl;
     }
 
     return true;

@@ -19,7 +19,7 @@ namespace Frate::Command {
 
     json new_json = this->toJson();
 
-    info << "Writing to file: " << this->path / file_name << std::endl;
+    Utils::info << "Writing to file: " << this->path / file_name << std::endl;
 
     try{
       file.open(this->path / file_name);
@@ -60,7 +60,7 @@ namespace Frate::Command {
       d.selected_version = dep["version"].is_null() ? "" : dep["version"];
       d.target_link = dep["target_link"].is_null() ? "" : dep["target_link"];
       if(d.target_link.empty()){
-        warning <<
+        Utils::warning <<
           "Warning: target_link is empty for dependency: " << d.name << std::endl;
       }
       dependencies.push_back(d);
@@ -77,7 +77,7 @@ namespace Frate::Command {
         new_dep.selected_version = dep["version"].is_null() ? "" : dep["version"];
         new_dep.target_link = dep["target_link"].is_null() ? "" : dep["target_link"];
         if(new_dep.target_link == ""){
-          warning <<
+          Utils::warning <<
             "Warning: target_link is empty for dependency: " << new_dep.name <<
             " in mode: " << m.name << std::endl;
         }
@@ -219,7 +219,7 @@ namespace Frate::Command {
       };
       for (std::pair<std::string, bool> &key: required_keys){
         if (!j.contains(key.first)){
-          Frate::error << "Missing required key: " << key.first << std::endl;
+          Utils::error << "Missing required key: " << key.first << std::endl;
         } else {
           key.second = true;
         }
@@ -230,7 +230,7 @@ namespace Frate::Command {
     std::fstream file;
     std::string file_name = "frate-project.json";
 
-    Frate::info << "Loading: " << (pro->path / file_name) << std::endl;
+    Utils::info << "Loading: " << (pro->path / file_name) << std::endl;
 
     if(project_present){
       return true;

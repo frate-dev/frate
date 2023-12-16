@@ -22,14 +22,14 @@ namespace Frate::Command {
   std::string ProjectPrompt::get<std::string>(){
 
     if(this->type != "string"){ 
-      Frate::error <<
+      Utils::error <<
         "Cannot get string from non-string option in project options" << std::endl;
       exit(1);
     }
 
     if(!this->validator(this->value)){
       if(this->required){
-        Frate::error <<
+        Utils::error <<
           "Invalid value for required option: " << this->value << std::endl;
         exit(1);
       }
@@ -43,7 +43,7 @@ namespace Frate::Command {
   bool ProjectPrompt::get<bool>(){
 
     if(this->type != "bool"){ 
-      Frate::error <<
+      Utils::error <<
         "Cannot get bool from non-bool option in project options" << std::endl;
       exit(1);
     }
@@ -63,14 +63,14 @@ namespace Frate::Command {
   float ProjectPrompt::get<float>(){
 
     if(this->type != "float"){ 
-      Frate::error <<
+      Utils::error <<
         "Cannot get float from non-float option in project options" << std::endl;
       exit(1);
     }
 
     if(!this->validator(this->value)){
       if(this->required){
-        Frate::error <<
+        Utils::error <<
           "Invalid value for required option: " << this->value << std::endl;
         exit(1);
       }
@@ -84,14 +84,14 @@ namespace Frate::Command {
   int ProjectPrompt::get<int>(){
 
     if(this->type != "int"){ 
-      Frate::error <<
+      Utils::error <<
         "Cannot get int from non-int option in project options" << std::endl;
       exit(1);
     }
 
     if(!this->validator(this->value)){
       if(this->required){
-        Frate::error <<
+        Utils::error <<
           "Invalid value for required option: " << this->value << std::endl;
         exit(1);
       }
