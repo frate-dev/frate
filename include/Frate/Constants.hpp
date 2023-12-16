@@ -26,6 +26,7 @@ namespace Frate::Constants {
   const std::string TEMPLATE_PATH = "template/";
   const std::string INIT_SCRIPTS_PATH = "__init__/";
   const std::string POST_SCRIPTS_PATH = "__post__/";
+
 #ifdef DEBUG
   const std::string TEMPLATE_BRANCH = "dev";
 #else

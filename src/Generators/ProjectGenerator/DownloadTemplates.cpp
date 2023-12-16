@@ -8,6 +8,10 @@ namespace Frate::Generators::Project {
   bool downloadTemplate(std::string git_url, path project_path) {
     //Delete old template before downloading new one
     if(std::filesystem::exists(project_path / "template")){
+
+      Frate::info << "Copying old template to tmp directory" << std::endl;
+      path tmp_path = Utils::copyToTmpPath(project_path / "template", "frate-template-");
+
       Frate::info << "Deleting old template" << std::endl;
       std::filesystem::remove_all(project_path / "template");
     }
@@ -56,6 +60,9 @@ namespace Frate::Generators::Project {
     std::filesystem::rename(project_path / "template/frate-callbacks/scripts",
         project_path / "template/scripts");
 
+    path tmp_path = Utils::copyToTmpPath(project_path / "template/frate-callbacks",
+        "frate-callbacks-");
+
     std::filesystem::remove_all(project_path / "template/frate-callbacks");
 
     try{
@@ -66,7 +73,4 @@ namespace Frate::Generators::Project {
 
     return true;
   }
-
-
-
 }

@@ -11,6 +11,7 @@
 #include <git2.h>
 
 namespace Frate::Command::New {
+using std::filesystem::path;
 using Utils::CLI::Prompt;
 using Utils::CLI::Ansi::RED;
 
@@ -57,6 +58,26 @@ bool options(std::shared_ptr<Interface> inter) {
     return true;
   }
 
+  bool checkForProject(std::shared_ptr<Interface> inter){
+    if(std::filesystem::exists(inter->pro->path / "frate-project.json")){
+      Frate::error << "Project already exists" << ENDL;
+      return true;
+    }
+    return false;
+  }
+
+  bool promptForOverwrite(std::shared_ptr<Interface> inter){
+    (void)inter;
+    Prompt prompt("Do you want to overwrite it?");
+    prompt.setColor(RED).exitOnFailure();
+    prompt.isBool().run();
+    auto [valid, value] = prompt.get<bool>();
+    if(!valid){
+      return false;
+    }
+    return value;
+  }
+
   bool run(std::shared_ptr<Interface> inter) {
     options(inter);
 #ifdef RELEASE
@@ -96,6 +117,31 @@ bool options(std::shared_ptr<Interface> inter) {
     }
     if(inter->args->operator[]("defaults").count() > 0){
       defaults = inter->args->operator[]("defaults").as<bool>();
+    }
+
+    if(checkForProject(inter)){
+      if(promptForOverwrite(inter)){
+
+        path tmp_path = Utils::copyToTmpPath(inter->pro->path, "frate-project-");
+
+
+        for(const auto& entry : std::filesystem::directory_iterator(inter->pro->path)){
+          if(entry.path().filename() != "frate"){
+            info << "Removing " << entry.path() << ENDL;
+            std::filesystem::remove_all(entry.path());
+          }
+        }
+
+
+      }else{
+
+
+        error 
+          << "Aborting: can't initialize a new project on top of a existing one" << ENDL;
+        return false;
+
+
+      }
     }
 
 

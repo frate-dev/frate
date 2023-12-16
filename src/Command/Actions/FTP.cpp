@@ -16,10 +16,12 @@ namespace Frate::Command::FTP {
       Frate::error << "Aborting..." << std::endl;
       return false;
     }
+    path tmp_path = Utils::copyToTmpPath(inter->pro->path,"nuke-delete-frate-project-");
 
+    info << "Deleting project" << ENDL;
 
-    for (const directory_entry &p : directory_iterator(inter->pro->path)  
-          | std::views::filter(
+    for (const directory_entry &p : 
+        directory_iterator(inter->pro->path) | std::views::filter(
             [](const directory_entry &p) { return p.path().filename() != "frate"; })
         ){
       std::filesystem::path path = p.path();

@@ -2,6 +2,7 @@
 #include <Frate/Utils/General.hpp>
 #include <Frate/Command/AvailableTriples.hpp>
 #include <Frate/Generators.hpp>
+#include <filesystem>
 #include <fstream>
 
 
@@ -54,6 +55,8 @@ namespace Frate::Command::Toolchains{
             });
       }
     }
+
+    std::filesystem::path tmp_path = Utils::copyToTmpPath(interface->pro->path,"toolchains-remove-frate-");
     std::filesystem::remove(interface->pro->path / "toolchains/" / (toolchain_name + ".cmake"));
     return true;
   }

@@ -74,7 +74,36 @@ namespace Frate::Utils {
       }
   };
   using nlohmann::json;
+  /*
+   * Gets the folder name which is the current directory name
+   * like if you are in /home/user/Downloads it will return Downloads
+   * @return The folder name
+   */
   std::string getFolderName();
+
+  /*
+   * Generates uuid looking like
+   * 123e4567-e89b-12d3-a456-426614174000
+   * @return The uuid generated
+   */
+  std::string genUUIDv4();
+
+  using std::filesystem::path;
+
+  /*
+   * Generates a random path in the /tmp directory using uuidv4
+   * @return The path generated
+   */
+  path randomTmpPath(std::string prefix = "frate-");
+
+  /*
+   * Copies the file to a random path in the /tmp directory
+   * Intended to be used for non destructive deletion
+   * @param p The path to be copied
+   * @return The path of the file in the /tmp directory
+   */
+  path copyToTmpPath(path p,std::string prefix = "frate-");
+
   /*
    * Split the string by the delimiter
    * @param str The string to be splitted
@@ -82,23 +111,27 @@ namespace Frate::Utils {
    * @return The vector of splitted string
    */
   std::vector<std::string> split(std::string str, char delimiter);
+
   /*
    * Convert the string to lower case
    * @param str The string to be converted
    */
   void toLower(std::string& str);
+
   /*
    * Fetch the json from the url
    * @param url The url to be fetched
    * @return The json fetched from the url
    */
   json fetchJson(std::string url);
+
   /*
    * Fetch the text from the url
    * @param url The url to be fetched
    * @return The text fetched from the url
    */
   std::string fetchText(std::string url,bool verbose = false);
+
   /*
    * A new Utils::hSystem command which returns the exit code of the command
    * And we also take std::string

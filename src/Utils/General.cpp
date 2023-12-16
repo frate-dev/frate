@@ -134,6 +134,59 @@ CURL* curl = curl_easy_init();
       return -1;
     }
   }
+
+  std::string genUUIDv4(){
+    std::string uuid = "";
+    //Pattern: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+    std::string chars = "0123456789abcdef";
+    //Seeding the random number gererator with time
+    std::srand(std::time(nullptr));
+
+    for(int i = 0; i < 8; i++){
+      uuid += chars[std::rand() % chars.length()];
+    }
+    uuid += "-";
+    for(int i = 0; i < 4; i++){
+      uuid += chars[std::rand() % chars.length()];
+    }
+    uuid += "-4";
+    for(int i = 0; i < 3; i++){
+      uuid += chars[std::rand() % chars.length()];
+    }
+    uuid += "-";
+    uuid += chars[std::rand() % 4 + 8];
+    for(int i = 0; i < 3; i++){
+      uuid += chars[std::rand() % chars.length()];
+    }
+    uuid += "-";
+    for(int i = 0; i < 12; i++){
+      uuid += chars[std::rand() % chars.length()];
+    }
+    return uuid;
+  }
+
+  using std::filesystem::path;
+  path randomTmpPath(std::string prefix){
+    path tmp_path = std::filesystem::temp_directory_path();
+    tmp_path /= prefix + genUUIDv4();
+    return tmp_path;
+  }
+
+  path copyToTmpPath(path p,std::string prefix){
+    path tmp_path = randomTmpPath(prefix);
+    info << "Copying " << p << " to " << tmp_path << std::endl;
+    try{
+      std::filesystem::copy(p, tmp_path, std::filesystem::copy_options::recursive | std::filesystem::copy_options::overwrite_existing);
+    }catch(std::filesystem::filesystem_error& e){
+      Frate::error << "Failed to copy " << p << " to " << tmp_path 
+        << " when attempting to non destructively delete" << std::endl;
+
+      Frate::error << "Error: " << e.what() << std::endl;
+      exit(-1);
+    }
+    return tmp_path;
+  }
+
   /*
    * FUCKING MAGIC
    */
