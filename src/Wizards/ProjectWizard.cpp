@@ -23,6 +23,22 @@ namespace Frate::Wizard {
         return false;
       }
     }
+    
+    Prompt author_prompt("Author");
+    prompt.setColor(Utils::CLI::Ansi::GREEN);
+    author_prompt.run();
+
+    {
+      auto [valid, author] = author_prompt.get<std::string>();
+      if(valid){
+        pro->authors.push_back(author);
+      }else{
+        return false;
+      }
+    }
+
+
+
     Prompt description_prompt("Description",pro->description);
     description_prompt.maxLength(255);
     description_prompt.setColor(Utils::CLI::Ansi::GREEN);

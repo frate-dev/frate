@@ -16,6 +16,7 @@ namespace Frate::Command::FTP {
       Frate::error << "Aborting..." << std::endl;
       return false;
     }
+
     path tmp_path = Utils::copyToTmpPath(inter->pro->path,"nuke-delete-frate-project-");
 
     info << "Deleting project" << ENDL;

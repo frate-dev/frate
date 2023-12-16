@@ -175,6 +175,11 @@ CURL* curl = curl_easy_init();
   path copyToTmpPath(path p,std::string prefix){
     path tmp_path = randomTmpPath(prefix);
     info << "Copying " << p << " to " << tmp_path << std::endl;
+    if(!std::filesystem::exists(p)){
+      Frate::error << "Failed to copy " << p << " to " << tmp_path 
+        << " when attempting to non destructively delete" << std::endl;
+      return tmp_path;
+    }
     try{
       std::filesystem::copy(p, tmp_path, std::filesystem::copy_options::recursive | std::filesystem::copy_options::overwrite_existing);
     }catch(std::filesystem::filesystem_error& e){
