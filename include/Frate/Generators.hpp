@@ -12,8 +12,7 @@ namespace Frate::Generators{
     using Utils::CLI::Prompt;
     using inja::Environment;
     json getTemplateIndex();
-
-    typedef struct Template {
+typedef struct Template {
       std::string name;
       std::string git;
       std::string description;

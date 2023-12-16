@@ -27,10 +27,10 @@ namespace Frate::Command::Packages {
    std::cout << packageList->Build() << std::endl;
    Prompt prompt("Select a package to install: ");
    for(size_t i = 0; i < searchResults.size(); i++){
-     prompt.AddOption(i);
+     prompt.addOption(i);
    }
-   prompt.Run();
-   auto [valid,index] = prompt.Get<int>();
+   prompt.run();
+   auto [valid,index] = prompt.get<int>();
 
    if(!valid){
      std::cout << "Invalid option" << std::endl;
@@ -54,12 +54,12 @@ namespace Frate::Command::Packages {
     Prompt prompt("Select a version to install: ");
 
     for(size_t i = 0; i < chosen_package.versions.size(); i++){
-      prompt.AddOption(i);
+      prompt.addOption(i);
     }
 
-    prompt.Run();
+    prompt.run();
 
-    auto [valid, index] = prompt.Get<int>();
+    auto [valid, index] = prompt.get<int>();
 
     if(!valid){
       std::cout << "Invalid option" << std::endl;

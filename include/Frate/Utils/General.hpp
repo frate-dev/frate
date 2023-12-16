@@ -4,7 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <iomanip>
 #include <iostream>
-#include <stdint.h>
+#include <ldap.h>
 #include <termcolor/termcolor.hpp>
 #define DEBUGTHIS(x) std::cout << termcolor::bright_red << "##x" << " -> " << x << std::endl;
 
@@ -16,6 +16,9 @@
 #include <cpptrace/cpptrace.hpp>
 #endif
 
+namespace Frate {
+  static bool verbose_mode = false;
+}
 
 namespace Frate::Utils {
   class Error {
@@ -51,6 +54,22 @@ namespace Frate::Utils {
       }
       Info& operator<<(std::ostream& (*pf)(std::ostream&)) {
         std::cout << pf;
+        return *this;
+      }
+  };
+  class Verbose {
+    public:
+      template<typename T>
+      Verbose& operator<<(const T& data) {
+        if(Frate::verbose_mode){
+          std::cout << termcolor::bright_blue << data << termcolor::reset;
+        }
+        return *this;
+      }
+      Verbose& operator<<(std::ostream& (*pf)(std::ostream&)) {
+        if(Frate::verbose_mode){
+          std::cout << pf;
+        }
         return *this;
       }
   };

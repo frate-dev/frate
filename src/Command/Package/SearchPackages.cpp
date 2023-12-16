@@ -117,10 +117,10 @@ namespace Frate::Command::Packages {
 
     Prompt prompt("Select a package to install: ");
     for(size_t i = 0; i < filterResultsVec.size(); i++){
-      prompt.AddOption(i);
+      prompt.addOption(i);
     }
-    prompt.Run();
-    auto[valid, index] = prompt.Get<int>();
+    prompt.run();
+    auto[valid, index] = prompt.get<int>();
     if(!valid){
       return {false, Package()};
     }

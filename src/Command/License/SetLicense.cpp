@@ -44,15 +44,15 @@ namespace Frate::Command::License {
     std::cout << license_list.Build() << std::endl;
 
     Utils::CLI::Prompt license_prompt("Select a license");
-    license_prompt.ExitOnFailure();
+    license_prompt.exitOnFailure();
 
     for(size_t i = 0; i < licenses.size(); i++){
-      license_prompt.AddOption(i);
+      license_prompt.addOption(i);
     }
 
-    license_prompt.Run();
+    license_prompt.run();
 
-    auto [valid, index] = license_prompt.Get<int>();
+    auto [valid, index] = license_prompt.get<int>();
 
     if(!valid){
       Frate::error << "Invalid license" << std::endl;
@@ -77,9 +77,9 @@ namespace Frate::Command::License {
     Utils::replaceKey(license, "[year]", year);
 
     Utils::CLI::Prompt name_prompt("Enter your name or organization");
-    name_prompt.ExitOnFailure();
-    name_prompt.Run();
-    auto [valid, org] = name_prompt.Get<std::string>();
+    name_prompt.exitOnFailure();
+    name_prompt.run();
+    auto [valid, org] = name_prompt.get<std::string>();
     if(!valid){
       Frate::error << "Invalid name" << std::endl;
       return;
@@ -107,9 +107,9 @@ namespace Frate::Command::License {
     if(std::filesystem::exists(inter->pro->path / "LICENSE")){
       Frate::error << "A license already exists in this project" << std::endl;
       Utils::CLI::Prompt overwrite_prompt("Overwrite existing license?");
-      overwrite_prompt.Run();
-      overwrite_prompt.IsBool();
-      if(!overwrite_prompt.Get<bool>().second){
+      overwrite_prompt.run();
+      overwrite_prompt.isBool();
+      if(!overwrite_prompt.get<bool>().second){
         return false;
       }
     }

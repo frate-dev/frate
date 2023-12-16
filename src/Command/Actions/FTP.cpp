@@ -10,8 +10,8 @@ namespace Frate::Command::FTP {
         "Are you sure you would like to delete the entire project?"
         );
 
-    prompt.Color(RED).IsBool().Run();
-    auto [valid, value] = prompt.Get<bool>();
+    prompt.setColor(RED).isBool().run();
+    auto [valid, value] = prompt.get<bool>();
     if (!valid || !value) {
       Frate::error << "Aborting..." << std::endl;
       return false;
@@ -26,10 +26,10 @@ namespace Frate::Command::FTP {
       try{
         if(std::filesystem::is_directory(path)){
           std::filesystem::remove_all(path);
-          if(inter->verbose) Frate::info << "Deleting: " << path << std::endl;
+          if(verbose_mode) Frate::info << "Deleting: " << path << std::endl;
         }else{
           std::filesystem::remove(path);
-          if(inter->verbose) Frate::info << "Deleting: " << path << std::endl;
+          if(verbose_mode) Frate::info << "Deleting: " << path << std::endl;
         }
       }catch(std::exception &e){
         Frate::error << "Failed to delete: " << path << std::endl;

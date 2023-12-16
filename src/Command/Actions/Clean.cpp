@@ -61,7 +61,7 @@ bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
     }
   
     if(clean_cache){
-      if(!cleanCache(inter->pro,inter->verbose)){
+      if(!cleanCache(inter->pro,verbose_mode)){
         //WE HAD A FUCKING PROBLEM BRUH
         return false;
       }
@@ -72,7 +72,7 @@ bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
     std::cout << "Cleaning: " << std::endl;
     if(exists(inter->pro->path / "build")){
       for (directory_entry p : directory_iterator(inter->pro->path / "build")) {
-        if(inter->verbose){
+        if(verbose_mode){
           Frate::info << "Deleting" << p.path() << std::endl;
         }
         if(p.is_directory()){

@@ -4,4 +4,5 @@ namespace Frate{
   extern Utils::Error error;
   extern Utils::Info info;
   extern Utils::Warning warning;
+  extern Utils::Verbose verbose;
 }

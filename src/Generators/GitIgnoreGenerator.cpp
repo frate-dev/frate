@@ -61,9 +61,9 @@ Utils::replaceKey(gitignore, "{build_dir}", inter->pro->build_dir);
     if(std::filesystem::exists(gitignore_path)){
       std::cout << "Gitignore already exists" << std::endl;
       Prompt prompt("Do you want to overwrite it?");
-      prompt.Color(Ansi::RED).ExitOnFailure().Run();
-      prompt.IsBool();
-      auto [valid, value] = prompt.Get<bool>();
+      prompt.setColor(Ansi::RED).exitOnFailure().run();
+      prompt.isBool();
+      auto [valid, value] = prompt.get<bool>();
       if(!valid || !value){
         return false;
       }

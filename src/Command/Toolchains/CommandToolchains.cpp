@@ -21,10 +21,10 @@ namespace Frate::Command::Toolchains{
   bool add(std::shared_ptr<Interface> inter){
     Prompt toolchain_prompt("Toolchain");
     for (Command::Toolchain::CompileTarget toolchain : Command::Toolchain::CompileTargets){
-      toolchain_prompt.AddOption(toolchain.triple);
+      toolchain_prompt.addOption(toolchain.triple);
     }
-    toolchain_prompt.PrintValidOptions().Run();
-    auto [valid, toolchain] = toolchain_prompt.Get<std::string>();
+    toolchain_prompt.printValidOptions().run();
+    auto [valid, toolchain] = toolchain_prompt.get<std::string>();
     if(!valid){
       std::cout << "Invalid toolchain" << std::endl;
       return false;

@@ -13,6 +13,7 @@
 #include "Frate/Command/Actions/Watch.hpp"
 #include "Frate/Command/Actions/New.hpp"
 #include <Frate/Command/Actions/Completions.hpp>
+#include "Frate/Frate.hpp"
 #include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
 #include "cxxopts.hpp"
@@ -64,7 +65,7 @@ namespace Frate::Command {
     this->pro = std::make_shared<Project>();
 #ifdef DEBUG
 #ifndef TEST
-    verbose = true;
+    verbose_mode = true;
 #endif
     std::cout << "DEBUG MODE ENABLED\n";
     pro->path = std::filesystem::current_path() / "build";
@@ -82,7 +83,7 @@ namespace Frate::Command {
       exit(0);
     }
     if(inter->args->count("verbose")){
-      inter->verbose = true;
+      verbose_mode = true;
       std::cout << "Verbose mode enabled" << ENDL;
     }
     if(inter->args->count("confirm-all")){
@@ -213,12 +214,7 @@ namespace Frate::Command {
           if(handler.requires_project){
 
             //Check if project loads successfully
-            if(!inter->LoadProjectJson()){
-              error <<
-                "Error: Project not found and command: " 
-                << command << " requires a project" << ENDL;
-              return false;
-            }
+            inter->LoadProjectJson();
 
             //if so refresh the project templates
             Generators::Project::refresh(inter->pro);

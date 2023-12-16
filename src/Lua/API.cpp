@@ -112,7 +112,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
       / (Constants::TEMPLATE_PATH + Constants::INIT_SCRIPTS_PATH);
 
     if(!std::filesystem::exists(script_path)){
-      warning << "No init scripts found at: " << script_path << std::endl;
+      verbose << "No init scripts found at: " << script_path << std::endl;
       return false;
     }
 
@@ -130,11 +130,17 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
     for(const path& current_script_path : script_paths){
 
       lua.set("project", project);
+
+
       if(!std::filesystem::exists(current_script_path)){
         error << "Script not found: " << current_script_path << " at: " << script_path << std::endl;
         return false;
       }
+
+
       auto result = lua.script_file(current_script_path);
+
+
       if(!result.valid()){
         error << "Error while executing lua script at: " << current_script_path << std::endl;
         return false;
@@ -151,14 +157,16 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
       (Constants::TEMPLATE_PATH + Constants::POST_SCRIPTS_PATH);
 
     if(!std::filesystem::exists(script_path)){
-      warning << "No post scripts found" << " at: " << script_path << std::endl;
+      verbose << "No post scripts found" << " at: " << script_path << std::endl;
       return false;
     }
 
     std::vector<path> scripts = {};
 
     for(const path& current_path :
-        std::filesystem::recursive_directory_iterator(script_path)){
+      std::filesystem::recursive_directory_iterator(script_path)){
+
+
       if(current_path.extension() == ".lua"){
         scripts.push_back(current_path);
       }
@@ -172,6 +180,8 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
         error << "Script not found: " << script << " at path: " << script_path << std::endl;
         return false;
       }
+
+
       auto result = lua.script_file(script);
       if(!result.valid()){
         error << "Error while executing lua script" << std::endl;

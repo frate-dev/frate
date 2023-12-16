@@ -12,6 +12,7 @@ namespace Frate {
   Utils::Error error = Utils::Error();
   Utils::Info info = Utils::Info();
   Utils::Warning warning = Utils::Warning();
+  Utils::Verbose verbose = Utils::Verbose();
 }
 
 int main(int argc, char **argv) {
@@ -36,6 +37,7 @@ int main(int argc, char **argv) {
 
     //TODO: Get some path checking in this bitch
     using namespace Frate::Command;
+
 
     Interface inter_ptr = Interface(argc,argv);
     auto inter = std::make_shared<Interface>(inter_ptr);

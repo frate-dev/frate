@@ -14,14 +14,15 @@ namespace Frate::Command::Add {
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->allow_unrecognised_options().add_options()
       ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
-      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage"); inter->options->help();
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage"); 
+    inter->options->help();
     return inter->parse();
   }
   bool run(std::shared_ptr<Interface> inter){
     options(inter);
     std::vector<Handler> addHandlers = handlers(inter);
     std::string subcommand;
-    if(inter->args->count("subcommand")){
+    if(inter->args->count("subcommand") > 0){
 
       subcommand = inter->args->operator[]("subcommand").as<std::string>();
 

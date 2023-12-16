@@ -182,7 +182,7 @@ namespace Frate::Command {
       bool runCommand(std::string,std::vector<Handler>&);
       std::shared_ptr<Project> pro;
       bool project_present{false};
-      bool verbose{false};
+      //bool verbose{false};
       std::vector<Handler> commands{};
 
       //bool execute();

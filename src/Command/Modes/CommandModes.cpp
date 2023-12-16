@@ -9,8 +9,8 @@ namespace Frate::Command{
 namespace Frate:: Command::Modes{
   bool getModeName(Mode &mode){
     Prompt *name = new Prompt("Name: ");
-    name->Run();
-    auto [valid,mode_name] = name->Get<std::string>();
+    name->run();
+    auto [valid,mode_name] = name->get<std::string>();
     if(!valid){
       Frate::error << "Failed to get mode name" << std::endl;
       return false;
