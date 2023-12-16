@@ -2,7 +2,7 @@
 #include <Frate/Test/Test.hpp>
 
 bool Tests::Command::testRemoveMode(std::string mode){
-  Frate::Utils::info << "Testing remove mode command normal conditions" << std::endl;
+  Utils::info << "Testing remove mode command normal conditions" << std::endl;
   if(!testNew()) return false;
 
   auto [failed, inter] = init("frate add mode " + mode);

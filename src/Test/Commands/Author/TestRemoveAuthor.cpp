@@ -4,7 +4,7 @@
 
 namespace Tests::Command {
   bool testRemoveAuthor(std::string name){
-    Frate::Utils::info << "Testing remove author command normal conditions" << std::endl;
+    Utils::info << "Testing remove author command normal conditions" << std::endl;
     if(!testNew()){
       return false;
     }

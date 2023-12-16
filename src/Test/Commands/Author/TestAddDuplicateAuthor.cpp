@@ -4,7 +4,7 @@
 
 namespace Tests::Command {
   bool testAddDuplicateAuthor(std::string name){
-    Frate::Utils::info << "Testing add duplicate author command normal conditions" << std::endl;
+    Utils::info << "Testing add duplicate author command normal conditions" << std::endl;
 
     if(!testNew()) return false;
 
