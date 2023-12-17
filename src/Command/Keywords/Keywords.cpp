@@ -1,6 +1,6 @@
 #include <Frate/Command/Keywords.hpp>
 namespace Frate::Command::Keywords {
-  bool options(Interface* inter){
+  bool options(std::shared_ptr<Interface> inter){
     inter->InitHeader();
     inter->options->parse_positional({"command","subcommand","keywords"});
     inter->options->add_options()

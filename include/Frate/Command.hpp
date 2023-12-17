@@ -1,21 +1,19 @@
 #pragma once
-#include "Frate/Utils/General.hpp"
-#include "nlohmann/json_fwd.hpp"
-#include <memory>
 #include <string>
-#include <fstream>
 #include <vector>
 #include <filesystem>
 #include <nlohmann/json.hpp>
+#include <sol/sol.hpp>
 #include <iostream>
 #include <cxxopts.hpp>
 #include <Frate/Utils/CLI.hpp>
+#include <Frate/Utils/Logging.hpp>
 #include <Frate/Frate.hpp>
-
 
 #define ENDL "\n"
 
 namespace Frate::Command {
+
   using nlohmann::json;
   using Utils::CLI::Prompt;
   using namespace Utils::CLI::Ansi;
@@ -52,6 +50,7 @@ namespace Frate::Command {
     int score;
     json toJson();
     void fromJson(json j);
+    bool addCallback(sol::state &lua);
   } Package;//Deez nuts
 
   typedef struct RemoteServer{
@@ -70,7 +69,10 @@ namespace Frate::Command {
     const std::string STATIC_LIBRARY = "static_library";
     const std::string SHARED_LIBRARY = "shared_library";
     constexpr bool validate(std::string type) {
-      return type == EXECUTABLE || type == HEADER_ONLY || type == STATIC_LIBRARY || type == SHARED_LIBRARY;
+      return type == EXECUTABLE 
+        || type == HEADER_ONLY 
+        || type == STATIC_LIBRARY 
+        || type == SHARED_LIBRARY;
     }
   };
 
@@ -80,23 +82,49 @@ namespace Frate::Command {
     std::vector<Package> dependencies{};
   } Mode;
 
+  typedef struct ProjectPrompt_s {
+    std::string value{""};
+    std::string text{""};
+    std::string type{"string"};
+    // std::string key{""};
+    std::string default_value{""};
+    bool required{false};
+    std::vector<std::string> options{};
+    std::function<bool(std::string)> validator{
+      [this](std::string s) -> bool {
+        if(options.size() == 0) {
+          return true;
+        }else{
+          for (std::string option: options){
+            if (s == option){
+              return true;
+            }
+          }
+          return false;
+        }
+      }
+    };
+    template<typename T>
+    T get();
+  } ProjectPrompt;
+
+  //TODO: MAKE MOST OF THESE OPTIONAL
   typedef struct Project_s {
-    std::string project_name;
-    std::string project_description;
-    std::string project_type = ProjectType::EXECUTABLE;
-    std::string template_name{"default-executable"};
+    std::string name;
+    std::string description;
+    std::string type{""};
     RemoteServer build_server;
-    /*
-     * This is the project path, it will be set to the current working directory and in debug mode if willl set the path to ./build/
-     */
-    std::filesystem::path project_path;
+    std::filesystem::path path;
     std::string git{"null"};
+    std::string homepage{"null"};
+    std::string bugs{"null"};
     std::string lang{"cpp"};
     std::string cmake_version{"3.10"};
     std::string lang_version{"20"};
     std::string compiler{"g++"};
     std::string license{""};
     std::string default_mode{"Release"};
+    std::string build_command;
     std::vector<Mode> modes{
       Mode{.name = "Release", .flags={"-O2 "}}, 
       Mode{.name= "Debug", .flags= {"-g"}},
@@ -110,58 +138,72 @@ namespace Frate::Command {
     std::vector<Package> dependencies;
     std::string build_dir{"build"};
     Package testing_lib;
-    std::string project_version{"0.0.1"};
+    std::string version{"0.0.1"};
     std::vector<std::string> flags; 
-    std::shared_ptr<cxxopts::ParseResult> args;
     std::vector<std::string> toolchains {};
+    std::vector<std::string> libs{};
     void fromJson(json j);
     nlohmann::json toJson();
     bool save();
     void checkKeys(json j);
+    std::string getPath(){
+      return path.string();
+    };
+    std::unordered_map<std::string,ProjectPrompt> prompts{};
+    std::unordered_map<std::string,json> variables{};
   } Project;
+
+
   typedef struct Handler_s Handler;
+  class Interface;
+
   typedef struct Handler_s {
     std::vector<std::string> aliases;
     std::vector<std::string> flags{};
     std::vector<Handler> subcommands{};
     std::vector<std::string> positional_args{};
     std::string docs{""};
-    std::function<bool()> callback{
-      []() -> bool {
+    std::function<bool(std::shared_ptr<Interface> )> callback{
+      [](std::shared_ptr<Interface> inter) -> bool {
+        (void)inter;
         std::cout << "This command has not been implemented yet" << std::endl;
         return false;
       }
     };
     bool implemented{true};
     bool requires_project{true};
+    bool unlimited_args{false};
   } Handler;
 
-  class Interface{
+  class Interface : public std::enable_shared_from_this<Interface>{
     public:
+      Interface(int argc, char **argv);
       void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
       void getHelpString(Handler &handler);
       bool runCommand(std::string,std::vector<Handler>&);
       std::shared_ptr<Project> pro;
       bool project_present{false};
+      //bool verbose{false};
       std::vector<Handler> commands{};
 
-      bool execute();
-      bool skip_prompts{false};
+      //bool execute();
       bool parse();
       std::shared_ptr<cxxopts::Options> options;
       std::shared_ptr<cxxopts::ParseResult> args;
       char** argv;
       int argc;
       bool confirm_all{false};
-      Interface(int argc, char **argv);
-      ~Interface();
       bool InitHeader();
       bool CreateCMakelists();
       bool LoadProjectJson();
+      ~Interface();
   };
 
+  bool execute(std::shared_ptr<Interface> inter);
+
+
   namespace OptionsInit{
-      bool Main(Interface*);
+      bool Main(std::shared_ptr<Interface> inter);
   };
 
   std::string downloadIndex();

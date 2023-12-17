@@ -1,10 +1,14 @@
 #include <filesystem>
+#include <fstream>
+#include <nlohmann/json_fwd.hpp>
 #include <string>
 #include <nlohmann/json.hpp>
 #include <Frate/Command.hpp>
 #include <Frate/Utils/General.hpp>
+#include <sol/sol.hpp>
 #include <git2.h>
 #include <inja.hpp>
+#include <Frate/LuaAPI.hpp>
 
 namespace Frate::Generators::CMakeList {
   using nlohmann::json;
@@ -13,14 +17,16 @@ namespace Frate::Generators::CMakeList {
     std::cout << "Creating CMakeLists.txt" << std::endl;
 
 #ifdef DEBUG
+#ifndef TEST
     std::cout << pro->toJson().dump(2) << std::endl;
+#endif
 #endif
     std::string CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
     std::ofstream CPMFile;
     try{
-      if(!std::filesystem::exists(pro->project_path / "cmake"))
-        std::filesystem::create_directories(pro->project_path / "cmake");
-      CPMFile.open(pro->project_path / "cmake/CPM.cmake");
+      if(!std::filesystem::exists(pro->path / "cmake"))
+        std::filesystem::create_directories(pro->path / "cmake");
+      CPMFile.open(pro->path / "cmake/CPM.cmake");
     }catch(...){
       Utils::debug("Error while opening file: CPM.cmake");
       return false;
@@ -28,26 +34,50 @@ namespace Frate::Generators::CMakeList {
 
     CPMFile << CPM;
     inja::Environment env;
+    sol::state lua;
+    LuaAPI::registerAPI(lua);
 
-    std::string CMakeListsExecutable =  env.render_file(pro->project_path /"templates" /"CMakeLists.tmpl", pro->toJson());
-    std::ofstream file;
-    std::string file_name = "CMakeLists.txt";
-
-    try{
-      remove((pro->project_path / file_name).c_str());
-    }catch(...){
-      Utils::debug("Error while removing file: " + file_name);
+    if(!LuaAPI::registerProject(lua, pro)){
+      Utils::debug("Error while registering project");
       return false;
     }
 
+    if(!LuaAPI::registerProjectScripts(env, lua,pro->path / "templates/scripts",pro)){
+      Utils::debug("Error while registering project scripts");
+      return false;
+    }
+
+    std::cout << "Rendering CMakeLists.txt" << std::endl;
+
+    std::string CMakeListsExecutable;
     try{
-      file.open(pro->project_path / file_name);
+      CMakeListsExecutable = env.render_file(pro->path /"templates" / "CMakeLists.txt.inja", pro->toJson());
+    }catch(...){
+      Utils::debug("Error while rendering CMakeLists.txt");
+      return false;
+    }
+
+    std::cout << "Writing CMakeLists.txt" << std::endl;
+    std::ofstream file;
+    std::string file_name = "CMakeLists.txt";
+    
+    if(std::filesystem::exists(pro->path / file_name)){
+
+      std::filesystem::remove(pro->path / file_name);
+
+    }
+
+
+    try{
+      file.open(pro->path / file_name);
     }catch(...){
       Utils::debug("Error while opening file: " + file_name);
       return false;
     }
-    //std::cout << CMakeListsExecutable << std::endl;
+    std::cout << CMakeListsExecutable << std::endl;
     file << CMakeListsExecutable;
+
+    file.close();
     return true;
   }
 }

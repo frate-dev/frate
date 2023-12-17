@@ -1,0 +1,1 @@
+#include <Frate/Wizards.hpp>

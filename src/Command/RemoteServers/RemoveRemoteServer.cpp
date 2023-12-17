@@ -1,9 +1,9 @@
 #include <Frate/Command/RemoteServers.hpp>
-
+#include <fstream>
 
 namespace Frate::Command::RemoteServers{
 
-  bool remove(Interface* inter){
+  bool remove(std::shared_ptr<Interface> inter){
     std::vector<RemoteServer> servers =  remoteServerData(inter);
     std::string name;
     getServerName(name);

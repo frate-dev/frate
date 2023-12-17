@@ -3,7 +3,10 @@
 
 namespace Frate::Command::Watch {
 
-  bool options(Interface* inter);
-  bool run(Interface* inter);
-  std::vector<Handler> handlers(Interface* inter);
+  bool options(std::shared_ptr<Interface> inter);
+  bool run(std::shared_ptr<Interface> inter);
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter);
+}
+namespace Frate::Command::UvWatch {
+  bool watch(std::shared_ptr<Interface> inter);
 }

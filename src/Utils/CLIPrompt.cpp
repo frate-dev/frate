@@ -16,37 +16,46 @@ namespace Frate::Utils::CLI {
     this->input = default_input;
     this->color = Ansi::GREEN;
   }
-  Prompt* Prompt::AddOption(std::string option){
+  Prompt& Prompt::addOption(std::string option){
     this->options.push_back(option);
-    return this;
+    return *this;
   }
-  Prompt* Prompt::AddOption(int option){
+  Prompt& Prompt::addOption(int option){
     this->options.push_back(std::to_string(option));
-    return this;
+    return *this;
   }
-  Prompt* Prompt::AddOption(float option){
+  Prompt& Prompt::addOption(float option){
     this->options.push_back(std::to_string(option));
-    return this;
+    return *this;
   }
-  Prompt* Prompt::AddOption(size_t option){
+  Prompt& Prompt::addOption(size_t option){
     this->options.push_back(std::to_string(option));
-    return this;
-  }
-  Prompt* Prompt::MaxLength(int max_length){
+    return *this; }
+  Prompt& Prompt::maxLength(int max_length){
     this->max_length = max_length;
-    return this;
+    return *this;
   }
-  Prompt* Prompt::Options(std::vector<std::string> options){
+  Prompt& Prompt::addOptions(std::vector<std::string> options){
     this->options = options;
-    return this;
+    return *this;
   }
-  Prompt* Prompt::Color(std::string color){
+  Prompt& Prompt::setColor(std::string color){
     this->color = color;
-    return this;
+    return *this;
   }
-  Prompt* Prompt::Validator(std::function<bool(std::string)> validator){
+  Prompt& Prompt::setValidator(std::function<bool(std::string)> validator){
     this->validator = validator;
-    return this;
+    return *this;
+  }
+  Prompt& Prompt::isBool(){
+    this->is_bool = true;
+    return *this; } Prompt& Prompt::exitOnFailure(){
+    this->exit_on_failure = true;
+    return *this;
+  }
+  Prompt& Prompt::printValidOptions(){
+    print_valid_options = true;
+    return *this;
   }
   bool Prompt::has_options(){
     return options.size() > 0;
@@ -85,11 +94,11 @@ namespace Frate::Utils::CLI {
   void Prompt::prompt_prefix(int term_width){
     int text_length = 0;
     if(is_bool){
-      std::cout << "is bool";
       std::string  booloptions = "[y/n]";
       std::cout << color << prompt << termcolor::white << booloptions << Ansi::RESET;
       text_length += prompt.length() + booloptions.length();
     }else if(has_options()){
+      //Displays the default option
       std::cout 
         << color 
         << prompt 
@@ -98,20 +107,30 @@ namespace Frate::Utils::CLI {
         << default_input 
         << termcolor::white << "]:" 
         << Ansi::RESET << "\n";
+
       text_length = 0;
       cursor_position++;
+
       if(print_valid_options){
-        for(size_t i = 0; i < options.size(); i++){
-          std::cout << "[" << options[i] << "]";
-          text_length += options[i].length() + 2;
-          if(i % 3 == 2){
+
+        for(size_t i = 0; i < visible_options.size(); i++){
+
+
+          std::cout << "[" << visible_options[i] << "]";
+          text_length += visible_options[i].length() + 2;
+          if(i % columns == columns - 1){
+
+
             std::cout << "\n";
             text_length = 0;
             cursor_position++;
-          }else if(i == options.size() - 1){
+
+          }else if(i == visible_options.size() - 1){
+
             text_length = 0;
             cursor_position++;
             std::cout << "\n";
+
           }
         }
       }
@@ -152,33 +171,53 @@ namespace Frate::Utils::CLI {
     std::string completion;
     int completion_index = 0;
     while(true){
+      if(visible_options.size() > 0){
+        visible_options.clear();
+      }
+      for(std::string &option : options){
+        if(option.find(input) != std::string::npos){
+          visible_options.push_back(option);
+          if(visible_options.size() >= result_limit){
+            break;
+          }
+        }
+      }
+
+
       c = getchar();
       if(c == '\n'){
-        if(!is_valid()){
-          continue;
+        //Checks the options to see if there is an exact match
+        for(std::string &option : options){
+          if(option == input){
+            completion = option;
+            break;
+          }
         }
+        //If there is a completion then it will set the input to the completion
         if(completion.size() > 0){
           input = completion;
+        }
+        //If it's not valid then we don't want to finish
+        if(!is_valid()){
+          continue;
         }
         tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
         return;
       //Tab
       }else if(c == 9){
         if(has_options()){
-          if(completion.size() == 0){
-            if(options.size() > 1){
-              completion = options[1];
-            }else if(options.size() == 1){
-              completion = options[0];
+          if(completion.empty()){
+            if(visible_options.size() == 1){
+              completion = visible_options[0];
             }else{
-              completion = options[completion_index];
+              completion = visible_options[completion_index];
             }
           }else{
             completion_index++;
-            if(completion_index >= options.size()){
+            if(completion_index > visible_options.size()){
               completion_index = 0;
             }
-            completion = options[completion_index];
+            completion = visible_options[completion_index];
           }
         }
       }else if(c == 127){
@@ -217,7 +256,7 @@ namespace Frate::Utils::CLI {
     return false;
   }
   template <>
-  std::pair<bool, bool> Prompt::Get(){
+  std::pair<bool, bool> Prompt::get(){
 #ifdef TEST
     return std::make_pair(true, true);
 #endif
@@ -230,7 +269,7 @@ namespace Frate::Utils::CLI {
     }
   }
   template <>
-  std::pair<bool, std::string> Prompt::Get(){
+  std::pair<bool, std::string> Prompt::get(){
     if(has_options()){
       if(is_in_options(input)){
         return std::make_pair(true, input);
@@ -243,7 +282,7 @@ namespace Frate::Utils::CLI {
     }
   }
   template <>
-  std::pair<bool, int> Prompt::Get(){
+  std::pair<bool, int> Prompt::get(){
     if(has_options()){
       if(is_in_options(input)){
         try{
@@ -265,7 +304,7 @@ namespace Frate::Utils::CLI {
     }
   }
   template<>
-  std::pair<bool, float> Prompt::Get(){
+  std::pair<bool, float> Prompt::get(){
     if(has_options()){
       if(is_in_options(input)){
         try{
@@ -286,19 +325,7 @@ namespace Frate::Utils::CLI {
       }
     }
   }
-  Prompt* Prompt::IsBool(){
-    this->is_bool = true;
-    return this;
-  }
-  Prompt* Prompt::ExitOnFailure(){
-    this->exit_on_failure = true;
-    return this;
-  }
-  Prompt* Prompt::PrintValidOptions(){
-    print_valid_options = true;
-    return this;
-  }
-  bool Prompt::Run(){
+  bool Prompt::run(){
     get_input();
     if(has_max_length()){
       while(input.length() > max_length){

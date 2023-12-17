@@ -1,5 +1,5 @@
-#include "Frate/Command/Actions/Help.hpp"
 #include <cxxopts.hpp>
+#include <filesystem>
 #include <fstream>
 #include <iostream> 
 #include <string>
@@ -7,55 +7,15 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp>
 #include <Frate/Wizards.hpp>
+#include "Frate/Command/Actions/Help.hpp"
 #include <git2.h>
 
 namespace Frate::Command::New {
+using std::filesystem::path;
 using Utils::CLI::Prompt;
 using Utils::CLI::Ansi::RED;
- bool downloadCMakeListsTemplate(std::shared_ptr<Command::Project> _){
 
-    std::cout << "Downloading CMakeLists.txt" << std::endl;
-    std::ofstream file;
-    json CMakeListsTemplateIndex = Utils::fetchJson("https://github.com/frate-dev/templates/releases/latest/download/index.json");
-    try{
-      file.open(static_cast<std::string>(std::getenv("HOME")) + "/.config/frate/" + "templates.json");
-      file << CMakeListsTemplateIndex.dump(2);
-    }catch(...){
-      Utils::debug("Error while opening file: templates.json");
-      return false;
-    }
-      
-    return true;
-  }
-bool downloadCMakeListsTemplate(Interface* inter){
-  std::shared_ptr<Project> pro = inter->pro;
-  std::string template_index = static_cast<std::string>(std::getenv("HOME"))+ "/.config/frate/templates.json";
-
-  std::filesystem::create_directories(static_cast<std::string>(std::getenv("HOME")) + "/.config/frate");
-  std::ifstream  template_index_file;
-
-  if (!std::filesystem::exists(template_index)){
-    downloadCMakeListsTemplate(pro); 
-  }
-  std::string repo_url;
-  std::cout << "file: " << template_index << std::endl;
-  json templateIndex = json::parse(std::ifstream(template_index));
-  std::cout << templateIndex.dump(2) << std::endl;
-  for(json temp: templateIndex){
-    if (temp["name"] == pro->template_name){
-      repo_url = temp["git"];
-    }
-  }
-
-
- git_repository *repo = NULL; 
-  std::cout << "Cloning " << repo_url << " into " << (pro->project_path / "templates").c_str() << std::endl;
-  git_clone(&repo, repo_url.c_str(), (pro->project_path / "templates").c_str(), NULL);
-  std::filesystem::remove_all(pro->project_path / "templates" / ".git");
-  return true;
-}
-
-bool options(Interface* inter) {
+bool options(std::shared_ptr<Interface> inter) {
   inter->InitHeader();
   inter->options->parse_positional({"command", "subcommand"});
   inter->options->add_options()
@@ -69,154 +29,56 @@ bool options(Interface* inter) {
 }
 
 
-bool createJson(std::shared_ptr<Project> pro) {
-  // Lucas did it again
-  std::shared_ptr<Generators::ConfigJson::Config> config_json =
-      std::make_shared<Generators::ConfigJson::Config>();
-  // if (!Generators::ConfigJson::readUserInput(pro, config_json)) {
-  //   return false;
-  // }
-  if(!Wizard::Project(pro)){
-    return false;
-  }
-  if (!Generators::ConfigJson::writeConfig(pro)) {
-    return false;
-  }
-  return true;
-  }
-
-  bool createHelloWorldCpp(std::shared_ptr<Project> pro) {
-
-    if(std::filesystem::exists(pro->project_path / pro->src_dir)){
-      Prompt *overwrite_prompt = new Prompt("src directory already exists, overwrite?");
-      overwrite_prompt->Color(RED);
-      overwrite_prompt->IsBool();
-      overwrite_prompt->Run();
-      if(!overwrite_prompt->Get<bool>().second){
-        return false;
-      }
-    }
-    //Create src directory
-    try{
-      std::filesystem::create_directory(pro->project_path / pro->src_dir);
-    }catch(std::exception &e){
-      Utils::debug(e.what());
-      return false;
-    }
-    std::ofstream file_stream;
-    std::string file_path = pro->project_path / pro->src_dir;
-    try{
-
-      std::filesystem::rename(pro->project_path / "templates" / "src", file_path);
-      inja::Environment env;
-      std::string file_content = env.render_file(pro->project_path / pro->src_dir / "main.tmpl", pro->toJson());
-      std::ofstream file_stream;
-      file_stream.open(pro->project_path / pro->src_dir / "main.cpp");
-      file_stream << file_content;
-      std::filesystem::remove(pro->project_path / pro->src_dir / "main.tmpl");
 
 
-    }catch(std::exception &e){
-      Utils::debug(e.what());
-      return false;
-    }
-    file_stream.close();
-    return true;
-  }
-  bool createHelloWorldC(std::shared_ptr<Project> pro) {
-    if(std::filesystem::exists(pro->project_path / pro->src_dir)){
-      Prompt *overwrite_prompt = new Prompt("src directory already exists, overwrite?");
-      overwrite_prompt->IsBool();
-      overwrite_prompt->Run();
-      overwrite_prompt->Color(RED);
-      if(!overwrite_prompt->Get<bool>().second){
-        return false;
-      }
-    }
-    //Create src directory
-    try{
-      std::filesystem::create_directory(pro->project_path / pro->src_dir);
-    }catch(std::exception &e){
-      Utils::debug(e.what());
-      return false;
-    }
-    std::ofstream file_stream;
-    std::string file_path = pro->project_path / pro->src_dir ;
-    try{
-
-      std::filesystem::rename(pro->project_path / "templates" / "src", file_path);
-      inja::Environment env;
-      std::string file_content = env.render_file(pro->project_path / pro->src_dir / "main.tmpl", pro->toJson());
-      std::ofstream file_stream;
-      file_stream.open(pro->project_path / pro->src_dir / "main.c");
-      std::filesystem::remove(pro->project_path / pro->src_dir / "main.tmpl");
-      file_stream << file_content;
-    }catch(std::exception &e){
-      Utils::debug(e.what());
-      return false;
-    }
-    file_stream.close();
-    return true;
-  }
-  void gitInit(Interface *inter){
-    #ifdef RELEASE 
-      Generators::GitIgnore::create(inter->pro);
-      //TODO: make this work on windows
-      git_repository *repo = nullptr;
-      git_repository_init(&repo, inter->pro->project_path.string().c_str(),0);
-      //int gitinit = Utils::hSystem("cd "+inter->pro->project_path.string()+";git init");
-      
-      
-      //if(gitinit != 0){
-      //  std::cout << "git init failed" << std::endl;
-      //}
-    #endif
+  void gitInit(std::shared_ptr<Interface> inter){
+    Generators::GitIgnore::create(inter);
+    //TODO: make this work on windows
+    git_repository *repo = nullptr;
+    git_repository_init(&repo, inter->pro->path.string().c_str(),0);
     (void)inter;
   }
 
-  bool createProjectWizard(Interface *inter){
-    createJson(inter->pro);
-    inter->LoadProjectJson();
-    downloadCMakeListsTemplate(inter);
-    if(inter->pro->lang == "cpp"){
-      if(!createHelloWorldCpp(inter->pro)){
-        return false;
-      }
-    }else if(inter->pro->lang == "c"){
-      if(!createHelloWorldC(inter->pro)){
-        return false;
-      }
-    }
-    gitInit(inter);
-    return true;
-  }
 
 
-  bool defaultJson(std::shared_ptr<Project> pro) {
-    using nlohmann::json;
-
-    json j = pro->toJson();
-
-    std::ofstream file;
-    std::string file_name = "frate-project.json";
-
-    try{
-      file.open(pro->project_path / file_name);
-    }catch(std::exception &e){
-      Utils::debug(e.what());
+  bool createProjectWizard(std::shared_ptr<Interface> inter){
+    if(!Generators::Project::create(inter->pro)){
       return false;
-    }
-    file << j;
-    file << '\n';
-    file.close();
+    } 
+#ifdef RELEASE
+    gitInit(inter);
+#endif
     return true;
   }
+
+
+
 
   bool initTemplate(){
     return true;
   }
 
-  bool run(Interface* inter) {
+  bool checkForProject(std::shared_ptr<Interface> inter){
+    if(std::filesystem::exists(inter->pro->path / "frate-project.json")){
+      Utils::error << "Project already exists" << ENDL;
+      return true;
+    }
+    return false;
+  }
+
+  bool promptForOverwrite(std::shared_ptr<Interface> inter){
+    (void)inter;
+    Prompt prompt("Do you want to overwrite it?");
+    prompt.setColor(RED).exitOnFailure();
+    prompt.isBool().run();
+    auto [valid, value] = prompt.get<bool>();
+    if(!valid){
+      return false;
+    }
+    return value;
+  }
+
+  bool run(std::shared_ptr<Interface> inter) {
     options(inter);
 #ifdef RELEASE
     if(!inter->args->count("subcommand")){
@@ -227,10 +89,10 @@ bool createJson(std::shared_ptr<Project> pro) {
     if (directory != "."){
       std::filesystem::create_directories(directory);
       std::filesystem::current_path(directory);
-      inter->pro->project_path = std::filesystem::current_path();
+      inter->pro->path = std::filesystem::current_path();
     }
 #endif
-    std::string file_name = "frate-project.json";
+    std::string project_config_file = "frate-project.json";
     std::string project_name = "";
     bool defaults = false;
     std::string language = "cpp";
@@ -248,17 +110,38 @@ bool createJson(std::shared_ptr<Project> pro) {
       project_name = inter->args->operator[]("name").as<std::string>();
     }
     if(inter->args->operator[]("type").count() > 0){
-      inter->pro->project_type = inter->args->operator[]("type").as<std::string>();
-      if(!ProjectType::validate(inter->pro->project_type)){
-        std::cout << termcolor::red << "Invalid project type" << termcolor::reset << ENDL;
-        return false;
-      }
+      inter->pro->type = inter->args->operator[]("type").as<std::string>();
     }
     if(inter->args->operator[]("language").count() > 0){
       language = inter->args->operator[]("language").as<std::string>();
     }
     if(inter->args->operator[]("defaults").count() > 0){
       defaults = inter->args->operator[]("defaults").as<bool>();
+    }
+
+    if(checkForProject(inter)){
+      if(promptForOverwrite(inter)){
+
+        path tmp_path = Utils::copyToTmpPath(inter->pro->path, "frate-project-");
+
+
+        for(const auto& entry : std::filesystem::directory_iterator(inter->pro->path)){
+          if(entry.path().filename() != "frate"){
+            Utils::info << "Removing " << entry.path() << ENDL;
+            std::filesystem::remove_all(entry.path());
+          }
+        }
+
+
+      }else{
+
+
+        Utils::error 
+          << "Aborting: can't initialize a new project on top of a existing one" << ENDL;
+        return false;
+
+
+      }
     }
 
 
@@ -268,62 +151,29 @@ bool createJson(std::shared_ptr<Project> pro) {
 
 
 
-    inter->pro->project_name = project_name;
+    inter->pro->name = project_name;
     inter->pro->lang = language;
 
 
-    downloadCMakeListsTemplate(inter);
+    //downloadCMakeListsTemplate(inter);
     if(defaults){
-      std::cout << "Skipping init" << ENDL;
-      std::cout << "Creating project" << ENDL;
-      if (language == "cpp" || language == "c++"){
-
-        if(!createHelloWorldCpp(inter->pro)){
-          return false;
-        }
-        if(!defaultJson(inter->pro)){
-          return false;
-        }
+      Utils::info << "Using defaults" << ENDL;
+      Utils::info << "Creating project" << ENDL;
+      if(inter->pro->type.empty()){
+        inter->pro->type = "executable";
       }
-      else if (language == "c") { 
-        if(!createHelloWorldC(inter->pro)){
-          return false;
-        }
-        if(!defaultJson(inter->pro)){
-          return false;
-        }
+      if(!createProjectWizard(inter)){
+        return false;
       }
     }else{
-      std::cout << "Creating project" << ENDL;
-      std::cout << "Creating frate-project.json" << ENDL;
+      Utils::info << "Creating project" << ENDL;
+      Utils::info << "Creating frate-project.json" << ENDL;
+      inter->pro->type = "";
+      Wizard::Project(inter->pro);
       if(!createProjectWizard(inter)){
         return false;
       }
     }
-    Generators::Readme::create(inter->pro);
-
-    if(project_type == ProjectType::EXECUTABLE){
-      if(!Generators::CMakeList::createCMakeLists(inter->pro)){
-        return false;
-      }
-    }else if(project_type == ProjectType::HEADER_ONLY){
-      std::cout << "Header only projects are not supported yet" << ENDL;
-      return false;
-      //TODO: header only
-    }else if(project_type == ProjectType::STATIC_LIBRARY){
-      std::cout << "Static library projects are not supported yet" << ENDL;
-      return false;
-      //TODO: static library
-    }else if(project_type == ProjectType::SHARED_LIBRARY){
-      std::cout << "Shared library projects are not supported yet" << ENDL;
-      return false;
-      //TODO: shared library
-    }
-    std::cout << "CMakeLists.txt created" << ENDL;
-    std::cout << "Initializing git" << ENDL;
-    gitInit(inter);
-    std::cout << "Done" << ENDL;
-
     return true;
   }
   } // namespace Command

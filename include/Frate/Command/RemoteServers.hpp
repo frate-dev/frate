@@ -3,15 +3,15 @@
 
 
 namespace Frate::Command::RemoteServers{
-  bool options(Interface* inter);
-  bool add(Interface* inter);
-  bool remove(Interface* inter);
-  bool list(Interface* inter);
-  bool get(Interface* inter);
-  bool set(Interface* inter);
+  bool options(std::shared_ptr<Interface> inter);
+  bool add(std::shared_ptr<Interface> inter);
+  bool remove(std::shared_ptr<Interface> inter);
+  bool list(std::shared_ptr<Interface> inter);
+  bool get(std::shared_ptr<Interface> inter);
+  bool set(std::shared_ptr<Interface> inter);
 
   //Internal functions
-  std::vector<RemoteServer> remoteServerData(Interface* inter);
+  std::vector<RemoteServer> remoteServerData(std::shared_ptr<Interface> inter);
   bool getServerName(std::string& name);
   bool getServerUsername(std::string& username);
   bool getServerAuthMethod(std::string& authMethod);

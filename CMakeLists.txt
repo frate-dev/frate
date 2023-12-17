@@ -10,14 +10,19 @@ if(DEFINED ENV{VBUILD})
 else()
   set(VBUILD 0)
 endif()
+#set(CMAKE_EXE_LINKER_FLAGS "-static")
 
+set(BUILD_SHARED_LIBS OFF)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 add_definitions(-DVMINOR=${VMINOR})
 add_definitions(-DVMAJOR=${VMAJOR})
 add_definitions(-DVPATCH=${VPATCH})
 add_definitions(-DVBUILD=${VBUILD})
 
-set(CMAKE_CXX_COMPILER /usr/bin/clang++)
-set(CMAKE_C_COMPILER /usr/bin/clang)
+
+#set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+#set(CMAKE_C_COMPILER /usr/bin/clang)
 project ( 
     frate
     VERSION ${VMAJOR}.${VMINOR}.${VPATCH}.${VBUILD}
@@ -25,39 +30,63 @@ project (
 )
 set(CMAKE_CXX_STANDARD 20)
 set(-DUSE_CCACHE=YES -DCCACHE_OPTIONS="CCACHE_CPP2=true;CCACHE_SLOPPINESS=clang_index_store")
-set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
-set(CMAKE_C_COMPILER_LAUNCHER ccache)
+
+find_program(SCCACHE_FOUND sccache)
+find_program(CCACHE_FOUND ccache)
+
+find_library(LUA_FOUND lua)
+
+
+
+set(SCCACHE_FOUND 0)
+
+if(SCCACHE_FOUND)
+  message("Using sccache")
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE sccache)
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK sccache)
+  set(CMAKE_CXX_COMPILER_LAUNCHER sccache)
+  set(CMAKE_C_COMPILER_LAUNCHER sccache)
+elseif(CCACHE_FOUND)
+  message("Using ccache")
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
+  set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+  set(CMAKE_C_COMPILER_LAUNCHER ccache)
+else()
+  message("No cache found")
+endif()
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 include (cmake/CPM.cmake)
-CPMUsePackageLock(package-lock.cmake)
-CPMAddPackage(
-  NAME Ccache.cmake
-  GITHUB_REPOSITORY TheLartians/Ccache.cmake
-  VERSION 1.2
-)
-find_program(CCACHE_FOUND ccache)
-if(CCACHE_FOUND)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
-    set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache) # Less useful to do it for linking, see edit2
-endif(CCACHE_FOUND)
+
 
 CPMAddPackage(
   NAME termcolor
   GITHUB_REPOSITORY ikalnytskyi/termcolor
   GIT_TAG v2.1.0
+  OPTIONS
+  "BUILD_STATIC_LIBS ON"
 )
 
 CPMAddPackage(
   NAME cxxopts
   GITHUB_REPOSITORY jarro2783/cxxopts
   GIT_TAG origin/master
+  OPTIONS
+  "BUILD_STATIC_LIBS ON"
+
 )
 CPMAddPackage(
   NAME nlohmann_json
   GITHUB_REPOSITORY nlohmann/json
   GIT_TAG origin/master
+  OPTIONS
+  "BUILD_STATIC_LIBS ON"
+  "JSON_BuildTests OFF"
+
+
 )
 CPMAddPackage(
   name libgit2
@@ -65,6 +94,7 @@ CPMAddPackage(
   GIT_TAG v1.7.1
   OPTIONS
     "BUILD_TESTS OFF"
+    "BUILD_STATIC_LIBS ON"
     "BUILD_CLI OFF"
 )
 CPMAddPackage(
@@ -73,13 +103,51 @@ CPMAddPackage(
   GIT_TAG curl-8_3_0
   OPTIONS
     "ENABLE_VERSIONED_SYMBOLS ON"
+    "BUILD_CURL_EXE OFF"
+    "BUILD_STATIC_LIBS ON"
+    "BUILD_STATIC_CURL  ON"
+    "ENABLE_STATIC ON"
+    "CURL_STATICLIB ON"
+    "WITH_SSL ON"
+    "WITH_ZLIB ON"
+    "LIBSSH2_LIBRARY OFF"
+    "CURL_DISABLE_AWS ON"
+    "CURL_DISABLE_FTP ON"
+    "CURL_DISABLE_POP3 ON"
 )
+
+CPMAddPackage(
+  NAME uv 
+  GITHUB_REPOSITORY libuv/libuv
+  GIT_TAG v1.47.0
+  OPTIONS
+    "BUILD_STATIC_LIBS ON"
+    "LIBUV_BUILD_SHARED OFF"
+    "LIBUV_STATIC_LIBRARY O"
+)
+
+CPMAddPackage(
+  lua
+  GITHUB_REPOSITORY lua/lua
+  GIT_TAG v5.4.4
+  OPTIONS
+    "BUILD_STATIC_LIBS ON"
+)  
+
+CPMAddPackage(
+  NAME sol2
+  GITHUB_REPOSITORY ThePhD/sol2
+  GIT_TAG v3.3.1
+)
+
+
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
   "src/**.c"
   "src/**/**.cpp"
   "src/**/**.c"
 )
+
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 set(HEADER_DIR ${CMAKE_SOURCE_DIR}/include)
@@ -100,27 +168,38 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
   message("Debug mode")
   add_definitions(-DDEBUG)
-  CPMAddPackage("gh:jeremy-rifkin/cpptrace@0.2.1")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g -O0 -Wextra -Wpedantic -Wall -Wredundant-decls -Wunused -Wunused-parameter -Wunused-function -Wunused-macros")
-  target_link_libraries(${PROJECT_NAME} cpptrace)
+  CPMAddPackage(
+    "gh:jeremy-rifkin/cpptrace@0.2.1"
+  )
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g -O0 -Wextra -Wpedantic -Wall -Wredundant-decls -Wunused -Wunused-parameter -Wunused-function -Wunused-macros -fsanitize=address -fno-omit-frame-pointer")
+  target_link_libraries(${PROJECT_NAME} PRIVATE cpptrace)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
   message("Test mode")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g -O0 -Wextra -Wpedantic -Wall")
-  CPMAddPackage("gh:catchorg/Catch2@3.4.0")
-  CPMAddPackage("gh:jeremy-rifkin/cpptrace@0.2.1")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -g -O0 -Wextra -Wpedantic -Wall -fno-omit-frame-pointer")
+  CPMAddPackage(
+    "gh:catchorg/Catch2@3.4.0"
+  )
+  CPMAddPackage(
+    "gh:jeremy-rifkin/cpptrace@0.2.1"
+  )
   add_definitions(-DTEST -DDEBUG) #test mode
-  target_link_libraries(${PROJECT_NAME} Catch2::Catch2WithMain) #test mode fuck you cmake
-  target_link_libraries(${PROJECT_NAME} cpptrace)
+  target_link_libraries(${PROJECT_NAME} PRIVATE Catch2::Catch2WithMain) #test mode fuck you cmake
+  target_link_libraries(${PROJECT_NAME} PRIVATE cpptrace)
 else()
   add_definitions(-DDEBUG)
   message("Default mode")
 endif()
 
-target_link_libraries(${PROJECT_NAME} libcurl)
-target_link_libraries(${PROJECT_NAME} cxxopts)
-target_link_libraries(${PROJECT_NAME} nlohmann_json)
-target_link_libraries(${PROJECT_NAME} libgit2package)
-target_link_libraries(${PROJECT_NAME} termcolor)
+target_link_options(${PROJECT_NAME} PRIVATE  -static-libgcc -static-libstdc++)
+target_link_libraries(${PROJECT_NAME} PRIVATE -static-libgcc -static-libstdc++)
+target_link_libraries(${PROJECT_NAME} PRIVATE libcurl)
+target_link_libraries(${PROJECT_NAME} PRIVATE cxxopts)
+target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
+target_link_libraries(${PROJECT_NAME} PRIVATE libgit2package)
+target_link_libraries(${PROJECT_NAME} PRIVATE uv)
+target_link_libraries(${PROJECT_NAME} PRIVATE termcolor)
+target_link_libraries(${PROJECT_NAME} PRIVATE lua)
+target_link_libraries(${PROJECT_NAME} PRIVATE  sol2::sol2)
 
 set(SOURCE_DIR src)
 set(BUILD_DIR build)
@@ -142,3 +221,46 @@ endif()
 
 add_custom_target(man ALL DEPENDS docs/man/${PROJECT_NAME}.1)
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/docs/man/${PROJECT_NAME}.1" DESTINATION "${MAN_INSTALL_DIR}")
+set(CPACK_PACKAGE_VENDOR "Frate")
+if ( DIST_UBUNTU )
+  set(CPACK_GENERATOR "DEB")
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Lucas Sproule & Jon-Michael Hartway")
+  set(CPACK_PACKAGE_VERSION_MAJOR ${VMAJOR})
+  set(CPACK_PACKAGE_VERSION_MINOR ${VMINOR})
+  set(CPACK_DEBIAN_PACKAGE_DEPENDS "build-essential, cmake, git,  ccache,  libssh2-1,  lua5.4, liblua5.4-dev")
+  set(CPACK_PACKAGE_DESCRIPTION "Frate a package/build system manager for C/C++")
+  set(CPACK_PACKAGE_CONTACT "Lucas Sproule frate@frate.dev")
+endif()
+if(DIST_TGZ)
+  set(CPACK_GENERATOR "TGZ")
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Lucas Sproule & Jon-Michael Hartway")
+  set(CPACK_PACKAGE_VERSION_MAJOR ${VMAJOR})
+  set(CPACK_PACKAGE_VERSION_MINOR ${VMINOR})
+  #set(CPACK_DEBIAN_PACKAGE_DEPENDS "build-essential, cmake, git,  ccache,  libssh2-1,  lua5.4, liblua5.4-dev")
+  set(CPACK_PACKAGE_DESCRIPTION "Frate a package/build system manager for C/C++")
+  set(CPACK_PACKAGE_CONTACT "Lucas Sproule frate@frate.dev")
+endif()
+if(DIST_RPM)
+  set(CPACK_GENERATOR "RPM")
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Lucas Sproule & Jon-Michael Hartway")
+  set(CPACK_PACKAGE_VERSION_MAJOR ${VMAJOR})
+  set(CPACK_PACKAGE_VERSION_MINOR ${VMINOR})
+  set(CPACK_RPM_BUILDREQUIRES "autoconf, automake, clang, libssh, binutils, bison, flex, gcc, gcc-c++, gettext, libtool, make, patch, pkgconfig, lua,  git, redhat-rpm-config, rpm-build, rpm-sign,  elfutils, patchutils, cmake")
+  set(CPACK_PACKAGE_DESCRIPTION "Frate a package/build system manager for C/C++")
+  set(CPACK_PACKAGE_CONTACT "Lucas Sproule frate@frate.dev")
+endif()
+  set(CPACK_GENERATOR "DEB")
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Lucas Sproule & Jon-Michael Hartway")
+  set(CPACK_PACKAGE_VERSION_MAJOR ${VMAJOR})
+  set(CPACK_PACKAGE_VERSION_MINOR ${VMINOR})
+  set(CPACK_DEBIAN_PACKAGE_DEPENDS "build-essential, cmake, git,  ccache,  libssh2-1,  lua5.4, liblua5.4-dev")
+  set(CPACK_PACKAGE_DESCRIPTION "Frate a package/build system manager for C/C++")
+  set(CPACK_PACKAGE_CONTACT "Lucas Sproule frate@frate.dev")
+
+include(CPack)
+
+
+
+
+
+

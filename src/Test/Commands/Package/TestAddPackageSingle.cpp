@@ -1,12 +1,13 @@
 #ifdef TEST
 #include <Frate/Test/Test.hpp>
+#include <fstream>
 
 bool Tests::Command::testAddPackage(std::string package_name) {
   std::cout << "Testing add package command" << std::endl;
   auto [failed, inter] = init("frate add p "+package_name+" -l");
 
   if(failed){
-    Frate::error << "Failed to add package : could not initialize interface" << std::endl;
+    Frate::Utils::error << "Failed to add package : could not initialize interface" << std::endl;
     return false;
   }
 
@@ -15,13 +16,13 @@ bool Tests::Command::testAddPackage(std::string package_name) {
     nlohmann::json config;
     config_file >> config;
     if(config["dependencies"].size() != 1){
-      cleanUp(test_path);
-      Frate::error << "Failed to add package : no pacakge add dected frate-project.json" << std::endl;
+      
+      Frate::Utils::error << "Failed to add package : no pacakge add dected frate-project.json" << std::endl;
       return false;
     }
   }catch(...){
-    cleanUp(test_path);
-    Frate::error << "Failed to add package : could not open file - file possibly never created" << std::endl;
+    
+    Frate::Utils::error << "Failed to add package : could not open file - file possibly never created" << std::endl;
     return false;
   }
 

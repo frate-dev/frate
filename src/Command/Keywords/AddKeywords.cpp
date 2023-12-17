@@ -3,7 +3,7 @@
 
 
 namespace Frate::Command::Keywords{
-  bool add(Interface* inter){
+  bool add(std::shared_ptr<Interface> inter){
     options(inter);
     if(inter->args->count("keywords")< 1){
       std::cout << "No keyword specified" << std::endl;
@@ -14,7 +14,7 @@ namespace Frate::Command::Keywords{
     for(auto& keyword : keywords){
       for(std::string& current_keyword : inter->pro->keywords){
         if(current_keyword == keyword){
-          Frate::error << "Keyword already exists" << std::endl;
+          Utils::error << "Keyword already exists" << std::endl;
           return false;
         }
       }

@@ -3,7 +3,7 @@
 namespace Frate::Command::Update {
 
   using nlohmann::json;
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->add_options()
@@ -11,20 +11,20 @@ namespace Frate::Command::Update {
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage");
     return inter->parse();
   }
-  std::vector<Handler> handlers(Interface *inter) {
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter) {
     return {
       Handler{
         .aliases = 
         {"index"},
         .docs = "Update package index",
-        .callback = [inter]() {
+        .callback = [](std::shared_ptr<Interface> inter) {
           (void)inter;
           return updateIndex();
         }
       }
     };
   }
-  bool run(Interface *inter) {
+  bool run(std::shared_ptr<Interface> inter) {
     options(inter);
     std::vector<Handler> updateHandlers = handlers(inter);
     std::string target = "";

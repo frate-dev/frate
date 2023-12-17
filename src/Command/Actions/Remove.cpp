@@ -1,3 +1,4 @@
+#include "Frate/Command/Library.hpp"
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/Remove.hpp>
 #include <Frate/Command/Flags.hpp>
@@ -6,7 +7,7 @@
 #include <Frate/Command/Author.hpp>
 namespace Frate::Command::Remove {
 
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
     inter->options->allow_unrecognised_options().add_options()
@@ -17,54 +18,50 @@ namespace Frate::Command::Remove {
     return inter->parse();
   }
  
-  bool removeFlag(Interface *inter) {
+  bool removeFlag(std::shared_ptr<Interface> inter) {
     if (inter->args->count("args") == 0) {
     }
     return true;
   }
-  std::vector<Handler> handlers(Interface* inter){
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter){
     return {
       {
         .aliases = {"packages","p","package"},
         .flags = {"-l,--latest","-m,--mode","-t,--target"},
-        .positional_args = {"package,..."},
+        .positional_args = {"package_name"},
         .docs = "Remove a package from the project",
-        .callback = [inter]() {
-          Packages::options(inter);
-          return Packages::remove(inter);
-        },
+        .callback = &Packages::remove,
+        .unlimited_args = true,
       },
       {
-        .aliases = {"flag", "f"},
+        .aliases = {"flags", "f"},
         .flags = {"-m,--mode"},
-        .positional_args = {"flag,..."},
+        .positional_args = {"flags"},
         .docs = "Remove a flag from the project",
-        .callback = [inter]() {
-          Flags::options(inter);
-          return Flags::remove(inter);
-        },
+        .callback = &Flags::remove,
       },
       {
         .aliases = {"mode", "m"},
         .positional_args = {"mode"},
         .docs = "Remove a mode from the project",
-        .callback = [inter]() {
-          Modes::options(inter);
-          return Modes::remove(inter);
-        },
+        .callback = &Modes::remove,
+      },
+      {
+        .aliases = {"libraries", "l", "lib"},
+        .positional_args = {"lib"},
+        .docs = "Remove a mode from the project",
+        .callback = &Library::remove,
       },
       {
         .aliases = {"author", "auth"},
-        .positional_args = {"author_name,..."},
+        .positional_args = {"author_name"},
         .docs = "Remove an author from the project",
-        .callback = [inter]() {
-          Author::options(inter);
-          return Author::remove(inter);
-        },
+        .callback = &Author::remove,
+        .unlimited_args = true,
       }
     };
   }
-  bool run(Interface* inter){ 
+  bool run(std::shared_ptr<Interface> inter){ 
     options(inter);
     std::vector<Handler> removeHandlers = handlers(inter);
     std::string subcommand;
@@ -74,7 +71,7 @@ namespace Frate::Command::Remove {
       subcommand = inter->args->operator[]("subcommand").as<std::string>();
 
     }else{
-      Frate::error << "No subcommand given" << std::endl;
+      Utils::error << "No subcommand given" << std::endl;
 
       inter->getHelpString("remove", removeHandlers);
 

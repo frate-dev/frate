@@ -1,4 +1,4 @@
-
+#include <uv.h>
 #include <Frate/Command.hpp>
 #include <functional>
 #include <iostream>
@@ -10,7 +10,7 @@
 #include <sys/inotify.h>
 
 namespace Frate::Command::Watch {
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command"});
     inter->options->add_options()
@@ -63,8 +63,7 @@ namespace Frate::Command::Watch {
     ev.data.fd = inotify_fd;
     // TODO: Add recursive directory watching
 
-    int watch_desc = inotify_add_watch(inotify_fd, path.c_str(),
-        IN_MODIFY | IN_CREATE | IN_DELETE);
+    int watch_desc = inotify_add_watch(inotify_fd, path.c_str(), IN_MODIFY | IN_CREATE | IN_DELETE);
     if (watch_desc < 0) {
       std::cout << "Error adding watch" << std::endl;
       return;
@@ -109,7 +108,7 @@ namespace Frate::Command::Watch {
       close(epoll_fd);
     }
 
-    bool run(Interface* inter) {
+    bool run(std::shared_ptr<Interface> inter) {
       options(inter);
       // This is where you call the watcher function and provide a lambda for the
       // callback
@@ -126,7 +125,7 @@ namespace Frate::Command::Watch {
 #ifdef DEBUG
           // TODO: please use project path
           std::string command = "cmake ./build/ && ./build/make && ./build/" +
-          inter->pro->build_dir + "/" + inter->pro->project_name;
+          inter->pro->build_dir + "/" + inter->pro->name;
           if (inter->args->count("args") != 0) {
           std::vector<std::string> args_vec =
           inter->args->operator[]("args").as<std::vector<std::string>>();
@@ -169,12 +168,12 @@ namespace Frate::Command::Watch {
               std::to_string(inter->pro->build_server.port) + " " +
               inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
               "  'cd /tmp/frate && cmake . && make && ./build/" +
-              inter->pro->project_name + "'";
+              inter->pro->name + "'";
           }
 
 #else
           std::string command =
-            "cmake . && make  && ./" + inter->pro->build_dir + "/" +inter->pro->project_name;
+            "cmake . && make  && ./" + inter->pro->build_dir + "/" +inter->pro->name;
 
           bool build_server =inter->args->operator[]("remote-build").as<bool>();
           if (build_server == true) {
@@ -201,7 +200,7 @@ namespace Frate::Command::Watch {
               std::to_string(inter->pro->build_server.port) + " " +
               inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
               "  'cd /tmp/frate && cmake . && make -j ${nproc} && ./build/" +
-              inter->pro->project_name + "'";
+              inter->pro->name + "'";
           }
           if (inter->args->count("args") != 0) {
             std::cout << "estamos aqui" << std::endl;
@@ -218,7 +217,7 @@ namespace Frate::Command::Watch {
 
             std::cout << "command_args: " << command_args << std::endl;
             command = "cmake . && make && ./" + inter->pro->build_dir + "/" +
-              inter->pro->project_name + "  " + command_args;
+              inter->pro->name + "  " + command_args;
           }
 #endif
           std::cout << "Running command: " << command << std::endl;

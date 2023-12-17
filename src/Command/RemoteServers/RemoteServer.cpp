@@ -1,10 +1,11 @@
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Utils/General.hpp>
 #include <Frate/Utils/CLI.hpp>
+#include <fstream>
 
 namespace Frate::Command::RemoteServers{
   using namespace Utils::CLI;
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->add_options()
@@ -13,7 +14,7 @@ namespace Frate::Command::RemoteServers{
     return inter->parse();
   }
 
-  std::vector<RemoteServer> remoteServerData(Interface* inter){
+  std::vector<RemoteServer> remoteServerData(std::shared_ptr<Interface> inter){
     std::fstream file;
     std::string build_servers_dir= std::string(std::getenv("HOME"))  + "/.config/frate/";
     if (!std::filesystem::exists(build_servers_dir)){
@@ -76,9 +77,9 @@ namespace Frate::Command::RemoteServers{
     return servers;
   }
   bool getServerName(std::string& name){
-    Prompt *name_promp = new Prompt("Enter the name of the server: ");
-    name_promp->Run();
-    auto[valid, _name] = name_promp->Get<std::string>();
+    Prompt name_promp("Enter the name of the server: ");
+    name_promp.run();
+    auto[valid, _name] = name_promp.get<std::string>();
     if(!valid){
       return false;
     }
@@ -86,9 +87,9 @@ namespace Frate::Command::RemoteServers{
     return true;
   }
   bool getServerAddress(std::string& address){
-    Prompt *address_promp = new Prompt("Enter the address of the server: ");
-    address_promp->Run();
-    auto [valid, _address] = address_promp->Get<std::string>();
+    Prompt address_prompt("Enter the address of the server: ");
+    address_prompt.run();
+    auto [valid, _address] = address_prompt.get<std::string>();
     if(!valid){
       return false;
     }
@@ -97,9 +98,9 @@ namespace Frate::Command::RemoteServers{
   }
 
   bool getServerPort(int& port){
-    Prompt *port_promp = new Prompt("Enter the port of the server: ");
-    port_promp->Run();
-    auto[valid,_port] = port_promp->Get<int>();
+    Prompt port_prompt("Enter the port of the server: ");
+    port_prompt.run();
+    auto[valid,_port] = port_prompt.get<int>();
     if(!valid){
       return false;
     }
@@ -108,9 +109,9 @@ namespace Frate::Command::RemoteServers{
   }
 
   bool getServerUsername(std::string& username){
-    Prompt *username_promp = new Prompt("Enter the username of the server: ");
-    username_promp->MaxLength(32)->Run();
-    auto[valid, _username] = username_promp->Get<std::string>();
+    Prompt username_prompt("Enter the username of the server: ");
+    username_prompt.maxLength(32).run();
+    auto[valid, _username] = username_prompt.get<std::string>();
     if(!valid){
       return false;
     }
@@ -119,9 +120,9 @@ namespace Frate::Command::RemoteServers{
   }
 
   bool getServerAuthMethod(std::string& authMethod){
-    Prompt *authMethod_promp = new Prompt("Enter the authentication method of the server[pem/password]: ");
-    authMethod_promp->Run();
-    auto[valid,_authMethod] = authMethod_promp->Get<std::string>();
+    Prompt authMethod_promp("Enter the authentication method of the server[pem/password]: ");
+    authMethod_promp.run();
+    auto[valid,_authMethod] = authMethod_promp.get<std::string>();
     if(!valid){
       return false;
     }
@@ -130,9 +131,9 @@ namespace Frate::Command::RemoteServers{
   }
 
   bool getServerPassword(std::string& password){
-    Prompt *password_promp = new Prompt("Enter the password of the server: ");
-    password_promp->Run();
-    auto[valid,_password] = password_promp->Get<std::string>();
+    Prompt password_prompt("Enter the password of the server: ");
+    password_prompt.run();
+    auto[valid,_password] = password_prompt.get<std::string>();
     if(!valid){
       return false;
     }
@@ -141,17 +142,13 @@ namespace Frate::Command::RemoteServers{
   }
 
   bool getServerKey(std::string& key){
-    Prompt *key_promp = new Prompt("Enter path the ssh key for the server: ");
-    key_promp->Run();
-    auto[valid,_key] = key_promp->Get<std::string>();
+    Prompt key_prompt("Enter path the ssh key for the server: ");
+    key_prompt.run();
+    auto[valid,_key] = key_prompt.get<std::string>();
     if(!valid){
       return false;
     }
     key = _key;
     return true;
   }
-
-
-
-
 }

@@ -43,7 +43,7 @@ CURL* curl = curl_easy_init();
 
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK) {
-        Frate::error << "Failed to request " << url << std::endl;
+        Utils::error << "Failed to request " << url << std::endl;
         response.error = curl_easy_strerror(res);
         curl_easy_cleanup(curl);
         return response;
@@ -91,24 +91,23 @@ CURL* curl = curl_easy_init();
     }
   }
   //"https://github.com/frate-dev/index/releases/latest/download/index.json"
-  std::string fetchText(std::string url) {
+  std::string fetchText(std::string url,bool verbose) {
     std::string requrl = url;
     CurlResponse r = HttpGet(requrl);
-    std::cout << "Attempting to download: " << termcolor::bright_blue << url << termcolor::reset << std::endl;
+    if(verbose) Utils::info << "Attempting to download: " << termcolor::bright_blue << url << std::endl;
     
     switch(r.status_code){
       case 200:
-        std::cout << termcolor::bright_green << "Successfully downloaded: "
-        << termcolor::bright_blue << url << termcolor::reset << std::endl;
+        if(verbose) Utils::info << "Successfully downloaded: " << url << std::endl;
         break;
       case 404:
-        std::cout << termcolor::bright_red << "Failed to download: " << url << termcolor::reset << std::endl;
-        std::cout << "Error: " << r.error << std::endl;
+        Utils::error << "Failed to download: " << url <<std::endl;
+        Utils::error << "Error: " << r.error << std::endl;
         exit(-1);
         break;
       default:
-        std::cout << termcolor::bright_red << "Failed to download: " << url << termcolor::reset << std::endl;
-        std::cout << "Error: " << r.error << std::endl;
+        Utils::error << "Failed to download: " << url << std::endl;
+        Utils::error << "Error: " << r.error << std::endl;
         exit(-1);
         break;
     }
@@ -119,10 +118,10 @@ CURL* curl = curl_easy_init();
     try {
       return json::parse(responseStr);
     } catch (json::parse_error& e) {
-      std::cout << "At: " << e.byte << std::endl;
-      std::cout << "Error: " << e.what() << std::endl;
-      Frate::error << "Failed to parse index.json" << std::endl;
-      std::cout << "Text: " << responseStr << std::endl;
+      Utils::error << "At: " << e.byte << std::endl;
+      Utils::error << "Error: " << e.what() << std::endl;
+      Utils::error << "Failed to parse index.json" << std::endl;
+      Utils::error << "Text: " << responseStr << std::endl;
       Utils::debug("Failed to parse index.json");
       exit(-1);
     }
@@ -135,6 +134,64 @@ CURL* curl = curl_easy_init();
       return -1;
     }
   }
+
+  std::string genUUIDv4(){
+    std::string uuid = "";
+    //Pattern: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+    std::string chars = "0123456789abcdef";
+    //Seeding the random number gererator with time
+    std::srand(std::time(nullptr));
+
+    for(int i = 0; i < 8; i++){
+      uuid += chars[std::rand() % chars.length()];
+    }
+    uuid += "-";
+    for(int i = 0; i < 4; i++){
+      uuid += chars[std::rand() % chars.length()];
+    }
+    uuid += "-4";
+    for(int i = 0; i < 3; i++){
+      uuid += chars[std::rand() % chars.length()];
+    }
+    uuid += "-";
+    uuid += chars[std::rand() % 4 + 8];
+    for(int i = 0; i < 3; i++){
+      uuid += chars[std::rand() % chars.length()];
+    }
+    uuid += "-";
+    for(int i = 0; i < 12; i++){
+      uuid += chars[std::rand() % chars.length()];
+    }
+    return uuid;
+  }
+
+  using std::filesystem::path;
+  path randomTmpPath(std::string prefix){
+    path tmp_path = std::filesystem::temp_directory_path();
+    tmp_path /= prefix + genUUIDv4();
+    return tmp_path;
+  }
+
+  path copyToTmpPath(path p,std::string prefix){
+    path tmp_path = randomTmpPath(prefix);
+    Utils::info << "Copying " << p << " to " << tmp_path << std::endl;
+    if(!std::filesystem::exists(p)){
+      Utils::error << "Failed to copy " << p << " to " << tmp_path 
+        << " when attempting to non destructively delete" << std::endl;
+      return tmp_path;
+    }
+    try{
+      std::filesystem::copy(p, tmp_path, std::filesystem::copy_options::recursive | std::filesystem::copy_options::overwrite_existing);
+    }catch(std::filesystem::filesystem_error& e){
+      Utils::error << "Failed to copy " << p << " to " << tmp_path 
+        << " when attempting to non destructively delete" << std::endl;
+
+      Utils::error << "Error: " << e.what() << std::endl;
+      exit(-1);
+    }
+    return tmp_path;
+  }
+
   /*
    * FUCKING MAGIC
    */

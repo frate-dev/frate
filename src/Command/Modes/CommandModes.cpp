@@ -9,16 +9,16 @@ namespace Frate::Command{
 namespace Frate:: Command::Modes{
   bool getModeName(Mode &mode){
     Prompt *name = new Prompt("Name: ");
-    name->Run();
-    auto [valid,mode_name] = name->Get<std::string>();
+    name->run();
+    auto [valid,mode_name] = name->get<std::string>();
     if(!valid){
-      Frate::error << "Failed to get mode name" << std::endl;
+      Utils::error << "Failed to get mode name" << std::endl;
       return false;
     }
     mode.name = mode_name;
     return true;
   }
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
     inter->options->add_options()
@@ -28,7 +28,8 @@ namespace Frate:: Command::Modes{
     return inter->parse();
   }
 
-  bool add(Interface* interface){
+  bool add(std::shared_ptr<Interface> interface){
+    options(interface);
     std::cout << "Adding mode" << std::endl; 
     Mode mode;
     mode.name = interface->args->operator[]("args").as<std::string>();
@@ -36,26 +37,23 @@ namespace Frate:: Command::Modes{
     interface->pro->modes.push_back(mode);
 
     std::cout << "Writing frate-project.json" << std::endl;
-    if(!Generators::ConfigJson::writeConfig(interface->pro)){
-      Frate::error << "Failed to write frate-project.json" << std::endl;
-    }
 
-    if(!Generators::CMakeList::createCMakeLists(interface->pro)){
-      Frate::error << "Failed to write CMakeLists.txt" << std::endl;
-    }
+    if(!interface->pro->save()) return false;
+
     return true;
   }
-  bool remove(Interface* interface){
-    std::string mode_name = interface->args->operator[]("args").as<std::string>(); 
+  bool remove(std::shared_ptr<Interface> inter){
+    options(inter);
+    std::string mode_name = inter->args->operator[]("args").as<std::string>(); 
     std::cout << "Removing mode: " << mode_name << std::endl;
-    std::erase_if(interface->pro->modes, [&mode_name](Mode &mode){
+    std::erase_if(inter->pro->modes, [&mode_name](Mode &mode){
         return mode.name == mode_name;
         });
-    Generators::ConfigJson::writeConfig(interface->pro);
-    Generators::CMakeList::createCMakeLists(interface->pro);
+    if(!inter->pro->save()) return false;
+
     return true;
   }
-  bool list(Interface* interface){
+  bool list(std::shared_ptr<Interface> interface){
     for(auto mode : interface->pro->modes){
       std::cout << mode.name << std::endl;
     }

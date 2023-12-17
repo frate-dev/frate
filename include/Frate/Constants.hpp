@@ -3,9 +3,35 @@
 
 
 namespace Frate::Constants {
+
+  #ifdef __linux__
+  const std::string BUILD_OS = "linux";
+  #elif _WIN32
+  const std::string BUILD_OS = "windows32";
+  #elif _WIN64
+  const std::string BUILD_OS = "windows64";
+  #elif __APPLE__
+  const std::string BUILD_OS = "macos";
+  #else
+  const std::string BUILD_OS = "unknown";
+  #endif
+
   const std::string NAME = "frate";
   const std::string DESCRIPTION = "CLI utility for managing your project, a modern touch for C/C++";
   const std::string PROJECT_URL = "https://github.com/frate-dev/frate";
+
+  constexpr const std::string_view FRATE_PACKAGES  = "https://github.com/frate-packages/index/releases/latest/download/index.json";
+  constexpr const std::string_view FRATE_TEMPLATES = "https://github.com/frate-templates/templates/releases/latest/download/index.json";
+  
+  const std::string TEMPLATE_PATH = "template/";
+  const std::string INIT_SCRIPTS_PATH = "__init__/";
+  const std::string POST_SCRIPTS_PATH = "__post__/";
+
+#ifdef DEBUG
+  const std::string TEMPLATE_BRANCH = "dev";
+#else
+  const std::string TEMPLATE_BRANCH = "main";
+#endif
   
   const std::string VERSION = 
     std::to_string(VMAJOR) + "." + 
@@ -19,8 +45,7 @@ namespace Frate::Constants {
   const std::vector<std::string> SUPPORTED_CMAKE_VERSIONS =
   {
     "3.0",
-    "3.1",
-    "3.2",
+    "3.1", "3.2",
     "3.3",
     "3.4",
     "3.5",

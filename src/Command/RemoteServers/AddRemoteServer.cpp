@@ -1,10 +1,10 @@
 #include <Frate/Command/RemoteServers.hpp>
-
+#include <fstream>
 
 
 namespace Frate::Command::RemoteServers{
 
-  bool add(Interface* inter){
+  bool add(std::shared_ptr<Interface> inter){
     std::vector<RemoteServer> servers =  remoteServerData(inter);
     std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/frate/" + "build_server.json";
     std::string name, address,  username, authMethod, password, key;

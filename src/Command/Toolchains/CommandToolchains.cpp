@@ -2,6 +2,8 @@
 #include <Frate/Utils/General.hpp>
 #include <Frate/Command/AvailableTriples.hpp>
 #include <Frate/Generators.hpp>
+#include <filesystem>
+#include <fstream>
 
 
 
@@ -10,35 +12,40 @@ namespace Frate::Command::Toolchains{
     std::filesystem::path  path = std::string(std::getenv("HOME")) + "/.config/" + "frate/" + "toolchains.json";
     return json{};
   }
-  bool list(){
+  bool list(std::shared_ptr<Interface> inter){
     json data = load();
     for (Command::Toolchain::CompileTarget toolchain : Command::Toolchain::CompileTargets){
       std::cout << toolchain.triple << std::endl;
     }
     return true;
   }
-  bool fuckit(){
-    return false;
-  };
-  bool add(std::string toolchain, Interface* inter){
+  bool add(std::shared_ptr<Interface> inter){
+    Prompt toolchain_prompt("Toolchain");
+    for (Command::Toolchain::CompileTarget toolchain : Command::Toolchain::CompileTargets){
+      toolchain_prompt.addOption(toolchain.triple);
+    }
+    toolchain_prompt.printValidOptions().run();
+    auto [valid, toolchain] = toolchain_prompt.get<std::string>();
+    if(!valid){
+      std::cout << "Invalid toolchain" << std::endl;
+      return false;
+    }
     json data = load();
     Generators::Toolchain::generateToolchain(toolchain);
     std::ofstream file;
-    if (!std::filesystem::exists(inter->pro->project_path / "toolchains/")){
-      std::filesystem::create_directory(inter->pro->project_path / "toolchains/");
+    if (!std::filesystem::exists(inter->pro->path / "toolchains/")){
+      std::filesystem::create_directory(inter->pro->path / "toolchains/");
     }
-    file.open(inter->pro->project_path / "toolchains/" / (toolchain + ".cmake"));
+    file.open(inter->pro->path / "toolchains/" / (toolchain + ".cmake"));
 
     std::cout << "Writing toolchain file" << std::endl;
     std::string toolchain_template = Generators::Toolchain::generateToolchain(toolchain);
     std::cout << toolchain_template << std::endl;
     file << toolchain_template;
     inter->pro->toolchains.push_back(toolchain);
-    Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
-  bool remove(std::string toolchain_name, Interface* interface){
+  bool remove(std::string toolchain_name, std::shared_ptr<Interface> interface){
     json data = load();
 
     for (std::string toolchainProject : interface->pro->toolchains){
@@ -48,7 +55,9 @@ namespace Frate::Command::Toolchains{
             });
       }
     }
-    std::filesystem::remove(interface->pro->project_path / "toolchains/" / (toolchain_name + ".cmake"));
+
+    std::filesystem::path tmp_path = Utils::copyToTmpPath(interface->pro->path,"toolchains-remove-frate-");
+    std::filesystem::remove(interface->pro->path / "toolchains/" / (toolchain_name + ".cmake"));
     return true;
   }
 }

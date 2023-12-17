@@ -3,7 +3,7 @@
 
 
 namespace Frate::Command::RemoteServers{
-  bool list(Interface* inter){
+  bool list(std::shared_ptr<Interface> inter){
     //TODO put this in  the constructor
     std::vector<RemoteServer> servers =  remoteServerData(inter);
     Utils::TableFormat table;

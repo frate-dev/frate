@@ -6,13 +6,16 @@
 #include <Frate/Command/Actions/Search.hpp>
 #include "Frate/Command/Actions/Build.hpp"
 #include "Frate/Command/Actions/Clean.hpp"
-#include "Frate/Command/Actions/FTP.hpp"
+#include "Frate/Command/Actions/FTP.hpp" 
 #include "Frate/Command/Actions/Help.hpp"
 #include "Frate/Command/Actions/Run.hpp"
 #include "Frate/Command/Actions/Update.hpp"
 #include "Frate/Command/Actions/Watch.hpp"
 #include "Frate/Command/Actions/New.hpp"
+#include <Frate/Command/Actions/Completions.hpp>
+#include "Frate/Frate.hpp"
 #include "Frate/Utils/General.hpp"
+#include <Frate/Generators.hpp>
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
 #include <Frate/Constants.hpp>  
@@ -22,17 +25,14 @@
 
 namespace Frate::Command {
 
-  bool OptionsInit::Main(Interface *inter) {
+  bool OptionsInit::Main(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command"});
-    inter->options->allow_unrecognised_options().add_options()(
-        "command", "Command to run",
-        cxxopts::value<std::string>()->default_value("help"))(
-        "v,verbose", "Verbose output",
-        cxxopts::value<bool>()->default_value("false"))(
-        "y,confim-all", "skip all y/n prompts",
-        cxxopts::value<bool>()->default_value("false"))("h,help", "Print usage")
-        ("version", "Print version");
+    inter->options->allow_unrecognised_options().add_options()
+      ("command", "Command to run",cxxopts::value<std::string>()->default_value("help"))
+      ("verbose", "Verbose output",cxxopts::value<bool>()->default_value("false"))
+      ("y,confirm-all", "skip all y/n prompts",cxxopts::value<bool>()->default_value("false"))
+      ("version", "Print version");
     return inter->parse();
   }
 
@@ -47,9 +47,12 @@ namespace Frate::Command {
   }
   bool Interface::InitHeader(){
     try{
-      this->options = std::make_shared<cxxopts::Options>("Frate", "A CMake project generator, we suffer so you don't have to!");
+      this->options = 
+        std::make_shared<cxxopts::Options>("Frate", "A CMake project generator, we suffer so you don't have to!");
+      this->options->allow_unrecognised_options();
     } catch (std::exception& e) {
       std::cout << e.what() << std::endl;
+
       return false;
     }
     return true;
@@ -60,196 +63,182 @@ namespace Frate::Command {
     this->argv = argv;
     git_libgit2_init();
     this->pro = std::make_shared<Project>();
-    OptionsInit::Main(this);
-    this->parse();
-    if(this->args->count("version")){
+#ifdef DEBUG
+#ifndef TEST
+    verbose_mode = true;
+#endif
+    std::cout << "DEBUG MODE ENABLED\n";
+    pro->path = std::filesystem::current_path() / "build";
+#else
+    pro->path = std::filesystem::current_path();
+#endif
+
+  }
+  bool execute(std::shared_ptr<Interface> inter){
+
+    OptionsInit::Main(inter);
+    inter->parse();
+    if(inter->args->count("version")){
       std::cout << Constants::VERSION << ENDL;
       exit(0);
     }
-    //After the parse we can set the context args
-    this->pro->args = this->args;
-
-#ifdef DEBUG
-    std::cout << "DEBUG MODE ENABLED\n";
-#endif
-#ifdef DEBUG
-    pro->project_path = std::filesystem::current_path() / "build";
-#else
-    pro->project_path = std::filesystem::current_path();
-#endif
-  }
-  bool Interface::execute(){
-    if(LoadProjectJson()){
-      project_present = true;
+    if(inter->args->count("verbose")){
+      Utils::verbose_mode = true;
+      std::cout << "Verbose mode enabled" << ENDL;
     }
-    if(this->args->count("yes")){
-      this->skip_prompts = true;
+    if(inter->args->count("confirm-all")){
+      inter->confirm_all = true;
       std::cout << "Skipping prompts" << ENDL;
     }
-    else{
-      this->skip_prompts = false;
-    }
 
-    // if(!this->args->count("command")){
-    //   this->help();
-    std::string command = this->args->operator[]("command").as<std::string>();
+    // if(inter->LoadProjectJson()){
+    //   inter->project_present = true;
+    // }
 
+    std::string command = inter->args->operator[]("command").as<std::string>();
+    std::cout << "Project Path: " << inter->pro->path << ENDL;
 
+    inter->commands.push_back({
+      .aliases = {"new", "n"},
+      .flags = {"-d,--defaults"}, //TODO: Add flags
+      .positional_args = {"project_name/dir"},
+      .docs = "Create a new project",
+      .callback = &New::run,
+      .requires_project = false
+    });
 
-    std::cout << "Project Path: " << pro->project_path << ENDL;
-    commands = {
+    inter->commands.push_back({
+      .aliases = {"run"},
+      .flags = {"-m,--build-mode","-t,--target"}, //TODO: Add flags
+      .docs = "Run the project",
+      .callback = &Run::run
+    });
 
-      Handler{
-        .aliases = {"new", "n"},
-        .flags = {"-d,--defaults"}, //TODO: Add flags
-        .positional_args = {"project_name/dir"},
-        .docs = "Create a new project",
-        .callback = [this](){
-          return New::run(this);
-        },
-        .requires_project = false
-      },
+    inter->commands.push_back({
+      .aliases = {"help", "h"},
+      .flags = {}, //TODO: Add flags
+      .docs = "Display help",
+      .callback = &Help::run,
+      .requires_project = false
+    });
 
-      Handler{
-        .aliases = {"run"},
-        .flags = {"-m,--build-mode","-t,--target"}, //TODO: Add flags
-        .docs = "Run the project",
-        .callback = [this](){
-          return Run::run(this);
-        }
-      },
+    inter->commands.push_back({
+      .aliases = {"nuke"},
+      .flags = {}, //TODO: Add flags
+      .docs = "Deletes the entire project",
+      .callback = &FTP::run,
+      .requires_project = false
+    });
 
-      Handler{
-        .aliases = {"help", "h"},
-        .flags = {}, //TODO: Add flags
-        .docs = "Display help",
-        .callback = [this](){
-          return Help::run(this);
-        },
-        .requires_project = false
-      },
+    inter->commands.push_back({
+      .aliases = {"add"},
+      .flags = {}, //TODO: Add flags
+      .subcommands = Add::handlers(inter),
+      .docs = "add sub command",
+      .callback = &Add::run
+    });
 
-      Handler{
-        .aliases = {"nuke"},
-        .flags = {}, //TODO: Add flags
-        .docs = "Deletes the entire project",
-        .callback = [this](){
-          return FTP::run(this);
-        },
-        .requires_project = false
-      },
+    inter->commands.push_back({
+      .aliases = {"set"},
+      .flags = {}, //TODO: Add flags
+      .subcommands = Set::handlers(inter),
+      .docs = "set sub command",
+      .callback = &Set::run
+    });
 
-      Handler{
-        .aliases = {"add"},
-        .flags = {}, //TODO: Add flags
-        .subcommands = Add::handlers(this),
-        .docs = "add sub command",
-        .callback = [this](){
-          return Add::run(this);
-        }
-      },
+    inter->commands.push_back({
+      .aliases = {"search"},
+      .flags = {}, //TODO: Add flags
+      .subcommands = Search::handlers(inter),
+      .docs = "search sub command",
+      .callback = &Search::run,
+      .requires_project = false
+    });
+    inter->commands.push_back({
+      .aliases = {"list", "ls"},
+      .flags = {}, //TODO: Add flags
+      .subcommands = List::handlers(inter),
+      .docs = "list sub command",
+      .callback = &List::run,
+      .requires_project = false
+    });
 
-      Handler{
-        .aliases = {"set"},
-        .flags = {}, //TODO: Add flags
-        .subcommands = Set::handlers(this),
-        .docs = "set sub command",
-        .callback = [this](){
-          //OptionsInit::Set(this);
-          return Set::run(this);
-        }
-      },
+    inter->commands.push_back({
+      .aliases = {"remove", "rm"},
+      .flags = {}, //TODO: Add flags
+      .subcommands = Remove::handlers(inter),
+      .docs = "remove sub command",
+      .callback = &Remove::run
+    });
 
-      Handler{
-        .aliases = {"search"},
-        .flags = {}, //TODO: Add flags
-        .subcommands = Search::handlers(this),
-        .docs = "search sub command",
-        .callback = [this](){
-          return Search::run(this);
-        },
-        .requires_project = false
-      },
-      Handler{
-        .aliases = {"list", "ls"},
-        .flags = {}, //TODO: Add flags
-        .subcommands = List::handlers(this),
-        .docs = "list sub command",
-        .callback = [this](){
-          return List::run(this);
-        },
-        .requires_project = false
-      },
+    inter->commands.push_back({
+      .aliases = {"update"},
+      .flags = {}, //TODO: Add flags
+      .subcommands = Update::handlers(inter),
+      .docs = "update sub command",
+      .callback = &Update::run
+    });
 
-      Handler{
-        .aliases = {"remove", "rm"},
-        .flags = {}, //TODO: Add flags
-        .subcommands = Remove::handlers(this),
-        .docs = "remove sub command",
-        .callback = [this](){
-          return Remove::run(this);
-        }
-      },
+    inter->commands.push_back({
+      .aliases = {"clean"},
+      .flags = {"-c,--cache"}, //TODO: Add flags
+      .docs = "clean sub command",
+      .callback = &Clean::run
+    });
 
-      Handler{
-        .aliases = {"update"},
-        .flags = {}, //TODO: Add flags
-        .subcommands = Update::handlers(this),
-        .docs = "update sub command",
-        .callback = [this](){
-          return Update::run(this);
-        }
-      },
-
-      Handler{
-        .aliases = {"clean"},
-        .flags = {"-c,--cache"}, //TODO: Add flags
-        .docs = "clean sub command",
-        .callback = [this](){
-          return Clean::run(this);
-        }
-      },
-
-      Handler{
-        .aliases = {"build"},
-        .flags = {"-m,--mode","-t,--target","-j,--jobs"}, //TODO: Add flags
-        .docs = "build sub command",
-        .callback = [this](){
-          return Build::run(this);
-        }
-      },
-      Handler{
-        .aliases = {"watch"},
-        .flags = {}, //TODO: Add flags
-        .docs = "watches the project for changes",
-        .callback = [this](){
-          return Watch::run(this);
-        }
-      },
-    };
+    inter->commands.push_back({
+      .aliases = {"build"},
+      .flags = {"-m,--mode","-t,--target","-j,--jobs"}, //TODO: Add flags
+      .docs = "build sub command",
+      .callback = &Build::run
+    });
+    inter->commands.push_back({
+      .aliases = {"completions"},
+      .flags = {}, //TODO: Add flags
+      .docs = "completions sub command",
+      .callback = &Completions::ZshCompletions,
+      .implemented = false
+    });
+    inter->commands.push_back({
+      .aliases = {"watch"},
+      .flags = {}, //TODO: Add flags
+      .docs = "watches the project for changes",
+      .callback = &Watch::run
+    });
 
 
-    bool found_alias = false;
-    for(Handler& handler : commands){
+    for(Handler& handler : inter->commands){
       for(std::string& alias : handler.aliases){
         if(alias == command){
-          if(handler.requires_project && !project_present){
-            Frate::error << "Error: Project not found and is required for this command" << ENDL;
+
+          if(handler.requires_project){
+
+            //Check if project loads successfully
+            inter->LoadProjectJson();
+
+            //if so refresh the project templates
+            Generators::Project::refresh(inter->pro);
+          }
+          
+          //Checks if the callback ran successfully
+          if(!handler.callback(inter)){
             return false;
           }
-          found_alias = true;
-          if(!handler.callback()){
-            return false;
-            // std::cout << termcolor::red << "Error: Could not run: " << handler.aliases[0] << termcolor::reset << ENDL;
+
+          //Save the project if the command has the possibility of changing it
+          if(handler.requires_project){
+            inter->pro->save();
           }
+
+          return true;
         }
       }
     }
-    if(!found_alias){
-      std::cout << "Error: Command not found: " << command << ENDL;
-    }
-    return true;
 
+    //if we get here we know the command was not found
+    Utils::error << "Error: Command not found: " << command << ENDL;
+
+    return true;
   }
   void renderFlags(std::vector<std::string> flags){
     std::cout << "  [";
@@ -258,9 +247,13 @@ namespace Frate::Command {
     }
     std::cout << " ]";
   }
-  void renderPositionals(std::vector<std::string> positionals){
+  void renderPositionals(std::vector<std::string> positionals, bool unlimited_args = false){
     for(std::string positional : positionals){
-      std::cout << termcolor::bold <<  termcolor::green << " <" << positional << ">" << termcolor::reset;
+      if(unlimited_args){
+        std::cout << termcolor::bold <<  termcolor::green << " [" << positional << " ...]" << termcolor::reset;
+      }else{
+        std::cout << termcolor::bold <<  termcolor::green << " [" << positional << "]" << termcolor::reset;
+      }
     }
   }
   bool Interface::runCommand(std::string command, std::vector<Handler> &handlers){
@@ -268,19 +261,22 @@ namespace Frate::Command {
       for(std::string alias : handler.aliases){
         if(alias == command){
           if(!handler.implemented){
-            Frate::error << "Command not implemented: " << command;
+            Utils::error << "Command not implemented: " << command;
             return false;
           }
           if(handler.requires_project && !project_present){
-            Frate::error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
+            Utils::error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
             return false;
           }
-          if(!handler.callback()){
+          if(!handler.callback(shared_from_this())){
             getHelpString(handler);
             return false;
-          }else{
-            return true;
           }
+          if(handler.requires_project){
+            pro->save();
+            Generators::Project::refresh(pro);
+          }
+          return true;
         }
       }
     }
@@ -318,7 +314,7 @@ namespace Frate::Command {
         }
       }
       if(handler.positional_args.size() > 0){
-        renderPositionals(handler.positional_args);
+        renderPositionals(handler.positional_args, handler.unlimited_args);
       }
       if(handler.flags.size() > 0){
         renderFlags(handler.flags);

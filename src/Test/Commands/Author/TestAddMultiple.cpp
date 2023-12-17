@@ -4,15 +4,15 @@
 
 namespace Tests::Command {
   bool testAddAuthorMultiple(std::vector<std::string> names) {
-    cleanUp(test_path);
+    
 
-    info << "Testing add author command with names: " << std::endl;
+    Frate::Utils::info << "Testing add author command with names: " << std::endl;
     for(auto name : names){
-      info << name << std::endl;
+      Frate::Utils::info << name << std::endl;
     }
 
     if (!testNew()) {
-      error << "Failed to create new project" << std::endl;
+      Frate::Utils::error << "Failed to create new project" << std::endl;
       return false;
     }
 
@@ -24,15 +24,15 @@ namespace Tests::Command {
     auto [failed, inter] = init(command);
 
     if (failed) {
-      error << "Failed to init" << std::endl;
-      cleanUp(test_path);
+      Frate::Utils::error << "Failed to init" << std::endl;
+      
       return false;
     }
 
     if (inter->pro->authors.size() != names.size()) {
-      cleanUp(test_path);
-      error << "Failed to add author project wrong number of authors" << std::endl;
-      error << "Got: " << inter->pro->authors.size() << std::endl;
+      
+      Frate::Utils::error << "Failed to add author project wrong number of authors" << std::endl;
+      Frate::Utils::error << "Got: " << inter->pro->authors.size() << std::endl;
       return false;
     }
     for(auto name : names){
@@ -43,15 +43,15 @@ namespace Tests::Command {
         }
       }
       if(!found){
-        error << "Failed to add author project" << std::endl;
-        error << "Got: " << inter->pro->authors[0] << std::endl;
-        cleanUp(test_path);
+        Frate::Utils::error << "Failed to add author project" << std::endl;
+        Frate::Utils::error << "Got: " << inter->pro->authors[0] << std::endl;
+        
         return false;
       }
     }
 
 
-    cleanUp(test_path);
+    
     return true;
   }
 }

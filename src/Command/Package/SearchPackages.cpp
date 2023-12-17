@@ -64,7 +64,7 @@ namespace Frate::Command::Packages {
     return {false, Package()};
   }
 
-  bool search(Interface* inter){
+  bool search(std::shared_ptr<Interface> inter){
     std::string query;
     if(inter->args->operator[]("query").count() == 0){
       std::cout << "No query provided" << ENDL;
@@ -85,7 +85,7 @@ namespace Frate::Command::Packages {
     }
   }
 
-  std::vector<Package> search(std::string &query){
+  std::vector<Package> _search(std::string &query){
     std::vector<Package> results = calculatePackageScores(query);
     return results;
   }
@@ -115,12 +115,12 @@ namespace Frate::Command::Packages {
 
     std::vector<Package> filterResultsVec = filterOutBest(results);
 
-    Prompt *prompt = new Prompt("Select a package to install: ");
+    Prompt prompt("Select a package to install: ");
     for(size_t i = 0; i < filterResultsVec.size(); i++){
-      prompt->AddOption(i);
+      prompt.addOption(i);
     }
-    prompt->Run();
-    auto[valid, index] = prompt->Get<int>();
+    prompt.run();
+    auto[valid, index] = prompt.get<int>();
     if(!valid){
       return {false, Package()};
     }

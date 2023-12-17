@@ -3,10 +3,10 @@
 
 namespace Frate::Command{
   namespace Modes{
-    bool add(Interface* interface);
-    bool remove(Interface* interface);
-    bool list(Interface* interface);
-    bool options(Interface* interface);
+    bool add(std::shared_ptr<Interface> interface);
+    bool remove(std::shared_ptr<Interface> interface);
+    bool list(std::shared_ptr<Interface> interface);
+    bool options(std::shared_ptr<Interface> interface);
   }
 }
 

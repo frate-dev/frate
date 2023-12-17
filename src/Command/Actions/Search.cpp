@@ -3,7 +3,9 @@
 
 namespace Frate::Command::Search {
 
-  bool options(Interface* inter){
+  using Frate::Command::Interface;
+
+  bool options(std::shared_ptr<Interface> inter){
     inter->InitHeader();
     inter->options->parse_positional({"command","subcommand","query"});
     inter->options->add_options()
@@ -13,21 +15,19 @@ namespace Frate::Command::Search {
     return inter->parse();
   }
   
-  std::vector<Handler> handlers(Interface* inter){
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter){
     return {
       Handler{
         .aliases = {"package","p"},
         .flags = {},
         .positional_args = {"query"},
         .docs = "Search for packages",
-        .callback = [inter]() {
-          return Packages::search(inter);
-        }
+        .callback = &Packages::search,
       }
     };
   }
 
-  bool run(Interface* inter){
+  bool run(std::shared_ptr<Interface> inter){
     options(inter);
     std::string query;
     std::string target;

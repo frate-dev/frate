@@ -4,7 +4,7 @@
 
 
 namespace Frate::Command::Packages {
-  bool list(Interface *inter) {
+  bool list(std::shared_ptr<Interface> inter) {
     std::cout << "Listing packages" << std::endl;
     std::cout << "Packages: " << std::endl;
     for (Package &p : inter->pro->dependencies) {

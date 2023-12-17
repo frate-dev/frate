@@ -4,6 +4,7 @@
  <p align="center">This command line application came to fruition out of the desperate hopes and dreams of a few people looking to softly lighten their suffering while using c++. </p>
 </p>
 
+
 # THIS PROJECT IS STILL IN ALPHA DEVELOPMENT, STUFF MAY BREAK
 
 
@@ -19,7 +20,9 @@
 - vscode
 
 ## Build the binary from source
+
 ### Prerequisites
+
 
 ```
 gcc >= 13
@@ -28,6 +31,7 @@ cmake >= 3
 ```
 
 ### Basic Usage
+
 ```bash
 frate new #optional -d for defaults
 # ... Prompts you for information about your project
@@ -50,6 +54,7 @@ frate watch #watches the project for changes and automatically builds and runs
 
 
 ### Installation
+
 ```bash
 git clone https://github.com/frate-dev/frate.git
 cd frate
@@ -58,6 +63,7 @@ sudo make install
 ```
 
 ### Why use Frate
+
 - Easy project creation and maintenance
 - Simple default configurations that are easy to extend
 - Get the functionality of utilities like cargo, npm , or yarn and use a language you're already familiar with
@@ -66,6 +72,7 @@ sudo make install
 
 
 ### Your friend in the world of C/C++
+
 frate is a command line utility used to expedite building modern c/c++ applications.
 
 - [x] Easy project initialization

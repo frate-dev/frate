@@ -3,14 +3,14 @@
 bool Tests::Command::testAddPackageToMode(std::string mode_name, std::string package_name){
   using nlohmann::json;
   std::cout << "Testing add package to mode command" << std::endl;
-  cleanUp(test_path);
+  
   if(!testNew()){
-    Frate::error << "Failed to create new project" << std::endl;
+    Frate::Utils::error << "Failed to create new project" << std::endl;
     return false;
   }
   auto [failed,inter] = init("frate add p "+package_name + " -m " + mode_name + " -l");
   if(failed){
-    Frate::error << "Failed to add package" << std::endl;
+    Frate::Utils::error << "Failed to add package" << std::endl;
     return false;
   }
 
@@ -26,7 +26,7 @@ bool Tests::Command::testAddPackageToMode(std::string mode_name, std::string pac
     }
   }
 
-  Frate::error << "Failed to add package to mode "+mode_name+" : the selected mode either doesn't exist or we couldn't find " + package_name << std::endl;
+  Frate::Utils::error << "Failed to add package to mode "+mode_name+" : the selected mode either doesn't exist or we couldn't find " + package_name << std::endl;
 
   return false;
 

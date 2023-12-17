@@ -10,66 +10,75 @@ namespace Frate::Command::Packages {
   using Generators::ConfigJson::writeConfig;
 
 
-  bool addPackageToMode(Interface* inter, Package package, std::string selected_mode){
-    Frate::info << "Adding package to mode " << selected_mode << std::endl;
+  bool addPackageToMode(std::shared_ptr<Interface> inter, Package package, std::string selected_mode){
+    Utils::info << "Adding package to mode " << selected_mode << std::endl;
     for(Mode &mode : inter->pro->modes){
       if(selected_mode == mode.name){
         mode.dependencies.push_back(package);
         return true;
       }
     }
-    Frate::error << "Mode " << selected_mode << " not found";
+    Utils::error << "Mode " << selected_mode << " not found";
     return false;
   }
-  bool add(Interface* inter) {
+  bool add(std::shared_ptr<Interface> inter) {
+    options(inter);
     bool latest = false;
     std::string mode = "";
     std::string query = "";
+    std::string version = ""; 
+    std::string git = "";
+    std::string target_link = "";
+
     //TODO: Add support for multiple dependencies
     if (inter->args->count("args") == 0) {
-      Frate::error << "No packages specified" << std::endl;
+      Utils::error << "No packages specified" << std::endl;
       return false;
     }
     if (inter->args->count("mode") != 0){
       mode = inter->args->operator[]("mode").as<std::string>();
     }
+    if (inter->args->count("git") != 0) {
+      git = inter->args->operator[]("args").as<std::string>();
+    }
+    if (inter->args->count("version") != 0) {
+      version = inter->args->operator[]("version").as<std::string>();
+    }
+    if (inter->args->count("target_link") != 0) {
+      target_link = inter->args->operator[]("target_link").as<std::string>();
+    }
+
     if(inter->args->operator[]("latest").as<bool>()){
       latest = true;
     }
 
-
-
-
-
-
     std::vector<std::string> package_names = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string package_name : package_names) { 
-      info <<  "Searching for " << package_name << std::endl;
+      Utils::info <<  "Searching for " << package_name << std::endl;
+      
       auto [exact, exact_package] = getExact(package_name);
-  
-
       Package chosen_package;
 
       if(!exact){
-        Frate::error << "No exact match found" << std::endl;
+        Utils::error << "No exact match found" << std::endl;
         chosen_package = promptSearchResults(package_name);
       }else{
-        Frate::info << "Exact match found" << std::endl;
+        Utils::info << "Exact match found" << std::endl;
         chosen_package = exact_package;
       }
-      Frate::info << "Installing " << chosen_package.name << std::endl;
+      Utils::info << "Installing " << chosen_package.name << std::endl;
 
 
-      std::string version = ""; 
       std::reverse(chosen_package.versions.begin(), chosen_package.versions.end());
       std::vector<std::string> versions = chosen_package.versions;
 
       if(!latest){
         version = promptForVersion(chosen_package);
         chosen_package.selected_version = version;
-      }else{
+      }
+      else{
         if(chosen_package.versions.size() == 0){
-          Frate::error << "No versions found" << std::endl;
+          Utils::error << "No versions found" << std::endl;
           return false;
         }
         version = chosen_package.versions[0];
@@ -77,36 +86,19 @@ namespace Frate::Command::Packages {
       }
 
       if(dependenciesConflict(inter->pro->dependencies, chosen_package.name)){
-        Frate::error << "Package already installed" << std::endl;
+        Utils::error << "Package already installed" << std::endl;
         return false;
       }
 
-
-      Frate::info << "Adding dependency to frate-project.json" << std::endl;
-      //Reflecing the package to dependency
-      // info << chosen_package.toJson() << ENDL;
       if(mode != ""){
         if(!addPackageToMode(inter, chosen_package, mode)){
-          error << "Failed to add package to mode" << std::endl;
+          Utils::error << "Failed to add package to mode" << std::endl;
           return false;
         }
-      }else{
-        inter->pro->dependencies.push_back(chosen_package);
       }
-
-      Frate::info << "Writing frate-project.json" << std::endl;
-      if (!writeConfig(inter->pro)) {
-        Frate::error << "Failed to write frate-project.json" << std::endl;
-      }
-
-      if (!createCMakeLists(inter->pro)) {
-        Frate::error << "Failed to write CMakeLists.txt" << std::endl;
-      }
+      inter->pro->dependencies.push_back(chosen_package);
     }
 
     return true;
   }
-
-
-
 }

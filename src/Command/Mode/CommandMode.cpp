@@ -4,7 +4,7 @@
 #include <Frate/Command/CommandMode.hpp>
 
 namespace Frate::Command::ModeCommands {
-  bool addFlags(Interface* inter, std::string mode){
+  bool addFlags(std::shared_ptr<Interface> inter, std::string mode){
     //std::vector<std::string> flags = inter->args->operator[]("args").as<std::vector<std::string>>();
     std::vector<std::string>  flags = inter->args->unmatched();
     for(Mode m : inter->pro->modes){
@@ -17,12 +17,12 @@ namespace Frate::Command::ModeCommands {
     return true;
   }
   //TODO: Implement this
-  bool removeFlags(Interface *inter, std::string mode){
+  bool removeFlags(std::shared_ptr<Interface> inter, std::string mode){
     (void) inter, (void) mode;
     return true;
   }
-
-  bool addPackages(Interface* inter, std::string mode){
+  [[deprecated("Use addPackage in the package module")]]
+  bool addPackages(std::shared_ptr<Interface> inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep_str : dependencies) {
       auto [found,new_package] = Packages::searchWithPrompt(dep_str,false);
@@ -37,11 +37,10 @@ namespace Frate::Command::ModeCommands {
         std::cout << "Package " << dep_str << " not found" << std::endl;
       }
     }
-    Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
-  bool removePackages(Interface* inter, std::string mode){
+  [[deprecated("Use removePackage in the package module")]]
+  bool removePackages(std::shared_ptr<Interface> inter, std::string mode){
     std::vector<std::string> dependencies = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep : dependencies) {
       for(Mode &m : inter->pro->modes){
@@ -53,8 +52,6 @@ namespace Frate::Command::ModeCommands {
         }
       }
     }
-    Generators::ConfigJson::writeConfig(inter->pro);
-    Generators::CMakeList::createCMakeLists(inter->pro);
     return true;
   }
 };

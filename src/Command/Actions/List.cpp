@@ -1,14 +1,15 @@
 #include <Frate/Command/Actions/List.hpp>
 #include <Frate/Command/License.hpp>
 #include <Frate/Command/Modes.hpp>
-#include <Frate/Command/Author.hpp>.hpp>
+#include <Frate/Command/Author.hpp>
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Command/Toolchains.hpp>
+#include "Frate/Command/Library.hpp"
 
 namespace Frate::Command::List{
-  bool options(Interface* inter) {
+  bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->allow_unrecognised_options().add_options()
@@ -18,79 +19,67 @@ namespace Frate::Command::List{
     return inter->parse();
   }
   
-  std::vector<Handler> handlers(Interface *inter) {
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter) {
     return {
       Handler{
         .aliases = 
         {"modes","m"},
         .docs = "List modes",
-        .callback = [inter]() {
-          return Modes::list(inter);
-        },
+        .callback = &Modes::list,
         .requires_project = true
       },
       Handler{
         .aliases = 
         {"servers","remote-servers"},
         .docs = "List remote servers",
-        .callback = [inter]() {
-          return RemoteServers::list(inter);
-        }
+        .callback = &RemoteServers::list,
       },
       Handler{
         .aliases = {"installed-packages","packages","p"},
         .flags = {"-m","--mode"},
         .docs = "List installed packages",
-        .callback = [inter]() {
-          return Packages::list(inter);
-        },
+        .callback = &Command::Packages::list,
         .requires_project = true
       },
       Handler{
         .aliases = 
         {"flags","f"},
         .docs = "List flags",
-        .callback = [inter]() {
-          Flags::list(inter);
-          return true;
-        },
+        .callback = &Flags::list,
+        .requires_project = true
+      },
+      Handler{
+        .aliases = 
+        {"libraries", "lib", "l"},
+        .docs = "List flags",
+        .callback = &Library::list,
         .requires_project = true
       },
       Handler{
         .aliases = 
         {"authors","a"},
         .docs = "List authors",
-        .callback = [inter]() {
-          //TODO: List authors
-          Author::list(inter);
-          return true;
-        },
+        .callback = &Author::list,
         .requires_project = true
       },
       Handler{
         .aliases = 
         {"available-targets","at"},
         .docs = "List available targets",
-        .callback = [inter]() {
-          (void)inter;
-          Command::Toolchains::list();
-          return true;
-        }
+        .callback = &Toolchains::list,
       },
       Handler{
         .aliases = 
         {"licenses","lc"},
         .docs = "List possible licenses",
-        .callback = [inter]() {
-          return License::list(inter);
-        },
+        .callback = &License::list,
         .requires_project = true
       },
     };
   }
 
 
-  bool run(Interface* inter){
+  bool run(std::shared_ptr<Interface> inter){
     options(inter);
     std::vector<Handler> listHandlers = handlers(inter);
     std::string target;

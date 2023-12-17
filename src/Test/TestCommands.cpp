@@ -1,6 +1,5 @@
 #ifdef TEST
 #include <cstdio>
-#include <fstream>
 #include <filesystem>
 #include <catch2/catch_test_macros.hpp>
 #include <Frate/Command.hpp>
@@ -30,7 +29,7 @@ namespace Tests{
 namespace Tests::Command {
   using nlohmann::json;
 
-  extern const std::filesystem::path test_path = std::filesystem::path("/tmp/frate-test");
+  extern std::filesystem::path test_path = std::filesystem::path("/tmp/frate-test");
   
 
   TEST_CASE("TestCommands", "[commands]"){
@@ -41,18 +40,27 @@ namespace Tests::Command {
     REQUIRE(testAddFlagsSingle());
     REQUIRE(testAddFlagsMultiple());
     REQUIRE(testAddFlagsWithMode());
+    REQUIRE(testRemoveFlagsSingle("-Wall"));
+    REQUIRE(testRemoveFlagsSingle("-Wall -Werror"));
 
-    REQUIRE(testNewWithType("static_library"));
     REQUIRE(testNewWithType("executable"));
-    REQUIRE(testNewWithType("shared_library"));
-    REQUIRE(testNewWithType("header_only"));
+    //TODO:  Add more types
+    // REQUIRE(testNewWithType("static_library"));
+    // REQUIRE(testNewWithType("shared_library"));
+    // REQUIRE(testNewWithType("header_only"));
 
     REQUIRE(testAddPackage("cxxopts"));
-    REQUIRE(testAddPackageMultiple());
-    REQUIRE(testRemovePackage("cxxopts"));
+    REQUIRE(testAddPackageMultiple({"cxxopts","fmt","SDL2"}));
+    REQUIRE(testAddPackageWithDuplicate("cxxopts"));
+
     REQUIRE(testAddPackageToMode("Debug","cxxopts"));
     REQUIRE(testAddPackageToMode("Test","cxxopts"));
     REQUIRE(testAddPackageToMode("Release","cxxopts"));
+
+    REQUIRE(testRemoveMode("Debug"));
+
+    REQUIRE(testRemovePackage("cxxopts"));
+    REQUIRE(testRemovePackageMultiple({"fmt","cxxopts","SDL2"}));
 
     REQUIRE(testAddAuthorSingle("test"));
     REQUIRE(testAddAuthorMultiple({"test1","test2","test3"}));

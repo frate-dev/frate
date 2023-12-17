@@ -6,7 +6,7 @@
 #include <Frate/Command/RemoteServers.hpp>
 namespace Frate::Command::Set {
 
-  bool options(Interface *inter) {
+  bool options(std::shared_ptr<Interface> inter) {
 
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
@@ -16,45 +16,40 @@ namespace Frate::Command::Set {
       ("args", "Arguments to pass to subcommand", cxxopts::value<std::string>());
     return inter->parse();
   }
-  std::vector<Handler> handlers(Interface *inter) {
+  std::vector<Handler> handlers(std::shared_ptr<Interface> inter) {
     return {
       Handler{
         .aliases = {"license","lc"},
         .positional_args = {"license"},
         .docs = "Set the project's license",
-        .callback = [inter]() {
-          return License::set(inter);
-        },
+        .callback = &License::set,
+        .requires_project = true,
       },
       Handler{
         .aliases = {"name","n"},
         .docs = "Set the project's name",
-        .callback = [inter]() {
-          Name::set(inter);
-          return true;//Name::set(inter);
-        },
+        .callback = &Name::set,
+        .requires_project = true,
       },
       Handler{
         .aliases = {"version","ver","v"},
         .docs = "Set the project's version",
-        .callback = [inter]() {
-
-          return true;//Version::set(inter);
-        },
-        .implemented = false
+//         .callback = [inter]() {
+// 
+//           return true;//Version::set(inter);
+//         },
+        .implemented = false,
+        .requires_project = true,
       },
       Handler{
         .aliases = {"server","s"},
         .docs = "Set the project's build server",
-        .callback = [inter]() {
-          (void)inter;
-          RemoteServers::set(inter);
-          return true; //Server::set(inter);
-        },
+        .callback = &RemoteServers::set,
+        .requires_project = true,
       }
     };
   }
-  bool run(Interface *inter) {
+  bool run(std::shared_ptr<Interface> inter) {
     options(inter);
     std::vector<Handler> setHandlers = handlers(inter);
     std::string subcommand;
@@ -64,7 +59,7 @@ namespace Frate::Command::Set {
       subcommand = inter->args->operator[]("subcommand").as<std::string>();
 
     }else{
-      Frate::error << "No subcommand given" << std::endl;
+      Utils::error << "No subcommand given" << std::endl;
 
       inter->getHelpString("set", setHandlers);
 

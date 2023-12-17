@@ -2,7 +2,7 @@
 #include <Frate/Command/Actions/Build.hpp>
 
 namespace Frate::Command::Build {
-  bool options(Interface* inter){
+  bool options(std::shared_ptr<Interface> inter){
     inter->InitHeader();
     inter->options->parse_positional({"command"});
     inter->options->add_options()
@@ -12,7 +12,7 @@ namespace Frate::Command::Build {
       ("j,jobs", "Number of jobs to run", cxxopts::value<int>());
     return inter->parse();
   }
-  bool run(Interface* inter) {
+  bool run(std::shared_ptr<Interface> inter) {
     options(inter);
     std::string target = "";
     std::string mode = "";
@@ -28,15 +28,15 @@ namespace Frate::Command::Build {
     }
 
     Utils::Info info;
-    info << "Building project with: " << std::endl;
-    info << "Target: " << target << std::endl;
-    info << "Mode: " << mode << std::endl;
-    info << "Jobs: " << jobs << std::endl;
+    Utils::info << "Building project with: " << std::endl;
+    Utils::info << "Target: " << target << std::endl;
+    Utils::info << "Mode: " << mode << std::endl;
+    Utils::info << "Jobs: " << jobs << std::endl;
     //TODO: Handle different targets
 
     for(Mode &m : inter->pro->modes){
       if(m.name == mode){
-        std::string workdir_cmd = "cd " + inter->pro->project_path.string();
+        std::string workdir_cmd = "cd " + inter->pro->path.string();
         std::string build_cmd = "cmake -DCMAKE_BUILD_TYPE=" + m.name + " .";
         std::string make_cmd = "make";
         if(Utils::hSystem(workdir_cmd + ";" + build_cmd) != 0){
@@ -49,7 +49,7 @@ namespace Frate::Command::Build {
       }
     }
 
-    std::string workdir_cmd = "cd " + inter->pro->project_path.string();
+    std::string workdir_cmd = "cd " + inter->pro->path.string();
     std::string build_cmd = "cmake -DCMAKE_BUILD_TYPE=" + inter->pro->default_mode + " .";
     std::string make_cmd = "make -j" + std::to_string(jobs);
     if(Utils::hSystem(workdir_cmd + ";" + build_cmd) != 0){

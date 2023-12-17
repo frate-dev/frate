@@ -3,7 +3,8 @@
 
 
 namespace Frate::Command::Flags {
-  bool remove(Interface *inter){
+  bool remove(std::shared_ptr<Interface> inter){
+    options(inter);
     std::cout << "Removing flags" << std::endl; 
     std::vector<std::string> flags = makeFlags(inter);
     if (inter->args->count("mode") > 0) {
@@ -17,8 +18,6 @@ namespace Frate::Command::Flags {
             });
           }
           std::cout << "Writing frate-project.json" << std::endl;
-          Generators::ConfigJson::writeConfig(inter->pro);
-          Generators::CMakeList::createCMakeLists(inter->pro);
           return true;
         }
       }
@@ -30,7 +29,6 @@ namespace Frate::Command::Flags {
       });
     }
     std::cout << "Writing frate-project.json" << std::endl;
-    Generators::ConfigJson::writeConfig(inter->pro);
     return true;
   }
 }

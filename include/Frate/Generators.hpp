@@ -1,13 +1,119 @@
 #include <memory>
 #include <vector>
 #include "./Command.hpp"
+#include <inja.hpp>
 
 namespace Frate::Generators{
-  namespace GitIgnore{
+  namespace Project {
+    using nlohmann::json;
+    using Utils::CLI::Prompt;
+    using nlohmann::json;
+    using std::filesystem::path;
+    using Utils::CLI::Prompt;
+    using inja::Environment;
+    json getTemplateIndex();
+typedef struct Template {
+      std::string name;
+      std::string git;
+      std::string description;
+    } Template;
+
+
+    /*
+     * ===========================
+     * External functions
+     * ===========================
+     */
+    
+    /*
+     * This is the external callback used when ever a new project is created
+     * @param pro: the project context
+     * @return true if the creation was successful
+     */
     bool create(std::shared_ptr<Command::Project> pro);
+
+    /*
+     * This is the external callback used when ever the tempalte needs to be refreshed
+     * @param pro: the project context
+     * @return true if the refresh was successful
+     */
+    bool refresh(std::shared_ptr<Command::Project> pro);
+
+
+
+    /*
+     * ===========================
+     * Internal functions
+     * ===========================
+     */
+
+    /*
+     * Impliceitly converts a json object to a Template object
+     * Intended to to convert the json objects from the template index to Template objects
+     * @param j: the json object
+     * @param t: the template object
+     */
+    void from_json(const json& j, Template& t);
+    /*
+     * Prompts the user for a template name, only used if the template has not been specified
+     * @param index: the json index of the templates
+     * @return a pair of bool and Template, the bool is true if the template was found
+     * and the Template is the template that was found
+     */
+    std::pair<bool, Template> promptForTemplateName(json index);
+    
+    /*
+     * Renders the entire template, this is only used when creating a new project
+     * @param env: the inja environment
+     * @param pro: the project context
+     * @return true if the render was successful
+     */
+    bool renderTemplate(Environment &env, std::shared_ptr<Command::Project> pro);
+
+    /*
+     * Refreshes only specific files that are considerer dynamic files
+     * @param env: the inja environment
+     * @param pro: the project context
+     * @return true if the refresh was successful
+     */
+    bool refreshTemplate(Environment &env, std::shared_ptr<Command::Project> pro);
+    
+    /*
+     * Runs user prompts from the template
+     * @param pro: the project context
+     * @return true if the prompts were successful
+     */
+    bool runTemplatePrompts(std::shared_ptr<Command::Project> pro);
+
+    /*
+     * Downloads the templates from from the github repo
+     * @param git_url: the url of the git repo
+     * @param project_path: the path of the project
+     * @return true if the download was successful
+     */
+    bool downloadTemplate(std::string git_url, path project_path);
+
+    /*
+     * Loads the template config file and merges into the project context
+     * @param pro: the project context
+     * @return true if the load was successful
+     */
+    bool loadTemplateConfig(std::shared_ptr<Command::Project> pro);
+    
+    /*
+     * Initializes the lua environment after by loading user scripts into the inja environment
+     * @param env: the inja environment
+     * @param lua: the lua state
+     * @param pro: the project context
+     * @return true if the initialization was successful
+     */
+    bool initializeLua(Environment &env, sol::state &lua, std::shared_ptr<Command::Project> pro);
+  }
+  namespace GitIgnore{
+    bool create(std::shared_ptr<Command::Interface> inter);
   }
   namespace Readme{
-    bool create(std::shared_ptr<Command::Project> pro);
+    bool create(std::shared_ptr<Command::Interface> inter);
   }
   namespace Toolchain{
     std::string generateToolchain(std::string toolchain);
@@ -62,7 +168,7 @@ namespace Frate::Generators{
       std::string lang_version;
       std::string authors_str;
     } Config;
-    [[deprecated("Use project->writeConfig() instead")]]
+    [[deprecated("Use project->save() instead")]]
     bool writeConfig(std::shared_ptr<Command::Project>& ctx);
   }
 
