@@ -48,15 +48,20 @@ namespace Frate::Command::UvWatch{
         "/.config/frate/" +
         "current_build_server.json";
       inter->pro->build_server = get_current_build_server();
-      command =
-        "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " +
+
+      std::string sync_files = "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " +
         std::to_string(inter->pro->build_server.port) + "' --progress . " +
         inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
-        ":/tmp/frate2 && ssh -p " +
-        std::to_string(inter->pro->build_server.port) + " " +
-        inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
-        "  'cd /tmp/frate2 && cmake . && make -j ${nproc} && " + inter->pro->build_dir + "/" +
-        inter->pro->name + "'";
+        ":/tmp/frate ";
+
+      std::string ssh = "&& ssh -p " + std::to_string(inter->pro->build_server.port) + " " +
+        inter->pro->build_server.username + "@" +inter->pro->build_server.ip;
+
+      std::string ssh_command = 
+        " 'cd /tmp/frate && cmake . && make -j ${nproc} && " + inter->pro->build_dir + "/" + inter->pro->name + "'";
+
+      command = sync_files + ssh + ssh_command;
+
     }
     if (inter->args->count("args") != 0) {
       std::cout << "estamos aqui" << std::endl;
@@ -75,7 +80,10 @@ namespace Frate::Command::UvWatch{
       command = "cmake . && make && ./" + inter->pro->build_dir + "/" +
         inter->pro->name + "  " + command_args;
     }
-    Utils::hSystem(command);
+    if (Utils::hSystem(command) != 0){
+      std::cout << "Error running command: " << command << std::endl;
+      exit(1);
+    };
 
     return true;
   }

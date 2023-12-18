@@ -4,7 +4,6 @@
 #include <nlohmann/json.hpp>
 #include <iomanip>
 #include <iostream>
-#include <ldap.h>
 #include <termcolor/termcolor.hpp>
 #define DEBUGTHIS(x) std::cout << termcolor::bright_red << "##x" << " -> " << x << std::endl;
 
