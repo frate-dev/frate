@@ -76,9 +76,21 @@ namespace Frate::Command::RemoteServers{
     }
     return servers;
   }
+  bool validateServerInput(std::string input){
+    if(input.empty()){
+      return false;
+    }
+    if (input.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_") != std::string::npos){
+      return false;
+    }
+    return true;
+  }
+
   bool getServerName(std::string& name){
     Prompt name_promp("Enter the name of the server: ");
+    name_promp.setValidator(validateServerInput);
     name_promp.run();
+
     auto[valid, _name] = name_promp.get<std::string>();
     if(!valid){
       return false;

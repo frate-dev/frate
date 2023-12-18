@@ -119,7 +119,7 @@ namespace Frate::Command {
     std::string homepage{"null"};
     std::string bugs{"null"};
     std::string lang{"cpp"};
-    std::string cmake_version{"3.10"};
+    std::string cmake_version{"3.28"};
     std::string lang_version{"20"};
     std::string compiler{"g++"};
     std::string license{""};

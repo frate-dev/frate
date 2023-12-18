@@ -15,12 +15,35 @@ namespace Frate::Command::UvWatch{
     return inter->parse();
   }
   //TODO Move to  RemoteServer.hpp
+
+  std::optional<json> parseJsonFile(const std::string& filePath) {
+    std::ifstream file(filePath);
+    if (!file) {
+        std::cerr << "Unable to open file: " << filePath << std::endl;
+        return std::nullopt;
+    }
+
+    try {
+        json j = json::parse(file);
+        return j;
+    } catch (const json::parse_error& e) {
+        std::cerr << "JSON parse error in file " << filePath << ": " << e.what() << std::endl;
+        return std::nullopt;
+    }
+  }
+
   RemoteServer get_current_build_server() {
     std::string current_build_server = std::string(std::getenv("HOME")) +
       "/.config/frate/" +
       "current_build_server.json";
-    json current_build_server_json =
-      json::parse(std::ifstream(current_build_server));
+    std::optional<json> data = parseJsonFile(current_build_server);
+    if (!data.has_value()) {
+      std::cerr << "No current build server found" << std::endl;
+      std::cerr << "Please run frate add server to add a server" << std::endl;
+      std::cerr << "Please run frate set server to set a default a server" << std::endl;
+      return RemoteServer();
+    }
+    json current_build_server_json = data.value();
     if (!current_build_server_json["name"].is_null()) {
       return RemoteServer(
           current_build_server_json["name"].get<std::string>(),
@@ -34,36 +57,44 @@ namespace Frate::Command::UvWatch{
     return RemoteServer();
   }
 
-  bool runCommand(Interface* inter){
+  std::string remote_build_command(std::shared_ptr<Interface> inter) {
+    std::string command;
+    std::string current_build_server = std::string(std::getenv("HOME")) +
+      "/.config/frate/" +
+      "current_build_server.json";
+    inter->pro->build_server = get_current_build_server();
+
+    std::string sync_files = "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " +
+      std::to_string(inter->pro->build_server.port) + "' --progress . " +
+      inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
+      ":/tmp/frate ";
+
+    std::string ssh = "&& ssh -p " + std::to_string(inter->pro->build_server.port) + " " +
+      inter->pro->build_server.username + "@" +inter->pro->build_server.ip;
+
+    std::string ssh_command = 
+      " 'cd /tmp/frate && cmake . && make -j ${nproc} && " + inter->pro->build_dir + "/" + inter->pro->name + "'";
+
+    command = sync_files + ssh + ssh_command;
+    return command;
+  }
+
+
+  bool runCommand(std::shared_ptr<Interface> inter){
     //TODO  CLEAN UP THIS SHIT
     std::string command = "cmake . && make  && " + inter->pro->path.string() + "/" + inter->pro->build_dir + "/" +inter->pro->name;
-#ifdef DEBUG
-    command = "cd build && cmake . && make  && " + inter->pro->build_dir + "/" +inter->pro->name;
-#endif
+    #ifdef DEBUG
+      command = "cd build && cmake . && make  && " + inter->pro->build_dir + "/" +inter->pro->name;
+    #endif
 
 
     bool build_server =inter->args->operator[]("remote-build").as<bool>();
     if (build_server == true) {
-      std::string current_build_server = std::string(std::getenv("HOME")) +
-        "/.config/frate/" +
-        "current_build_server.json";
-      inter->pro->build_server = get_current_build_server();
 
-      std::string sync_files = "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " +
-        std::to_string(inter->pro->build_server.port) + "' --progress . " +
-        inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
-        ":/tmp/frate ";
-
-      std::string ssh = "&& ssh -p " + std::to_string(inter->pro->build_server.port) + " " +
-        inter->pro->build_server.username + "@" +inter->pro->build_server.ip;
-
-      std::string ssh_command = 
-        " 'cd /tmp/frate && cmake . && make -j ${nproc} && " + inter->pro->build_dir + "/" + inter->pro->name + "'";
-
-      command = sync_files + ssh + ssh_command;
-
+      command = remote_build_command(inter);
     }
     if (inter->args->count("args") != 0) {
+      // historical reasons
       std::cout << "estamos aqui" << std::endl;
       std::vector<std::string> args_vec =
         inter->args->operator[]("args").as<std::vector<std::string>>();
@@ -96,7 +127,8 @@ namespace Frate::Command::UvWatch{
       // Ignoring subsequent events
       return;
     }
-    Interface* inter = static_cast<Interface*>(handle->data);
+    std::shared_ptr<Interface> inter = *static_cast<std::shared_ptr<Interface>*>(handle->data);
+
     if (status < 0) {
       fprintf(stderr, "Filesystem watch error: %s\n", uv_strerror(status));
       return;
@@ -112,11 +144,12 @@ namespace Frate::Command::UvWatch{
     timer->data = handle;
 
     uv_timer_start(timer, [](uv_timer_t *timer) {
-        event_triggered = 0;
-        uv_close((uv_handle_t *)timer, [](uv_handle_t *handle) {
-            free(handle);
-            });
-        }, 2000, 0); // 1000 ms delay
+      event_triggered = 0;
+      uv_close((uv_handle_t *)timer, [](uv_handle_t *handle) {
+        free(handle);
+      });
+      delete timer;
+    }, 2000, 0); // 1000 ms delay
   }
 
 
@@ -124,7 +157,7 @@ namespace Frate::Command::UvWatch{
 #ifdef __linux__
   namespace fs = std::filesystem;
 
-  void start_watchers_for_directory(const fs::path& path, uv_loop_t* loop, std::vector<uv_fs_event_t*>& watchers,std::shared_ptr<Interface> inter) {
+  void start_watchers_for_directory(const fs::path& path, uv_loop_t* loop, std::vector<uv_fs_event_t*>& watchers, std::shared_ptr<Interface> inter) {
     for (const auto& entry : fs::directory_iterator(path)) {
       if (fs::is_directory(entry)) {
         uv_fs_event_t* watcher = new uv_fs_event_t{
@@ -140,22 +173,34 @@ namespace Frate::Command::UvWatch{
 #endif
 
   bool watch(std::shared_ptr<Interface> inter){
-
     options(inter);
     uv_loop_t *loop = uv_default_loop();
-        std::vector<uv_fs_event_t*> watchers;
+    std::vector<uv_fs_event_t*> watchers;
 
 
     uv_fs_event_t fs_event{.data = inter.get()};
     uv_fs_event_init(loop, &fs_event);
-#ifdef __linux__
-    start_watchers_for_directory(inter->pro->src_dir, loop, watchers, inter);
-#endif
     if (uv_fs_event_start(&fs_event, fs_event_callback, (inter->pro->path / inter->pro->src_dir).c_str(), UV_FS_EVENT_RECURSIVE)!=0) {
       fprintf(stderr, "Error starting filesystem watcher.\n");
       return 1;
     }
     std::cout << "Watching for changes in " << inter->pro->src_dir << std::endl;
-    return uv_run(loop, UV_RUN_DEFAULT) == 0;
+
+    if (uv_run(loop, UV_RUN_DEFAULT) != 0) {
+      std::cerr << "Error running uv loop" << std::endl;
+      return false;
+    }
+
+    #ifdef __linux__
+      start_watchers_for_directory(inter->pro->src_dir, loop, watchers, inter);
+    #endif
+
+    int close = uv_loop_close(loop);
+    if (close != 0) {
+      std::cerr << "Error closing uv loop" << std::endl;
+      return false;
+    }
+
+    return true; 
   };
 }
