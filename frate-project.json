@@ -1,0 +1,49 @@
+{
+  "authors": [],
+  "build_dir": "build",
+  "cmake_version": "3.10",
+  "compiler": "g++",
+  "default_mode": "Release",
+  "dependencies": [],
+  "flags": [
+    "-O3"
+  ],
+  "git": "null",
+  "homepage": "null",
+  "include_dir": "include",
+  "keywords": [],
+  "lang": "cpp",
+  "lang_version": "20",
+  "libs": [],
+  "modes": [
+    {
+      "dependencies": [],
+      "flags": [
+        "-O2"
+      ],
+      "name": "Release"
+    },
+    {
+      "dependencies": [],
+      "flags": [
+        "-g"
+      ],
+      "name": "Debug"
+    },
+    {
+      "dependencies": [],
+      "flags": [
+        "-g"
+      ],
+      "name": "Test"
+    }
+  ],
+  "project_description": "",
+  "project_name": "debug-frate",
+  "project_type": "executable",
+  "project_version": "0.0.1",
+  "prompts": {},
+  "src_dir": "src",
+  "toolchains": [],
+  "variables": {}
+}

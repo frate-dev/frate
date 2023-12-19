@@ -9,8 +9,6 @@ namespace Frate::Generators::Project {
       std::shared_ptr<Command::Project> pro){
 
 
-    Utils::info << "Rendering templates" << std::endl;
-
     std::string CPM;
 
     CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
@@ -69,7 +67,7 @@ namespace Frate::Generators::Project {
         continue;
       }
       if(current_p.extension() == ".inja"){
-        std::string rendered_file = env.render_file(current_p, pro->toJson());
+        std::string rendered_file = env.render_file(current_p, *pro);
         std::string new_file = current_p.string();
         //Removes the .inja extension from the file
         new_file = new_file.replace(new_file.find(".inja"), 5, "");

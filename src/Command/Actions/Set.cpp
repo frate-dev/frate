@@ -4,6 +4,7 @@
 #include <Frate/Command/License.hpp>
 #include <Frate/Command/Name.hpp>
 #include <Frate/Command/RemoteServers.hpp>
+#include <Frate/Generators.hpp>
 namespace Frate::Command::Set {
 
   bool options(std::shared_ptr<Interface> inter) {
@@ -66,6 +67,8 @@ namespace Frate::Command::Set {
       return false;
     }
 
-    return inter->runCommand(subcommand, setHandlers);
+    inter->loadProjectJson();
+    Generators::Project::refresh(inter->pro);
+    return runCommand(inter,subcommand, setHandlers);
   }
 }

@@ -5,47 +5,52 @@
 #include <filesystem>
 #include <memory>
 #include <sol/forward.hpp>
-#include <sol/variadic_args.hpp>
+#include <sol/variadic_args.hpp> 
 #include <Frate/Constants.hpp>
-
+#include <Frate/Reflection.hpp>
 namespace Frate::LuaAPI {
-using Command::Project;
-using std::filesystem::path;
+  using Command::Project;
+  using std::filesystem::path;
 
 bool registerProjectScripts(inja::Environment &env, sol::state &lua,
                             path script_path, std::shared_ptr<Project> project) {
+
   std::unordered_map<std::string, std::string> scripts = {};
   
   sol::table global_table = to_table(project->variables,lua);
 
   lua.set("global", global_table);
+  try{
+    for (const std::filesystem::path &p :
+        std::filesystem::recursive_directory_iterator(script_path)) {
+      if (p.extension() == ".lua") {
+        std::string file_name = p.filename();
+        std::string full_script_path = p.string();
+        // Yoinkin off the lua extension
+        file_name = file_name.substr(0, file_name.find(".lua"));
 
-  for (const std::filesystem::path &p :
-           std::filesystem::recursive_directory_iterator(script_path)) {
-    if (p.extension() == ".lua") {
-      std::string file_name = p.filename();
-      std::string full_script_path = p.string();
-      // Yoinkin off the lua extension
-      file_name = file_name.substr(0, file_name.find(".lua"));
+        std::string prefix;
 
-      std::string prefix;
+        // Remove the script path
+        Utils::replaceKey(full_script_path, script_path.string(), "");
 
-      // Remove the script path
-      Utils::replaceKey(full_script_path, script_path.string(), "");
+        // Remove the file name
+        Utils::replaceKey(full_script_path, file_name + ".lua", "");
 
-      // Remove the file name
-      Utils::replaceKey(full_script_path, file_name + ".lua", "");
+        // Remove the first slash
+        Utils::replaceKey(full_script_path, "/", ".");
 
-      // Remove the first slash
-      Utils::replaceKey(full_script_path, "/", ".");
+        // Remove the first dot
+        full_script_path = full_script_path.substr(1, full_script_path.size());
 
-      // Remove the first dot
-      full_script_path = full_script_path.substr(1, full_script_path.size());
+        prefix = full_script_path;
 
-      prefix = full_script_path;
-
-      scripts[prefix + file_name] = p.string();
+        scripts[prefix + file_name] = p.string();
+      }
     }
+  }catch(...){
+    Utils::error << "Error while iterating over scripts" << std::endl;
+    return false;
   }
 
 
@@ -155,6 +160,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
   bool postScripts(sol::state &lua, std::shared_ptr<Project> project){
     path script_path = project->path / 
       (Constants::TEMPLATE_PATH + Constants::POST_SCRIPTS_PATH);
+
 
     if(!std::filesystem::exists(script_path)){
       Utils::verbose << "No post scripts found" << " at: " << script_path << std::endl;

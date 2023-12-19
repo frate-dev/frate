@@ -49,7 +49,7 @@ namespace Frate::Command::Search {
 
     query = inter->args->operator[]("query").as<std::string>();
 
-    return inter->runCommand(target, searchHandlers);
+    return runCommand(inter,target, searchHandlers);
 
 
   }

@@ -90,6 +90,6 @@ namespace Frate::Command::List{
       inter->getHelpString("list", listHandlers);
       return false;
     }
-    return inter->runCommand(target, listHandlers);
+    return runCommand(inter,target, listHandlers);
   }
 }

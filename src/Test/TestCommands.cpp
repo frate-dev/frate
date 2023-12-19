@@ -37,17 +37,18 @@ namespace Tests::Command {
     REQUIRE(testNewWithLang("cpp"));
     REQUIRE(testNewWithLang("c"));
 
-    REQUIRE(testAddFlagsSingle());
-    REQUIRE(testAddFlagsMultiple());
-    REQUIRE(testAddFlagsWithMode());
-    REQUIRE(testRemoveFlagsSingle("-Wall"));
-    REQUIRE(testRemoveFlagsSingle("-Wall -Werror"));
 
     REQUIRE(testNewWithType("executable"));
     //TODO:  Add more types
     // REQUIRE(testNewWithType("static_library"));
     // REQUIRE(testNewWithType("shared_library"));
     // REQUIRE(testNewWithType("header_only"));
+
+    REQUIRE(testAddFlagsSingle());
+    REQUIRE(testAddFlagsMultiple());
+    REQUIRE(testAddFlagsWithMode());
+    REQUIRE(testRemoveFlagsSingle("-Wall"));
+    REQUIRE(testRemoveFlagsSingle("-Wall -Werror"));
 
     REQUIRE(testAddPackage("cxxopts"));
     REQUIRE(testAddPackageMultiple({"cxxopts","fmt","SDL2"}));

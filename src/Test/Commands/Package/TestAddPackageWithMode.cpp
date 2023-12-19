@@ -14,7 +14,7 @@ bool Tests::Command::testAddPackageToMode(std::string mode_name, std::string pac
     return false;
   }
 
-  json config = inter->pro->toJson();
+  json config = *inter->pro;
 
   for(json mode : config["modes"]){
     if(mode["name"] == mode_name){

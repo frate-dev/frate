@@ -12,9 +12,7 @@ namespace Frate::Command::Packages {
     Utils::toLower(query);
 
 
-    for(json json: rawIndex){
-      Package package;
-      package.fromJson(json);
+    for(Package package: rawIndex){
 
       int score = 0;
       score += Utils::getStringScore(package.name, query) * 10;
@@ -29,10 +27,13 @@ namespace Frate::Command::Packages {
     std::sort(results.begin(), results.end(), [](Package a, Package b){
         return a.score > b.score;
         });
+
     return results;
   }
 
   std::vector<Package> filterOutBest(std::vector<Package> &packages){
+
+    std::vector<Package> filterResultsVec;
 
     int totalScore = std::accumulate(
         packages.begin(), packages.end(), 0, [](int a, Package b){
@@ -41,12 +42,12 @@ namespace Frate::Command::Packages {
 
     int averageScore = totalScore / packages.size();
 
-    auto filterResults = packages | std::views::filter(
-        [&averageScore](Package package){
-        return package.score > 2 * averageScore;
-        });
+    for(Package package: packages){
+      if(package.score > averageScore){
+        filterResultsVec.push_back(package);
+      }
+    }
 
-    std::vector<Package> filterResultsVec(filterResults.begin(), filterResults.end());
 
     return filterResultsVec;
   }
@@ -54,9 +55,7 @@ namespace Frate::Command::Packages {
   std::pair<bool, Package> getExactMatch(std::string &query){
     json rawIndex = fetchIndex();
     Utils::toLower(query);
-    for(json json: rawIndex){
-      Package package;
-      package.fromJson(json);
+    for(Package package: rawIndex){
       if(package.name == query){
         return {true, package};
       }

@@ -18,7 +18,14 @@ namespace Frate::Command::RemoteServers{
     std::fstream file;
     std::string build_servers_dir= std::string(std::getenv("HOME"))  + "/.config/frate/";
     if (!std::filesystem::exists(build_servers_dir)){
-      std::filesystem::create_directory(build_servers_dir);
+      try{
+        std::filesystem::create_directory(build_servers_dir);
+      }catch(std::exception &e){
+        Utils::debug(e.what());
+        Utils::error <<
+          "Error while creating directory: " << build_servers_dir << std::endl;
+        exit(1);
+      }
     }
     std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/frate/" + "build_server.json";
     std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/frate/" + "current_build_server.json";

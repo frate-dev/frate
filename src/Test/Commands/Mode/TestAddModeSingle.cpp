@@ -10,7 +10,7 @@ bool Tests::Command::testAddMode(std::string mode_name){
 
   if(failed) return false;
 
-  nlohmann::json config = inter->pro->toJson();
+  nlohmann::json config = *inter->pro;
 
   for(auto &mode : config["modes"]){
     if(mode["name"] == mode_name){

@@ -174,6 +174,8 @@ bool options(std::shared_ptr<Interface> inter) {
         return false;
       }
     }
+
+
     return true;
   }
   } // namespace Command

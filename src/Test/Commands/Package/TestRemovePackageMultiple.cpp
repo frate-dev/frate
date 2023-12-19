@@ -18,7 +18,7 @@ namespace Tests::Command {
 
     if(failed) return false;
 
-    nlohmann::json config = inter->pro->toJson();
+    nlohmann::json config = *inter->pro;
 
     for(auto &dep : config["dependencies"]){
       for(auto &p : packages){

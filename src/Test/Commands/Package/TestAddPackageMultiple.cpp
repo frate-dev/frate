@@ -21,7 +21,7 @@ bool Tests::Command::testAddPackageMultiple(std::vector<std::string> packages) {
 
   if(failed) return false;
 
-  nlohmann::json config = inter->pro->toJson();
+  nlohmann::json config = *inter->pro;
 
   std::vector<std::pair<std::string, bool>> package_results;
 

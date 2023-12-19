@@ -1,5 +1,6 @@
 #include "Frate/Command/Library.hpp"
 #include "Frate/Utils/General.hpp"
+#include "Frate/Generators.hpp"
 #include <Frate/Command/Actions/Remove.hpp>
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command/Modes.hpp>
@@ -77,7 +78,8 @@ namespace Frate::Command::Remove {
 
       return false;
     }
-
-    return inter->runCommand(subcommand, removeHandlers);
+    inter->loadProjectJson();
+    Generators::Project::refresh(inter->pro);
+    return runCommand(inter,subcommand, removeHandlers);
   }
 } // namespace Comman

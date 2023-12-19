@@ -17,6 +17,7 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
 #include "cxxopts.hpp"
+#include "nlohmann/detail/json_ref.hpp"
 #include "termcolor/termcolor.hpp"
 #include <Frate/Constants.hpp>  
 #include <memory>
@@ -176,7 +177,8 @@ namespace Frate::Command {
       .flags = {}, //TODO: Add flags
       .subcommands = Update::handlers(inter),
       .docs = "update sub command",
-      .callback = &Update::run
+      .callback = &Update::run,
+      .requires_project = false
     });
 
     inter->commands.push_back({
@@ -211,14 +213,16 @@ namespace Frate::Command {
       for(std::string& alias : handler.aliases){
         if(alias == command){
 
-          if(handler.requires_project){
-
-            //Check if project loads successfully
-            inter->LoadProjectJson();
-
-            //if so refresh the project templates
-            Generators::Project::refresh(inter->pro);
-          }
+//           if(handler.requires_project){
+// 
+//             //Check if project loads successfully
+//             inter->loadProjectJson();
+//             Utils::verbose << "Project loaded successfully" << ENDL;
+//             Utils::verbose << nlohmann::json(*inter->pro).dump(2) << ENDL;
+// 
+//             //if so refresh the project templates
+//             Generators::Project::refresh(inter->pro);
+//           }
           
           //Checks if the callback ran successfully
           if(!handler.callback(inter)){
@@ -256,7 +260,7 @@ namespace Frate::Command {
       }
     }
   }
-  bool Interface::runCommand(std::string command, std::vector<Handler> &handlers){
+  bool runCommand(std::shared_ptr<Interface> inter,std::string command, std::vector<Handler> &handlers){
     for(Handler handler : handlers){
       for(std::string alias : handler.aliases){
         if(alias == command){
@@ -264,17 +268,17 @@ namespace Frate::Command {
             Utils::error << "Command not implemented: " << command;
             return false;
           }
-          if(handler.requires_project && !project_present){
-            Utils::error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
-            return false;
-          }
-          if(!handler.callback(shared_from_this())){
-            getHelpString(handler);
+          // if(handler.requires_project && !inter->project_present){
+          //   Utils::error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
+          //   return false;
+          // }
+          if(!handler.callback(inter)){
+            inter->getHelpString(handler);
             return false;
           }
           if(handler.requires_project){
-            pro->save();
-            Generators::Project::refresh(pro);
+            Generators::Project::refresh(inter->pro);
+            inter->pro->save();
           }
           return true;
         }

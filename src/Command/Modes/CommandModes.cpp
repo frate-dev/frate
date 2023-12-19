@@ -36,9 +36,6 @@ namespace Frate:: Command::Modes{
 
     interface->pro->modes.push_back(mode);
 
-    std::cout << "Writing frate-project.json" << std::endl;
-
-    if(!interface->pro->save()) return false;
 
     return true;
   }
@@ -49,7 +46,6 @@ namespace Frate:: Command::Modes{
     std::erase_if(inter->pro->modes, [&mode_name](Mode &mode){
         return mode.name == mode_name;
         });
-    if(!inter->pro->save()) return false;
 
     return true;
   }

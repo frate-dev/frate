@@ -34,7 +34,12 @@ namespace Frate::Command::Toolchains{
     Generators::Toolchain::generateToolchain(toolchain);
     std::ofstream file;
     if (!std::filesystem::exists(inter->pro->path / "toolchains/")){
-      std::filesystem::create_directory(inter->pro->path / "toolchains/");
+      try{
+        std::filesystem::create_directory(inter->pro->path / "toolchains/");
+      }catch(...){
+        Utils::error << "Error while creating toolchains directory" << std::endl;
+        return false;
+      }
     }
     file.open(inter->pro->path / "toolchains/" / (toolchain + ".cmake"));
 

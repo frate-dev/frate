@@ -12,10 +12,12 @@ namespace Frate::Command {
       // {"validator", p.validator}
     };
   }
-  void from_json(const json &j, ProjectPrompt &p){ j.at("value").get_to(p.value);
-    j.at("default_value").get_to(p.default_value);
-    j.at("type").get_to(p.type);
-    j.at("required").get_to(p.required);
+  void from_json(const json &j, ProjectPrompt &p){ 
+    j.contains("value") ? j.at("value").get_to(p.value) : p.value = "";
+    j.contains("default_value") ? j.at("default_value").get_to(p.default_value) : p.default_value = "";
+    j.contains("required") ? j.at("required").get_to(p.required) : p.required = false;
+    j.contains("type") ? j.at("type").get_to(p.type) : p.type = "string";
+    j.contains("options") ? j.at("options").get_to(p.options) : p.options = {};
     //j.at("validator").get_to(p.validator); need a way to make this a lua function
   }
   template<>

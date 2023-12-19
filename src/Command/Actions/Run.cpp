@@ -1,5 +1,6 @@
 #include <Frate/Command/Actions/Run.hpp>
 #include <Frate/Utils/General.hpp>
+#include <Frate/Generators.hpp>
 namespace Frate::Command::Run {
 using std::filesystem::create_directories;
 bool options(std::shared_ptr<Interface> inter) {
@@ -8,6 +9,8 @@ bool options(std::shared_ptr<Interface> inter) {
 }
 bool run(std::shared_ptr<Interface> inter) {
   options(inter);
+  inter->loadProjectJson();
+  Generators::Project::refresh(inter->pro);
   std::cout << "Running project: " << inter->pro->name << std::endl;
 
   const std::string work_dir_cmd = "cd " +inter->pro->path.string();
@@ -22,6 +25,7 @@ bool run(std::shared_ptr<Interface> inter) {
   try{
     create_directories(inter->pro->path / "build");
   }catch(std::exception& e){
+    Utils::error << "Error while creating build directory" << std::endl;
     Utils::debug(e.what());
     return false;
   }

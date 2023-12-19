@@ -10,7 +10,7 @@ namespace Frate::Generators::ConfigJson{
     std::ofstream file;
     std::string file_name = "frate-project.json";
     file.open(pro->path / file_name);
-    file << pro->toJson().dump(2);
+    file << nlohmann::json(*pro).dump(2);
     file << '\n';
     file.close();
     return true;

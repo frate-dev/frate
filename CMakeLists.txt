@@ -85,6 +85,7 @@ CPMAddPackage(
   OPTIONS
   "BUILD_STATIC_LIBS ON"
   "JSON_BuildTests OFF"
+  "JSON_Diagnostics ON"
 
 
 )

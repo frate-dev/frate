@@ -6,7 +6,8 @@
 
 
 namespace Tests::Command {
-  bool validateProjectJson(Frate::Command::Interface* inter){
+  using Frate::Command::Interface;
+  bool validateProjectJson(std::shared_ptr<Interface> inter){
     Frate::Utils::Error error;
     Frate::Utils::Info info;
     bool valid = true;

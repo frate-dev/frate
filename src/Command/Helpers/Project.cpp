@@ -2,22 +2,29 @@
 #include <Frate/Command.hpp>
 #include <Frate/Generators.hpp>
 #include <fstream>
+#include <nlohmann/json_fwd.hpp>
 
 
 namespace Frate::Command {
-
+  Project::Project(){};
   bool Project::save(){
     std::ofstream file;
     std::string file_name = "frate-project.json";
     if(!std::filesystem::exists(this->path)){
-      std::filesystem::create_directory(this->path);
+      try{
+        std::filesystem::create_directory(this->path);
+      }catch(std::exception &e){
+        Utils::debug(e.what());
+        Utils::error << "Error while creating directory: " << this->path << std::endl;
+        return false;
+      }
     }
 
     if(!std::filesystem::exists(this->path / file_name)){
       std::cout << "Creating new project file" << std::endl;
     }
 
-    json new_json = this->toJson();
+    json new_json = *this;
 
     Utils::info << "Writing to file: " << this->path / file_name << std::endl;
 
@@ -27,205 +34,133 @@ namespace Frate::Command {
       Utils::debug(e.what());
       return false;
     }
+
     file << new_json.dump(2);
 
     //Generators::CMakeList::createCMakeLists(std::make_shared<Project>(*this));
     return true;
   }
-  /*
-   * Welp reflection is a bitch aint it
-   */
-  void Project::fromJson(json j){
-    checkKeys(j);
-    name = j["project_name"];
-    cmake_version = j["cmake_version"];
-    version = j["project_version"];
-    type = j["project_type"];
-    lang = j["lang"];
-    lang_version = j["lang_version"];
-    compiler = j["compiler"];
-    src_dir = j["src_dir"];
-    build_dir = j["build_dir"];
-    include_dir = j["include_dir"];
-    authors = j["authors"];
-    type = j["project_type"];
-    description = j["project_description"];
-    default_mode = j["default_mode"];
-    keywords = j["keywords"];
-    libs = j["libs"];
-    for (auto &dep : j["dependencies"]) {
-      Package d;
-      d.name = dep["name"].is_null() ? "" : dep["name"].is_null() ? "" : dep["name"];
-      d.git = dep["git"].is_null() ? "" : dep["git"].is_null() ? "" : dep["git"];
-      d.selected_version = dep["version"].is_null() ? "" : dep["version"];
-      d.target_link = dep["target_link"].is_null() ? "" : dep["target_link"];
-      if(d.target_link.empty()){
-        Utils::warning <<
-          "Warning: target_link is empty for dependency: " << d.name << std::endl;
-      }
-      dependencies.push_back(d);
-    }
-    std::vector<Mode> temp_modes;
-    for (auto &mode: j["modes"]){
-      Mode m;
-      m.name = mode["name"].is_null() ? "" : mode["name"];
-      m.flags = mode["flags"];
-      for (auto &dep : mode["dependencies"]) {
-        Package new_dep;
-        new_dep.name = dep["name"].is_null() ? "" : dep["name"];
-        new_dep.git = dep["git"].is_null() ? "" : dep["git"];
-        new_dep.selected_version = dep["version"].is_null() ? "" : dep["version"];
-        new_dep.target_link = dep["target_link"].is_null() ? "" : dep["target_link"];
-        if(new_dep.target_link == ""){
-          Utils::warning <<
-            "Warning: target_link is empty for dependency: " << new_dep.name <<
-            " in mode: " << m.name << std::endl;
-        }
-
-        m.dependencies.push_back(new_dep);
-      }
-      temp_modes.push_back(m);
-    }
-    modes = temp_modes;
-    flags = j["flags"];
-    toolchains = j["toolchains"];
-    if(j.contains("variables")){
-      for(auto [key, value] : j["variables"].items()){
-        variables[key] = value;
-      }
-    }else{
-      variables = json::object();
-    }
-
-    if(!j.contains("prompts")){
-      prompts = {};
-    }else{
-      for(auto [key, value] : j["prompts"].items()){
-        ProjectPrompt prompt;
-
-        prompt.type = value["type"].is_null() ? "string" : value["type"];
-
-        prompt.text = value["text"].is_null() ? "missing prompt text" : value["text"];
-
-
-        if(value["options"].is_null()){
-          prompt.options = {};
-        }else{
-          for(auto &option : value["options"]){
-            prompt.options.push_back(option);
-          }
-        }
-
-
-        if(value["default_value"].is_null()){
-          prompt.default_value = "";
-        }else{
-          prompt.default_value = value["default_value"];
-        }
-        prompts[key] = prompt;
-      }
-    }
-
+  void Project::fromTemplate(Template &t){
+    this->src_dir = t.src_dir;
+    this->include_dir = t.include_dir;
+    this->build_dir = t.build_dir;
+    this->dependencies = t.dependencies;
+    this->default_mode = t.default_mode;
+    this->modes = t.modes;
+    this->flags = t.flags;
+    // Check is toolchain is present
+    // this->toolchains = t.toolchains;
+    this->variables = t.variables;
+    this->prompts = t.prompts;
+    this->libs = t.system_libs;
   }
-    nlohmann::json Project::toJson(){
-      using nlohmann::json;
-      json new_json;
-      new_json["dependencies"] = json::array();
-      for (auto &dep : dependencies) {
-        json dep_json;
-        dep_json["name"] = dep.name;
-        dep_json["git"] = dep.git;
-        dep_json["version"] = dep.selected_version;
-        dep_json["target_link"] = dep.target_link;
-        new_json["dependencies"].push_back(dep_json);
-      }
-      std::vector<json> modes_json;
-      for (auto &mode : modes) {
-        json mode_json;
-        json mode_deps = json::array();
-        for (Package dep: mode.dependencies) {
-          json dep_json;
-          dep_json["name"] = dep.name;
-          dep_json["git"] = dep.git;
-          dep_json["version"] = dep.selected_version;
-          dep_json["target_link"] = dep.target_link;
-          mode_deps.push_back(dep_json);
-        }
+  void from_json (const json &j, Project& pro){
+    pro.name = j.contains("project_name") ? j["project_name"] : "";
+    pro.cmake_version = j.contains("cmake_version") ? j["cmake_version"] : "";
+    pro.version = j.contains("project_version") ? j["project_version"] : "";
+    pro.type = j.contains("project_type") ? j["project_type"] : "";
+    pro.lang = j.contains("lang") ? j["lang"] : "";
+    pro.lang_version = j.contains("lang_version") ? j["lang_version"] : "";
+    pro.compiler = j.contains("compiler") ? j["compiler"] : "";
+    pro.src_dir = j.contains("src_dir") ? j["src_dir"] : "";
+    pro.build_dir = j.contains("build_dir") ? j["build_dir"] : "";
+    pro.build_command = j.contains("build_command") ? j["build_command"] : "";
+    pro.include_dir = j.contains("include_dir") ? j["include_dir"] : "";
+    if(j.contains("authors")){
+      pro.authors = j["authors"];
+    }
+    pro.type = j.contains("project_type") ? j["project_type"] : "";
+    pro.description = j.contains("project_description") ? j["project_description"] : "";
+    pro.default_mode = j.contains("default_mode") ? j["default_mode"] : "";
+    if(j.contains("keywords")){
+      pro.keywords = j["keywords"];
+    }
+    if(j.contains("libs")){
+      pro.libs = j["libs"];
+    }
+    if(j.contains("dependencies")){
+      pro.dependencies = j["dependencies"];
+    }
+    if(j.contains("flags")){
+      pro.flags = j["flags"];
+    }
+    if(j.contains("toolchains")){
+      pro.toolchains = j["toolchains"];
+    }
+    if(j.contains("prompts")){
+      pro.prompts = j["prompts"];
+    }
+    if(j.contains("variables")){
+      pro.variables = j["variables"];
+    }
+    if(j.contains("modes")){
+      pro.modes = j["modes"];
+    }
+    pro.git = j.contains("git") ? j["git"] : "";
+    pro.homepage = j.contains("homepage") ? j["homepage"] : "";
+    pro.bugs = j.contains("bugs") ? j["bugs"] : "";
+  }
+  void to_json(json &j, const Project& pro){
+    j["project_name"] = pro.name;
+    j["cmake_version"] = pro.cmake_version;
+    j["project_version"] = pro.version;
+    j["project_type"] = pro.type;
+    j["lang"] = pro.lang;
+    j["lang_version"] = pro.lang_version;
+    j["compiler"] = pro.compiler;
+    j["src_dir"] = pro.src_dir;
+    j["build_dir"] = pro.build_dir;
+    j["include_dir"] = pro.include_dir;
+    j["authors"] = pro.authors;
+    j["project_type"] = pro.type;
+    j["project_description"] = pro.description;
+    j["default_mode"] = pro.default_mode;
+    j["keywords"] = pro.keywords;
+    j["libs"] = pro.libs;
+    j["dependencies"] = pro.dependencies;
+    j["flags"] = pro.flags;
+    j["toolchains"] = pro.toolchains;
+    j["prompts"] = pro.prompts;
+    j["variables"] = pro.variables;
+    j["modes"] = pro.modes;
+    j["git"] = pro.git;
+    j["homepage"] = pro.homepage;
+    j["bugs"] = pro.bugs;
+  }
 
-        mode_json["name"] = mode.name;
-        mode_json["flags"] = mode.flags;
-        mode_json["dependencies"] = mode_deps;
-        modes_json.push_back(mode_json);
-      }
-      new_json["project_name"] = name;
-      new_json["project_type"] = type;
-      new_json["cmake_version"] = cmake_version;
-      new_json["project_version"] = version;
-      new_json["lang"] = lang;
-      new_json["lang_version"] = lang_version;
-      new_json["compiler"] = compiler;
-      new_json["src_dir"] = src_dir;
-      new_json["build_dir"] = build_dir;
-      new_json["include_dir"] = include_dir;
-      new_json["default_mode"] = default_mode;
-      new_json["modes"] = modes_json;
-      new_json["flags"] = flags;
-      new_json["keywords"] = keywords;
-      new_json["authors"] = authors;
-      new_json["project_type"] = type;
-      new_json["project_description"] = description;
-      new_json["toolchains"] = toolchains;
-      new_json["prompts"] = json::object();
-      new_json["libs"] = libs;
-      for(auto [key, value] : prompts){
-        json prompt;
-        prompt["value"] = value.value;
-        prompt["type"] = value.type;
-        prompt["text"] = value.text;
-        prompt["options"] = value.options;
-        prompt["default_value"] = value.default_value;
-        new_json["prompts"][key] = prompt;
-      }
-      for(auto [key, value] : variables){
-        new_json["variables"][key] = value;
-      }
 
-
-      return  new_json;
-
+  void Project::checkKeys(json j){
+    std::vector<std::pair<std::string,bool>> required_keys = {
+      {"project_name", false},
+      {"project_type", false},
+      {"cmake_version", false},
+      {"project_version", false},
+      {"lang", false},
+      {"lang_version", false},
+      {"compiler", false},
+      {"src_dir", false},
+      {"build_dir", false},
+      {"include_dir", false},
+      {"default_mode", false},
+      {"modes", false},
+      {"dependencies", false},
+      {"flags", false},
+      {"keywords", false},
+      {"authors", false},
+      {"project_type", false},
+      {"project_description", false},
+      {"toolchains", false},
+      {"prompts", false}
     };
-    void Project::checkKeys(json j){
-      std::vector<std::pair<std::string,bool>> required_keys = {
-          {"project_name", false},
-          {"project_type", false},
-          {"cmake_version", false},
-          {"project_version", false},
-          {"lang", false},
-          {"lang_version", false},
-          {"compiler", false},
-          {"src_dir", false},
-          {"build_dir", false},
-          {"include_dir", false},
-          {"default_mode", false},
-          {"modes", false},
-          {"dependencies", false},
-          {"flags", false},
-          {"keywords", false},
-          {"authors", false},
-          {"project_type", false},
-          {"project_description", false},
-          {"toolchains", false},
-          {"prompts", false}
-      };
-      for (std::pair<std::string, bool> &key: required_keys){
-        if (!j.contains(key.first)){
-          Utils::error << "Missing required key: " << key.first << std::endl;
-        } else {
-          key.second = true;
-        }
+    for (std::pair<std::string, bool> &key: required_keys){
+      if (!j.contains(key.first)){
+        Utils::error << "Missing required key: " << key.first << std::endl;
+      } else {
+        key.second = true;
       }
     }
-  bool Interface::LoadProjectJson() {
+  }
+  bool Interface::loadProjectJson() {
     using nlohmann::json;
     std::fstream file;
     std::string file_name = "frate-project.json";
@@ -249,8 +184,11 @@ namespace Frate::Command {
     }
 
     try{
+      std::filesystem::path current_path = pro->path;
       json j = json::parse(file);
-      pro->fromJson(j);
+      Project temp = j;
+      pro = std::make_shared<Project>(temp);
+      pro->path = current_path;
     }catch(std::exception &e){
       Utils::debug(e.what());
       return false;
