@@ -1,5 +1,6 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/Build.hpp>
+#include <Frate/Generators.hpp>
 
 namespace Frate::Command::Build {
   bool options(std::shared_ptr<Interface> inter){
@@ -27,42 +28,40 @@ namespace Frate::Command::Build {
       jobs = inter->args->operator[]("jobs").as<int>();
     }
 
-    Utils::Info info;
+    inter->loadProjectJson();
+    Generators::Project::refresh(inter->pro);
+
     Utils::info << "Building project with: " << std::endl;
     Utils::info << "Target: " << target << std::endl;
     Utils::info << "Mode: " << mode << std::endl;
     Utils::info << "Jobs: " << jobs << std::endl;
     //TODO: Handle different targets
-
+    
+    Utils::info << "Build command: " << inter->pro->build_command << std::endl;
     for(Mode &m : inter->pro->modes){
       if(m.name == mode){
         std::string workdir_cmd = "cd " + inter->pro->path.string();
-        std::string build_cmd = "cmake -DCMAKE_BUILD_TYPE=" + m.name + " .";
-        std::string make_cmd = "make";
-        if(Utils::hSystem(workdir_cmd + ";" + build_cmd) != 0){
-          std::cout << "Build failed" << std::endl;
+        Utils::replaceKey(inter->pro->build_command, "\n", ";");
+        std::string full_build_cmd = inter->pro->build_command;
+        if(Utils::hSystem(workdir_cmd + ";" + full_build_cmd) != 0){
+          Utils::error << "Build failed" << std::endl;
           return false;
         }else{
-          std::cout << "Build success" << std::endl;
+          Utils::info << "Build success" << std::endl;
           return true;
         }
       }
     }
-
+    
     std::string workdir_cmd = "cd " + inter->pro->path.string();
-    std::string build_cmd = "cmake -DCMAKE_BUILD_TYPE=" + inter->pro->default_mode + " .";
-    std::string make_cmd = "make -j" + std::to_string(jobs);
-    if(Utils::hSystem(workdir_cmd + ";" + build_cmd) != 0){
-      std::cout << "Build failed" << std::endl;
+    Utils::replaceKey(inter->pro->build_command, "\n", ";");
+    std::string full_build_cmd = workdir_cmd + ";" + inter->pro->build_command;
+
+    if(Utils::hSystem(full_build_cmd) != 0){
+      Utils::error << "Build failed" << std::endl;
       return false;
-    }else{
-      if(Utils::hSystem(workdir_cmd + ";" + make_cmd) != 0){
-        std::cout << "Build failed" << std::endl;
-        return false;
-      }
-      std::cout << "Build success" << std::endl;
-      return true;
     }
+    Utils::info << "Build success" << std::endl;
     return true;
   }
 }

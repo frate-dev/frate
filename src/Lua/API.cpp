@@ -7,7 +7,6 @@
 #include <sol/forward.hpp>
 #include <sol/variadic_args.hpp> 
 #include <Frate/Constants.hpp>
-#include <Frate/Reflection.hpp>
 namespace Frate::LuaAPI {
   using Command::Project;
   using std::filesystem::path;

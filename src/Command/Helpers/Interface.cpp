@@ -66,7 +66,7 @@ namespace Frate::Command {
     this->pro = std::make_shared<Project>();
 #ifdef DEBUG
 #ifndef TEST
-    verbose_mode = true;
+    Utils::verbose_mode = true;
 #endif
     std::cout << "DEBUG MODE ENABLED\n";
     pro->path = std::filesystem::current_path() / "build";

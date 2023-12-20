@@ -53,7 +53,6 @@ namespace Frate::LuaAPI {
 
   std::string FrateApi::format(const std::string &str, sol::table in_table, sol::this_state s) {
 
-    Utils::warning << str << std::endl;
     std::string result = "";
 
     sol::state_view lua(s);
