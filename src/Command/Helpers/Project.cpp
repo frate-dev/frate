@@ -55,10 +55,10 @@ namespace Frate::Command {
     this->libs = t.system_libs;
   }
   void from_json (const json &j, Project& pro){
-    pro.name = j.contains("project_name") ? j["project_name"] : "";
+    pro.name = j.contains("name") ? j["name"] : "";
     pro.cmake_version = j.contains("cmake_version") ? j["cmake_version"] : "";
-    pro.version = j.contains("project_version") ? j["project_version"] : "";
-    pro.type = j.contains("project_type") ? j["project_type"] : "";
+    pro.version = j.contains("version") ? j["version"] : "";
+    pro.type = j.contains("type") ? j["type"] : "";
     pro.lang = j.contains("lang") ? j["lang"] : "";
     pro.lang_version = j.contains("lang_version") ? j["lang_version"] : "";
     pro.compiler = j.contains("compiler") ? j["compiler"] : "";
@@ -69,8 +69,8 @@ namespace Frate::Command {
     if(j.contains("authors")){
       pro.authors = j["authors"];
     }
-    pro.type = j.contains("project_type") ? j["project_type"] : "";
-    pro.description = j.contains("project_description") ? j["project_description"] : "";
+    pro.type = j.contains("type") ? j["type"] : "";
+    pro.description = j.contains("description") ? j["description"] : "";
     pro.default_mode = j.contains("default_mode") ? j["default_mode"] : "";
     if(j.contains("keywords")){
       pro.keywords = j["keywords"];
@@ -101,10 +101,10 @@ namespace Frate::Command {
     pro.bugs = j.contains("bugs") ? j["bugs"] : "";
   }
   void to_json(json &j, const Project& pro){
-    j["project_name"] = pro.name;
+    j["name"] = pro.name;
     j["cmake_version"] = pro.cmake_version;
-    j["project_version"] = pro.version;
-    j["project_type"] = pro.type;
+    j["version"] = pro.version;
+    j["type"] = pro.type;
     j["lang"] = pro.lang;
     j["lang_version"] = pro.lang_version;
     j["compiler"] = pro.compiler;
@@ -112,8 +112,8 @@ namespace Frate::Command {
     j["build_dir"] = pro.build_dir;
     j["include_dir"] = pro.include_dir;
     j["authors"] = pro.authors;
-    j["project_type"] = pro.type;
-    j["project_description"] = pro.description;
+    j["type"] = pro.type;
+    j["description"] = pro.description;
     j["default_mode"] = pro.default_mode;
     j["keywords"] = pro.keywords;
     j["libs"] = pro.libs;
@@ -131,10 +131,10 @@ namespace Frate::Command {
 
   void Project::checkKeys(json j){
     std::vector<std::pair<std::string,bool>> required_keys = {
-      {"project_name", false},
-      {"project_type", false},
+      {"name", false},
+      {"type", false},
       {"cmake_version", false},
-      {"project_version", false},
+      {"version", false},
       {"lang", false},
       {"lang_version", false},
       {"compiler", false},
@@ -147,8 +147,8 @@ namespace Frate::Command {
       {"flags", false},
       {"keywords", false},
       {"authors", false},
-      {"project_type", false},
-      {"project_description", false},
+      {"type", false},
+      {"description", false},
       {"toolchains", false},
       {"prompts", false}
     };

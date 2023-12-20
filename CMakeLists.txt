@@ -12,6 +12,9 @@ else()
 endif()
 #set(CMAKE_EXE_LINKER_FLAGS "-static")
 
+set(BRANCH "main")
+execute_process(COMMAND "git rev-parse --abbrev-ref HEAD" OUTPUT_VARIABLE BRANCH)
+
 set(BUILD_SHARED_LIBS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
@@ -19,7 +22,12 @@ add_definitions(-DVMINOR=${VMINOR})
 add_definitions(-DVMAJOR=${VMAJOR})
 add_definitions(-DVPATCH=${VPATCH})
 add_definitions(-DVBUILD=${VBUILD})
-
+add_definitions(-DBRANCH_MAIN=1)
+message(BRANCH)
+if(BRANCH STREQUAL "dev")
+  remove_definitions(-DBRANCH_MAIN=1)
+  add_definitions(-DBRANCH_DEV=1)
+endif()
 
 #set(CMAKE_CXX_COMPILER /usr/bin/clang++)
 #set(CMAKE_C_COMPILER /usr/bin/clang)
