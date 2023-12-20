@@ -34,7 +34,7 @@ namespace Frate::Command::Add {
       return false;
     }
 
-    inter->loadProjectJson();
+    inter->pro->load();
 
     return runCommand(inter,subcommand, addHandlers);
 

@@ -9,7 +9,8 @@ bool options(std::shared_ptr<Interface> inter) {
 }
 bool run(std::shared_ptr<Interface> inter) {
   options(inter);
-  inter->loadProjectJson();
+  //inter->loadProjectJson();
+  inter->pro->load();
   Generators::Project::refresh(inter->pro);
   std::cout << "Running project: " << inter->pro->name << std::endl;
 

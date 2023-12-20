@@ -198,4 +198,29 @@ namespace Frate::Command {
 
     return true;
   };
+  bool Project::load(){
+    using nlohmann::json;
+    std::fstream file;
+    std::string file_name = "frate-project.json";
+
+    Utils::info << "Loading: " << (this->path / file_name) << std::endl;
+
+    if(!std::filesystem::exists(this->path / file_name)){
+      return false;
+    }
+
+    try{
+      file.open(this->path / file_name);
+      std::filesystem::path current_path = this->path;
+      json j = json::parse(file);
+      Project temp = j;
+      *this = temp;
+      this->path = current_path;
+    }catch(std::exception &e){
+      Utils::debug(e.what());
+      return false;
+    }
+
+    return true;
+  }
 }

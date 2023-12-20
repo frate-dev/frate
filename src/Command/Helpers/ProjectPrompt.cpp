@@ -5,6 +5,7 @@ namespace Frate::Command {
 
   void to_json(json &j, const ProjectPrompt &p){
     j = json{
+      {"text", p.text},
       {"value", p.value},
       {"default_value", p.default_value},
       {"type", p.type},
@@ -13,6 +14,7 @@ namespace Frate::Command {
     };
   }
   void from_json(const json &j, ProjectPrompt &p){ 
+    j.contains("text") ? j.at("text").get_to(p.text) : p.text = "";
     j.contains("value") ? j.at("value").get_to(p.value) : p.value = "";
     j.contains("default_value") ? j.at("default_value").get_to(p.default_value) : p.default_value = "";
     j.contains("required") ? j.at("required").get_to(p.required) : p.required = false;

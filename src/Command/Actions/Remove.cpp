@@ -78,8 +78,7 @@ namespace Frate::Command::Remove {
 
       return false;
     }
-    inter->loadProjectJson();
-    Generators::Project::refresh(inter->pro);
+    inter->pro->load();
     return runCommand(inter,subcommand, removeHandlers);
   }
 } // namespace Comman

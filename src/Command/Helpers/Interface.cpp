@@ -277,7 +277,6 @@ namespace Frate::Command {
             return false;
           }
           if(handler.requires_project){
-            Generators::Project::refresh(inter->pro);
             inter->pro->save();
           }
           return true;

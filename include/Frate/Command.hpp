@@ -146,8 +146,7 @@ namespace Frate::Command {
       std::vector<std::string> flags{};
       std::vector<std::string> toolchains {};
       std::vector<std::string> libs{};
-      //void fromJson(json j);
-      //nlohmann::json toJson();
+      bool load();
       bool save();
       void checkKeys(json j);
       std::string getPath(){
@@ -228,6 +227,7 @@ namespace Frate::Command {
       bool confirm_all{false};
       bool InitHeader();
       bool CreateCMakelists();
+      [[deprecated("use project->load() instead")]]
       bool loadProjectJson();
       ~Interface();
   };

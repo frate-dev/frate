@@ -67,7 +67,7 @@ namespace Frate::Command::Set {
       return false;
     }
 
-    inter->loadProjectJson();
+    inter->pro->load();
     return runCommand(inter,subcommand, setHandlers);
   }
 }
