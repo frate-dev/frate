@@ -13,7 +13,17 @@ endif()
 #set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 set(BRANCH "main")
-execute_process(COMMAND "git rev-parse --abbrev-ref HEAD" OUTPUT_VARIABLE BRANCH)
+find_package(Git QUIET)
+if(GIT_FOUND)
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE BRANCH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  set(BRANCH ${BRANCH})
+endif()
+message("${BRANCH}")
 
 set(BUILD_SHARED_LIBS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -23,7 +33,6 @@ add_definitions(-DVMAJOR=${VMAJOR})
 add_definitions(-DVPATCH=${VPATCH})
 add_definitions(-DVBUILD=${VBUILD})
 add_definitions(-DBRANCH_MAIN=1)
-message(BRANCH)
 if(BRANCH STREQUAL "dev")
   remove_definitions(-DBRANCH_MAIN=1)
   add_definitions(-DBRANCH_DEV=1)
