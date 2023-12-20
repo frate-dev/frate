@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <termcolor/termcolor.hpp>
+#include <Frate/Project.hpp>
 
 namespace Frate::Generators::ConfigJson{
  // [[deprecated("Use project->writeConfig() instead")]]

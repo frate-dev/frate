@@ -13,11 +13,9 @@
 #include "Frate/Command/Actions/Watch.hpp"
 #include "Frate/Command/Actions/New.hpp"
 #include <Frate/Command/Actions/Completions.hpp>
-#include "Frate/Frate.hpp"
-#include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
+#include "Frate/Project.hpp"
 #include "cxxopts.hpp"
-#include "nlohmann/detail/json_ref.hpp"
 #include "termcolor/termcolor.hpp"
 #include <Frate/Constants.hpp>  
 #include <memory>

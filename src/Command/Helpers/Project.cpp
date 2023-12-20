@@ -1,9 +1,10 @@
 #include "Frate/Utils/General.hpp"
-#include <Frate/Command.hpp>
 #include <Frate/Generators.hpp>
 #include <fstream>
 #include <nlohmann/json_fwd.hpp>
-
+#include <Frate/Project.hpp>
+#include <Frate/Template.hpp>
+#include <Frate/ProjectPrompt.hpp>
 
 namespace Frate::Command {
   Project::Project(){};

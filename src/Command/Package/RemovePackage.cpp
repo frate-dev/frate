@@ -1,6 +1,8 @@
 #include <Frate/Command/CommandMode.hpp>
 #include <Frate/Command/Package.hpp>
 #include <Frate/Generators.hpp>
+#include "Frate/Mode.hpp"
+#include "Frate/Project.hpp"
 
 namespace Frate::Command::Packages {
 

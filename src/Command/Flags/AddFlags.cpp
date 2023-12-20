@@ -1,5 +1,5 @@
 #include "Frate/Command/Flags.hpp"
-#include "Frate/Generators.hpp"
+#include <Frate/Project.hpp>
 namespace Frate::Command::Flags {
   bool add(std::shared_ptr<Interface> inter) {
     options(inter);

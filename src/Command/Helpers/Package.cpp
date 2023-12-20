@@ -1,5 +1,4 @@
-#include <Frate/Command.hpp>
-
+#include <Frate/Package.hpp>
 
 namespace Frate::Command {
   void to_json(json &j, const Package &p) {

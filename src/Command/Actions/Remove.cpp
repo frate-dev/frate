@@ -1,4 +1,5 @@
 #include "Frate/Command/Library.hpp"
+#include "Frate/Project.hpp"
 #include "Frate/Utils/General.hpp"
 #include "Frate/Generators.hpp"
 #include <Frate/Command/Actions/Remove.hpp>

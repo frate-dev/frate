@@ -1,5 +1,6 @@
 #pragma once
 #include "../Command.hpp"
+#include <Frate/RemoteServer.hpp>
 
 
 namespace Frate::Command::RemoteServers{

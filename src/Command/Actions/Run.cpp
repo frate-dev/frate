@@ -1,5 +1,6 @@
 #include <Frate/Command/Actions/Run.hpp>
 #include <Frate/Utils/General.hpp>
+#include <Frate/Project.hpp>
 #include <Frate/Generators.hpp>
 namespace Frate::Command::Run {
 using std::filesystem::create_directories;

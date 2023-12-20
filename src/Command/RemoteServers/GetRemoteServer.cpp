@@ -1,5 +1,6 @@
 #include <Frate/Command/RemoteServers.hpp>  
 #include <Frate/Utils/General.hpp>
+#include <Frate/Project.hpp>
 
 namespace Frate::Command::RemoteServers {
 

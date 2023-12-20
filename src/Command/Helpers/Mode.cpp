@@ -1,5 +1,4 @@
-#include <Frate/Command.hpp>
-
+#include <Frate/Mode.hpp>
 
 namespace Frate::Command {
 

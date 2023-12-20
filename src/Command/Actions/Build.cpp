@@ -1,6 +1,7 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/Build.hpp>
 #include <Frate/Generators.hpp>
+#include <Frate/Project.hpp>
 
 namespace Frate::Command::Build {
   bool options(std::shared_ptr<Interface> inter){

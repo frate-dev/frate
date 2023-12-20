@@ -1,10 +1,11 @@
-#include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/Set.hpp>
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command/License.hpp>
 #include <Frate/Command/Name.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Generators.hpp>
+#include "Frate/Project.hpp"
+
 namespace Frate::Command::Set {
 
   bool options(std::shared_ptr<Interface> inter) {

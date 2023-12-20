@@ -15,9 +15,6 @@
 #include <cpptrace/cpptrace.hpp>
 #endif
 
-namespace Frate {
-  static bool verbose_mode = false;
-}
 
 namespace Frate::Utils {
 

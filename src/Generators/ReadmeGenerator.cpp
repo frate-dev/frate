@@ -3,6 +3,7 @@
 #include <Frate/Constants.hpp>
 #include <fstream>
 #include <memory>
+#include <Frate/Project.hpp>
 namespace Frate::Generators::Readme {
     bool create(std::shared_ptr<Command::Interface> inter){
       std::string readme = R"(

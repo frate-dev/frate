@@ -2,6 +2,7 @@
 #include <Frate/Command.hpp>
 #include <filesystem>
 #include <fstream>
+#include <Frate/Project.hpp>
 
 
 namespace Frate::Command::UvWatch{

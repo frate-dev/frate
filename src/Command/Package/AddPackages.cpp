@@ -3,6 +3,7 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp> 
 #include <Frate/Command/CommandMode.hpp>
+#include <Frate/Project.hpp>
 
 
 namespace Frate::Command::Packages {

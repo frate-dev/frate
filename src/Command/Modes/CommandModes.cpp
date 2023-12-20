@@ -1,6 +1,8 @@
 #include <Frate/Command.hpp>
 #include <Frate/Generators.hpp>
 #include <sys/socket.h>
+#include <Frate/Mode.hpp>
+#include <Frate/Project.hpp>
 
 namespace Frate::Command{
 }

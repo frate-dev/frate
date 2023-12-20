@@ -1,5 +1,5 @@
-#include <Frate/Command.hpp>
-
+#include <Frate/Utils/Logging.hpp>
+#include <Frate/ProjectPrompt.hpp>
 
 namespace Frate::Command {
 
