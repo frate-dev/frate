@@ -4,7 +4,7 @@ namespace Frate::Command {
   void to_json(json &j, const Package &p) {
     j = json{
       {"name", p.name},
-      {"selected_version,", p.selected_version},
+      {"selected_version", p.selected_version},
       {"versions", p.versions},
       {"stars", p.stars},
       {"forks", p.forks},
