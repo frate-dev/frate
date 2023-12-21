@@ -7,6 +7,7 @@
 #include <Frate/Wizards.hpp>
 #include <Frate/Project.hpp>
 #include <git2.h>
+#include <Frate/Command/Actions/Help.hpp>
 
 namespace Frate::Command::New {
 using std::filesystem::path;

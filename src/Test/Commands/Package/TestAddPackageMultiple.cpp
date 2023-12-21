@@ -1,6 +1,6 @@
 #ifdef TEST
-#include "Frate/Command.hpp"
 #include <Frate/Test/Test.hpp>
+#include <Frate/Project.hpp>
 
 bool Tests::Command::testAddPackageMultiple(std::vector<std::string> packages) {
   std::cout << "Testing add multiple packages : adding ";
