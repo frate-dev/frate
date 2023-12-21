@@ -47,7 +47,7 @@ namespace Frate::Command::Packages {
     if(inter->args->operator[]("latest").as<bool>()){
       latest = true;
     }
-    if (inter->args->count("args") < 0){
+    if (inter->args->count("args") < 1){
       Utils::error << "No packages specified" << std::endl;
       return false;
 
@@ -66,16 +66,19 @@ namespace Frate::Command::Packages {
       if (target_link == "") {
         Prompt target_link_prompt("Specify target_link: "); 
         target_link_prompt.run();
-        auto [valid, target_link] = target_link_prompt.get<std::string>();
+        auto [valid, target] = target_link_prompt.get<std::string>();
+        
+        target_link = target;
         if (!valid) {
           Utils::error << "Failed to get target_link" << std::endl;
           return false;
         }
       }
-      
+      std::cout << "Target_link: " << target_link << std::endl; 
       Package package;
       package.name = package_names[0];
       package.selected_version = version;
+      package.git = git;
       package.target_link = target_link;
       package.versions.push_back(version);
       if (mode != "") {
