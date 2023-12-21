@@ -72,6 +72,8 @@ namespace Frate::Command {
     pro->path = std::filesystem::current_path();
 #endif
 
+    //config.capabilities.search();
+
   }
   bool execute(std::shared_ptr<Interface> inter){
 

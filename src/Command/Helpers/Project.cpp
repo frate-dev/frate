@@ -161,44 +161,44 @@ namespace Frate::Command {
       }
     }
   }
-  bool Interface::loadProjectJson() {
-    using nlohmann::json;
-    std::fstream file;
-    std::string file_name = "frate-project.json";
-
-    Utils::info << "Loading: " << (pro->path / file_name) << std::endl;
-
-    if(project_present){
-      return true;
-    }
-
-    if(!std::filesystem::exists(pro->path / file_name)){
-      return false;
-    }
-
-
-    try{
-      file.open(pro->path / file_name);
-    }catch(std::exception &e){
-      Utils::debug(e.what());
-      return false;
-    }
-
-    try{
-      std::filesystem::path current_path = pro->path;
-      json j = json::parse(file);
-      Project temp = j;
-      pro = std::make_shared<Project>(temp);
-      pro->path = current_path;
-    }catch(std::exception &e){
-      Utils::debug(e.what());
-      return false;
-    }
-
-    project_present = true;
-
-    return true;
-  };
+//   bool Interface::loadProjectJson() {
+//     using nlohmann::json;
+//     std::fstream file;
+//     std::string file_name = "frate-project.json";
+// 
+//     Utils::info << "Loading: " << (pro->path / file_name) << std::endl;
+// 
+//     if(project_present){
+//       return true;
+//     }
+// 
+//     if(!std::filesystem::exists(pro->path / file_name)){
+//       return false;
+//     }
+// 
+// 
+//     try{
+//       file.open(pro->path / file_name);
+//     }catch(std::exception &e){
+//       Utils::debug(e.what());
+//       return false;
+//     }
+// 
+//     try{
+//       std::filesystem::path current_path = pro->path;
+//       json j = json::parse(file);
+//       Project temp = j;
+//       pro = std::make_shared<Project>(temp);
+//       pro->path = current_path;
+//     }catch(std::exception &e){
+//       Utils::debug(e.what());
+//       return false;
+//     }
+// 
+//     project_present = true;
+// 
+//     return true;
+//   };
   bool Project::load(){
     using nlohmann::json;
     std::fstream file;

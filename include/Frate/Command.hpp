@@ -10,6 +10,7 @@
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Frate.hpp>
 #include <Frate/Package.hpp>
+#include "Frate/Utils/Config.hpp"
 
 #define ENDL "\n"
 
@@ -63,25 +64,20 @@ namespace Frate::Command {
   class Interface : public std::enable_shared_from_this<Interface>{
     public:
       Interface(int argc, char **argv);
-      void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
-      void getHelpString(Handler &handler);
-      //bool runCommand(std::string,std::vector<Handler>&);
       std::shared_ptr<Project> pro;
       bool project_present{false};
-      //bool verbose{false};
-      std::vector<Handler> commands{};
-
-      //bool execute();
-      bool parse();
       std::shared_ptr<cxxopts::Options> options;
       std::shared_ptr<cxxopts::ParseResult> args;
+      std::vector<Handler> commands{};
+      Config::ConfigManager config;
       char** argv;
       int argc;
       bool confirm_all{false};
+      bool parse();
+      void getHelpString(std::string name,std::vector<Handler> &handlers,bool is_subcommand = false);
+      void getHelpString(Handler &handler);
       bool InitHeader();
       bool CreateCMakelists();
-      [[deprecated("use project->load() instead")]]
-      bool loadProjectJson();
       ~Interface();
   };
 
