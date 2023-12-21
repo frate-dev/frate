@@ -34,8 +34,7 @@ bool options(std::shared_ptr<Interface> inter) {
   void gitInit(std::shared_ptr<Interface> inter){
     Generators::GitIgnore::create(inter);
     //TODO: make this work on windows
-    git_repository *repo = nullptr;
-    git_repository_init(&repo, inter->pro->path.string().c_str(),0);
+    Utils::hSystem("git init");
     (void)inter;
   }
 

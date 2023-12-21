@@ -30,27 +30,63 @@ namespace Frate::Command::Packages {
     std::string git = "";
     std::string target_link = "";
 
-    //TODO: Add support for multiple dependencies
-    if (inter->args->count("args") == 0) {
-      Utils::error << "No packages specified" << std::endl;
-      return false;
-    }
+
     if (inter->args->count("mode") != 0){
       mode = inter->args->operator[]("mode").as<std::string>();
     }
     if (inter->args->count("git") != 0) {
-      git = inter->args->operator[]("args").as<std::string>();
+      git = inter->args->operator[]("git").as<std::string>();
     }
-    if (inter->args->count("version") != 0) {
-      version = inter->args->operator[]("version").as<std::string>();
+    if (inter->args->count("package-version") != 0) {
+      version = inter->args->operator[]("package-version").as<std::string>();
     }
     if (inter->args->count("target_link") != 0) {
       target_link = inter->args->operator[]("target_link").as<std::string>();
     }
-
     if(inter->args->operator[]("latest").as<bool>()){
       latest = true;
     }
+    if (git != "") {
+      std::cout << "Adding git package" << std::endl;
+      std::cout << "Git: " << git << std::endl;
+      std::cout << "Version: " << version << std::endl;
+      Utils::info << "Adding git package" << std::endl;
+      if (version == "") {
+        Utils::error << "No version specified" << std::endl;
+        Utils::error << "Please specify a version" << std::endl;
+        return false;
+      }
+      if (target_link == "") {
+        Prompt target_link_prompt("Specify target_link: "); 
+        target_link_prompt.run();
+        auto [valid, target_link] = target_link_prompt.get<std::string>();
+        if (!valid) {
+          Utils::error << "Failed to get target_link" << std::endl;
+          return false;
+        }
+      }
+      Package package;
+      package.name = git;
+      package.selected_version = version;
+      package.target_link = target_link;
+      package.git = git;
+      package.versions.push_back(version);
+      if (mode != "") {
+        if (!addPackageToMode(inter, package, mode)) {
+          Utils::error << "Failed to add package to mode" << std::endl;
+          return false;
+        }
+        return true;
+      }
+      std::cout << "Package: " << nlohmann::json(package) << std::endl;
+      inter->pro->dependencies.push_back(package);
+      if (!inter->pro->save()){
+        Utils::error << "Failed to save project" << std::endl;
+        return false;
+      };
+      return true;
+    }
+
 
     std::vector<std::string> package_names = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string package_name : package_names) { 
