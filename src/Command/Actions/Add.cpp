@@ -45,7 +45,7 @@ namespace Frate::Command::Add {
     return {
       Handler{
         .aliases = {"packages","p","package"},
-          .flags = {"-l,--latest","-m,--mode","-t,--target"},
+          .flags = {"-l,--latest","-m,--mode","-t,--target", "-pv,--package-version", "-g,--git", "-t,--target-link"},
           .positional_args = {"package_name"},
           .docs = "Add a package to the project",
           .callback = &Packages::add,

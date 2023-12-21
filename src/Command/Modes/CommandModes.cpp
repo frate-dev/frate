@@ -38,7 +38,6 @@ namespace Frate:: Command::Modes{
 
     interface->pro->modes.push_back(mode);
 
-
     return true;
   }
   bool remove(std::shared_ptr<Interface> inter){
