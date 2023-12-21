@@ -47,6 +47,12 @@ namespace Frate::Command::Packages {
     if(inter->args->operator[]("latest").as<bool>()){
       latest = true;
     }
+    if (inter->args->count("args") < 0){
+      Utils::error << "No packages specified" << std::endl;
+      return false;
+
+    }
+    std::vector<std::string> package_names = inter->args->operator[]("args").as<std::vector<std::string>>();
     if (git != "") {
       std::cout << "Adding git package" << std::endl;
       std::cout << "Git: " << git << std::endl;
@@ -66,11 +72,11 @@ namespace Frate::Command::Packages {
           return false;
         }
       }
+      
       Package package;
-      package.name = git;
+      package.name = package_names[0];
       package.selected_version = version;
       package.target_link = target_link;
-      package.git = git;
       package.versions.push_back(version);
       if (mode != "") {
         if (!addPackageToMode(inter, package, mode)) {
@@ -89,7 +95,6 @@ namespace Frate::Command::Packages {
     }
 
 
-    std::vector<std::string> package_names = inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string package_name : package_names) { 
       Utils::info <<  "Searching for " << package_name << std::endl;
       
