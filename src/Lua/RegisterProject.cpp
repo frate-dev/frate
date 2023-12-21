@@ -17,7 +17,6 @@ namespace Frate::LuaAPI {
         "versions", &Command::Package::versions,
         "target_link", &Command::Package::target_link,
         "description", &Command::Package::description,
-        "selected_version", &Command::Package::selected_version,
         "git_description", &Command::Package::git_description,
         "language", &Command::Package::language,
         "license", &Command::Package::license,
