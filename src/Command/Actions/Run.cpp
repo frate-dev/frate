@@ -1,5 +1,6 @@
 #include <Frate/Command/Actions/Run.hpp>
 #include <Frate/Utils/General.hpp>
+#include <Frate/Project.hpp>
 #include <Frate/Generators.hpp>
 namespace Frate::Command::Run {
 using std::filesystem::create_directories;
@@ -9,7 +10,8 @@ bool options(std::shared_ptr<Interface> inter) {
 }
 bool run(std::shared_ptr<Interface> inter) {
   options(inter);
-  inter->loadProjectJson();
+  //inter->loadProjectJson();
+  inter->pro->load();
   Generators::Project::refresh(inter->pro);
   std::cout << "Running project: " << inter->pro->name << std::endl;
 

@@ -1,3 +1,4 @@
+#pragma once
 #include <Frate/Command.hpp>
 
 namespace Frate {

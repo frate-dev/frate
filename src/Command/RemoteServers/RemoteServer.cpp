@@ -2,6 +2,7 @@
 #include <Frate/Utils/General.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <fstream>
+#include <Frate/Project.hpp>
 
 namespace Frate::Command::RemoteServers{
   using namespace Utils::CLI;

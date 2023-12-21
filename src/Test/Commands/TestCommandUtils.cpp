@@ -4,6 +4,7 @@
 #include <Frate/Command.hpp>
 #include <filesystem>
 #include <memory>
+#include <Frate/Project.hpp>
 
 namespace Tests::Command {
   using std::filesystem::path;

@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <git2/types.h>
 #include <git2/clone.h>
+#include <Frate/Project.hpp>
 
 namespace Frate::Generators::Project {
   void from_json(const json& j, Template& t){

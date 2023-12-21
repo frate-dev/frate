@@ -1,6 +1,7 @@
 #ifdef TEST
 #include <Frate/Test/Test.hpp>
-
+#include <Frate/Package.hpp>
+#include <Frate/Project.hpp>
 
 namespace Tests::Command {
   bool testRemovePackageMultiple(std::vector<std::string> packages){

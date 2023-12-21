@@ -3,7 +3,7 @@
 #include <nlohmann/json_fwd.hpp>
 #include <string>
 #include <nlohmann/json.hpp>
-#include <Frate/Command.hpp>
+#include <Frate/Project.hpp>
 #include <Frate/Utils/General.hpp>
 #include <sol/sol.hpp>
 #include <git2.h>

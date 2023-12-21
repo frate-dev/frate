@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <vector>
 
@@ -46,7 +47,8 @@ namespace Frate::Constants {
   const std::vector<std::string> SUPPORTED_CMAKE_VERSIONS =
   {
     "3.0",
-    "3.1", "3.2",
+    "3.1", 
+    "3.2",
     "3.3",
     "3.4",
     "3.5",

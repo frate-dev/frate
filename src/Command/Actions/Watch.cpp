@@ -5,6 +5,7 @@
 #include <ranges>
 #include <Frate/Utils/General.hpp>
 #include <fstream>
+#include <Frate/Project.hpp>
 #ifdef __linux__
 #include <sys/epoll.h>
 #include <sys/inotify.h>

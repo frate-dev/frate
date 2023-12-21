@@ -1,14 +1,13 @@
 #include <cxxopts.hpp>
 #include <filesystem>
-#include <fstream>
-#include <iostream> 
 #include <string>
 #include <inja.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp>
 #include <Frate/Wizards.hpp>
-#include "Frate/Command/Actions/Help.hpp"
+#include <Frate/Project.hpp>
 #include <git2.h>
+#include <Frate/Command/Actions/Help.hpp>
 
 namespace Frate::Command::New {
 using std::filesystem::path;

@@ -1,6 +1,7 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/Build.hpp>
 #include <Frate/Generators.hpp>
+#include <Frate/Project.hpp>
 
 namespace Frate::Command::Build {
   bool options(std::shared_ptr<Interface> inter){
@@ -28,7 +29,7 @@ namespace Frate::Command::Build {
       jobs = inter->args->operator[]("jobs").as<int>();
     }
 
-    inter->loadProjectJson();
+    inter->pro->load();
     Generators::Project::refresh(inter->pro);
 
     Utils::info << "Building project with: " << std::endl;
@@ -37,7 +38,6 @@ namespace Frate::Command::Build {
     Utils::info << "Jobs: " << jobs << std::endl;
     //TODO: Handle different targets
     
-    Utils::info << "Build command: " << inter->pro->build_command << std::endl;
     for(Mode &m : inter->pro->modes){
       if(m.name == mode){
         std::string workdir_cmd = "cd " + inter->pro->path.string();

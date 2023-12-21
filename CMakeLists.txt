@@ -98,7 +98,7 @@ CPMAddPackage(
 CPMAddPackage(
   NAME nlohmann_json
   GITHUB_REPOSITORY nlohmann/json
-  GIT_TAG origin/master
+  GIT_TAG v3.11.3
   OPTIONS
   "BUILD_STATIC_LIBS ON"
   "JSON_BuildTests OFF"

@@ -1,7 +1,7 @@
 #include "stdint.h"
 #include "termcolor/termcolor.hpp"
 #include <Frate/Command/Package.hpp>
-
+#include <Frate/Project.hpp>
 
 namespace Frate::Command::Packages {
   bool list(std::shared_ptr<Interface> inter) {

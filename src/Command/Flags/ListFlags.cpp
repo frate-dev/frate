@@ -1,5 +1,6 @@
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command.hpp>
+#include <Frate/Project.hpp>
 namespace Frate::Command::Flags {
 
   bool list(std::shared_ptr<Interface> inter) {

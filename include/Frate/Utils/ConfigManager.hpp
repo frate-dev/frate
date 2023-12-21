@@ -1,4 +1,6 @@
-#include "Frate/Command.hpp"
+#pragma once
+#include <Frate/RemoteServer.hpp>
+#include <vector>
 namespace Frate::Config {
   //TODO: work in progress
   typedef struct ConfigManager_s {

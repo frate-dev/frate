@@ -1,6 +1,6 @@
-#include <Frate/Command.hpp>
-#include <cwchar>
-
+#include <Frate/Template.hpp>
+#include <Frate/Utils/Logging.hpp>
+#include <Frate/Project.hpp>
 
 namespace Frate::Command {
 
@@ -55,7 +55,7 @@ namespace Frate::Command {
     Utils::info << "Template to json end" << std::endl;
   }
 
-  void to_projet(Project &pro, const Template &t){
+  void to_project(Project &pro, const Template &t){
     Utils::info << "Template to project" << std::endl;
     pro.name = t.name;
     pro.description = t.description;

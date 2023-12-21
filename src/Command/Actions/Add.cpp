@@ -6,6 +6,7 @@
 #include <Frate/Command/Author.hpp>
 #include <Frate/Command/Modes.hpp>
 #include <Frate/Command/Library.hpp>
+#include <Frate/Project.hpp> 
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Utils/General.hpp>
 namespace Frate::Command::Add {
@@ -34,7 +35,7 @@ namespace Frate::Command::Add {
       return false;
     }
 
-    inter->loadProjectJson();
+    inter->pro->load();
 
     return runCommand(inter,subcommand, addHandlers);
 
