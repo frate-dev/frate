@@ -65,7 +65,7 @@ namespace Frate::Command::UvWatch{
     inter->pro->build_server = get_current_build_server();
 
     // Get the destination path from environment variables
-    std::string remote_dest_path = std::getenv("REMOTE_DEST_PATH") ? std::getenv("REMOTE_DEST_PATH") : "/tmp/" + inter->pro->name;
+    std::string remote_dest_path = std::getenv("REMOTE_DEST_PATH") ? std::getenv("REMOTE_PATH") : "/tmp/" + inter->pro->name;
     std::cout << "Remote destination path: " << remote_dest_path << std::endl;
     std::cout << "project: " << json(*inter->pro).dump(2) << std::endl;
     std::cout << "pro->name: " << inter->pro->name << std::endl;

@@ -52,6 +52,7 @@ frate watch #watches the project for changes and automatically builds and runs
 
 ```
 
+![](./source/images/frate.png)
 
 ### Installation
 
