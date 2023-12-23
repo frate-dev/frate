@@ -1,3 +1,4 @@
+#include "Frate/Utils/General.hpp"
 #include "Frate/Utils/Logging.hpp"
 #include <Frate/Command/Actions/Clean.hpp>
 #include <Frate/Project.hpp>

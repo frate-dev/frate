@@ -1,4 +1,4 @@
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <Frate/Command/Set.hpp>
 #include <Frate/Project.hpp>
 

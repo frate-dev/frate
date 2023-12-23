@@ -1,10 +1,11 @@
 #ifdef TEST
 #include <Frate/Utils/General.hpp>
 #include <Frate/Test/Test.hpp>
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <filesystem>
 #include <memory>
 #include <Frate/Project.hpp>
+#include <fstream>
 
 namespace Tests::Command {
   using std::filesystem::path;

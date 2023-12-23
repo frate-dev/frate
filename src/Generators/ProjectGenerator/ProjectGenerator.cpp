@@ -1,6 +1,7 @@
 
-#include "Frate/Command.hpp"
+#include "Frate/Interface.hpp"
 #include "Frate/LuaAPI.hpp"
+#include "Frate/Utils/General.hpp"
 #include "inja.hpp"
 #include <Frate/Generators.hpp>
 #include <Frate/Constants.hpp>

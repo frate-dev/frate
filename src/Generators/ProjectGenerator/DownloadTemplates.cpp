@@ -1,5 +1,6 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Constants.hpp>
+#include "Frate/Utils/General.hpp"
 #include <git2.h>
 #include <git2/clone.h>
 

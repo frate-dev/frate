@@ -1,4 +1,5 @@
 #include <Frate/LuaAPI.hpp>
+#include "Frate/Utils/Logging.hpp"
 
 
 

@@ -1,24 +1,26 @@
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <Frate/Generators.hpp>
 #include <sys/socket.h>
 #include <Frate/Mode.hpp>
 #include <Frate/Project.hpp>
+#include <Frate/Utils/CLI.hpp>
 
 namespace Frate::Command{
 }
 
+namespace Frate::Command::Modes {
+using Generators::Project::Prompt;
 
-namespace Frate:: Command::Modes{
-  bool getModeName(Mode &mode){
-    Prompt *name = new Prompt("Name: ");
-    name->run();
-    auto [valid,mode_name] = name->get<std::string>();
-    if(!valid){
-      Utils::error << "Failed to get mode name" << std::endl;
-      return false;
-    }
-    mode.name = mode_name;
-    return true;
+bool getModeName(Mode &mode) {
+  Prompt *name = new Prompt("Name: ");
+  name->run();
+  auto [valid, mode_name] = name->get<std::string>();
+  if (!valid) {
+    Utils::error << "Failed to get mode name" << std::endl;
+    return false;
+  }
+  mode.name = mode_name;
+  return true;
   }
   bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
@@ -56,4 +58,4 @@ namespace Frate:: Command::Modes{
     }
     return true;
   }
-}
+  }  // namespace Frate::Command::Modes

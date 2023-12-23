@@ -1,6 +1,6 @@
 #include <string>
 #include <nlohmann/json.hpp>
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <Frate/Utils/General.hpp>
 #include <inja.hpp>
 

@@ -1,5 +1,5 @@
 #include <Frate/Generators.hpp>
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <string>
 #include <fstream>
 #include <termcolor/termcolor.hpp>

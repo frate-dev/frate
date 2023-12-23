@@ -1,10 +1,9 @@
-#include "Frate/Utils/General.hpp"
-#include <Frate/Command.hpp>
-#include <Frate/Frate.hpp>
 // LUCAS PAY ATTENTION TO IF THE HEADER IS .hpp OR .h
 #ifdef TEST
   #include <catch2/catch_session.hpp>
   #include <Frate/Test/Test.hpp>
+#else
+  #include <Frate/Interface.hpp>
 #endif
 
 

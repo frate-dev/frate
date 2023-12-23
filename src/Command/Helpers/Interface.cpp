@@ -1,4 +1,4 @@
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <Frate/Command/Actions/Add.hpp>
 #include <Frate/Command/Actions/Set.hpp>
 #include <Frate/Command/Actions/Remove.hpp>
@@ -71,8 +71,7 @@ namespace Frate::Command {
 #else
     pro->path = std::filesystem::current_path();
 #endif
-
-    //config.capabilities.search();
+    config.capabilities.search();
 
   }
   bool execute(std::shared_ptr<Interface> inter){
@@ -80,16 +79,16 @@ namespace Frate::Command {
     OptionsInit::Main(inter);
     inter->parse();
     if(inter->args->count("version")){
-      std::cout << Constants::VERSION << ENDL;
+      std::cout << Constants::VERSION << std::endl;
       exit(0);
     }
     if(inter->args->count("verbose")){
       Utils::verbose_mode = true;
-      std::cout << "Verbose mode enabled" << ENDL;
+      std::cout << "Verbose mode enabled" << std::endl;
     }
     if(inter->args->count("confirm-all")){
       inter->confirm_all = true;
-      std::cout << "Skipping prompts" << ENDL;
+      std::cout << "Skipping prompts" << std::endl;
     }
 
     // if(inter->LoadProjectJson()){
@@ -97,7 +96,7 @@ namespace Frate::Command {
     // }
 
     std::string command = inter->args->operator[]("command").as<std::string>();
-    std::cout << "Project Path: " << inter->pro->path << ENDL;
+    std::cout << "Project Path: " << inter->pro->path << std::endl;
 
     inter->commands.push_back({
       .aliases = {"new", "n"},
@@ -217,8 +216,8 @@ namespace Frate::Command {
 // 
 //             //Check if project loads successfully
 //             inter->loadProjectJson();
-//             Utils::verbose << "Project loaded successfully" << ENDL;
-//             Utils::verbose << nlohmann::json(*inter->pro).dump(2) << ENDL;
+//             Utils::verbose << "Project loaded successfully" << std::endl;
+//             Utils::verbose << nlohmann::json(*inter->pro).dump(2) << std::endl;
 // 
 //             //if so refresh the project templates
 //             Generators::Project::refresh(inter->pro);
@@ -240,7 +239,7 @@ namespace Frate::Command {
     }
 
     //if we get here we know the command was not found
-    Utils::error << "Error: Command not found: " << command << ENDL;
+    Utils::error << "Error: Command not found: " << command << std::endl;
 
     return true;
   }
@@ -269,7 +268,7 @@ namespace Frate::Command {
             return false;
           }
           // if(handler.requires_project && !inter->project_present){
-          //   Utils::error << "Error: Project not found and command: " << command << " requires a project" << ENDL;
+          //   Utils::error << "Error: Project not found and command: " << command << " requires a project" << std::endl;
           //   return false;
           // }
           if(!handler.callback(inter)){
@@ -283,14 +282,14 @@ namespace Frate::Command {
         }
       }
     }
-    std::cout << termcolor::red << "Error: Subcommand not found: " << command << termcolor::reset << ENDL;
+    std::cout << termcolor::red << "Error: Subcommand not found: " << command << termcolor::reset << std::endl;
     return false;
   }
   void Interface::getHelpString(Handler& handler){
     std::cout << termcolor::bold << termcolor::yellow << handler.aliases[0] << termcolor::reset;
     renderFlags(handler.flags);
     renderPositionals(handler.positional_args);
-    std::cout << " - " << handler.docs << ENDL;
+    std::cout << " - " << handler.docs << std::endl;
   }
   void Interface::getHelpString(std::string name,std::vector<Handler> &handlers, bool is_subcommand){
     size_t index = 0;
@@ -339,13 +338,13 @@ namespace Frate::Command {
         }
       }
       if(!handler.implemented){
-        std::cout << termcolor::red << " (Not implemented)" << termcolor::reset << ENDL;
+        std::cout << termcolor::red << " (Not implemented)" << termcolor::reset << std::endl;
       }else{
-        std::cout << ENDL;
+        std::cout << std::endl;
       }
       if(handler.subcommands.size() > 0){
         getHelpString(name + " " + handler.aliases[0], handler.subcommands, true);
-        std::cout << ENDL;
+        std::cout << std::endl;
       }
     }
   }

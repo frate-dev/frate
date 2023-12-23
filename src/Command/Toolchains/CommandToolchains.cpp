@@ -5,10 +5,12 @@
 #include <filesystem>
 #include <fstream>
 #include <Frate/Project.hpp>
+#include "Frate/Utils/CLI.hpp"
 
 
 
 namespace Frate::Command::Toolchains{
+  using Utils::CLI::Prompt;
   json load(){
     std::filesystem::path  path = std::string(std::getenv("HOME")) + "/.config/" + "frate/" + "toolchains.json";
     return json{};

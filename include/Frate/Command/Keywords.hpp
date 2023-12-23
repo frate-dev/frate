@@ -1,5 +1,6 @@
 #pragma once
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
+
 namespace Frate::Command::Keywords {
   bool options(std::shared_ptr<Interface> inter);
 

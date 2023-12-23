@@ -1,8 +1,9 @@
 #include <uv.h>
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <filesystem>
 #include <fstream>
 #include <Frate/Project.hpp>
+#include <Frate/Utils/General.hpp>
 
 
 namespace Frate::Command::UvWatch{

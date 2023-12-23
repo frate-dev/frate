@@ -1,15 +1,14 @@
-#include <Frate/Command/Package.hpp>
+#include <cxxopts.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp> 
 #include <Frate/Command/CommandMode.hpp>
 #include <Frate/Project.hpp>
+#include "Frate/Command/Package.hpp"
 
 
 namespace Frate::Command::Packages {
-  using Generators::CMakeList::createCMakeLists;
-  using Generators::ConfigJson::writeConfig;
-
+  using Utils::CLI::Prompt;
 
   bool addPackageToMode(std::shared_ptr<Interface> inter, Package package, std::string selected_mode){
     Utils::info << "Adding package to mode " << selected_mode << std::endl;
@@ -19,8 +18,7 @@ namespace Frate::Command::Packages {
         return true;
       }
     }
-    Utils::error << "Mode " << selected_mode << " not found";
-    return false;
+    Utils::error << "Mode " << selected_mode << " not found"; return false;
   }
   bool add(std::shared_ptr<Interface> inter) {
     options(inter);

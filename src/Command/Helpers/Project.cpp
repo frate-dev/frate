@@ -7,6 +7,23 @@
 #include <Frate/ProjectPrompt.hpp>
 
 namespace Frate::Command {
+
+
+#define TO_JSON_FIELD(obj,field)\
+  if(j.contains(#field)){\
+    j[#field] = obj.field;\
+  }else{\
+    Utils::warning << "Missing field: " << #obj << "." << #field << std::endl;\
+  }
+
+#define FROM_JSON_FIELD(obj,field)\
+  if(j.contains(#field)){\
+    obj.field = j[#field];\
+  }else{\
+    Utils::warning << "Missing field: " << #obj << "." << #field << std::endl;\
+  }
+
+
   Project::Project(){};
   bool Project::save(){
     std::ofstream file;
@@ -56,50 +73,73 @@ namespace Frate::Command {
     this->libs = t.system_libs;
   }
   void from_json (const json &j, Project& pro){
-    pro.name = j.contains("name") ? j["name"] : "";
-    pro.cmake_version = j.contains("cmake_version") ? j["cmake_version"] : "";
-    pro.version = j.contains("version") ? j["version"] : "";
-    pro.type = j.contains("type") ? j["type"] : "";
-    pro.lang = j.contains("lang") ? j["lang"] : "";
-    pro.lang_version = j.contains("lang_version") ? j["lang_version"] : "";
-    pro.compiler = j.contains("compiler") ? j["compiler"] : "";
-    pro.src_dir = j.contains("src_dir") ? j["src_dir"] : "";
-    pro.build_dir = j.contains("build_dir") ? j["build_dir"] : "";
-    pro.build_command = j.contains("build_command") ? j["build_command"] : "";
-    pro.include_dir = j.contains("include_dir") ? j["include_dir"] : "";
-    if(j.contains("authors")){
-      pro.authors = j["authors"];
-    }
-    pro.type = j.contains("type") ? j["type"] : "";
-    pro.description = j.contains("description") ? j["description"] : "";
-    pro.default_mode = j.contains("default_mode") ? j["default_mode"] : "";
-    if(j.contains("keywords")){
-      pro.keywords = j["keywords"];
-    }
-    if(j.contains("libs")){
-      pro.libs = j["libs"];
-    }
-    if(j.contains("dependencies")){
-      pro.dependencies = j["dependencies"];
-    }
-    if(j.contains("flags")){
-      pro.flags = j["flags"];
-    }
-    if(j.contains("toolchains")){
-      pro.toolchains = j["toolchains"];
-    }
-    if(j.contains("prompts")){
-      pro.prompts = j["prompts"];
-    }
-    if(j.contains("variables")){
-      pro.variables = j["variables"];
-    }
-    if(j.contains("modes")){
-      pro.modes = j["modes"];
-    }
-    pro.git = j.contains("git") ? j["git"] : "";
-    pro.homepage = j.contains("homepage") ? j["homepage"] : "";
-    pro.bugs = j.contains("bugs") ? j["bugs"] : "";
+    FROM_JSON_FIELD(pro,name);
+    FROM_JSON_FIELD(pro,description);
+    FROM_JSON_FIELD(pro,cmake_version);
+    FROM_JSON_FIELD(pro,version);
+    FROM_JSON_FIELD(pro,type);
+    FROM_JSON_FIELD(pro,lang);
+    FROM_JSON_FIELD(pro,lang_version);
+    FROM_JSON_FIELD(pro,compiler);
+    FROM_JSON_FIELD(pro,src_dir);
+    FROM_JSON_FIELD(pro,build_dir);
+    FROM_JSON_FIELD(pro,include_dir);
+    FROM_JSON_FIELD(pro,authors);
+    FROM_JSON_FIELD(pro,default_mode);
+    FROM_JSON_FIELD(pro,keywords);
+    FROM_JSON_FIELD(pro,libs);
+    FROM_JSON_FIELD(pro,dependencies);
+    FROM_JSON_FIELD(pro,flags);
+    FROM_JSON_FIELD(pro,toolchains);
+    FROM_JSON_FIELD(pro,prompts);
+    FROM_JSON_FIELD(pro,variables);
+    FROM_JSON_FIELD(pro,modes);
+    FROM_JSON_FIELD(pro,git);
+    FROM_JSON_FIELD(pro,homepage);
+    FROM_JSON_FIELD(pro,bugs);
+
+    // pro.cmake_version = j.contains("cmake_version") ? j["cmake_version"] : "";
+    // pro.version = j.contains("version") ? j["version"] : "";
+    // pro.type = j.contains("type") ? j["type"] : "";
+    // pro.lang = j.contains("lang") ? j["lang"] : "";
+    // pro.lang_version = j.contains("lang_version") ? j["lang_version"] : "";
+    // pro.compiler = j.contains("compiler") ? j["compiler"] : "";
+    // pro.src_dir = j.contains("src_dir") ? j["src_dir"] : "";
+    // pro.build_dir = j.contains("build_dir") ? j["build_dir"] : "";
+    // pro.build_command = j.contains("build_command") ? j["build_command"] : "";
+    // pro.include_dir = j.contains("include_dir") ? j["include_dir"] : "";
+    // if(j.contains("authors")){
+    //   pro.authors = j["authors"];
+    // }
+    // pro.description = j.contains("description") ? j["description"] : "";
+    // pro.default_mode = j.contains("default_mode") ? j["default_mode"] : "";
+    // if(j.contains("keywords")){
+    //   pro.keywords = j["keywords"];
+    // }
+    // if(j.contains("libs")){
+    //   pro.libs = j["libs"];
+    // }
+    // if(j.contains("dependencies")){
+    //   pro.dependencies = j["dependencies"];
+    // }
+    // if(j.contains("flags")){
+    //   pro.flags = j["flags"];
+    // }
+    // if(j.contains("toolchains")){
+    //   pro.toolchains = j["toolchains"];
+    // }
+    // if(j.contains("prompts")){
+    //   pro.prompts = j["prompts"];
+    // }
+    // if(j.contains("variables")){
+    //   pro.variables = j["variables"];
+    // }
+    // if(j.contains("modes")){
+    //   pro.modes = j["modes"];
+    // }
+    // pro.git = j.contains("git") ? j["git"] : "";
+    // pro.homepage = j.contains("homepage") ? j["homepage"] : "";
+    // pro.bugs = j.contains("bugs") ? j["bugs"] : "";
   }
   void to_json(json &j, const Project& pro){
     j["name"] = pro.name;

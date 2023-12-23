@@ -1,5 +1,5 @@
 #ifdef TEST
-#include "Frate/Command.hpp"
+#include "Frate/Interface.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <Frate/Test/Test.hpp>
 #include <Frate/Project.hpp>

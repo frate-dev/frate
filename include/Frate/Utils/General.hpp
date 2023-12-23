@@ -84,6 +84,20 @@ namespace Frate::Utils {
    * @return The exit code of the command
    */
   int hSystem(std::string command);
+
+
+  typedef struct CmdOutput_s {
+    std::string std_out;
+    std::string std_err;
+    int return_code;
+  } CmdOutput;
+
+  /*
+   * Runs the command and returns all the output of the command using a CmdOutput struct
+   * @param cmd The command to be executed
+   * @return The output of the command
+   */
+  CmdOutput hSystemWithOutput(std::string cmd);
   struct TableFormat {
       int width;
       char fill;

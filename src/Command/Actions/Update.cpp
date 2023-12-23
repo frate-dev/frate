@@ -1,4 +1,5 @@
 #include <Frate/Command/Actions/Update.hpp>
+#include <Frate/Command.hpp>
 
 namespace Frate::Command::Update {
 

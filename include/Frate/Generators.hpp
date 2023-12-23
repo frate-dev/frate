@@ -1,8 +1,9 @@
 #pragma once
-#include <memory>
 #include <vector>
-#include "./Command.hpp"
 #include <inja.hpp>
+#include <Frate/Project.hpp>
+#include <Frate/Utils/CLI.hpp>
+#include <Frate/Interface.hpp>
 
 namespace Frate::Generators{
   namespace Project {

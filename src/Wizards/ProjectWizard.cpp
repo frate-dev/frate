@@ -1,4 +1,4 @@
-#include "Frate/Command.hpp"
+#include "Frate/Interface.hpp"
 #include "Frate/Utils/CLI.hpp"
 #include <Frate/Wizards.hpp>
 #include <Frate/Utils/Validation.hpp>

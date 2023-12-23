@@ -2,6 +2,7 @@
 #include <Frate/Utils/CLI.hpp>
 #include <Frate/Utils/General.hpp> 
 #include <Frate/Command/CommandMode.hpp>
+#include <Frate/Command.hpp>
 
 namespace Frate::Command::Packages {
   using namespace Utils::CLI;
@@ -66,8 +67,8 @@ namespace Frate::Command::Packages {
   bool search(std::shared_ptr<Interface> inter){
     std::string query;
     if(inter->args->operator[]("query").count() == 0){
-      std::cout << "No query provided" << ENDL;
-      std::cout << "Usage: frate search p <query>" << ENDL;
+      std::cout << "No query provided" << std::endl;
+      std::cout << "Usage: frate search p <query>" << std::endl;
       return false;
     }else{
       query = inter->args->operator[]("query").as<std::string>();
@@ -78,7 +79,7 @@ namespace Frate::Command::Packages {
         packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
       }
 
-      std::cout << packageList->Build() << ENDL;
+      std::cout << packageList->Build() << std::endl;
 
       return true;
     }

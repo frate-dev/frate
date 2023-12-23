@@ -1,4 +1,4 @@
-#include "Frate/Command.hpp"
+//#include "Frate/Interface.hpp"
 #include "Frate/Project.hpp"
 #include "Frate/Utils/General.hpp"
 #include "inja.hpp"
@@ -9,6 +9,7 @@
 #include <sol/variadic_args.hpp> 
 #include <Frate/Constants.hpp>
 #include <Frate/ProjectPrompt.hpp>
+#include <Frate/Utils/Logging.hpp>
 namespace Frate::LuaAPI {
   using Command::Project;
   using std::filesystem::path;

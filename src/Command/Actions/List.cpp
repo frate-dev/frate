@@ -86,7 +86,7 @@ namespace Frate::Command::List{
     if(inter->args->operator[]("subcommand").count() > 0){
       target = inter->args->operator[]("subcommand").as<std::string>();
     }else{
-      std::cout << termcolor::bright_red << "No subcommand provided" << ENDL;
+      std::cout << termcolor::bright_red << "No subcommand provided" << std::endl;
       inter->getHelpString("list", listHandlers);
       return false;
     }

@@ -1,6 +1,8 @@
 #include <Frate/System.hpp>
+#include <filesystem>
 #include "Frate/Utils/General.hpp"
 #include "Frate/Utils/Logging.hpp"
+
 
 namespace Frate::System {
   bool Capabilities::search(){
@@ -16,6 +18,9 @@ namespace Frate::System {
     
     std::vector<std::string> paths = Utils::split(path_env, delimiter);
     for(std::filesystem::path path : paths){
+      if(!std::filesystem::exists(path)){
+          continue;
+      }
       for(auto& p : std::filesystem::directory_iterator(path)){
         if(p.is_regular_file()){
           std::string filename = p.path().filename().string();
@@ -23,10 +28,13 @@ namespace Frate::System {
           filename = filename.substr(0, filename.find(".exe"));
 #endif
           if(filename.find("gcc") != std::string::npos){
-            Utils::info << "Found gcc: " << p.path() << std::endl;
             this->compilers[filename] = Capability();
             this->compilers[filename].path = p.path();
             this->compilers[filename].installed = true;
+            this->compilers[filename].version = getGccVersion(p.path());
+            Utils::info <<
+              "Found gcc(" << p.path() << ") with version: " <<
+              this->compilers[filename].version << std::endl;
           }
         }
       }

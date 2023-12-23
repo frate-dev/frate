@@ -1,5 +1,5 @@
 #include <Frate/Command/Flags.hpp>
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <Frate/Project.hpp>
 namespace Frate::Command::Flags {
 

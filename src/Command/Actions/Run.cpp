@@ -19,7 +19,7 @@ bool run(std::shared_ptr<Interface> inter) {
   const std::string cmake_cmd = work_dir_cmd + ";cmake .";
   const std::string make_cmd = work_dir_cmd + ";make";
   const std::string run_cmd = work_dir_cmd + ";./build/" +inter->pro->name;
-  std::cout << "project_name " <<inter->pro->name << ENDL;
+  std::cout << "project_name " <<inter->pro->name << std::endl;
 
   /*
    * Creating build directory and building project

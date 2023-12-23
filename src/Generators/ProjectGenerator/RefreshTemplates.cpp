@@ -1,6 +1,7 @@
 #include <Frate/Generators.hpp>
 #include <inja.hpp>
 #include <Frate/Project.hpp>
+#include "Frate/Utils/General.hpp"
 
 
 namespace Frate::Generators::Project {

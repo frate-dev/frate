@@ -1,6 +1,5 @@
 #pragma once
-#include "../Command.hpp"
-
+#include <Frate/Interface.hpp>
 
 namespace Frate::Command::Author {
   bool add(std::shared_ptr<Interface> inter);

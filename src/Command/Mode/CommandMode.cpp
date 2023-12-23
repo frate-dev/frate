@@ -1,4 +1,4 @@
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/CommandMode.hpp>

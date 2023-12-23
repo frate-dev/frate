@@ -1,5 +1,5 @@
 #pragma once
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 
 namespace Frate::Command::Clean {
 
