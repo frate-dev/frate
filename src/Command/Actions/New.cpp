@@ -6,7 +6,6 @@
 #include <Frate/Utils/General.hpp>
 #include <Frate/Wizards.hpp>
 #include <Frate/Project.hpp>
-#include <git2.h>
 #include <Frate/Command/Actions/Help.hpp>
 #include "Frate/Command.hpp"
 

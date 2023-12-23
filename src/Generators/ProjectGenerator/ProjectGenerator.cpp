@@ -6,8 +6,6 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Constants.hpp>
 #include <filesystem>
-#include <git2/types.h>
-#include <git2/clone.h>
 #include <Frate/Project.hpp>
 
 namespace Frate::Generators::Project {

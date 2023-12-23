@@ -81,7 +81,7 @@ include (cmake/CPM.cmake)
 
 CPMAddPackage(
   NAME termcolor
-  GITHUB_REPOSITORY ikalnytskyi/termcolor
+  GIT_REPOSITORY https://github.com/ikalnytskyi/termcolor
   GIT_TAG v2.1.0
   OPTIONS
   "BUILD_STATIC_LIBS ON"
@@ -89,7 +89,7 @@ CPMAddPackage(
 
 CPMAddPackage(
   NAME cxxopts
-  GITHUB_REPOSITORY jarro2783/cxxopts
+  GIT_REPOSITORY https://www.github.com/jarro2783/cxxopts
   GIT_TAG origin/master
   OPTIONS
   "BUILD_STATIC_LIBS ON"
@@ -97,7 +97,7 @@ CPMAddPackage(
 )
 CPMAddPackage(
   NAME nlohmann_json
-  GITHUB_REPOSITORY nlohmann/json
+  GIT_REPOSITORY https://www.github.com/nlohmann/json
   GIT_TAG v3.11.3
   OPTIONS
   "BUILD_STATIC_LIBS ON"
@@ -106,18 +106,10 @@ CPMAddPackage(
 
 
 )
-CPMAddPackage(
-  name libgit2
-  GITHUB_REPOSITORY libgit2/libgit2
-  GIT_TAG v1.7.1
-  OPTIONS
-    "BUILD_TESTS OFF"
-    "BUILD_STATIC_LIBS ON"
-    "BUILD_CLI OFF"
-)
+
 CPMAddPackage(
   NAME curl
-  GITHUB_REPOSITORY curl/curl
+  GIT_REPOSITORY https://www.github.com/curl/curl
   GIT_TAG curl-8_3_0
   OPTIONS
     "ENABLE_VERSIONED_SYMBOLS ON"
@@ -136,7 +128,7 @@ CPMAddPackage(
 
 CPMAddPackage(
   NAME uv 
-  GITHUB_REPOSITORY libuv/libuv
+  GIT_REPOSITORY https://www.github.com/libuv/libuv
   GIT_TAG v1.47.0
   OPTIONS
     "BUILD_STATIC_LIBS ON"
@@ -145,8 +137,8 @@ CPMAddPackage(
 )
 
 CPMAddPackage(
-  lua
-  GITHUB_REPOSITORY lua/lua
+  NAME lua
+  GIT_REPOSITORY https://www.github.com/lua/lua
   GIT_TAG v5.4.4
   OPTIONS
     "BUILD_STATIC_LIBS ON"
@@ -154,7 +146,7 @@ CPMAddPackage(
 
 CPMAddPackage(
   NAME sol2
-  GITHUB_REPOSITORY ThePhD/sol2
+  GIT_REPOSITORY https://www.github.com/ThePhD/sol2
   GIT_TAG v3.3.1
 )
 
@@ -214,7 +206,6 @@ target_link_options(${PROJECT_NAME} PRIVATE   -static-libgcc -static-libstdc++)
 target_link_libraries(${PROJECT_NAME} PRIVATE libcurl)
 target_link_libraries(${PROJECT_NAME} PRIVATE cxxopts)
 target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
-target_link_libraries(${PROJECT_NAME} PRIVATE libgit2package)
 target_link_libraries(${PROJECT_NAME} PRIVATE uv)
 target_link_libraries(${PROJECT_NAME} PRIVATE termcolor)
 target_link_libraries(${PROJECT_NAME} PRIVATE lua)

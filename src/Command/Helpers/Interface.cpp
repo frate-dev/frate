@@ -20,7 +20,6 @@
 #include <Frate/Constants.hpp>  
 #include <memory>
 #include <nlohmann/json_fwd.hpp>
-#include <git2.h>
 
 namespace Frate::Command {
 
@@ -60,7 +59,6 @@ namespace Frate::Command {
   Interface::Interface(int argc, char** argv){
     this->argc = argc;
     this->argv = argv;
-    git_libgit2_init();
     this->pro = std::make_shared<Project>();
 #ifdef DEBUG
 #ifndef TEST
@@ -204,8 +202,9 @@ namespace Frate::Command {
       .aliases = {"watch"},
       .flags = {}, //TODO: Add flags
       .docs = "watches the project for changes",
-      .callback = &Watch::run
-    });
+      .callback = &UvWatch::watch,
+      .requires_project = true 
+      });
 
 
     for(Handler& handler : inter->commands){
@@ -349,7 +348,6 @@ namespace Frate::Command {
     }
   }
   Interface::~Interface(){
-    git_libgit2_shutdown(); 
   }
 
 } // namespace Command

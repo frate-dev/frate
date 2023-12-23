@@ -6,7 +6,6 @@
 #include <Frate/Project.hpp>
 #include <Frate/Utils/General.hpp>
 #include <sol/sol.hpp>
-#include <git2.h>
 #include <inja.hpp>
 #include <Frate/LuaAPI.hpp>
 

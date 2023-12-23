@@ -11,9 +11,8 @@ namespace Frate::Command::UvWatch{
     inter->InitHeader();
     inter->options->parse_positional({"command"});
     inter->options->add_options()
-      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
-      ("r,remote-build", "Build server to use", cxxopts::value<bool>()->default_value("false"))
-      ("c,args", "command to pass to dev", cxxopts::value<std::vector<std::string>>());
+      ("c,command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("r,remote-build", "Build server to use", cxxopts::value<bool>()->default_value("false"));
     return inter->parse();
   }
   //TODO Move to  RemoteServer.hpp
@@ -59,27 +58,36 @@ namespace Frate::Command::UvWatch{
     return RemoteServer();
   }
 
+
   std::string remote_build_command(std::shared_ptr<Interface> inter) {
-    std::string command;
-    std::string current_build_server = std::string(std::getenv("HOME")) +
-      "/.config/frate/" +
-      "current_build_server.json";
     inter->pro->build_server = get_current_build_server();
 
-    std::string sync_files = "rsync -avh  --exclude-from='.gitignore' --update -e 'ssh -p  " +
-      std::to_string(inter->pro->build_server.port) + "' --progress . " +
-      inter->pro->build_server.username + "@" +inter->pro->build_server.ip +
-      ":/tmp/frate ";
+    // Get the destination path from environment variables
+    std::string remote_dest_path = std::getenv("REMOTE_DEST_PATH") ? std::getenv("REMOTE_DEST_PATH") : "/tmp/" + inter->pro->name;
+    std::cout << "Remote destination path: " << remote_dest_path << std::endl;
+    std::cout << "project: " << json(*inter->pro).dump(2) << std::endl;
+    std::cout << "pro->name: " << inter->pro->name << std::endl;
+    // Construct the rsync command
+    std::string sync_files = "rsync -avh --exclude-from='.gitignore' --update -e 'ssh -p " +
+                             std::to_string(inter->pro->build_server.port) + "' --progress . " +
+                             inter->pro->build_server.username + "@" + inter->pro->build_server.ip +
+                             ":" + remote_dest_path + " ";
 
-    std::string ssh = "&& ssh -p " + std::to_string(inter->pro->build_server.port) + " " +
-      inter->pro->build_server.username + "@" +inter->pro->build_server.ip;
+    // SSH command to build the project
+    std::string ssh_build = "&& ssh -p " + std::to_string(inter->pro->build_server.port) + " " +
+                            inter->pro->build_server.username + "@" + inter->pro->build_server.ip + " "
+                            "'cd " + remote_dest_path + " && cmake . && make -j $(nproc)'";
 
-    std::string ssh_command = 
-      " 'cd /tmp/frate && cmake . && make -j ${nproc} && " + inter->pro->build_dir + "/" + inter->pro->name + "'";
+    // Add option to run a specific command after building, if set
+    std::string command;
+    if (inter->args->count("command")) {
+        std::string command_to_run = inter->args->operator[]("command").as<std::string>();
+        command = " && " + command_to_run;
+    }
 
-    command = sync_files + ssh + ssh_command;
-    return command;
+    return sync_files + ssh_build + command;
   }
+
 
 
   bool runCommand(std::shared_ptr<Interface> inter){
@@ -88,31 +96,20 @@ namespace Frate::Command::UvWatch{
     #ifdef DEBUG
       command = "cd build && cmake . && make  && " + inter->pro->build_dir + "/" +inter->pro->name;
     #endif
-
+    if (inter->args->count("command") != 0) {
+      std::string command_run;
+      
+      std::string command_to_run = inter->args->operator[]("command").as<std::string>();
+      command = "cmake . && make && ./" + inter->pro->build_dir + "/" +
+        inter->pro->name + " " + command_run;
+    }
 
     bool build_server =inter->args->operator[]("remote-build").as<bool>();
     if (build_server == true) {
 
       command = remote_build_command(inter);
     }
-    if (inter->args->count("args") != 0) {
-      // historical reasons
-      std::cout << "estamos aqui" << std::endl;
-      std::vector<std::string> args_vec =
-        inter->args->operator[]("args").as<std::vector<std::string>>();
-      std::string command_args = args_vec[0];
-      if (args_vec.size() > 1) {
-        command_args = std::accumulate(
-            args_vec.begin(), args_vec.end(), args_vec[0],
-            [](std::string a, std::string b) { return a + " " + b; });
-        std::cout << "args size is 0" << std::endl;
-        return false;
-      }
 
-      std::cout << "command_args: " << command_args << std::endl;
-      command = "cmake . && make && ./" + inter->pro->build_dir + "/" +
-        inter->pro->name + "  " + command_args;
-    }
     if (Utils::hSystem(command) != 0){
       std::cout << "Error running command: " << command << std::endl;
       exit(1);
