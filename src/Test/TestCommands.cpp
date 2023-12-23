@@ -2,12 +2,11 @@
 #include <cstdio>
 #include <filesystem>
 #include <catch2/catch_test_macros.hpp>
-#include <Frate/Command.hpp>
+//#include <Frate/Interface.hpp>
 #include <cxxopts.hpp>
 #include <string>
 #include <Frate/Test/Test.hpp>
 #include <Frate/Utils/General.hpp>
-#include <Frate/Command.hpp>
 
 namespace Tests{
   std::string genBase64String(int random_string_length) {
@@ -37,17 +36,18 @@ namespace Tests::Command {
     REQUIRE(testNewWithLang("cpp"));
     REQUIRE(testNewWithLang("c"));
 
-    REQUIRE(testAddFlagsSingle());
-    REQUIRE(testAddFlagsMultiple());
-    REQUIRE(testAddFlagsWithMode());
-    REQUIRE(testRemoveFlagsSingle("-Wall"));
-    REQUIRE(testRemoveFlagsSingle("-Wall -Werror"));
 
     REQUIRE(testNewWithType("executable"));
     //TODO:  Add more types
     // REQUIRE(testNewWithType("static_library"));
     // REQUIRE(testNewWithType("shared_library"));
     // REQUIRE(testNewWithType("header_only"));
+
+    REQUIRE(testAddFlagsSingle());
+    REQUIRE(testAddFlagsMultiple());
+    REQUIRE(testAddFlagsWithMode());
+    REQUIRE(testRemoveFlagsSingle("-Wall"));
+    REQUIRE(testRemoveFlagsSingle("-Wall -Werror"));
 
     REQUIRE(testAddPackage("cxxopts"));
     REQUIRE(testAddPackageMultiple({"cxxopts","fmt","SDL2"}));

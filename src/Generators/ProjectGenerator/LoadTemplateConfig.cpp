@@ -1,52 +1,31 @@
 #include <Frate/Generators.hpp>
 #include <fstream>
 #include <inja.hpp>
+#include <Frate/Template.hpp>
+#include <Frate/Project.hpp>
 
 
 namespace Frate::Generators::Project {
-  using inja::Environment;
-
-
   bool loadTemplateConfig(std::shared_ptr<Command::Project> pro){
 
+    std::ifstream template_config_file;
 
     try{
 
-      std::filesystem::copy(
-          pro->path / "template/default.json",
-          pro->path / "frate-project.json"
-          );
+      template_config_file.open(pro->path / "template/template.json");
 
     }catch(...){
 
-      Utils::error << "Error while copying frate-project.json" << std::endl;
-      return false;
-
-    }
-  
-
-    std::ifstream file;
-
-
-    try{
-
-      file.open(pro->path / "frate-project.json");
-
-    }catch(...){
-
-      Utils::error << "Error while opening file: " << pro->path / "frate-project.json" << std::endl;
+      Utils::error << "Error while opening file: " << pro->path / "template/template.json" << std::endl;
       return false;
 
     }
 
-    json current_j = pro->toJson();
-    json j = json::parse(file);
 
-    j.merge_patch(current_j);
+    json j = json::parse(template_config_file);
 
-    pro->fromJson(j);
-
-
+    Command::Template template_config = j;
+    pro->fromTemplate(template_config);
     return true;
   }
 }

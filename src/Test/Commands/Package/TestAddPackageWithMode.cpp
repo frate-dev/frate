@@ -1,5 +1,7 @@
 #ifdef TEST
 #include <Frate/Test/Test.hpp>
+#include <Frate/Package.hpp>
+#include <Frate/Project.hpp>
 bool Tests::Command::testAddPackageToMode(std::string mode_name, std::string package_name){
   using nlohmann::json;
   std::cout << "Testing add package to mode command" << std::endl;
@@ -14,7 +16,7 @@ bool Tests::Command::testAddPackageToMode(std::string mode_name, std::string pac
     return false;
   }
 
-  json config = inter->pro->toJson();
+  json config = *inter->pro;
 
   for(json mode : config["modes"]){
     if(mode["name"] == mode_name){

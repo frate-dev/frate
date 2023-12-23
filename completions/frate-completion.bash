@@ -1,7 +1,6 @@
 _frate() {
     local cur prev words cword
     _get_comp_words_by_ref -n : cur prev words cword
-
     local commands="init run watch add ftp help"
     local add_subcommands="dep lib flags"
 

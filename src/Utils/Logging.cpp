@@ -2,8 +2,9 @@
 
 
 namespace Frate::Utils {
-  Utils::Error error = Utils::Error();
-  Utils::Info info = Utils::Info();
-  Utils::Warning warning = Utils::Warning();
-  Utils::Verbose verbose = Utils::Verbose();
+  Error error = Utils::Error();
+  Info info = Utils::Info();
+  Warning warning = Utils::Warning();
+  Verbose verbose = Utils::Verbose();
+  bool verbose_mode = false;
 }

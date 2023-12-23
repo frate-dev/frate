@@ -1,5 +1,6 @@
 #include <Frate/LuaAPI.hpp>
 #include <filesystem>
+#include "Frate/Utils/Logging.hpp"
 
 namespace Frate::LuaAPI {
   std::vector<std::string> FrateApi::get_paths_recurse(std::string input_path) {

@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <vector>
 
@@ -24,10 +25,11 @@ namespace Frate::Constants {
   constexpr const std::string_view FRATE_TEMPLATES = "https://github.com/frate-templates/templates/releases/latest/download/index.json";
   
   const std::string TEMPLATE_PATH = "template/";
+  const std::string TEMPLATE_CALLBACKS_PATH = "frate-callbacks/";
   const std::string INIT_SCRIPTS_PATH = "__init__/";
   const std::string POST_SCRIPTS_PATH = "__post__/";
 
-#ifdef DEBUG
+#ifdef BRANCH_DEV
   const std::string TEMPLATE_BRANCH = "dev";
 #else
   const std::string TEMPLATE_BRANCH = "main";
@@ -45,7 +47,8 @@ namespace Frate::Constants {
   const std::vector<std::string> SUPPORTED_CMAKE_VERSIONS =
   {
     "3.0",
-    "3.1", "3.2",
+    "3.1", 
+    "3.2",
     "3.3",
     "3.4",
     "3.5",

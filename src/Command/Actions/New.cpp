@@ -1,14 +1,13 @@
 #include <cxxopts.hpp>
 #include <filesystem>
-#include <fstream>
-#include <iostream> 
 #include <string>
 #include <inja.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp>
 #include <Frate/Wizards.hpp>
-#include "Frate/Command/Actions/Help.hpp"
-#include <git2.h>
+#include <Frate/Project.hpp>
+#include <Frate/Command/Actions/Help.hpp>
+#include "Frate/Command.hpp"
 
 namespace Frate::Command::New {
 using std::filesystem::path;
@@ -34,8 +33,7 @@ bool options(std::shared_ptr<Interface> inter) {
   void gitInit(std::shared_ptr<Interface> inter){
     Generators::GitIgnore::create(inter);
     //TODO: make this work on windows
-    git_repository *repo = nullptr;
-    git_repository_init(&repo, inter->pro->path.string().c_str(),0);
+    Utils::hSystem("git init");
     (void)inter;
   }
 
@@ -60,7 +58,7 @@ bool options(std::shared_ptr<Interface> inter) {
 
   bool checkForProject(std::shared_ptr<Interface> inter){
     if(std::filesystem::exists(inter->pro->path / "frate-project.json")){
-      Utils::error << "Project already exists" << ENDL;
+      Utils::error << "Project already exists" << std::endl;
       return true;
     }
     return false;
@@ -127,7 +125,7 @@ bool options(std::shared_ptr<Interface> inter) {
 
         for(const auto& entry : std::filesystem::directory_iterator(inter->pro->path)){
           if(entry.path().filename() != "frate"){
-            Utils::info << "Removing " << entry.path() << ENDL;
+            Utils::info << "Removing " << entry.path() << std::endl;
             std::filesystem::remove_all(entry.path());
           }
         }
@@ -137,7 +135,7 @@ bool options(std::shared_ptr<Interface> inter) {
 
 
         Utils::error 
-          << "Aborting: can't initialize a new project on top of a existing one" << ENDL;
+          << "Aborting: can't initialize a new project on top of a existing one" << std::endl;
         return false;
 
 
@@ -157,8 +155,8 @@ bool options(std::shared_ptr<Interface> inter) {
 
     //downloadCMakeListsTemplate(inter);
     if(defaults){
-      Utils::info << "Using defaults" << ENDL;
-      Utils::info << "Creating project" << ENDL;
+      Utils::info << "Using defaults" << std::endl;
+      Utils::info << "Creating project" << std::endl;
       if(inter->pro->type.empty()){
         inter->pro->type = "executable";
       }
@@ -166,14 +164,16 @@ bool options(std::shared_ptr<Interface> inter) {
         return false;
       }
     }else{
-      Utils::info << "Creating project" << ENDL;
-      Utils::info << "Creating frate-project.json" << ENDL;
+      Utils::info << "Creating project" << std::endl;
+      Utils::info << "Creating frate-project.json" << std::endl;
       inter->pro->type = "";
       Wizard::Project(inter->pro);
       if(!createProjectWizard(inter)){
         return false;
       }
     }
+
+
     return true;
   }
   } // namespace Command

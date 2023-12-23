@@ -1,8 +1,9 @@
-#include "Frate/Command.hpp"
+#include "Frate/Interface.hpp"
 #include "Frate/Utils/CLI.hpp"
 #include <Frate/Wizards.hpp>
 #include <Frate/Utils/Validation.hpp>
 #include <Frate/Constants.hpp>
+#include <Frate/Project.hpp>
 
 namespace Frate::Wizard {
   using Utils::CLI::Prompt;

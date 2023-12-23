@@ -1,4 +1,5 @@
 #include <Frate/Generators.hpp>
+#include <Frate/Project.hpp>
 
 namespace Frate::Generators::Project {
   std::pair<bool, Template> promptForTemplateName(json index){

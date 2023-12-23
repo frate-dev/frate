@@ -1,4 +1,5 @@
 #include <Frate/Command/Actions/Update.hpp>
+#include <Frate/Command.hpp>
 
 namespace Frate::Command::Update {
 
@@ -34,7 +35,7 @@ namespace Frate::Command::Update {
     }
     target = inter->args->operator[]("subcommand").as<std::string>();
 
-    return inter->runCommand(target, updateHandlers);
+    return runCommand(inter,target, updateHandlers);
 
     return true;
   }

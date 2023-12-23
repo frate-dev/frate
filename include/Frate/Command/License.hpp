@@ -1,8 +1,9 @@
 #pragma once
-#include <Frate/Command.hpp>
-
+#include <Frate/Interface.hpp>
+#include <nlohmann/json.hpp>
 
 namespace Frate::Command::License {
+  using json = nlohmann::json;
   typedef struct License_s {
     std::string name;
     std::string key;

@@ -1,4 +1,5 @@
 #include <Frate/Command/Library.hpp>
+#include <Frate/Project.hpp>
 
 namespace Frate::Command::Library{
   bool list(std::shared_ptr<Interface> inter){

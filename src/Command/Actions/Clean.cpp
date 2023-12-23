@@ -1,5 +1,7 @@
 #include "Frate/Utils/General.hpp"
+#include "Frate/Utils/Logging.hpp"
 #include <Frate/Command/Actions/Clean.hpp>
+#include <Frate/Project.hpp>
 namespace Frate::Command::Clean {
   bool options(std::shared_ptr<Interface> inter){
     inter->InitHeader();
@@ -13,7 +15,7 @@ namespace Frate::Command::Clean {
   }
 
 using namespace std::filesystem;
-bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
+bool cleanCache(std::shared_ptr<Project> pro) {
   const std::vector<path> files_to_delete = {
       pro->path / "CMakeCache.txt",
       pro->path / "install_manifest.txt",
@@ -27,9 +29,7 @@ bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
   for (auto &file : files_to_delete) {
     if (exists(file)) {
       try {
-        if(verbose){
-          Utils::info << "Deleting: " << file << std::endl;
-        }
+        Utils::verbose << "Deleting: " << file << std::endl;
         std::filesystem::remove(file);
       } catch (std::exception &e) {
         Utils::debug(e.what());
@@ -39,9 +39,7 @@ bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
   for (auto &dir : dirs_to_delete) {
     if (exists(dir)) {
       try {
-        if(verbose){
-          Utils::info << "Deleting: " << dir << std::endl;
-        }
+        Utils::verbose << "Deleting: " << dir << std::endl;
         remove_all(dir);
       } catch (std::exception &e) {
         Utils::debug(e.what());
@@ -61,8 +59,8 @@ bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
     }
   
     if(clean_cache){
-      if(!cleanCache(inter->pro,verbose_mode)){
-        //WE HAD A FUCKING PROBLEM BRUH
+      if(!cleanCache(inter->pro)){
+        Utils::error << "Could not clean cache" << std::endl;
         return false;
       }
     }
@@ -72,9 +70,7 @@ bool cleanCache(std::shared_ptr<Project> pro,bool verbose = false) {
     std::cout << "Cleaning: " << std::endl;
     if(exists(inter->pro->path / "build")){
       for (directory_entry p : directory_iterator(inter->pro->path / "build")) {
-        if(verbose_mode){
-          Utils::info << "Deleting" << p.path() << std::endl;
-        }
+        Utils::verbose << "Deleting" << p.path() << std::endl;
         if(p.is_directory()){
           remove_all(p.path());
         } else {

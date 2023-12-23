@@ -1,6 +1,7 @@
 #ifdef TEST
 #include <Frate/Test/Test.hpp>
-
+#include <Frate/Package.hpp>
+#include <Frate/Project.hpp>
 
 namespace Tests::Command {
   bool testRemovePackageMultiple(std::vector<std::string> packages){
@@ -18,7 +19,7 @@ namespace Tests::Command {
 
     if(failed) return false;
 
-    nlohmann::json config = inter->pro->toJson();
+    nlohmann::json config = *inter->pro;
 
     for(auto &dep : config["dependencies"]){
       for(auto &p : packages){

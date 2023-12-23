@@ -3,6 +3,7 @@
 #include <fstream>
 #include <Frate/Utils/CLI.hpp>
 #include <memory>
+#include <Frate/Project.hpp>
 
 
 namespace Frate::Generators::GitIgnore{

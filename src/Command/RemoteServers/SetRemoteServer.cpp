@@ -1,8 +1,10 @@
 #include <Frate/Command/RemoteServers.hpp>
+#include <nlohmann/json.hpp>
 #include <fstream>
 
 
 namespace Frate::Command::RemoteServers{
+  using nlohmann::json;
   bool set(std::shared_ptr<Interface> inter){
     std::vector<RemoteServer> servers =  remoteServerData(inter);
     std::string name;

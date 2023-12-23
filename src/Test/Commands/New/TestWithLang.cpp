@@ -1,6 +1,8 @@
 #ifdef TEST
 #include <Frate/Test/Test.hpp>
 #include <Frate/Utils/General.hpp>
+#include <Frate/Project.hpp>
+
 bool Tests::Command::testNewWithLang(std::string lang){
 
   Frate::Utils::info << "Testing new command with lang: " << lang << std::endl;

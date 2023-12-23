@@ -1,4 +1,5 @@
 #include <Frate/LuaAPI.hpp>
+#include "Frate/Utils/Logging.hpp"
 
 
 
@@ -53,7 +54,6 @@ namespace Frate::LuaAPI {
 
   std::string FrateApi::format(const std::string &str, sol::table in_table, sol::this_state s) {
 
-    Utils::warning << str << std::endl;
     std::string result = "";
 
     sol::state_view lua(s);
@@ -110,7 +110,6 @@ namespace Frate::LuaAPI {
       //If we have a specifier then we start recording it in the specifier vector
       if(tokens[i].type == specifier){
         specifiers.push_back(tokens[i].value);
-        Utils::info << tokens[i].value << std::endl;
         //If we have a close bracket then we resolve the specifier
         //By recursively looking through the table
       }else if(tokens[i].type == close_bracket){
@@ -121,7 +120,7 @@ namespace Frate::LuaAPI {
         result += tokens[i].value;
       }
     }
-    Utils::info << result << std::endl;
+    //Utils::info << result << std::endl;
     return result;
   }
 }

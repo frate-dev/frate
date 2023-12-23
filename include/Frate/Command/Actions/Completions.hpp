@@ -1,4 +1,5 @@
-#include <Frate/Command.hpp>
+#pragma once
+#include <Frate/Interface.hpp>
 
 namespace Frate {
   namespace Command::Completions {

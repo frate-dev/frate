@@ -1,4 +1,6 @@
-#include <Frate/Command.hpp>
+#pragma once
+#include <Frate/Package.hpp>
+#include <Frate/Interface.hpp>
 
 namespace Frate::Command::Packages {
 

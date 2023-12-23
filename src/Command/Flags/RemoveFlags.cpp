@@ -1,6 +1,6 @@
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Generators.hpp>
-
+#include <Frate/Project.hpp>
 
 namespace Frate::Command::Flags {
   bool remove(std::shared_ptr<Interface> inter){
@@ -17,7 +17,6 @@ namespace Frate::Command::Flags {
                 return f == flag;
             });
           }
-          std::cout << "Writing frate-project.json" << std::endl;
           return true;
         }
       }
@@ -28,7 +27,6 @@ namespace Frate::Command::Flags {
           return f == flag;
       });
     }
-    std::cout << "Writing frate-project.json" << std::endl;
     return true;
   }
 }

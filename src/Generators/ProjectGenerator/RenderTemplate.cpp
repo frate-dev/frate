@@ -1,5 +1,7 @@
 #include <Frate/Generators.hpp>
 #include <inja.hpp>
+#include <Frate/Project.hpp>
+#include "Frate/Utils/General.hpp"
 
 
 namespace Frate::Generators::Project {
@@ -8,8 +10,6 @@ namespace Frate::Generators::Project {
       Environment &env,
       std::shared_ptr<Command::Project> pro){
 
-
-    Utils::info << "Rendering templates" << std::endl;
 
     std::string CPM;
 
@@ -69,7 +69,7 @@ namespace Frate::Generators::Project {
         continue;
       }
       if(current_p.extension() == ".inja"){
-        std::string rendered_file = env.render_file(current_p, pro->toJson());
+        std::string rendered_file = env.render_file(current_p, *pro);
         std::string new_file = current_p.string();
         //Removes the .inja extension from the file
         new_file = new_file.replace(new_file.find(".inja"), 5, "");

@@ -2,6 +2,7 @@
 #include <Frate/Utils/CLI.hpp>
 #include <Frate/Utils/General.hpp> 
 #include <Frate/Command/CommandMode.hpp>
+#include <Frate/Command.hpp>
 
 namespace Frate::Command::Packages {
   using namespace Utils::CLI;
@@ -12,9 +13,7 @@ namespace Frate::Command::Packages {
     Utils::toLower(query);
 
 
-    for(json json: rawIndex){
-      Package package;
-      package.fromJson(json);
+    for(Package package: rawIndex){
 
       int score = 0;
       score += Utils::getStringScore(package.name, query) * 10;
@@ -29,10 +28,13 @@ namespace Frate::Command::Packages {
     std::sort(results.begin(), results.end(), [](Package a, Package b){
         return a.score > b.score;
         });
+
     return results;
   }
 
   std::vector<Package> filterOutBest(std::vector<Package> &packages){
+
+    std::vector<Package> filterResultsVec;
 
     int totalScore = std::accumulate(
         packages.begin(), packages.end(), 0, [](int a, Package b){
@@ -41,12 +43,12 @@ namespace Frate::Command::Packages {
 
     int averageScore = totalScore / packages.size();
 
-    auto filterResults = packages | std::views::filter(
-        [&averageScore](Package package){
-        return package.score > 2 * averageScore;
-        });
+    for(Package package: packages){
+      if(package.score > averageScore){
+        filterResultsVec.push_back(package);
+      }
+    }
 
-    std::vector<Package> filterResultsVec(filterResults.begin(), filterResults.end());
 
     return filterResultsVec;
   }
@@ -54,9 +56,7 @@ namespace Frate::Command::Packages {
   std::pair<bool, Package> getExactMatch(std::string &query){
     json rawIndex = fetchIndex();
     Utils::toLower(query);
-    for(json json: rawIndex){
-      Package package;
-      package.fromJson(json);
+    for(Package package: rawIndex){
       if(package.name == query){
         return {true, package};
       }
@@ -67,19 +67,19 @@ namespace Frate::Command::Packages {
   bool search(std::shared_ptr<Interface> inter){
     std::string query;
     if(inter->args->operator[]("query").count() == 0){
-      std::cout << "No query provided" << ENDL;
-      std::cout << "Usage: frate search p <query>" << ENDL;
+      std::cout << "No query provided" << std::endl;
+      std::cout << "Usage: frate search p <query>" << std::endl;
       return false;
     }else{
       query = inter->args->operator[]("query").as<std::string>();
       std::vector<Package> results = calculatePackageScores(query);
-      List *packageList = (new Utils::CLI::List())->
-        ReverseIndexed();
+      List packageList{};
+        packageList.ReverseIndexed();
       for(Package result: results){
-        packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
+        packageList.pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
       }
 
-      std::cout << packageList->Build() << ENDL;
+      std::cout << packageList.Build() << std::endl;
 
       return true;
     }
@@ -103,15 +103,15 @@ namespace Frate::Command::Packages {
     if(results.size() == 0){
       return {false, Package()};
     }
-    List *packageList = (new Utils::CLI::List())->
-      Numbered()->
+    List packageList{}; 
+    packageList.Numbered().
       ReverseIndexed();
     for(Package result: results){
-      packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
+      packageList.pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
     }
 
 
-    std::cout << packageList->Build() << std::endl;
+    std::cout << packageList.Build() << std::endl;
 
     std::vector<Package> filterResultsVec = filterOutBest(results);
 

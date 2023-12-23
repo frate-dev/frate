@@ -1,6 +1,5 @@
 #pragma once
-#include <Frate/Command.hpp>
-
+#include <Frate/Interface.hpp>
 namespace Frate::Command::Run {
 
   bool options(std::shared_ptr<Interface> inter);

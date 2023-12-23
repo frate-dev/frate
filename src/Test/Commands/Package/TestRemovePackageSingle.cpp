@@ -1,5 +1,6 @@
 #ifdef TEST
 #include <Frate/Test/Test.hpp>
+#include <fstream>
 
 
 bool Tests::Command::testRemovePackage(std::string package_name){

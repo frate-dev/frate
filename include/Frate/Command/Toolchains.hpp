@@ -1,8 +1,11 @@
-#include "../Command.hpp"
+#pragma once
+#include <Frate/Interface.hpp>
+#include <nlohmann/json.hpp>
 
 
 namespace Frate::Command {
   namespace Toolchains {
+    using json = nlohmann::json;
     json load();
     bool list(std::shared_ptr<Interface> inter);
     bool add(std::shared_ptr<Interface> interface);

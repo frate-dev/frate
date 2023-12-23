@@ -1,8 +1,9 @@
 #include <Frate/Generators.hpp>
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <string>
 #include <fstream>
 #include <termcolor/termcolor.hpp>
+#include <Frate/Project.hpp>
 
 namespace Frate::Generators::ConfigJson{
  // [[deprecated("Use project->writeConfig() instead")]]
@@ -10,7 +11,7 @@ namespace Frate::Generators::ConfigJson{
     std::ofstream file;
     std::string file_name = "frate-project.json";
     file.open(pro->path / file_name);
-    file << pro->toJson().dump(2);
+    file << nlohmann::json(*pro).dump(2);
     file << '\n';
     file.close();
     return true;

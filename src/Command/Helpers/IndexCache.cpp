@@ -1,8 +1,9 @@
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <nlohmann/json.hpp>
 #include <Frate/Utils/General.hpp>
 #include <Frate/Constants.hpp>
 #include <fstream>
+#include "Frate/Package.hpp"
 
 namespace Frate::Command{
   using nlohmann::json;
@@ -28,16 +29,16 @@ namespace Frate::Command{
       ifstream indexFile;
       indexFile = std::ifstream(indexFileName);
       index = json::parse(indexFile);
-      std::cout << "index file exists" << ENDL;
+      std::cout << "index file exists" << std::endl;
 
     } else {
       ofstream indexFile;
-      cout << "Creating a new index file" << ENDL;
+      cout << "Creating a new index file" << std::endl;
 
       try {
         create_directories(string(std::getenv("HOME")) + "/.local/frate");
       }catch(std::exception& e){
-        Utils::error << "Failed to create index file" << ENDL;
+        Utils::error << "Failed to create index file" << std::endl;
         Utils::debug(e.what());
         exit(-1);
       }
@@ -45,7 +46,7 @@ namespace Frate::Command{
       index = Utils::fetchJson(indexUrl);
       indexFile = std::ofstream(indexFileName);
       indexFile << index.dump(2);
-      std::cout << "index file created" <<ENDL;
+      std::cout << "index file created" <<std::endl;
 
     }
 
@@ -66,7 +67,7 @@ namespace Frate::Command{
 
     }catch(std::exception& e){
 
-      std::cout << "Creating a new index file" << ENDL;
+      std::cout << "Creating a new index file" << std::endl;
       Utils::debug(e.what());
 
       try{
@@ -74,7 +75,7 @@ namespace Frate::Command{
         create_directories(string(std::getenv("HOME")) + "/.local/frate");
 
       }catch(std::exception& e){
-        Utils::error << "Failed to create index file" << ENDL;
+        Utils::error << "Failed to create index file" << std::endl;
         Utils::debug(e.what());
         return false;
 

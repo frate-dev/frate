@@ -1,10 +1,8 @@
 #ifdef TEST
 #pragma once
-#include "../Command.hpp"
-#include "Frate/Utils/General.hpp"
 #include <catch2/catch_test_macros.hpp>
 #include <cxxopts.hpp>
-#include <fstream>
+#include <Frate/Interface.hpp>
 
 namespace Tests{
   std::string genBase64String(int random_string_length);
@@ -12,16 +10,17 @@ namespace Tests{
 
 
 namespace Tests::Command {
+  using Frate::Command::Interface;
   using std::filesystem::path;
   extern std::filesystem::path test_path;
-  extern Frate::Utils::Error error;
-  extern Frate::Utils::Info info;
-  extern Frate::Utils::Warning warning;
+  // extern Frate::Utils::Error error;
+  // extern Frate::Utils::Info info;
+  // extern Frate::Utils::Warning warning;
   void cleanUp(path test_path);
 
-  std::pair<bool, Frate::Command::Interface*> init(std::string command,bool check_config=false);
+  std::pair<bool, std::shared_ptr<Interface>> init(std::string command,bool check_config=false);
 
-  bool validateProjectJson(Frate::Command::Interface* inter);
+  bool validateProjectJson(std::shared_ptr<Interface> inter);
 
   std::filesystem::path genTestDirectory();
   std::pair<int, char**> genCommand(std::string args);

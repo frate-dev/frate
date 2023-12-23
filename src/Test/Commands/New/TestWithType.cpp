@@ -1,6 +1,7 @@
 #ifdef TEST
-#include "Frate/Utils/General.hpp"
 #include <Frate/Test/Test.hpp>
+#include <Frate/Project.hpp>
+
 bool Tests::Command::testNewWithType(std::string type){
   Frate::Utils::info << "Testing new command with type: " << type << std::endl;
   test_path = genTestDirectory(); 

@@ -1,12 +1,12 @@
 
-#include "Frate/Command.hpp"
+#include "Frate/Interface.hpp"
 #include "Frate/LuaAPI.hpp"
+#include "Frate/Utils/General.hpp"
 #include "inja.hpp"
 #include <Frate/Generators.hpp>
 #include <Frate/Constants.hpp>
 #include <filesystem>
-#include <git2/types.h>
-#include <git2/clone.h>
+#include <Frate/Project.hpp>
 
 namespace Frate::Generators::Project {
   void from_json(const json& j, Template& t){
@@ -48,23 +48,24 @@ namespace Frate::Generators::Project {
       current_template = templ;
       Utils::info << "Creating project from template: " << templ.name << std::endl;
     }
-
+    Utils::info << "Downloading template at: " << current_template.git << std::endl;
     if(!downloadTemplate(current_template.git, pro->path)){
       Utils::error << "Error while downloading template" << std::endl;
       return false;
     }
-
+    
+    Utils::info << "Copying template to project" << std::endl;
     std::filesystem::copy(
         pro->path / "template",
         pro->path,
         std::filesystem::copy_options::recursive  | std::filesystem::copy_options::overwrite_existing
         );
-
+    Utils::info << "Loading template config" << std::endl;
     if(!loadTemplateConfig(pro)){
       Utils::error << "Error while loading template config" << std::endl;
       return false;
     }
-
+    Utils::info << "Running template prompts" << std::endl;
     if(!runTemplatePrompts(pro)){
       Utils::error << "Error while running template prompts" << std::endl;
       return false;
@@ -73,13 +74,15 @@ namespace Frate::Generators::Project {
     inja::Environment env;
     sol::state lua;
 
+    Utils::info << "Initializing lua" << std::endl;
     if(!initializeLua(env, lua, pro)){
       Utils::error << "Error while initializing lua" << std::endl;
       return false;
     }
 
     LuaAPI::initScripts(lua, pro);
-
+    
+    Utils::info << "Rendering template" << std::endl;
     if(!renderTemplate(env,  pro)){
       Utils::error << "Error while rendering template to tmp" << std::endl;
       return false;
@@ -96,14 +99,15 @@ namespace Frate::Generators::Project {
     inja::Environment env;
     sol::state lua;
 
-
     if(!initializeLua(env, lua, pro)){
       Utils::error << "Error while initializing lua" << std::endl;
       return false;
     }
 
+    Utils::verbose << "Initializing lua scripts at: " << pro->path / "template/scripts" << std::endl;
     LuaAPI::initScripts(lua, pro);
 
+    Utils::verbose << "Refreshing template" << std::endl;
     if(!refreshTemplate(env,pro)){
       Utils::error << "Error while rendering template to tmp" << std::endl;
       return false;

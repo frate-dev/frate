@@ -1,5 +1,7 @@
-#include "Frate/Utils/CLI.hpp"
-#include "Frate/Command.hpp"
+#pragma once
+#include <Frate/RemoteServer.hpp>
+#include <memory>
+#include "Frate/Project.hpp"
 
 namespace Frate::Wizard {
   bool Project(std::shared_ptr<Command::Project> project);

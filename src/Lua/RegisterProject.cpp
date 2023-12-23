@@ -1,4 +1,7 @@
 #include <Frate/LuaAPI.hpp>
+#include <Frate/Mode.hpp>
+#include <Frate/Project.hpp>
+#include <Frate/ProjectPrompt.hpp>
 
 namespace Frate::LuaAPI {
   bool registerProject(sol::state &lua, std::shared_ptr<Command::Project> pro) {
@@ -14,7 +17,6 @@ namespace Frate::LuaAPI {
         "versions", &Command::Package::versions,
         "target_link", &Command::Package::target_link,
         "description", &Command::Package::description,
-        "selected_version", &Command::Package::selected_version,
         "git_description", &Command::Package::git_description,
         "language", &Command::Package::language,
         "license", &Command::Package::license,

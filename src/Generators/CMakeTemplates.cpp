@@ -3,10 +3,9 @@
 #include <nlohmann/json_fwd.hpp>
 #include <string>
 #include <nlohmann/json.hpp>
-#include <Frate/Command.hpp>
+#include <Frate/Project.hpp>
 #include <Frate/Utils/General.hpp>
 #include <sol/sol.hpp>
-#include <git2.h>
 #include <inja.hpp>
 #include <Frate/LuaAPI.hpp>
 
@@ -18,7 +17,7 @@ namespace Frate::Generators::CMakeList {
 
 #ifdef DEBUG
 #ifndef TEST
-    std::cout << pro->toJson().dump(2) << std::endl;
+    std::cout << json(*pro).dump(2) << std::endl;
 #endif
 #endif
     std::string CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
@@ -41,7 +40,7 @@ namespace Frate::Generators::CMakeList {
       Utils::debug("Error while registering project");
       return false;
     }
-
+    
     if(!LuaAPI::registerProjectScripts(env, lua,pro->path / "templates/scripts",pro)){
       Utils::debug("Error while registering project scripts");
       return false;
@@ -51,7 +50,7 @@ namespace Frate::Generators::CMakeList {
 
     std::string CMakeListsExecutable;
     try{
-      CMakeListsExecutable = env.render_file(pro->path /"templates" / "CMakeLists.txt.inja", pro->toJson());
+      CMakeListsExecutable = env.render_file(pro->path /"templates" / "CMakeLists.txt.inja", *pro);
     }catch(...){
       Utils::debug("Error while rendering CMakeLists.txt");
       return false;

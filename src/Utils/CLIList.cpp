@@ -25,25 +25,25 @@ namespace Frate::Utils::CLI {
   }
   List::~List(){
   }
-  List* List::IndexColor(std::string color){
+  List& List::IndexColor(std::string color){
     index_color = color;
-    return this;
+    return *this;
   }
-  List* List::PrimaryColor(std::string color){
+  List& List::PrimaryColor(std::string color){
     primary_color = color;
-    return this;
+    return *this;
   }
-  List* List::SubTextColor(std::string color){
+  List& List::SubTextColor(std::string color){
     subtext_color = color;
-    return this;
+    return *this;
   }
-  List* List::Numbered(){
+  List& List::Numbered(){
     numbered = true;
-    return this;
+    return *this;
   }
-  List* List::ReverseIndexed(){
+  List& List::ReverseIndexed(){
     reversed_index = true;
-    return this;
+    return *this;
   }
   void List::push_line(int index, ListItem& item){
     if(numbered){

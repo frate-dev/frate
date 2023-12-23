@@ -2,6 +2,7 @@
 #include <Frate/Utils/General.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <fstream>
+#include <Frate/Project.hpp>
 
 namespace Frate::Command::RemoteServers{
   using namespace Utils::CLI;
@@ -18,7 +19,14 @@ namespace Frate::Command::RemoteServers{
     std::fstream file;
     std::string build_servers_dir= std::string(std::getenv("HOME"))  + "/.config/frate/";
     if (!std::filesystem::exists(build_servers_dir)){
-      std::filesystem::create_directory(build_servers_dir);
+      try{
+        std::filesystem::create_directory(build_servers_dir);
+      }catch(std::exception &e){
+        Utils::debug(e.what());
+        Utils::error <<
+          "Error while creating directory: " << build_servers_dir << std::endl;
+        exit(1);
+      }
     }
     std::string build_servers= std::string(std::getenv("HOME"))  + "/.config/frate/" + "build_server.json";
     std::string current_build_server= std::string(std::getenv("HOME"))  + "/.config/frate/" + "current_build_server.json";
@@ -76,9 +84,21 @@ namespace Frate::Command::RemoteServers{
     }
     return servers;
   }
+  bool validateServerInput(std::string input){
+    if(input.empty()){
+      return false;
+    }
+    if (input.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_") != std::string::npos){
+      return false;
+    }
+    return true;
+  }
+
   bool getServerName(std::string& name){
     Prompt name_promp("Enter the name of the server: ");
+    name_promp.setValidator(validateServerInput);
     name_promp.run();
+
     auto[valid, _name] = name_promp.get<std::string>();
     if(!valid){
       return false;

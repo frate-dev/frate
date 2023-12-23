@@ -10,14 +10,14 @@ namespace Tests::Command {
     auto [failed, inter] = init("frate add package " + package_name + " -l");
 
     if(failed){ 
-      error << "Failed to add package" << std::endl;
+      Frate::Utils::error << "Failed to add package" << std::endl;
       return false;
     }
 
     auto [failed_dup, inter_dup] = init("frate add package " + package_name + " -l");
 
     if(!failed_dup){ 
-      error << "Failed to detect duplicate package" << std::endl;
+      Frate::Utils::error << "Failed to detect duplicate package" << std::endl;
       return false;
     }
 

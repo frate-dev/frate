@@ -1,5 +1,10 @@
+#include "Frate/Interface.hpp"
 #include "Frate/Utils/General.hpp"
+#include "Frate/Utils/Logging.hpp"
 #include <Frate/Command/Actions/FTP.hpp>
+#include <Frate/Project.hpp>
+#include <Frate/Utils/CLI.hpp>
+
 namespace Frate::Command::FTP {
   using namespace std::filesystem;
   using Utils::CLI::Prompt;
@@ -19,7 +24,7 @@ namespace Frate::Command::FTP {
 
     path tmp_path = Utils::copyToTmpPath(inter->pro->path,"nuke-delete-frate-project-");
 
-    Utils::info << "Deleting project" << ENDL;
+    Utils::info << "Deleting project" << std::endl;
 
     for (const directory_entry &p : 
         directory_iterator(inter->pro->path) | std::views::filter(
@@ -29,10 +34,10 @@ namespace Frate::Command::FTP {
       try{
         if(std::filesystem::is_directory(path)){
           std::filesystem::remove_all(path);
-          if(verbose_mode) Utils::info << "Deleting: " << path << std::endl;
+          Utils::verbose << "Deleting: " << path << std::endl;
         }else{
           std::filesystem::remove(path);
-          if(verbose_mode) Utils::info << "Deleting: " << path << std::endl;
+          Utils::verbose << "Deleting: " << path << std::endl;
         }
       }catch(std::exception &e){
         Utils::error << "Failed to delete: " << path << std::endl;

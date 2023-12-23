@@ -18,13 +18,14 @@ namespace Frate::Command::Packages {
      exit(0);
    }
 
-   List *packageList = (new Utils::CLI::List())->
-     Numbered()->
+   List packageList{};
+    packageList.
+     Numbered().
      ReverseIndexed();
    for(Package result: searchResults){
-     packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
+     packageList.pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
    }
-   std::cout << packageList->Build() << std::endl;
+   std::cout << packageList.Build() << std::endl;
    Prompt prompt("Select a package to install: ");
    for(size_t i = 0; i < searchResults.size(); i++){
      prompt.addOption(i);
@@ -44,12 +45,13 @@ namespace Frate::Command::Packages {
 
   std::string promptForVersion(Package &chosen_package){
 
-    List* list = (new List())->Numbered()->ReverseIndexed();
+    List list{}; 
+    list.Numbered().ReverseIndexed();
     for(size_t i = 0; i < chosen_package.versions.size(); i++){
-      list->pushBack(ListItem(chosen_package.versions[i]));
+      list.pushBack(ListItem(chosen_package.versions[i]));
     }
 
-    std::cout << list->Build() << std::endl;
+    std::cout << list.Build() << std::endl;
 
     Prompt prompt("Select a version to install: ");
 
@@ -67,7 +69,5 @@ namespace Frate::Command::Packages {
     }else{
       return chosen_package.versions[index];
     }
-
-
   }
 }

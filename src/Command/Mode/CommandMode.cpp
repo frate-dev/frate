@@ -1,7 +1,9 @@
-#include <Frate/Command.hpp>
+#include <Frate/Interface.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/CommandMode.hpp>
+#include <Frate/Mode.hpp>
+#include <Frate/Project.hpp>
 
 namespace Frate::Command::ModeCommands {
   bool addFlags(std::shared_ptr<Interface> inter, std::string mode){

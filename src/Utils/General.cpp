@@ -134,6 +134,26 @@ CURL* curl = curl_easy_init();
       return -1;
     }
   }
+  CmdOutput hSystemWithOutput(std::string cmd){
+    CmdOutput output;
+    std::string cmd_stdout = "";
+    std::string cmd_stderr = "";
+    FILE* pipe = popen(cmd.c_str(), "r");
+    if(!pipe){
+      Utils::error << "Failed to execute command: " << cmd << std::endl;
+      exit(-1);
+    }
+    char buffer[128];
+    while(!feof(pipe)){
+      if(fgets(buffer, 128, pipe) != nullptr){
+        cmd_stdout += buffer;
+      }
+    }
+    output.std_out = cmd_stdout;
+    output.std_err = cmd_stderr;
+    output.return_code = pclose(pipe);
+    return output;
+  }
 
   std::string genUUIDv4(){
     std::string uuid = "";

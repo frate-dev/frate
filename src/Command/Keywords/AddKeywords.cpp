@@ -1,6 +1,6 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Keywords.hpp>
-
+#include <Frate/Project.hpp>
 
 namespace Frate::Command::Keywords{
   bool add(std::shared_ptr<Interface> inter){
@@ -19,9 +19,6 @@ namespace Frate::Command::Keywords{
         }
       }
       inter->pro->keywords.push_back(keyword);
-    }
-    if(!inter->pro->save()){
-      return false;
     }
     return true;
   }

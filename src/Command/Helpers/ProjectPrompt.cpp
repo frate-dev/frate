@@ -1,10 +1,11 @@
-#include <Frate/Command.hpp>
-
+#include <Frate/Utils/Logging.hpp>
+#include <Frate/ProjectPrompt.hpp>
 
 namespace Frate::Command {
 
   void to_json(json &j, const ProjectPrompt &p){
     j = json{
+      {"text", p.text},
       {"value", p.value},
       {"default_value", p.default_value},
       {"type", p.type},
@@ -12,10 +13,13 @@ namespace Frate::Command {
       // {"validator", p.validator}
     };
   }
-  void from_json(const json &j, ProjectPrompt &p){ j.at("value").get_to(p.value);
-    j.at("default_value").get_to(p.default_value);
-    j.at("type").get_to(p.type);
-    j.at("required").get_to(p.required);
+  void from_json(const json &j, ProjectPrompt &p){ 
+    j.contains("text") ? j.at("text").get_to(p.text) : p.text = "";
+    j.contains("value") ? j.at("value").get_to(p.value) : p.value = "";
+    j.contains("default_value") ? j.at("default_value").get_to(p.default_value) : p.default_value = "";
+    j.contains("required") ? j.at("required").get_to(p.required) : p.required = false;
+    j.contains("type") ? j.at("type").get_to(p.type) : p.type = "string";
+    j.contains("options") ? j.at("options").get_to(p.options) : p.options = {};
     //j.at("validator").get_to(p.validator); need a way to make this a lua function
   }
   template<>

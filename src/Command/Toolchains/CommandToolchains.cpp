@@ -4,10 +4,13 @@
 #include <Frate/Generators.hpp>
 #include <filesystem>
 #include <fstream>
+#include <Frate/Project.hpp>
+#include "Frate/Utils/CLI.hpp"
 
 
 
 namespace Frate::Command::Toolchains{
+  using Utils::CLI::Prompt;
   json load(){
     std::filesystem::path  path = std::string(std::getenv("HOME")) + "/.config/" + "frate/" + "toolchains.json";
     return json{};
@@ -34,7 +37,12 @@ namespace Frate::Command::Toolchains{
     Generators::Toolchain::generateToolchain(toolchain);
     std::ofstream file;
     if (!std::filesystem::exists(inter->pro->path / "toolchains/")){
-      std::filesystem::create_directory(inter->pro->path / "toolchains/");
+      try{
+        std::filesystem::create_directory(inter->pro->path / "toolchains/");
+      }catch(...){
+        Utils::error << "Error while creating toolchains directory" << std::endl;
+        return false;
+      }
     }
     file.open(inter->pro->path / "toolchains/" / (toolchain + ".cmake"));
 

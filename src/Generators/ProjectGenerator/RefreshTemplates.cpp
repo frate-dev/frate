@@ -1,5 +1,7 @@
 #include <Frate/Generators.hpp>
 #include <inja.hpp>
+#include <Frate/Project.hpp>
+#include "Frate/Utils/General.hpp"
 
 
 namespace Frate::Generators::Project {
@@ -11,7 +13,7 @@ namespace Frate::Generators::Project {
     };
 
     for(const path& current_p: paths_to_refresh){
-      std::string rendered_file = env.render_file(current_p, pro->toJson());
+      std::string rendered_file = env.render_file(current_p, *pro);
       std::string new_file = current_p.string();
       new_file = new_file.replace(new_file.find(".inja"), 5, "");
       Utils::replaceKey(new_file, "template/", "");

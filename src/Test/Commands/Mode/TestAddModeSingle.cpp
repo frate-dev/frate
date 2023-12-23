@@ -1,6 +1,7 @@
+#ifdef TEST
 #include "Frate/Test/Test.hpp"
 #include "nlohmann/json_fwd.hpp"
-#ifdef TEST
+#include <Frate/Project.hpp>
 
 bool Tests::Command::testAddMode(std::string mode_name){
   Frate::Utils::info << "Testing add mode command normal conditions" << std::endl;
@@ -10,7 +11,7 @@ bool Tests::Command::testAddMode(std::string mode_name){
 
   if(failed) return false;
 
-  nlohmann::json config = inter->pro->toJson();
+  nlohmann::json config = *inter->pro;
 
   for(auto &mode : config["modes"]){
     if(mode["name"] == mode_name){

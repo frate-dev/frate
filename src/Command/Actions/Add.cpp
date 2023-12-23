@@ -6,6 +6,7 @@
 #include <Frate/Command/Author.hpp>
 #include <Frate/Command/Modes.hpp>
 #include <Frate/Command/Library.hpp>
+#include <Frate/Project.hpp> 
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Utils/General.hpp>
 namespace Frate::Command::Add {
@@ -34,7 +35,9 @@ namespace Frate::Command::Add {
       return false;
     }
 
-    return inter->runCommand(subcommand, addHandlers);
+    inter->pro->load();
+
+    return runCommand(inter,subcommand, addHandlers);
 
     return true;
   }
@@ -42,11 +45,10 @@ namespace Frate::Command::Add {
     return {
       Handler{
         .aliases = {"packages","p","package"},
-          .flags = {"-l,--latest","-m,--mode","-t,--target"},
+          .flags = {"-l,--latest","-m,--mode","-t,--target", "-pv,--package-version", "-g,--git", "-t,--target-link"},
           .positional_args = {"package_name"},
           .docs = "Add a package to the project",
           .callback = &Packages::add,
-          .requires_project = true,
           .unlimited_args = true,
       },
       Handler{
@@ -54,42 +56,36 @@ namespace Frate::Command::Add {
         .positional_args = {"\"flag\""},
         .docs = "Add a flag to the project",
         .callback = &Flags::add,
-        .requires_project = true,
       },
       Handler{
         .aliases = {"lib","l"},
         .positional_args = {"lib"},
         .docs = "Add a library to link to your project",
         .callback = &Library::add,
-        .requires_project = true,
       },
       Handler{
         .aliases = {"mode","m"},
         .positional_args = {"mode-name"},
         .docs = "Adds a build mode to your project",
         .callback = &Modes::add,
-        .requires_project = true,
       },
       Handler{
         .aliases = {"server","s"},
         //TODO: Don't know what inter requires
         .docs = "Add a remote server to your local config that you can later build to",
         .callback = &RemoteServers::add,
-        .requires_project = true,
       },
       Handler{
         .aliases = {"toolchain","t"},
         .positional_args = {},
         .docs = "Add a crosscompile toolchain to your project",
         .callback = &Toolchains::add,
-        .requires_project = true,
       },
       Handler{
         .aliases = {"author","a"},
         .positional_args = {"author-name"},
         .docs = "Add an author to your project",
         .callback = &Author::add,
-        .requires_project = true,
         .unlimited_args = true,
       },
       Handler{
@@ -97,7 +93,6 @@ namespace Frate::Command::Add {
         .positional_args = {"keyword"},
         .docs = "Add keywords to your project",
         .callback = &Keywords::add,
-        .requires_project = true,
         .unlimited_args = true,
       },
     };

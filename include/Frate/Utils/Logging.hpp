@@ -4,7 +4,7 @@
 #include <termcolor/termcolor.hpp>
 
 namespace Frate::Utils {
-  static bool verbose_mode = false;
+  extern bool verbose_mode;
   class Error {
     public:
       template<typename T>

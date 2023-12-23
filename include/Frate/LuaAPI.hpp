@@ -1,11 +1,12 @@
 #pragma once
-#include "Frate/Command.hpp"
+#include <nlohmann/json_fwd.hpp>
+#include <sol/sol.hpp>
+#include "Frate/Project.hpp"
 #include "inja.hpp"
 #include <nlohmann/json.hpp>
 #include <sol/forward.hpp>
 #include <sol/sol.hpp>
 #include <filesystem>
-
 
 
 

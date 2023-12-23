@@ -1,6 +1,6 @@
 #include <Frate/Generators.hpp>
-#include <git2.h>
-#include <git2/clone.h>
+#include <Frate/Constants.hpp>
+#include "Frate/Utils/General.hpp"
 
 
 namespace Frate::Generators::Project {
@@ -16,46 +16,90 @@ namespace Frate::Generators::Project {
       std::filesystem::remove_all(project_path / "template");
     }
 
-    std::filesystem::create_directories(project_path / "template");
+    try{
 
+      std::filesystem::create_directories(project_path / "template");
 
-    Utils::info << "Downloading template" << std::endl;
-    git_repository* template_repo = NULL; 
-    git_repository* callbacks_repo = NULL;
-    Utils::info << "Cloning " << git_url << " into " 
-      << (project_path / "template").c_str() << std::endl;
-
-
-    int template_clone_status = git_clone(&template_repo,
-        git_url.c_str(), (project_path / "template").c_str(), NULL);
-
-
-    if(template_clone_status != 0){
-      Utils::error << "Error while cloning repository" << std::endl;
+    }catch(...){
+      Utils::error << "Error while creating template directory" << std::endl;
       return false;
     }
 
+//     git_libgit2_init();
+//     const git_error *template_clone_err;
+//     Utils::info << "Downloading template" << std::endl;
+//     git_repository* template_repo = NULL; 
+//     git_repository* callbacks_repo = NULL;
+//     Utils::info << "Cloning " << git_url << " into " 
+//       << (project_path / "template").c_str() << std::endl;
+// 
+// 
+//     int template_clone_status = git_clone(&template_repo,
+//         git_url.c_str(), (project_path / "template").c_str(), NULL);
+// 
+// 
+//     if(template_clone_status != 0){
+//       template_clone_err = git_error_last();
+//       Utils::error << "Clone status code: " << template_clone_status << std::endl;
+//       if(template_clone_err){
+//         Utils::error << "Error while cloning repository error code: " << template_clone_err->klass << std::endl;
+//       }else{
+//         Utils::error << "Error while cloning repository" << std::endl;
+//       }
+//       return false;
+//     }
+// 
+// 
+//     git_repository_free(template_repo);
+// 
+//     
+//     Utils::info << "Cloning " << callbacks_url << " into " 
+//       << (project_path / "template/frate-callbacks").c_str() << std::endl;
+// 
+//     const git_error *callbacks_clone_err;
+//     int callbacks_clone_status= git_clone(&callbacks_repo,
+//         callbacks_url.c_str(),
+//         (project_path / "template/frate-callbacks").c_str(), NULL);
+// 
+// 
+//     if(callbacks_clone_status != 0){
+//       callbacks_clone_err = git_error_last();
+//       Utils::error << "Clone status code: " << callbacks_clone_status << std::endl;
+//       if(callbacks_clone_err){
+//         Utils::error << "Error while cloning repository error code: " << callbacks_clone_err->klass << std::endl;
+//       }else{
+//         Utils::error << "Error while cloning repository" << std::endl;
+//       }
+//       return false;
+//     }
+// 
+// 
+//     git_repository_free(callbacks_repo);
+// 
+//     git_libgit2_shutdown();
 
-    git_repository_free(template_repo);
+    int status = Utils::hSystem(
+        "git clone -b " +
+        Constants::TEMPLATE_BRANCH + " " +
+        git_url + " " + (project_path / "template").string()
+        );
+    if(status != 0){
+      Utils::error << "Error while cloning template repo" << std::endl;
+      return false;
+    }
 
     const std::string callbacks_url = "https://github.com/frate-templates/frate-callbacks.git";
+    status = Utils::hSystem(
+        "git clone -b " +
+        Constants::TEMPLATE_BRANCH + " " +
+        std::string(callbacks_url) + " " +
+        (project_path / "template/frate-callbacks").string()
+        );
 
-    Utils::info << "Cloning " << callbacks_url << " into " 
-      << (project_path / "template/frate-callbacks").c_str() << std::endl;
-
-
-    int callbacks_clone_status= git_clone(&callbacks_repo,
-        callbacks_url.c_str(),
-        (project_path / "template/frate-callbacks").c_str(), NULL);
-
-
-    if(callbacks_clone_status != 0){
-      Utils::error << "Error while cloning repository" << std::endl;
+    if(status != 0){
+      Utils::error << "Error while cloning callback repository" << std::endl;
       return false;
     }
-
-
-    git_repository_free(callbacks_repo);
 
     std::filesystem::rename(project_path / "template/frate-callbacks/scripts",
         project_path / "template/scripts");
