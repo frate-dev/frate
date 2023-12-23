@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fstream>
 #include <Frate/Project.hpp>
+#include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp>
 
 
@@ -12,6 +13,7 @@ namespace Frate::Command::UvWatch{
     inter->options->parse_positional({"command"});
     inter->options->add_options()
       ("c,command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
+      ("e,execute", "Execute command", cxxopts::value<std::string>()->default_value("false"))
       ("r,remote-build", "Build server to use", cxxopts::value<bool>()->default_value("false"));
     return inter->parse();
   }
@@ -74,18 +76,18 @@ namespace Frate::Command::UvWatch{
                              ":" + remote_dest_path + " ";
 
     // SSH command to build the project
-    std::string ssh_build = "&& ssh -p " + std::to_string(inter->pro->build_server.port) + " " +
-                            inter->pro->build_server.username + "@" + inter->pro->build_server.ip + " "
-                            "'cd " + remote_dest_path + " && cmake . && make -j $(nproc)'";
+    std::string ssh = "&& ssh -p " + std::to_string(inter->pro->build_server.port) + " " +
+                            inter->pro->build_server.username + "@" + inter->pro->build_server.ip + " ";
+    std::string build =  "'cd " + remote_dest_path + " && cmake . && make -j $(nproc)'";
 
     // Add option to run a specific command after building, if set
     std::string command;
-    if (inter->args->count("command")) {
-        std::string command_to_run = inter->args->operator[]("command").as<std::string>();
-        command = " && " + command_to_run;
+    if (inter->args->count("execute")) {
+        std::string command_to_run = inter->args->operator[]("execute").as<std::string>();
+        command =  ssh + command_to_run;
     }
 
-    return sync_files + ssh_build + command;
+    return sync_files + ssh +  build + command;
   }
 
 
@@ -147,7 +149,6 @@ namespace Frate::Command::UvWatch{
       uv_close((uv_handle_t *)timer, [](uv_handle_t *handle) {
         free(handle);
       });
-      delete timer;
     }, 2000, 0); // 1000 ms delay
   }
 
@@ -173,6 +174,8 @@ namespace Frate::Command::UvWatch{
 
   bool watch(std::shared_ptr<Interface> inter){
     options(inter);
+    inter->pro->load();
+    Generators::Project::refresh(inter->pro);
     uv_loop_t *loop = uv_default_loop();
     std::vector<uv_fs_event_t*> watchers;
 
