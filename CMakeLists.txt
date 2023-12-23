@@ -159,6 +159,7 @@ CPMAddPackage(
 )
 
 
+
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
   "src/**.cpp"
   "src/**.c"
@@ -208,8 +209,8 @@ else()
   message("Default mode")
 endif()
 
-target_link_options(${PROJECT_NAME} PRIVATE  -static-libgcc -static-libstdc++)
-target_link_libraries(${PROJECT_NAME} PRIVATE -static-libgcc -static-libstdc++)
+target_link_options(${PROJECT_NAME} PRIVATE   -static-libgcc -static-libstdc++)
+#target_link_libraries(${PROJECT_NAME} PRIVATE -static-libgcc -static-libstdc++)
 target_link_libraries(${PROJECT_NAME} PRIVATE libcurl)
 target_link_libraries(${PROJECT_NAME} PRIVATE cxxopts)
 target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
@@ -217,7 +218,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE libgit2package)
 target_link_libraries(${PROJECT_NAME} PRIVATE uv)
 target_link_libraries(${PROJECT_NAME} PRIVATE termcolor)
 target_link_libraries(${PROJECT_NAME} PRIVATE lua)
-target_link_libraries(${PROJECT_NAME} PRIVATE  sol2::sol2)
+target_link_libraries(${PROJECT_NAME} PRIVATE sol2::sol2)
 
 set(SOURCE_DIR src)
 set(BUILD_DIR build)

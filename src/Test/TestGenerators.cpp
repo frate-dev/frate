@@ -212,7 +212,7 @@ namespace Test::Generators {
       REQUIRE(CMakeLists::testBuildDir());
       REQUIRE(CMakeLists::testIncludeDir());
     };
-    }; // namespace CMakeLists
+  }; // namespace CMakeLists
   namespace JsonConfig{
 
   };
