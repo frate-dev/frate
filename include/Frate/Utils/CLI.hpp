@@ -47,27 +47,27 @@ namespace Frate::Utils::CLI {
        * [index] <--- primary
        *    [subtext]
        */
-      List* IndexColor(std::string);
+      List& IndexColor(std::string);
       /*
        * Sets the primary color
        * [index] primary <----
        *    [subtext]
        */
-      List* PrimaryColor(std::string);
+      List& PrimaryColor(std::string);
       /*
        * Sets the subtext color
        * [index] primary
        *   [subtext] <----
        */
-      List* SubTextColor(std::string);
+      List& SubTextColor(std::string);
       /*
        * If the list should be numbered
        */
-      List* Numbered();
+      List& Numbered();
       /*
        * Displays the index in reverse order
        */
-      List* ReverseIndexed();
+      List& ReverseIndexed();
       /*
        * Builds the list
        * intdended to be used like this:

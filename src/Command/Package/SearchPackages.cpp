@@ -73,13 +73,13 @@ namespace Frate::Command::Packages {
     }else{
       query = inter->args->operator[]("query").as<std::string>();
       std::vector<Package> results = calculatePackageScores(query);
-      List *packageList = (new Utils::CLI::List())->
-        ReverseIndexed();
+      List packageList{};
+        packageList.ReverseIndexed();
       for(Package result: results){
-        packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
+        packageList.pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
       }
 
-      std::cout << packageList->Build() << std::endl;
+      std::cout << packageList.Build() << std::endl;
 
       return true;
     }
@@ -103,15 +103,15 @@ namespace Frate::Command::Packages {
     if(results.size() == 0){
       return {false, Package()};
     }
-    List *packageList = (new Utils::CLI::List())->
-      Numbered()->
+    List packageList{}; 
+    packageList.Numbered().
       ReverseIndexed();
     for(Package result: results){
-      packageList->pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
+      packageList.pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
     }
 
 
-    std::cout << packageList->Build() << std::endl;
+    std::cout << packageList.Build() << std::endl;
 
     std::vector<Package> filterResultsVec = filterOutBest(results);
 
