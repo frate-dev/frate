@@ -10,6 +10,7 @@ namespace Frate::Config {
       std::string build_server{""};
       std::vector<Command::RemoteServer> build_servers;
       System::Capabilities capabilities;
+
       bool load();
       bool save();
       bool createNew();

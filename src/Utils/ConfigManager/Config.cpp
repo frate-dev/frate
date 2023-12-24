@@ -2,7 +2,6 @@
 #include <Frate/Utils/Macros.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Constants.hpp>
-#include <cwchar>
 #include <fstream>
 namespace Frate::Config {
 
@@ -12,12 +11,14 @@ namespace Frate::Config {
     FROM_JSON_FIELD(config, build_server);
     FROM_JSON_FIELD(config, build_servers);
   }
+
   void to_json(nlohmann::json &j, const ConfigManager& config){
     TO_JSON_FIELD(config, capabilities);
     TO_JSON_FIELD(config, first_time_setup);
     TO_JSON_FIELD(config, build_server);
     TO_JSON_FIELD(config, build_servers);
   }
+
   bool ConfigManager::createNew(){
     //Creating config directory
     try{

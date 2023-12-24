@@ -52,7 +52,7 @@ namespace Frate::Command {
     this->flags = t.flags;
     // Check is toolchain is present
     // this->toolchains = t.toolchains;
-    this->variables = t.variables;
+    this->global = t.global;
     this->prompts = t.prompts;
     this->libs = t.system_libs;
   }
@@ -78,7 +78,7 @@ namespace Frate::Command {
     FROM_JSON_FIELD(pro,flags);
     FROM_JSON_FIELD(pro,toolchains);
     FROM_JSON_FIELD(pro,prompts);
-    FROM_JSON_FIELD(pro,variables);
+    FROM_JSON_FIELD(pro,global);
     FROM_JSON_FIELD(pro,modes);
     FROM_JSON_FIELD(pro,git);
     FROM_JSON_FIELD(pro,homepage);
@@ -105,7 +105,7 @@ namespace Frate::Command {
     TO_JSON_FIELD(pro,flags);
     TO_JSON_FIELD(pro,toolchains);
     TO_JSON_FIELD(pro,prompts);
-    TO_JSON_FIELD(pro,variables);
+    TO_JSON_FIELD(pro,global);
     TO_JSON_FIELD(pro,modes);
     TO_JSON_FIELD(pro,git);
     TO_JSON_FIELD(pro,homepage);

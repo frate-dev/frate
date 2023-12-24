@@ -49,7 +49,7 @@ namespace Frate::Command {
       std::vector<RemoteServer> build_servers{};
       std::vector<Dependency> dependencies{};
       std::string build_dir{"build"};
-      Package testing_lib;
+      //Package testing_lib;
       std::string version{"0.0.1"};
       std::vector<std::string> flags{};
       std::vector<std::string> toolchains {};
@@ -61,7 +61,7 @@ namespace Frate::Command {
         return path.string();
       };
       std::unordered_map<std::string,ProjectPrompt> prompts{};
-      std::unordered_map<std::string,json> variables{};
+      std::unordered_map<std::string,json> global{};
       friend void from_json(const json &j, Project& pro);
       friend void to_json(json &j, const Project& pro);
       void fromTemplate(Template &t);

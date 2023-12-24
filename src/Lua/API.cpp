@@ -19,7 +19,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
 
   std::unordered_map<std::string, std::string> scripts = {};
   
-  sol::table global_table = to_table(project->variables,lua);
+  sol::table global_table = to_table(project->global,lua);
 
   lua.set("global", global_table);
   try{

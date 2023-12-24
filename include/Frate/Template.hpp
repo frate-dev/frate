@@ -34,7 +34,7 @@ namespace Frate::Command {
       std::vector<std::string> supported_compilers{};
       std::vector<std::string> keywords{};
       std::unordered_map<std::string,ProjectPrompt> prompts{};
-      std::unordered_map<std::string,json> variables{};
+      std::unordered_map<std::string,json> global{};
       friend void from_json(const json &j, Template& t);
       friend void to_json(json &j, const Template& t);
       friend void to_project(Project &pro, const Template &t);
