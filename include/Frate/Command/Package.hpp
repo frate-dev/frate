@@ -1,6 +1,7 @@
 #pragma once
 #include <Frate/Package.hpp>
 #include <Frate/Interface.hpp>
+#include "Frate/Dependency.hpp"
 
 namespace Frate::Command::Packages {
 
@@ -38,16 +39,16 @@ namespace Frate::Command::Packages {
 
   //MOSTLY INTERNAL STUFF
   //Search for a packages and return a vector of results
-  std::vector<Package> _search(std::string& query);
+  std::vector<std::pair<Package,int>> _search(std::string& query);
 
   //Get the first result from the search
   std::pair<bool,Package> searchGetFirst(std::string& query);
 
   //Prompt the user to choose from the search results
-  std::pair<bool, Package> searchWithPrompt(std::string& query, bool latest);
+  std::pair<bool, Dependency> searchWithPrompt(std::string& query, bool latest);
 
   //Uh this should be pretty self explanatory
-  bool dependenciesConflict(std::vector<Package> deps, std::string &name);
+  bool dependenciesConflict(std::vector<Dependency> deps, std::string &name);
   
   // Prompts the user with a list of packages and returns the chosen package
   Package promptSearchResults(std::string &query);

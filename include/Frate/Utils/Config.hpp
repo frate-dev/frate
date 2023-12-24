@@ -10,6 +10,8 @@ namespace Frate::Config {
       std::string current_remote_server{""};
       std::vector<Command::RemoteServer> servers;
       System::Capabilities capabilities;
+      bool load();
+      bool save();
       friend void from_json(const nlohmann::json &j, ConfigManager& config);
       friend void to_json(nlohmann::json &j, const ConfigManager& config);
   };

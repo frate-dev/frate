@@ -5,12 +5,16 @@
 #include <Frate/Command/CommandMode.hpp>
 #include <Frate/Project.hpp>
 #include "Frate/Command/Package.hpp"
+#include "Frate/Dependency.hpp"
 
 
 namespace Frate::Command::Packages {
   using Utils::CLI::Prompt;
 
-  bool addPackageToMode(std::shared_ptr<Interface> inter, Package package, std::string selected_mode){
+  bool addPackageToMode(
+      std::shared_ptr<Interface> inter,
+      Dependency package,
+      std::string selected_mode){
     Utils::info << "Adding package to mode " << selected_mode << std::endl;
     for(Mode &mode : inter->pro->modes){
       if(selected_mode == mode.name){
@@ -48,19 +52,27 @@ namespace Frate::Command::Packages {
     if (inter->args->count("args") < 1){
       Utils::error << "No packages specified" << std::endl;
       return false;
-
     }
+
+
+
     std::vector<std::string> package_names = inter->args->operator[]("args").as<std::vector<std::string>>();
+
+
     if (git != "") {
       std::cout << "Adding git package" << std::endl;
       std::cout << "Git: " << git << std::endl;
       std::cout << "Version: " << version << std::endl;
       Utils::info << "Adding git package" << std::endl;
+
+
       if (version == "") {
         Utils::error << "No version specified" << std::endl;
         Utils::error << "Please specify a version" << std::endl;
         return false;
       }
+
+
       if (target_link == "") {
         Prompt target_link_prompt("Specify target_link: "); 
         target_link_prompt.run();
@@ -72,22 +84,24 @@ namespace Frate::Command::Packages {
           return false;
         }
       }
+
+
       std::cout << "Target_link: " << target_link << std::endl; 
       Package package;
       package.name = package_names[0];
-      package.selected_version = version;
+      // package.selected_version = version;
       package.git = git;
       package.target_link = target_link;
       package.versions.push_back(version);
       if (mode != "") {
-        if (!addPackageToMode(inter, package, mode)) {
+        if (!addPackageToMode(inter, Dependency(package,version), mode)) {
           Utils::error << "Failed to add package to mode" << std::endl;
           return false;
         }
         return true;
       }
       std::cout << "Package: " << nlohmann::json(package) << std::endl;
-      inter->pro->dependencies.push_back(package);
+      inter->pro->dependencies.push_back(Dependency(package, version));
       if (!inter->pro->save()){
         Utils::error << "Failed to save project" << std::endl;
         return false;
@@ -117,7 +131,7 @@ namespace Frate::Command::Packages {
 
       if(!latest){
         version = promptForVersion(chosen_package);
-        chosen_package.selected_version = version;
+        // chosen_package.selected_version = version;
       }
       else{
         if(chosen_package.versions.size() == 0){
@@ -125,7 +139,7 @@ namespace Frate::Command::Packages {
           return false;
         }
         version = chosen_package.versions[0];
-        chosen_package.selected_version = version;
+        // chosen_package.selected_version = version;
       }
 
       if(dependenciesConflict(inter->pro->dependencies, chosen_package.name)){
@@ -134,12 +148,12 @@ namespace Frate::Command::Packages {
       }
 
       if(mode != ""){
-        if(!addPackageToMode(inter, chosen_package, mode)){
+        if(!addPackageToMode(inter, Dependency(chosen_package,version), mode)){
           Utils::error << "Failed to add package to mode" << std::endl;
           return false;
         }
       }
-      inter->pro->dependencies.push_back(chosen_package);
+      inter->pro->dependencies.push_back(Dependency(chosen_package, version));
     }
 
     return true;

@@ -13,7 +13,6 @@ namespace Frate::LuaAPI {
         "git", &Command::Package::git,
         "git_short", &Command::Package::git_short,
         "git_prefixed", &Command::Package::git_prefixed,
-        "selected_version", &Command::Package::selected_version,
         "versions", &Command::Package::versions,
         "target_link", &Command::Package::target_link,
         "description", &Command::Package::description,
@@ -27,6 +26,14 @@ namespace Frate::LuaAPI {
         "open_issues", &Command::Package::open_issues,
         "watchers", &Command::Package::watchers
         ); 
+    lua.new_usertype<Command::Dependency>("Dependency",
+        "new", sol::no_constructor,
+        "name", &Command::Dependency::name,
+        "version", &Command::Dependency::version,
+        "git", &Command::Dependency::git,
+        "git_short", &Command::Dependency::git_short,
+        "git_prefixed", &Command::Dependency::git_prefixed
+        );
 
     lua.new_usertype<Command::Mode>("Mode",
         "new", sol::no_constructor,

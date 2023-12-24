@@ -3,12 +3,13 @@
 #include <Frate/Utils/General.hpp> 
 #include <Frate/Command/CommandMode.hpp>
 #include <Frate/Command.hpp>
+#include "Frate/Dependency.hpp"
 
 namespace Frate::Command::Packages {
   using namespace Utils::CLI;
 
-  std::vector<Package> calculatePackageScores(std::string &query){
-    std::vector<Package> results;
+  std::vector<std::pair<Package,int>> calculatePackageScores(std::string &query){
+    std::vector<std::pair<Package,int>> results;
     json rawIndex = fetchIndex();
     Utils::toLower(query);
 
@@ -20,32 +21,33 @@ namespace Frate::Command::Packages {
       score += package.stars / 100;
       score += Utils::getStringScore(package.description, query);
       score += Utils::getStringScore(package.target_link, query);
-      package.score = score;
 
-      results.push_back(package);
+      results.push_back({package, score});
     }
 
-    std::sort(results.begin(), results.end(), [](Package a, Package b){
-        return a.score > b.score;
+    std::sort(results.begin(), results.end(), [](
+          std::pair<Package,int> a,
+          std::pair<Package,int> b){
+        return a.second > b.second;
         });
 
     return results;
   }
 
-  std::vector<Package> filterOutBest(std::vector<Package> &packages){
+  std::vector<Package> filterOutBest(std::vector<std::pair<Package,int>> &packages){
 
     std::vector<Package> filterResultsVec;
+    int totalScore = 0;
 
-    int totalScore = std::accumulate(
-        packages.begin(), packages.end(), 0, [](int a, Package b){
-        return a + b.score;
-        });
+    for(auto &package: packages){
+      totalScore += package.second;
+    }
 
     int averageScore = totalScore / packages.size();
 
-    for(Package package: packages){
-      if(package.score > averageScore){
-        filterResultsVec.push_back(package);
+    for(auto &package: packages){
+      if(package.second > ( averageScore * 1.3 )){
+        filterResultsVec.push_back(package.first);
       }
     }
 
@@ -72,11 +74,14 @@ namespace Frate::Command::Packages {
       return false;
     }else{
       query = inter->args->operator[]("query").as<std::string>();
-      std::vector<Package> results = calculatePackageScores(query);
+      auto results = calculatePackageScores(query);
       List packageList{};
         packageList.ReverseIndexed();
-      for(Package result: results){
-        packageList.pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
+      for(auto result: results){
+        packageList.pushBack(
+            ListItem(
+              result.first.name + " (" + result.first.git + ")",
+              result.first.description));
       }
 
       std::cout << packageList.Build() << std::endl;
@@ -85,29 +90,32 @@ namespace Frate::Command::Packages {
     }
   }
 
-  std::vector<Package> _search(std::string &query){
-    std::vector<Package> results = calculatePackageScores(query);
+  std::vector<std::pair<Package,int>> _search(std::string &query){
+    auto results = calculatePackageScores(query);
     return results;
   }
 
   std::pair<bool, Package> searchGetFirst(std::string& query){
-    std::vector<Package> results = calculatePackageScores(query);
+    auto results = calculatePackageScores(query);
     if(results.size() == 0){
       return {false, Package()};
     }
-    return {true, results[0]};
+    return {true, results[0].first};
   }
 
-  std::pair<bool, Package> searchWithPrompt(std::string& query, bool latest){
-    std::vector<Package> results = calculatePackageScores(query);
+  std::pair<bool, Dependency> searchWithPrompt(std::string& query, bool latest){
+    auto results = calculatePackageScores(query);
     if(results.size() == 0){
-      return {false, Package()};
+      return {false, Dependency()};
     }
     List packageList{}; 
     packageList.Numbered().
       ReverseIndexed();
-    for(Package result: results){
-      packageList.pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
+    for(auto &result: results){
+      packageList.pushBack(
+          ListItem(
+            result.first.name + " (" + result.first.git + ")",
+            result.first.description));
     }
 
 
@@ -122,19 +130,17 @@ namespace Frate::Command::Packages {
     prompt.run();
     auto[valid, index] = prompt.get<int>();
     if(!valid){
-      return {false, Package()};
+      return {false, Dependency()};
     }
-    Package chosen_package = results[index];
+    Package chosen_package = results[index].first;
+    Dependency dep;
     
     if(latest){
-      chosen_package.selected_version = chosen_package.versions[0];
-      return {true, chosen_package};
+      return {true, Dependency(chosen_package, chosen_package.versions[0])};
     }
 
     std::string version = promptForVersion(chosen_package);
 
-    chosen_package.selected_version = version;
-
-    return {true, chosen_package};
+    return {true, Dependency(chosen_package, version)};
   }
 }

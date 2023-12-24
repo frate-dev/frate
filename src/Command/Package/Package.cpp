@@ -4,6 +4,7 @@
 #include <Frate/Utils/General.hpp> 
 #include <Frate/Command/CommandMode.hpp>
 #include <Frate/Command.hpp>
+#include "Frate/Dependency.hpp"
 
 namespace Frate::Command::Packages {
   using namespace Utils::CLI;
@@ -25,12 +26,12 @@ namespace Frate::Command::Packages {
     inter->options->help();
     return inter->parse();
   }
-  bool dependenciesConflict(std::vector<Package> deps, std::string &name) {
+  bool dependenciesConflict(std::vector<Dependency> deps, std::string &name) {
     if (deps.size() == 0) {
       Utils::error << "No dependencies found" << std::endl;
       return false;
     }
-    for (Package dep : deps) {
+    for (Dependency dep : deps) {
       if (dep.name == name) {
         return true;
       }

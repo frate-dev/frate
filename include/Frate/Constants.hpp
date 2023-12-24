@@ -1,4 +1,5 @@
 #pragma once
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -29,6 +30,13 @@ namespace Frate::Constants {
   const std::string INIT_SCRIPTS_PATH = "__init__/";
   const std::string POST_SCRIPTS_PATH = "__post__/";
 
+const std::string config_name = "config.json";
+#ifdef _WIN64
+  const std::filesytem::path CONFIG_PATH = std::filesystem::path(getenv("APPDATA")) / NAME / config_name;
+#else
+  const std::filesystem::path CONFIG_PATH = std::filesystem::path(getenv("HOME")) / ".config" / NAME / config_name;
+#endif
+
 #ifdef BRANCH_DEV
   const std::string TEMPLATE_BRANCH = "dev";
 #else
@@ -40,6 +48,7 @@ namespace Frate::Constants {
     std::to_string(VMINOR) + "." + 
     std::to_string(VPATCH)
 #ifdef VBUILD
+    //If VBUILD is defined, append it to the version string
     + "." + std::to_string(VBUILD)
 #endif
     ;
@@ -122,6 +131,4 @@ namespace Frate::Constants {
     "c",
     "cpp",
   };
-
-
 }

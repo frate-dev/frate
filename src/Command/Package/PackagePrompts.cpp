@@ -6,11 +6,11 @@ namespace Frate::Command::Packages {
 
  Package promptSearchResults(std::string &query){
 
-   std::vector<Package> searchResults = _search(query);
+   auto searchResults = _search(query);
 
    if(searchResults.size() == 1){
-     std::cout << "Installing " << searchResults[0].name << std::endl;
-     return searchResults[0];
+     std::cout << "Installing " << searchResults[0].first.name << std::endl;
+     return searchResults[0].first;
    }
 
    if(searchResults.size() == 0){
@@ -22,8 +22,11 @@ namespace Frate::Command::Packages {
     packageList.
      Numbered().
      ReverseIndexed();
-   for(Package result: searchResults){
-     packageList.pushBack(ListItem(result.name + " (" + result.git + ")", result.description));
+   for(auto &result: searchResults){
+     packageList.pushBack(
+         ListItem(
+           result.first.name + " (" + result.first.git + ")",
+           result.first.description));
    }
    std::cout << packageList.Build() << std::endl;
    Prompt prompt("Select a package to install: ");
@@ -37,10 +40,8 @@ namespace Frate::Command::Packages {
      std::cout << "Invalid option" << std::endl;
      exit(0);
    }else{
-     return searchResults[index];
+     return searchResults[index].first;
    }
-
-
  }
 
   std::string promptForVersion(Package &chosen_package){

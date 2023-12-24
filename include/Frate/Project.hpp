@@ -9,6 +9,7 @@
 #include <Frate/Package.hpp>
 #include <Frate/Template.hpp>
 #include <Frate/ProjectPrompt.hpp>
+#include "Frate/Dependency.hpp"
 
 
 
@@ -46,7 +47,7 @@ namespace Frate::Command {
       std::string src_dir{"src"};
       std::string include_dir{"include"};
       std::vector<RemoteServer> build_servers{};
-      std::vector<Package> dependencies{};
+      std::vector<Dependency> dependencies{};
       std::string build_dir{"build"};
       Package testing_lib;
       std::string version{"0.0.1"};

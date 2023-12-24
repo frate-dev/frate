@@ -2,6 +2,7 @@
 #include <filesystem>
 #include "Frate/Utils/General.hpp"
 #include "Frate/Utils/Logging.hpp"
+#include "Frate/Utils/Macros.hpp"
 
 
 namespace Frate::System {
@@ -53,7 +54,25 @@ namespace Frate::System {
     return Capability();
   }
   void from_json(const nlohmann::json &j, Capabilities& capabilities){
+    FROM_JSON_FIELD(capabilities, compilers);
+    FROM_JSON_FIELD(capabilities, make);
+    FROM_JSON_FIELD(capabilities, cmake);
+    FROM_JSON_FIELD(capabilities, git);
+    FROM_JSON_FIELD(capabilities, zip);
+    FROM_JSON_FIELD(capabilities, unzip);
+    FROM_JSON_FIELD(capabilities, tar);
+    FROM_JSON_FIELD(capabilities, archive_compress);
+    FROM_JSON_FIELD(capabilities, archive_expand);
   }
   void to_json(nlohmann::json &j, const Capabilities& capabilities){
+    TO_JSON_FIELD(capabilities, compilers);
+    TO_JSON_FIELD(capabilities, make);
+    TO_JSON_FIELD(capabilities, cmake);
+    TO_JSON_FIELD(capabilities, git);
+    TO_JSON_FIELD(capabilities, zip);
+    TO_JSON_FIELD(capabilities, unzip);
+    TO_JSON_FIELD(capabilities, tar);
+    TO_JSON_FIELD(capabilities, archive_compress);
+    TO_JSON_FIELD(capabilities, archive_expand);
   }
 }

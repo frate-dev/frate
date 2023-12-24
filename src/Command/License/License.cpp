@@ -1,52 +1,49 @@
 #include <Frate/Command/License.hpp>
+#include <Frate/Utils/Macros.hpp>
 namespace Frate::Command::License { 
 
-  void to_json(json& j, const License& l) {
-    j = json{
-      {"name", l.name},
-      {"key", l.key},
-      {"url", l.url},
-      {"spdx_id", l.spdx_id}
-    };
+  void to_json(json& j, const License& license) {
+    TO_JSON_FIELD(license,name);
+    TO_JSON_FIELD(license,key);
+    TO_JSON_FIELD(license,url);
+    TO_JSON_FIELD(license,spdx_id);
   }
 
-  void from_json(const json& j, License& l) {
-    j.at("name").get_to(l.name);
-    j.at("key").get_to(l.key);
-    j.at("url").get_to(l.url);
-    j.at("spdx_id").get_to(l.spdx_id);
+  void from_json(const json& j, License& license) {
+    FROM_JSON_FIELD(license,name);
+    FROM_JSON_FIELD(license,key);
+    FROM_JSON_FIELD(license,url);
+    FROM_JSON_FIELD(license,spdx_id);
   }
 
-  void to_json(json& j, const FullLicense& l) {
-    j = json{
-      {"key", l.key},
-      {"name", l.name},
-      {"spdx_id", l.spdx_id},
-      {"url", l.url},
-      {"html_url", l.html_url},
-      {"description", l.description},
-      {"implementation", l.implementation},
-      {"permissions", l.permissions},
-      {"conditions", l.conditions},
-      {"limitations", l.limitations},
-      {"body", l.body},
-      {"featured", l.featured}
-    };
+  void to_json(json& j, const FullLicense& license) {
+    TO_JSON_FIELD(license,key);
+    TO_JSON_FIELD(license,name);
+    TO_JSON_FIELD(license,spdx_id);
+    TO_JSON_FIELD(license,url);
+    TO_JSON_FIELD(license,html_url);
+    TO_JSON_FIELD(license,description);
+    TO_JSON_FIELD(license,implementation);
+    TO_JSON_FIELD(license,permissions);
+    TO_JSON_FIELD(license,conditions);
+    TO_JSON_FIELD(license,limitations);
+    TO_JSON_FIELD(license,body);
+    TO_JSON_FIELD(license,featured);
   }
 
-  void from_json(const json& j, FullLicense& l) {
-    j.at("key").get_to(l.key);
-    j.at("name").get_to(l.name);
-    j.at("spdx_id").get_to(l.spdx_id);
-    j.at("url").get_to(l.url);
-    j.at("html_url").get_to(l.html_url);
-    j.at("description").get_to(l.description);
-    j.at("implementation").get_to(l.implementation);
-    j.at("permissions").get_to(l.permissions);
-    j.at("conditions").get_to(l.conditions);
-    j.at("limitations").get_to(l.limitations);
-    j.at("body").get_to(l.body);
-    j.at("featured").get_to(l.featured);
+  void from_json(const json& j, FullLicense& license) {
+    FROM_JSON_FIELD(license,key);
+    FROM_JSON_FIELD(license,name);
+    FROM_JSON_FIELD(license,spdx_id);
+    FROM_JSON_FIELD(license,url);
+    FROM_JSON_FIELD(license,html_url);
+    FROM_JSON_FIELD(license,description);
+    FROM_JSON_FIELD(license,implementation);
+    FROM_JSON_FIELD(license,permissions);
+    FROM_JSON_FIELD(license,conditions);
+    FROM_JSON_FIELD(license,limitations);
+    FROM_JSON_FIELD(license,body);
+    FROM_JSON_FIELD(license,featured);
   }
 
 }

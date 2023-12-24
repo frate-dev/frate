@@ -5,6 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <Frate/Mode.hpp>
 #include <Frate/ProjectPrompt.hpp>
+#include "Frate/Dependency.hpp"
 
 namespace Frate::Command {
   // class Mode;
@@ -21,7 +22,7 @@ namespace Frate::Command {
       std::string src_dir{"src"};
       std::string include_dir{"include"};
       std::string build_dir{"build"};
-      std::vector<Package> dependencies{};
+      std::vector<Dependency> dependencies{};
       std::string default_mode{"Release"};
       std::vector<Mode> modes{};
       std::vector<std::string> flags{};

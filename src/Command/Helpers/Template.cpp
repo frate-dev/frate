@@ -1,6 +1,7 @@
 #include <Frate/Template.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Project.hpp>
+#include "Frate/Dependency.hpp"
 
 namespace Frate::Command {
 
@@ -15,7 +16,7 @@ namespace Frate::Command {
     t.src_dir = j["src_dir"];
     t.include_dir = j["include_dir"];
     t.build_dir = j["build_dir"];
-    t.dependencies = j["dependencies"].get<std::vector<Package>>();
+    t.dependencies = j["dependencies"].get<std::vector<Dependency>>();
     t.default_mode = j["default_mode"];
     t.modes = j["modes"].get<std::vector<Mode>>();
     t.flags = j["flags"].get<std::vector<std::string>>();
