@@ -5,11 +5,11 @@
 namespace Frate::Command::RemoteServers{
   bool list(std::shared_ptr<Interface> inter){
     //TODO put this in  the constructor
-    std::vector<RemoteServer> servers =  remoteServerData(inter);
+    // std::vector<RemoteServer> servers =  remoteServerData(inter);
     Utils::TableFormat table;
     table.width = 20;
     table << "Name"  << "Address" << "Port" << "Username" <<  "AuthMethod" << "\n";
-    for (auto& server: servers){
+    for (auto& server: inter->config.build_servers){
       table << server.name << server.ip << server.port << server.username << server.authMethod << "\n";
     }
 

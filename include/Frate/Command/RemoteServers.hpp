@@ -12,7 +12,7 @@ namespace Frate::Command::RemoteServers{
   bool set(std::shared_ptr<Interface> inter);
 
   //Internal functions
-  std::vector<RemoteServer> remoteServerData(std::shared_ptr<Interface> inter);
+  // std::vector<RemoteServer> remoteServerData(std::shared_ptr<Interface> inter);
   bool getServerName(std::string& name);
   bool getServerUsername(std::string& username);
   bool getServerAuthMethod(std::string& authMethod);
