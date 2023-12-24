@@ -120,6 +120,10 @@ typedef struct Template {
   namespace Toolchain{
     std::string generateToolchain(std::string toolchain);
   }
+  namespace DockerTemplate{
+    bool create(std::shared_ptr<Command::Interface> inter);
+    bool remove(std::shared_ptr<Command::Interface> inter);
+  }
   namespace CMakeList{
     typedef struct Dep {
       std::string fetch_declare;
