@@ -32,9 +32,11 @@ namespace Frate::Constants {
 
 const std::string config_name = "config.json";
 #ifdef _WIN64
-  const std::filesytem::path CONFIG_PATH = std::filesystem::path(getenv("APPDATA")) / NAME / config_name;
+  const std::filesystem::path CONFIG_DIR = std::filesystem::path(getenv("APPDATA")) / NAME;
+  const std::filesystem::path CONFIG_PATH = CONFIG_DIR / config_name;
 #else
-  const std::filesystem::path CONFIG_PATH = std::filesystem::path(getenv("HOME")) / ".config" / NAME / config_name;
+  const std::filesystem::path CONFIG_DIR = std::filesystem::path(getenv("HOME")) / ".config" / NAME;
+  const std::filesystem::path CONFIG_PATH = CONFIG_DIR / config_name;
 #endif
 
 #ifdef BRANCH_DEV

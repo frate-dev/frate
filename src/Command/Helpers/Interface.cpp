@@ -70,6 +70,7 @@ namespace Frate::Command {
     pro->path = std::filesystem::current_path();
 #endif
     // config.capabilities.search();
+    config.load();
 
   }
   bool execute(std::shared_ptr<Interface> inter){
@@ -231,7 +232,7 @@ namespace Frate::Command {
           if(handler.requires_project){
             inter->pro->save();
           }
-
+          inter->config.save();
           return true;
         }
       }
@@ -277,6 +278,7 @@ namespace Frate::Command {
           if(handler.requires_project){
             inter->pro->save();
           }
+          inter->config.save();
           return true;
         }
       }
