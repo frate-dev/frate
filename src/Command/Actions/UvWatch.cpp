@@ -91,7 +91,8 @@ namespace Frate::Command::UvWatch{
 
     event_triggered = 1;
     std::cout << "Filesystem change detected, rebuilding..." << std::endl;
-    runCommand(inter); std::cout << "\nWatching for changes..." << std::endl;
+    runCommand(inter);
+    std::cout << "\nWatching for changes..." << std::endl;
 
     // Reset the flag after a delay
     uv_timer_t *timer = new uv_timer_t;
