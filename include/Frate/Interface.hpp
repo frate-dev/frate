@@ -10,6 +10,35 @@ namespace Frate::Command{
   class Project;
   class Interface;
   typedef struct Handler_s Handler;
+  /* =============================
+   * Future interface for commands
+   * =============================
+   */
+  class CommandHandler;
+  class CommandHandler {
+    public:
+      //Tree of commands
+      static std::vector<CommandHandler> commands;
+      std::vector<std::string> aliases;
+      std::vector<std::string> flags{};
+      std::vector<CommandHandler> subcommands{};
+      std::vector<std::string> positional_args{};
+      bool implemented{true};
+      bool requires_project{true};
+      bool unlimited_args{false};
+      std::string docs{""};
+      std::function<bool(std::shared_ptr<Interface> )> callback{
+        [](std::shared_ptr<Interface> inter) -> bool {
+          (void)inter;
+          Utils::error << "This command has not been implemented yet" << std::endl;
+          return false;
+        }
+      };
+      bool run(std::shared_ptr<Interface> inter);
+      bool options(std::shared_ptr<Interface> inter);
+
+  };
+
   typedef struct Handler_s {
     std::vector<std::string> aliases;
     std::vector<std::string> flags{};
@@ -27,6 +56,7 @@ namespace Frate::Command{
     bool requires_project{true};
     bool unlimited_args{false};
   } Handler;
+
   class Interface : public std::enable_shared_from_this<Interface>{
     public:
       Interface(int argc, char **argv);

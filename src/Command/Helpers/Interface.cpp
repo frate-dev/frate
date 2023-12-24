@@ -90,10 +90,6 @@ namespace Frate::Command {
       std::cout << "Skipping prompts" << std::endl;
     }
 
-    // if(inter->LoadProjectJson()){
-    //   inter->project_present = true;
-    // }
-
     std::string command = inter->args->operator[]("command").as<std::string>();
     std::cout << "Project Path: " << inter->pro->path << std::endl;
 
@@ -212,17 +208,6 @@ namespace Frate::Command {
       for(std::string& alias : handler.aliases){
         if(alias == command){
 
-//           if(handler.requires_project){
-// 
-//             //Check if project loads successfully
-//             inter->loadProjectJson();
-//             Utils::verbose << "Project loaded successfully" << std::endl;
-//             Utils::verbose << nlohmann::json(*inter->pro).dump(2) << std::endl;
-// 
-//             //if so refresh the project templates
-//             Generators::Project::refresh(inter->pro);
-//           }
-          
           //Checks if the callback ran successfully
           if(!handler.callback(inter)){
             return false;

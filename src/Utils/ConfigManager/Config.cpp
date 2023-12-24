@@ -18,6 +18,20 @@ namespace Frate::Config {
     TO_JSON_FIELD(config, build_server);
     TO_JSON_FIELD(config, build_servers);
   }
+  
+  Command::RemoteServer ConfigManager::getBuildServer(){
+    if(this->build_server.empty()){
+      Utils::error << "No build server set" << std::endl;
+      exit(1);
+    }
+    for(auto &server : this->build_servers){
+      if(server.name == this->build_server){
+        return server;
+      }
+    }
+    Utils::error << "Build server not found" << std::endl;
+    exit(1);
+  }
 
   bool ConfigManager::createNew(){
     //Creating config directory
