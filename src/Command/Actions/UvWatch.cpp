@@ -26,7 +26,7 @@ namespace Frate::Command::UvWatch{
     std::cout << "pro->name: " << inter->pro->name << std::endl;
     // Construct the rsync command
     std::string sync_files = "rsync -avh --exclude-from='.gitignore' --update -e 'ssh -p " +
-                             std::to_string(inter->pro->build_server.port) + "' --progress . " +
+                             std::to_string(inter->pro->build_server.port) + "' --progress " + inter->pro->path.string() +
                              inter->pro->build_server.username + "@" + inter->pro->build_server.ip +
                              ":" + remote_dest_path + " ";
 
