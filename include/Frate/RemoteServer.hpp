@@ -3,6 +3,7 @@
 #include <optional>
 #include <nlohmann/json.hpp>
 
+
 namespace Frate::Command {
   class RemoteServer{
     public:
@@ -25,5 +26,5 @@ namespace Frate::Command {
       friend void from_json(const nlohmann::json &j, RemoteServer& remoteServer);
       friend void to_json(nlohmann::json &j, const RemoteServer& remoteServer);
   };
-  RemoteServer get_current_build_server();
+
 }

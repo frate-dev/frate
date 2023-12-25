@@ -2,7 +2,7 @@
 #include <Frate/Utils/General.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <Frate/Project.hpp>
-
+#include <fstream>
 namespace Frate::Command::RemoteServers{
   using namespace Utils::CLI;
   bool options(std::shared_ptr<Interface> inter) {
@@ -103,4 +103,5 @@ namespace Frate::Command::RemoteServers{
     key = _key;
     return true;
   }
+
 }

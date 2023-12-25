@@ -1,0 +1,48 @@
+{
+  "authors": [],
+  "bugs": "null",
+  "build_dir": "build",
+  "cmake_version": "3.20",
+  "compiler": "g++",
+  "default_mode": "Release",
+  "dependencies": [],
+  "description": "",
+  "flags": [],
+  "git": "null",
+  "homepage": "null",
+  "include_dir": "include",
+  "keywords": [],
+  "lang": "cpp",
+  "lang_version": "20",
+  "libs": [],
+  "modes": [
+    {
+      "dependencies": [],
+      "flags": [
+        "-O2"
+      ],
+      "name": "Release"
+    },
+    {
+      "dependencies": [],
+      "flags": [
+        "-g"
+      ],
+      "name": "Debug"
+    },
+    {
+      "dependencies": [],
+      "flags": [
+        "-g"
+      ],
+      "name": "Test"
+    }
+  ],
+  "name": "",
+  "prompts": {},
+  "src_dir": "src",
+  "toolchains": [],
+  "type": "",
+  "variables": {},
+  "version": "0.0.1"
+}

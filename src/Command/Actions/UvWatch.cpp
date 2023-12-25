@@ -4,7 +4,6 @@
 #include <Frate/Project.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp>
-#include <Frate/RemoteServer.hpp>
 
 namespace Frate::Command::UvWatch{
   bool options(std::shared_ptr<Interface> inter) {
@@ -18,7 +17,7 @@ namespace Frate::Command::UvWatch{
   }
 
   std::string remote_build_command(std::shared_ptr<Interface> inter) {
-    inter->pro->build_server = get_current_build_server();
+    inter->pro->build_server = inter->config.getBuildServer();
 
     // Get the destination path from environment variables
     std::string remote_dest_path = std::getenv("REMOTE_DEST_PATH") ? std::getenv("REMOTE_PATH") : "/tmp/" + inter->pro->name;
