@@ -3,7 +3,7 @@
 #include <Frate/Utils/Logging.hpp>
 
 namespace Frate::Command {
-  void to_json(json &j, const Package &package) {
+  void to_json(json &json_obj, const Package &package) {
     TO_JSON_FIELD(package,name);
     // TO_JSON_FIELD(package,selected_version);
     TO_JSON_FIELD(package,versions);
@@ -23,7 +23,7 @@ namespace Frate::Command {
     TO_JSON_FIELD(package,owner);
     TO_JSON_FIELD(package,owner_type);
   }
-  void from_json(const json &j, Package &package){
+  void from_json(const json &json_obj, Package &package){
     FROM_JSON_FIELD(package,name);
     // FROM_JSON_FIELD(package,selected_version);
     FROM_JSON_FIELD(package,versions);

@@ -23,8 +23,8 @@ namespace Frate::Command {
       std::optional<std::string> password;
       std::optional<std::string> key;
       int port;
-      friend void from_json(const nlohmann::json &j, RemoteServer& remoteServer);
-      friend void to_json(nlohmann::json &j, const RemoteServer& remoteServer);
+      friend void from_json(const nlohmann::json &json_obj, RemoteServer& remoteServer);
+      friend void to_json(nlohmann::json &json_obj, const RemoteServer& remoteServer);
   };
 
 }

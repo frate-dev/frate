@@ -4,21 +4,21 @@
 
 namespace Frate::Command {
 
-  void to_json(json &j, const ProjectPrompt &p){
-    TO_JSON_FIELD(p, text);
-    TO_JSON_FIELD(p, value);
-    TO_JSON_FIELD(p, default_value);
-    TO_JSON_FIELD(p, type);
-    TO_JSON_FIELD(p, required);
+  void to_json(json &json_obj, const ProjectPrompt &project_prompt){
+    TO_JSON_FIELD(project_prompt, text);
+    TO_JSON_FIELD(project_prompt, value);
+    TO_JSON_FIELD(project_prompt, default_value);
+    TO_JSON_FIELD(project_prompt, type);
+    TO_JSON_FIELD(project_prompt, required);
 
   }
-  void from_json(const json &j, ProjectPrompt &p){ 
-    FROM_JSON_FIELD(p, text);
-    FROM_JSON_FIELD(p, value);
-    FROM_JSON_FIELD(p, default_value);
-    FROM_JSON_FIELD(p, type);
-    FROM_JSON_FIELD(p, required);
-    FROM_JSON_FIELD(p, options);
+  void from_json(const json &json_obj, ProjectPrompt &project_prompt){ 
+    FROM_JSON_FIELD(project_prompt, text);
+    FROM_JSON_FIELD(project_prompt, value);
+    FROM_JSON_FIELD(project_prompt, default_value);
+    FROM_JSON_FIELD(project_prompt, type);
+    FROM_JSON_FIELD(project_prompt, required);
+    FROM_JSON_FIELD(project_prompt, options);
   }
   template<>
   std::string ProjectPrompt::get<std::string>(){

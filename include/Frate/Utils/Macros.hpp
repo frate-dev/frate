@@ -5,9 +5,9 @@
  * This json object MUST BE j ,too bad so sad wish I cared
  */
 #define FROM_JSON_FIELD(obj,field)\
-  if(j.contains(#field)){\
-    if(!j[#field].is_null()){\
-      obj.field = j[#field];\
+  if(json_obj.contains(#field)){\
+    if(!json_obj[#field].is_null()){\
+      obj.field = json_obj[#field];\
     }\
   }else{\
     Utils::warning << "Missing field: " << #obj << "." << #field << std::endl;\
@@ -19,4 +19,4 @@
  *
  */
 #define TO_JSON_FIELD(obj,field)\
-  j[#field] = obj.field;
+  json_obj[#field] = obj.field;

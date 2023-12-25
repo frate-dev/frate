@@ -27,8 +27,8 @@ namespace Frate::Command{
       int watchers;
       // int score;
       bool addCallback(sol::state &lua);
-      friend void from_json(const json &j, Package& package);
-      friend void to_json(json &j, const Package& package);
+      friend void from_json(const json &json_obj, Package& package);
+      friend void to_json(json &json_obj, const Package& package);
       Package(){};
 
   };

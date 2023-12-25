@@ -17,7 +17,7 @@ namespace Frate::Config {
       bool createNew();
       Command::RemoteServer getBuildServer();
 
-      friend void from_json(const nlohmann::json &j, ConfigManager& config);
-      friend void to_json(nlohmann::json &j, const ConfigManager& config);
+      friend void from_json(const nlohmann::json &json_obj, ConfigManager& config);
+      friend void to_json(nlohmann::json &json_obj, const ConfigManager& config);
   };
 }
