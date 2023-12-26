@@ -1,198 +1,201 @@
-//#include "Frate/Interface.hpp"
+// #include "Frate/Interface.hpp"
 #include "Frate/Project.hpp"
 #include "Frate/Utils/General.hpp"
 #include "inja.hpp"
+#include <Frate/Constants.hpp>
 #include <Frate/LuaAPI.hpp>
+#include <Frate/ProjectPrompt.hpp>
+#include <Frate/Utils/Logging.hpp>
 #include <filesystem>
 #include <memory>
 #include <sol/forward.hpp>
-#include <sol/variadic_args.hpp> 
-#include <Frate/Constants.hpp>
-#include <Frate/ProjectPrompt.hpp>
-#include <Frate/Utils/Logging.hpp>
+#include <sol/variadic_args.hpp>
+
 namespace Frate::LuaAPI {
   using Command::Project;
   using std::filesystem::path;
 
-bool registerProjectScripts(inja::Environment &env, sol::state &lua,
-                            path script_path, std::shared_ptr<Project> project) {
+  bool registerProjectScripts(inja::Environment &env,
+                              sol::state &lua,
+                              path script_path,
+                              std::shared_ptr<Project> project) {
 
-  std::unordered_map<std::string, std::string> scripts = {};
-  
-  sol::table global_table = to_table(project->global,lua);
+    std::unordered_map<std::string, std::string> scripts = {};
 
-  lua.set("global", global_table);
-  try{
-    for (const std::filesystem::path &current_path :
-        std::filesystem::recursive_directory_iterator(script_path)) {
-      if (current_path.extension() == ".lua") {
-        std::string file_name = current_path.filename();
-        std::string full_script_path = current_path.string();
-        // Yoinkin off the lua extension
-        file_name = file_name.substr(0, file_name.find(".lua"));
+    sol::table global_table = to_table(project->global, lua);
 
-        std::string prefix;
+    lua.set("global", global_table);
+    try {
+      for (const std::filesystem::path &current_path :
+           std::filesystem::recursive_directory_iterator(script_path)) {
+        if (current_path.extension() == ".lua") {
+          std::string file_name = current_path.filename();
+          std::string full_script_path = current_path.string();
+          // Yoinkin off the lua extension
+          file_name = file_name.substr(0, file_name.find(".lua"));
 
-        // Remove the script path
-        Utils::replaceKey(full_script_path, script_path.string(), "");
+          std::string prefix;
 
-        // Remove the file name
-        Utils::replaceKey(full_script_path, file_name + ".lua", "");
+          // Remove the script path
+          Utils::replaceKey(full_script_path, script_path.string(), "");
 
-        // Remove the first slash
-        Utils::replaceKey(full_script_path, "/", ".");
+          // Remove the file name
+          Utils::replaceKey(full_script_path, file_name + ".lua", "");
 
-        // Remove the first dot
-        full_script_path = full_script_path.substr(1, full_script_path.size());
+          // Remove the first slash
+          Utils::replaceKey(full_script_path, "/", ".");
 
-        prefix = full_script_path;
+          // Remove the first dot
+          full_script_path =
+              full_script_path.substr(1, full_script_path.size());
 
-        scripts[prefix + file_name] = current_path.string();
+          prefix = full_script_path;
+
+          scripts[prefix + file_name] = current_path.string();
+        }
       }
+    } catch (...) {
+      Utils::error << "Error while iterating over scripts" << std::endl;
+      return false;
     }
-  }catch(...){
-    Utils::error << "Error while iterating over scripts" << std::endl;
-    return false;
-  }
 
+    for (auto &[key, script_path] : scripts) {
+      env.add_callback(
+          key, -1, [&lua, script_path](inja::Arguments input_args) {
+            sol::table args_table = lua.create_table();
+            for (const nlohmann::json *arg : input_args) {
+              if (arg->is_string()) {
+                args_table.add(arg->get<std::string>());
+              } else if (arg->is_number()) {
+                args_table.add(arg->get<int>());
+              } else if (arg->is_boolean()) {
+                args_table.add(arg->get<bool>());
+              } else {
+                Utils::error << "Error while converting arguments in inja "
+                                "callback for script at: "
+                             << script_path << std::endl;
+                exit(1);
+              }
+            }
+            lua.set("args", args_table);
 
-  for (auto &[key, script_path] : scripts) {
-    env.add_callback(
-        key, -1, [&lua, script_path](inja::Arguments input_args) {
-          sol::table args_table = lua.create_table();
-          for (const nlohmann::json *arg : input_args) {
-            if (arg->is_string()) {
-              args_table.add(arg->get<std::string>());
-            } else if (arg->is_number()) {
-              args_table.add(arg->get<int>());
-            } else if (arg->is_boolean()) {
-              args_table.add(arg->get<bool>());
-            } else {
-            Utils::error 
-              << "Error while converting arguments in inja callback for script at: " 
-              << script_path << std::endl;
+            if (!std::filesystem::exists(script_path)) {
+              Utils::error << "Lua script not found at path: " << script_path
+                           << std::endl;
               exit(1);
             }
-          }
-          lua.set("args", args_table);
 
-          if (!std::filesystem::exists(script_path)) {
-            Utils::error << "Lua script not found at path: " << script_path
-                  << std::endl;
+            // lua.set("global", global_table);
+            auto result = lua.script_file(script_path);
+
+            if (result.valid()) {
+              return result;
+            }
+
+            Utils::error << "Error while executing lua script at: "
+                         << script_path << std::endl;
             exit(1);
-          }
-          
-          //lua.set("global", global_table);
-          auto result = lua.script_file(script_path);
-
-          if (result.valid()) {
-            return result;
-          }              
-
-          Utils::error << "Error while executing lua script at: " << script_path << std::endl;
-          exit(1);
-         
-        });
+          });
+    }
+    return true;
   }
-  return true;
-}
 
   void registerAPI(sol::state &lua) {
-    lua.open_libraries(
-        sol::lib::base,
-        sol::lib::package,
-        sol::lib::string);
+    lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string);
 
     lua.new_usertype<FrateApi>("frate",
-        "new", sol::no_constructor,
-        "get_os", &FrateApi::get_os,
-        "get_path", &FrateApi::get_path,
-        "get_paths_recurse", &FrateApi::get_paths_recurse,
-        "format", &FrateApi::format,
-        "print_table", &FrateApi::print_table,
-        "fetch_text", &FrateApi::fetch_text,
-        "fetch_json", &FrateApi::fetch_json
-        );
+                               "new",
+                               sol::no_constructor,
+                               "get_os",
+                               &FrateApi::get_os,
+                               "get_path",
+                               &FrateApi::get_path,
+                               "get_paths_recurse",
+                               &FrateApi::get_paths_recurse,
+                               "format",
+                               &FrateApi::format,
+                               "print_table",
+                               &FrateApi::print_table,
+                               "fetch_text",
+                               &FrateApi::fetch_text,
+                               "fetch_json",
+                               &FrateApi::fetch_json);
   }
 
-  bool initScripts(sol::state &lua, std::shared_ptr<Project> project){
-    path script_path = project->path 
-      / (Constants::TEMPLATE_PATH + Constants::INIT_SCRIPTS_PATH);
+  bool initScripts(sol::state &lua, std::shared_ptr<Project> project) {
+    path script_path = project->path / (Constants::TEMPLATE_PATH +
+                                        Constants::INIT_SCRIPTS_PATH);
 
-    if(!std::filesystem::exists(script_path)){
-      Utils::verbose << "No init scripts found at: " << script_path << std::endl;
+    if (!std::filesystem::exists(script_path)) {
+      Utils::verbose << "No init scripts found at: " << script_path
+                     << std::endl;
       return false;
     }
 
     std::vector<path> script_paths = {};
 
-    for(const path& current_path :
-        std::filesystem::recursive_directory_iterator(script_path)){
-      if(current_path.extension() == ".lua"){
+    for (const path &current_path :
+         std::filesystem::recursive_directory_iterator(script_path)) {
+      if (current_path.extension() == ".lua") {
         script_paths.emplace_back(current_path);
       }
     }
-    
 
-
-    for(const path& current_script_path : script_paths){
+    for (const path &current_script_path : script_paths) {
 
       lua.set("project", project);
 
-
-      if(!std::filesystem::exists(current_script_path)){
-        Utils::error << "Script not found: " << current_script_path << " at: " << script_path << std::endl;
+      if (!std::filesystem::exists(current_script_path)) {
+        Utils::error << "Script not found: " << current_script_path
+                     << " at: " << script_path << std::endl;
         return false;
       }
 
-
       auto result = lua.script_file(current_script_path);
 
-
-      if(!result.valid()){
-        Utils::error << "Error while executing lua script at: " << current_script_path << std::endl;
+      if (!result.valid()) {
+        Utils::error << "Error while executing lua script at: "
+                     << current_script_path << std::endl;
         return false;
       }
 
       project = lua.get<std::shared_ptr<Project>>("project");
-
     }
     return true;
   }
 
-  bool postScripts(sol::state &lua, std::shared_ptr<Project> project){
-    path script_path = project->path / 
-      (Constants::TEMPLATE_PATH + Constants::POST_SCRIPTS_PATH);
+  bool postScripts(sol::state &lua, std::shared_ptr<Project> project) {
+    path script_path = project->path / (Constants::TEMPLATE_PATH +
+                                        Constants::POST_SCRIPTS_PATH);
 
-
-    if(!std::filesystem::exists(script_path)){
-      Utils::verbose << "No post scripts found" << " at: " << script_path << std::endl;
+    if (!std::filesystem::exists(script_path)) {
+      Utils::verbose << "No post scripts found"
+                     << " at: " << script_path << std::endl;
       return false;
     }
 
     std::vector<path> scripts = {};
 
-    for(const path& current_path :
-      std::filesystem::recursive_directory_iterator(script_path)){
+    for (const path &current_path :
+         std::filesystem::recursive_directory_iterator(script_path)) {
 
-
-      if(current_path.extension() == ".lua"){
+      if (current_path.extension() == ".lua") {
         scripts.emplace_back(current_path);
       }
     }
 
-    for(const path& script : scripts){
+    for (const path &script : scripts) {
 
       lua.set("project", project);
 
-      if(!std::filesystem::exists(script)){
-        Utils::error << "Script not found: " << script << " at path: " << script_path << std::endl;
+      if (!std::filesystem::exists(script)) {
+        Utils::error << "Script not found: " << script
+                     << " at path: " << script_path << std::endl;
         return false;
       }
 
-
       auto result = lua.script_file(script);
-      if(!result.valid()){
+      if (!result.valid()) {
         Utils::error << "Error while executing lua script" << std::endl;
         return false;
       }
@@ -201,4 +204,4 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
     }
     return true;
   }
-}
+} // namespace Frate::LuaAPI

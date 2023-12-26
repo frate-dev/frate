@@ -3,9 +3,9 @@
 #include <Frate/Project.hpp>
 
 namespace Frate::Command::Flags {
-  bool remove(std::shared_ptr<Interface> inter){
+  bool remove(std::shared_ptr<Interface> inter) {
     options(inter);
-    std::cout << "Removing flags" << std::endl; 
+    std::cout << "Removing flags" << std::endl;
     std::vector<std::string> flags = makeFlags(inter);
     if (inter->args->count("mode") > 0) {
       std::string mode = inter->args->operator[]("mode").as<std::string>();
@@ -13,9 +13,7 @@ namespace Frate::Command::Flags {
         if (m.name == mode) {
           for (std::string flag : flags) {
             std::cout << "Removing flag: " << flag << std::endl;
-            std::erase_if(m.flags, [&flag](auto &f) {
-                return f == flag;
-            });
+            std::erase_if(m.flags, [&flag](auto &f) { return f == flag; });
           }
           return true;
         }
@@ -23,10 +21,8 @@ namespace Frate::Command::Flags {
     }
     for (std::string flag : flags) {
       std::cout << "Removing flag: " << flag << std::endl;
-      std::erase_if(inter->pro->flags, [&flag](auto &f) {
-          return f == flag;
-      });
+      std::erase_if(inter->pro->flags, [&flag](auto &f) { return f == flag; });
     }
     return true;
   }
-}
+} // namespace Frate::Command::Flags

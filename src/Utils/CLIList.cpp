@@ -1,82 +1,88 @@
 #include <Frate/Utils/CLI.hpp>
-#include <sstream>
-#include <string>
-#include <stdint.h>
 #include <iostream>
+#include <sstream>
+#include <stdint.h>
+#include <string>
 #include <termcolor/termcolor.hpp>
 
-
-
 namespace Frate::Utils::CLI {
-  ListItem::ListItem(std::string primary, std::string subtext){
+  ListItem::ListItem(std::string primary, std::string subtext) {
     this->primary = primary;
     this->subtext = subtext;
   }
-  List::List(){
+
+  List::List() {
     numbered = false;
     stream = std::stringstream();
-    index_color   = Ansi::GREEN;
+    index_color = Ansi::GREEN;
     primary_color = Ansi::WHITE;
     subtext_color = Ansi::BLUE;
   }
-  List::List(std::string _title){
+
+  List::List(std::string _title) {
     title = _title;
     List();
   }
-  List::~List(){
-  }
-  List& List::IndexColor(std::string color){
+
+  List::~List() {}
+
+  List &List::IndexColor(std::string color) {
     index_color = color;
     return *this;
   }
-  List& List::PrimaryColor(std::string color){
+
+  List &List::PrimaryColor(std::string color) {
     primary_color = color;
     return *this;
   }
-  List& List::SubTextColor(std::string color){
+
+  List &List::SubTextColor(std::string color) {
     subtext_color = color;
     return *this;
   }
-  List& List::Numbered(){
+
+  List &List::Numbered() {
     numbered = true;
     return *this;
   }
-  List& List::ReverseIndexed(){
+
+  List &List::ReverseIndexed() {
     reversed_index = true;
     return *this;
   }
-  void List::push_line(int index, ListItem& item){
-    if(numbered){
-      stream << index_color << "[" << index << "] " << primary_color << item.primary;
-      if(item.subtext != ""){
+
+  void List::push_line(int index, ListItem &item) {
+    if (numbered) {
+      stream << index_color << "[" << index << "] " << primary_color
+             << item.primary;
+      if (item.subtext != "") {
         stream << "\n\t" << subtext_color << item.subtext;
       }
       stream << "\n";
-    }else{
+    } else {
       stream << primary_color << item.primary;
-      if(item.subtext != ""){
+      if (item.subtext != "") {
         stream << "\n\t" << subtext_color << item.subtext;
       }
       stream << "\n";
     }
   }
-  std::string List::Build(){
-    if(reversed_index){
-      for(int i = items.size() - 1; i >= 0; i--){
+
+  std::string List::Build() {
+    if (reversed_index) {
+      for (int i = items.size() - 1; i >= 0; i--) {
         push_line(i, items[i]);
       }
-    }else{
-      for(size_t i = 0; i < items.size(); i++){
+    } else {
+      for (size_t i = 0; i < items.size(); i++) {
         push_line(i, items[i]);
       }
     }
     stream << Ansi::RESET;
     return stream.str();
   }
-  void List::pushFront(ListItem item){
-    items.insert(items.begin(), item);
-  }
-  void List::pushBack(ListItem item){
-    items.emplace_back(item);
-  }
-}
+
+  void List::pushFront(ListItem item) { items.insert(items.begin(), item); }
+
+  void List::pushBack(ListItem item) { items.emplace_back(item); }
+} // namespace Frate::Utils::CLI

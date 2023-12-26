@@ -4,6 +4,7 @@
 
 namespace Frate::Command::License {
   using json = nlohmann::json;
+
   typedef struct License_s {
     std::string name;
     std::string key;
@@ -15,7 +16,9 @@ namespace Frate::Command::License {
     std::string key;
     std::string name;
     std::string spdx_id;
-    std::string url; std::string html_url; std::string description;
+    std::string url;
+    std::string html_url;
+    std::string description;
     std::string implementation;
     std::vector<std::string> permissions;
     std::vector<std::string> conditions;
@@ -24,13 +27,13 @@ namespace Frate::Command::License {
     bool featured;
   } FullLicense;
 
-  void to_json(json& j, const License& l);
+  void to_json(json &j, const License &l);
 
-  void from_json(const json& j, License& l);
+  void from_json(const json &j, License &l);
 
-  void to_json(json& j, const FullLicense& l);
+  void to_json(json &j, const FullLicense &l);
 
-  void from_json(const json& j, FullLicense& l);
+  void from_json(const json &j, FullLicense &l);
 
   /*
    * set the current projet's license
@@ -44,4 +47,4 @@ namespace Frate::Command::License {
    * list all available licenses
    */
   bool list(std::shared_ptr<Interface> inter);
-}
+} // namespace Frate::Command::License

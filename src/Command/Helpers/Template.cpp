@@ -1,12 +1,13 @@
+#include <Frate/Project.hpp>
 #include <Frate/Template.hpp>
 #include <Frate/Utils/Logging.hpp>
-#include <Frate/Project.hpp>
 #include <Frate/Utils/Macros.hpp>
 
 namespace Frate::Command {
 
-  Template::Template()= default;
-  void from_json(const json &json_obj, Template& template_){
+  Template::Template() = default;
+
+  void from_json(const json &json_obj, Template &template_) {
     FROM_JSON_FIELD(template_, name);
     FROM_JSON_FIELD(template_, description);
     FROM_JSON_FIELD(template_, version);
@@ -28,7 +29,7 @@ namespace Frate::Command {
     FROM_JSON_FIELD(template_, global);
   }
 
-  void to_json(json &json_obj, const Template& template_){
+  void to_json(json &json_obj, const Template &template_) {
     Utils::info << "Template to json" << std::endl;
     TO_JSON_FIELD(template_, name);
     TO_JSON_FIELD(template_, description);
@@ -51,7 +52,7 @@ namespace Frate::Command {
     TO_JSON_FIELD(template_, global);
   }
 
-  void to_project(Project &pro, const Template &template_){
+  void to_project(Project &pro, const Template &template_) {
     Utils::info << "Template to project" << std::endl;
     pro.name = template_.name;
     pro.description = template_.description;
@@ -64,4 +65,4 @@ namespace Frate::Command {
     pro.modes = template_.modes;
     Utils::info << "Template to project end" << std::endl;
   }
-};
+}; // namespace Frate::Command

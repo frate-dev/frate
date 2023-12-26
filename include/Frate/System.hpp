@@ -1,7 +1,6 @@
 #pragma once
 #include <nlohmann/json.hpp>
 
-
 namespace Frate::System {
   // std::string getGccVersion(std::filesystem::path path);
   // std::string getClangVersion(std::filesystem::path path);

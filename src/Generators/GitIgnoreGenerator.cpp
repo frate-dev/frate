@@ -1,29 +1,30 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
-#include <fstream>
-#include <Frate/Utils/CLI.hpp>
-#include <memory>
 #include <Frate/Project.hpp>
+#include <Frate/Utils/CLI.hpp>
+#include <fstream>
+#include <memory>
 
+namespace Frate::Generators::GitIgnore {
 
-namespace Frate::Generators::GitIgnore{
-
-bool write_gitignore(std::string gitignore, std::filesystem::path gitignore_path) {
-    try{
+  bool write_gitignore(std::string gitignore,
+                       std::filesystem::path gitignore_path) {
+    try {
       std::ofstream file;
       file.open(gitignore_path);
       file << gitignore;
       file.close();
-    }catch(std::exception &e){
+    } catch (std::exception &e) {
       Utils::error << "Failed to create gitignore" << std::endl;
       Utils::debug(e.what());
       return false;
     }
     return true;
-}
+  }
 
   using namespace Utils::CLI;
-  bool create(std::shared_ptr<Command::Interface> inter){
+
+  bool create(std::shared_ptr<Command::Interface> inter) {
     std::filesystem::path gitignore_path = inter->pro->path / ".gitignore";
     std::string gitignore = R"VOG(
 # CMake
@@ -57,22 +58,22 @@ compile_commands.json
 compile_commands.json
 )VOG";
 
-Utils::replaceKey(gitignore, "{build_dir}", inter->pro->build_dir);
+    Utils::replaceKey(gitignore, "{build_dir}", inter->pro->build_dir);
 
-    if(std::filesystem::exists(gitignore_path)){
+    if (std::filesystem::exists(gitignore_path)) {
       std::cout << "Gitignore already exists" << std::endl;
       Prompt prompt("Do you want to overwrite it?");
       prompt.setColor(Ansi::RED).exitOnFailure().run();
       prompt.isBool();
       auto [valid, value] = prompt.get<bool>();
-      if(!valid || !value){
+      if (!valid || !value) {
         return false;
       }
       write_gitignore(gitignore, gitignore_path);
-    }else{
+    } else {
       write_gitignore(gitignore, gitignore_path);
     }
 
     return true;
-  }  
-}
+  }
+} // namespace Frate::Generators::GitIgnore

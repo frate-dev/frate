@@ -1,15 +1,14 @@
-#include <string>
+#include <Frate/Generators.hpp>
+#include <Frate/Interface.hpp>
 #include <regex>
-#include <Frate/Interface.hpp> 
-#include <Frate/Generators.hpp> 
-
+#include <string>
 
 namespace Frate::Utils::Validation {
-  bool SourceDir(std::string src_dir){
+  bool SourceDir(std::string src_dir) {
     if (src_dir.size() > 255) {
       return false;
     }
-    //check if the source directory is valid
+    // check if the source directory is valid
     if (std::regex_match(src_dir, std::regex("^[a-zA-Z0-9_-]+$"))) {
       return true;
     }
@@ -21,4 +20,4 @@ namespace Frate::Utils::Validation {
     }
     return false;
   }
-}
+} // namespace Frate::Utils::Validation

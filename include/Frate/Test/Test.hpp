@@ -1,13 +1,12 @@
 #ifdef TEST
 #pragma once
+#include <Frate/Interface.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <cxxopts.hpp>
-#include <Frate/Interface.hpp>
 
-namespace Tests{
+namespace Tests {
   std::string genBase64String(int random_string_length);
 }
-
 
 namespace Tests::Command {
   using Frate::Command::Interface;
@@ -18,12 +17,13 @@ namespace Tests::Command {
   // extern Frate::Utils::Warning warning;
   void cleanUp(path test_path);
 
-  std::pair<bool, std::shared_ptr<Interface>> init(std::string command,bool check_config=false);
+  std::pair<bool, std::shared_ptr<Interface>> init(std::string command,
+                                                   bool check_config = false);
 
   bool validateProjectJson(std::shared_ptr<Interface> inter);
 
   std::filesystem::path genTestDirectory();
-  std::pair<int, char**> genCommand(std::string args);
+  std::pair<int, char **> genCommand(std::string args);
   /*
    * ------------------
    * Test Init Commands
@@ -43,7 +43,7 @@ namespace Tests::Command {
   bool testAddFlagsWithMode();
 
   bool testRemoveFlagsSingle(std::string flag);
-  
+
   /* --------------------
    * Test Package Commands
    * --------------------
@@ -80,10 +80,10 @@ namespace Tests::Command {
    * --------------------
    */
   bool testNuke();
-}
+} // namespace Tests::Command
 
-namespace Tests::Generators{
-  namespace CmakeLists{
+namespace Tests::Generators {
+  namespace CmakeLists {
 
     bool testCmakeVersion();
     bool testProjectName();
@@ -93,16 +93,16 @@ namespace Tests::Generators{
     bool testSourceDir();
     bool testBuildDir();
     bool testIncludeDir();
-  }
-  namespace JsonConfig{
-  }
-}
+  } // namespace CmakeLists
+
+  namespace JsonConfig {}
+} // namespace Tests::Generators
+
 namespace Tests::Utils {
 
   bool testSplit();
 
   bool testToLower();
 
-}
+} // namespace Tests::Utils
 #endif
-

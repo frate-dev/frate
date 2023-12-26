@@ -1,26 +1,27 @@
-#include <Frate/Generators.hpp>
-#include <inja.hpp>
-#include <Frate/Project.hpp>
 #include "Frate/Utils/General.hpp"
-
+#include <Frate/Generators.hpp>
+#include <Frate/Project.hpp>
+#include <inja.hpp>
 
 namespace Frate::Generators::Project {
   using inja::Environment;
-  bool refreshTemplate(Environment &env, std::shared_ptr<Command::Project> pro) {
+
+  bool refreshTemplate(Environment &env,
+                       std::shared_ptr<Command::Project> pro) {
     Utils::info << "Refreshing template" << std::endl;
     std::vector<path> paths_to_refresh{
-      pro->path / "template/CMakeLists.txt.inja",
+        pro->path / "template/CMakeLists.txt.inja",
     };
 
-    for(const path& current_p: paths_to_refresh){
+    for (const path &current_p : paths_to_refresh) {
       std::string rendered_file = env.render_file(current_p, *pro);
       std::string new_file = current_p.string();
       new_file = new_file.replace(new_file.find(".inja"), 5, "");
       Utils::replaceKey(new_file, "template/", "");
       std::ofstream file;
-      try{
+      try {
         file.open(new_file);
-      }catch(...){
+      } catch (...) {
         Utils::error << "Error while opening file: " << new_file << std::endl;
         return false;
       }
@@ -29,4 +30,4 @@ namespace Frate::Generators::Project {
     }
     return true;
   }
-}
+} // namespace Frate::Generators::Project

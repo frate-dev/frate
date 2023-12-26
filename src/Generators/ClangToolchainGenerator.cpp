@@ -1,5 +1,5 @@
-#include <Frate/Interface.hpp>
 #include <Frate/Command/AvailableTriples.hpp>
+#include <Frate/Interface.hpp>
 #include <Frate/Utils/General.hpp>
 #include <inja.hpp>
 #include <nlohmann/json.hpp>
@@ -7,10 +7,11 @@
 
 namespace Frate::Generators::Toolchain {
   using nlohmann::json;
+
   std::string generateToolchain(std::string toolchain) {
     Command::Toolchain::CompileTarget compiletarget;
     for (Command::Toolchain::CompileTarget comptarget :
-        Command::Toolchain::CompileTargets) {
+         Command::Toolchain::CompileTargets) {
       if (comptarget.triple == toolchain) {
         std::string processor = Utils::split(comptarget.triple, '-')[0];
         compiletarget = {comptarget.os, comptarget.triple, processor};
@@ -25,12 +26,9 @@ set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_CXX_COMPILER_TARGET {{ triple }})
 set(CMAKE_LINKER ldd)
     )";
-    return inja::render(
-        toolchain_template,
-        json{
-          {"os", compiletarget.os},
-          {"processor", compiletarget.processor},
-          {"triple", compiletarget.triple}
-        });
-    }
-}
+    return inja::render(toolchain_template,
+                        json{{"os", compiletarget.os},
+                             {"processor", compiletarget.processor},
+                             {"triple", compiletarget.triple}});
+  }
+} // namespace Frate::Generators::Toolchain

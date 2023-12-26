@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 
-
 namespace Frate::Utils::Validation {
   bool CppLanguageVersion(std::string version);
   bool CLanguageVersion(std::string version);
@@ -15,4 +14,4 @@ namespace Frate::Utils::Validation {
   bool IncludeDir(std::string dir);
   bool ProjectVersion(std::string version);
   bool CmakeVersion(std::string version);
-}
+} // namespace Frate::Utils::Validation

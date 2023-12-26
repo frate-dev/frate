@@ -1,39 +1,39 @@
 #ifdef TEST
-#include <Frate/Utils/General.hpp>
-#include <Frate/Test/Test.hpp>
 #include <Frate/Interface.hpp>
-#include <filesystem>
-#include <memory>
 #include <Frate/Project.hpp>
+#include <Frate/Test/Test.hpp>
+#include <Frate/Utils/General.hpp>
+#include <filesystem>
 #include <fstream>
+#include <memory>
 
 namespace Tests::Command {
-  using std::filesystem::path;
   using Frate::Command::Interface;
+  using std::filesystem::path;
 
-
-  std::filesystem::path genTestDirectory(){
+  std::filesystem::path genTestDirectory() {
     Frate::Utils::info << "Generating test directory" << std::endl;
     std::string random_string = genBase64String(10);
     std::filesystem::path test_path =
-      std::filesystem::path("/tmp/frate-test-" + random_string);
-
-    while(std::filesystem::exists(test_path)){
-      random_string = genBase64String(10);
-      test_path =
         std::filesystem::path("/tmp/frate-test-" + random_string);
+
+    while (std::filesystem::exists(test_path)) {
+      random_string = genBase64String(10);
+      test_path = std::filesystem::path("/tmp/frate-test-" + random_string);
     }
 
-    try{
+    try {
       std::filesystem::create_directory(test_path);
-    }catch(...){
+    } catch (...) {
       Frate::Utils::error << "Failed to create test directory" << std::endl;
       return "";
     }
 
-    Frate::Utils::info << "Test directory generated at" << test_path << std::endl;
+    Frate::Utils::info << "Test directory generated at" << test_path
+                       << std::endl;
     return test_path;
   }
+
   void cleanUp(path test_path) {
     try {
       std::filesystem::remove_all(test_path);
@@ -41,7 +41,8 @@ namespace Tests::Command {
       Frate::Utils::error << "Failed to clean up test directory" << std::endl;
     }
   }
-  std::vector<std::string> parseArguments(const std::string& input) {
+
+  std::vector<std::string> parseArguments(const std::string &input) {
     std::vector<std::string> args;
     std::string arg;
     bool inQuotes = false;
@@ -66,17 +67,19 @@ namespace Tests::Command {
     return args;
   }
 
-  std::pair<int, char**> genCommand(std::string command){
+  std::pair<int, char **> genCommand(std::string command) {
     std::vector<std::string> command_split = parseArguments(command);
-    char **argv = new char*[command_split.size()];
-    for(int i = 0; i < command_split.size(); i++){
+    char **argv = new char *[command_split.size()];
+    for (int i = 0; i < command_split.size(); i++) {
       argv[i] = new char[command_split[i].size()];
       strcpy(argv[i], command_split[i].c_str());
     }
 
     return std::make_pair(command_split.size(), argv);
   }
-  std::pair<bool, std::shared_ptr<Interface>> init(std::string command,bool check_config) {
+
+  std::pair<bool, std::shared_ptr<Interface>> init(std::string command,
+                                                   bool check_config) {
 
     auto [argc, argv] = genCommand(command);
 
@@ -84,31 +87,31 @@ namespace Tests::Command {
 
     std::shared_ptr<Interface> inter_ptr = std::make_shared<Interface>(inter);
 
-
     inter.pro->path = std::filesystem::path(test_path);
 
     if (!Frate::Command::execute(inter_ptr)) {
 
-
-      Frate::Utils::error << "Failed to run command: " << command << " : could not execute" << std::endl;
-      return std::make_pair(true,inter_ptr);
+      Frate::Utils::error << "Failed to run command: " << command
+                          << " : could not execute" << std::endl;
+      return std::make_pair(true, inter_ptr);
     }
-    if(check_config){
+    if (check_config) {
       std::ifstream config_file(test_path / "frate-project.json");
       nlohmann::json config;
 
-      if(!std::filesystem::exists(test_path / "frate-project.json")){
-        Frate::Utils::error << "Failed to run command : " << command << " : no config file" << std::endl;
-        return std::make_pair(true,inter_ptr);
+      if (!std::filesystem::exists(test_path / "frate-project.json")) {
+        Frate::Utils::error << "Failed to run command : " << command
+                            << " : no config file" << std::endl;
+        return std::make_pair(true, inter_ptr);
       }
 
-      if(!validateProjectJson(inter_ptr)){
-        Frate::Utils::error << "Failed to run command : " << command << " : invalid json" << std::endl;
-        return std::make_pair(true,inter_ptr);
+      if (!validateProjectJson(inter_ptr)) {
+        Frate::Utils::error << "Failed to run command : " << command
+                            << " : invalid json" << std::endl;
+        return std::make_pair(true, inter_ptr);
       }
     }
-    return std::make_pair(false,inter_ptr);
-
+    return std::make_pair(false, inter_ptr);
   }
-}
+} // namespace Tests::Command
 #endif

@@ -32,7 +32,7 @@ jobs:
       with:
         release_branch: main
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.CI_TOKEN }}
     # - name: Upload artifacts
     #   uses: svenstaro/upload-release-action@v2
     #   with:

@@ -1,20 +1,21 @@
 #pragma once
-#include <string>
-#include <vector>
-#include <nlohmann/json.hpp>
 #include <iomanip>
 #include <iostream>
+#include <nlohmann/json.hpp>
+#include <string>
 #include <termcolor/termcolor.hpp>
-#define DEBUGTHIS(x) std::cout << termcolor::bright_red << "##x" << " -> " << x << std::endl;
+#include <vector>
+#define DEBUGTHIS(x)                                                           \
+  std::cout << termcolor::bright_red << "##x"                                  \
+            << " -> " << x << std::endl;
 
 #ifdef DEBUG
 #include <cpptrace/cpptrace.hpp>
 #endif
 
-#ifdef TEST 
+#ifdef TEST
 #include <cpptrace/cpptrace.hpp>
 #endif
-
 
 namespace Frate::Utils {
 
@@ -47,7 +48,7 @@ namespace Frate::Utils {
    * @param p The path to be copied
    * @return The path of the file in the /tmp directory
    */
-  path copyToTmpPath(path p,std::string prefix = "frate-");
+  path copyToTmpPath(path p, std::string prefix = "frate-");
 
   /*
    * Split the string by the delimiter
@@ -61,7 +62,7 @@ namespace Frate::Utils {
    * Convert the string to lower case
    * @param str The string to be converted
    */
-  void toLower(std::string& str);
+  void toLower(std::string &str);
 
   /*
    * Fetch the json from the url
@@ -75,7 +76,7 @@ namespace Frate::Utils {
    * @param url The url to be fetched
    * @return The text fetched from the url
    */
-  std::string fetchText(std::string url,bool verbose = false);
+  std::string fetchText(std::string url, bool verbose = false);
 
   /*
    * A new Utils::hSystem command which returns the exit code of the command
@@ -85,7 +86,6 @@ namespace Frate::Utils {
    */
   int hSystem(std::string command);
 
-
   typedef struct CmdOutput_s {
     std::string std_out;
     std::string std_err;
@@ -93,22 +93,23 @@ namespace Frate::Utils {
   } CmdOutput;
 
   /*
-   * Runs the command and returns all the output of the command using a CmdOutput struct
+   * Runs the command and returns all the output of the command using a
+   * CmdOutput struct
    * @param cmd The command to be executed
    * @return The output of the command
    */
   CmdOutput hSystemWithOutput(std::string cmd);
 
-
   struct TableFormat {
-      int width;
-      char fill;
-      TableFormat(): width(14), fill(' ') {}
-      template<typename T>
-      TableFormat& operator<<(const T& data) {
-          std::cout<<  std::setw(width) << data << std::setfill(fill);
-          return *this;
-      }
+    int width;
+    char fill;
+
+    TableFormat() : width(14), fill(' ') {}
+
+    template <typename T> TableFormat &operator<<(const T &data) {
+      std::cout << std::setw(width) << data << std::setfill(fill);
+      return *this;
+    }
   };
 
   /*
@@ -117,7 +118,8 @@ namespace Frate::Utils {
   int levensteinDistance(std::string aStr, std::string bStr);
 
   /*
-   * This is a function get a score between two strings, essentialy how similar they are
+   * This is a function get a score between two strings, essentialy how similar
+   * they are
    * @param text The text to be compared
    * @param query The query to be compared
    * @return The score of the two strings
@@ -134,4 +136,4 @@ namespace Frate::Utils {
    * replaces the provided key with the value
    */
   void replaceKey(std::string &str, std::string key, std::string value);
-}
+} // namespace Frate::Utils

@@ -1,12 +1,12 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Interface.hpp>
-#include <string>
-#include <fstream>
-#include <termcolor/termcolor.hpp>
 #include <Frate/Project.hpp>
+#include <fstream>
+#include <string>
+#include <termcolor/termcolor.hpp>
 
-namespace Frate::Generators::ConfigJson{
- // [[deprecated("Use project->writeConfig() instead")]]
+namespace Frate::Generators::ConfigJson {
+  // [[deprecated("Use project->writeConfig() instead")]]
   bool writeConfig(std::shared_ptr<Command::Project> &pro) {
     std::ofstream file;
     std::string file_name = "frate-project.json";
@@ -16,4 +16,4 @@ namespace Frate::Generators::ConfigJson{
     file.close();
     return true;
   }
-}
+} // namespace Frate::Generators::ConfigJson

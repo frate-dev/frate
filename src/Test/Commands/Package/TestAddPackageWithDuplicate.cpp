@@ -3,25 +3,28 @@
 
 namespace Tests::Command {
 
-  bool testAddPackageWithDuplicate(std::string package_name){
-    Frate::Utils::info << "Testing add package command with duplicate package" << std::endl;
-    if(!testNew()) return false;
+  bool testAddPackageWithDuplicate(std::string package_name) {
+    Frate::Utils::info << "Testing add package command with duplicate package"
+                       << std::endl;
+    if (!testNew())
+      return false;
 
     auto [failed, inter] = init("frate add package " + package_name + " -l");
 
-    if(failed){ 
+    if (failed) {
       Frate::Utils::error << "Failed to add package" << std::endl;
       return false;
     }
 
-    auto [failed_dup, inter_dup] = init("frate add package " + package_name + " -l");
+    auto [failed_dup, inter_dup] =
+        init("frate add package " + package_name + " -l");
 
-    if(!failed_dup){ 
+    if (!failed_dup) {
       Frate::Utils::error << "Failed to detect duplicate package" << std::endl;
       return false;
     }
 
     return true;
   }
-}
+} // namespace Tests::Command
 #endif

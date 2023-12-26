@@ -1,10 +1,9 @@
+#include <Frate/Utils/General.hpp>
 #include <stdint.h>
 #include <termcolor/termcolor.hpp>
-#include <Frate/Utils/General.hpp>
-
 
 namespace Frate::Utils {
-  void debug(std::string something){
+  void debug(std::string something) {
 #ifdef DEBUG
     cpptrace::generate_trace().print();
     DEBUGTHIS(something);
@@ -15,4 +14,4 @@ namespace Frate::Utils {
     std::cout << termcolor::bright_red << something << std::endl;
 #endif
   }
-}
+} // namespace Frate::Utils

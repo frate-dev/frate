@@ -11,55 +11,59 @@ namespace Frate::Command::Set {
 
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
-    inter->options->allow_unrecognised_options().add_options()
-      ("command", "Command to run", cxxopts::value<std::string>()->default_value("help"))
-      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())("h,help", "Print usage")
-      ("args", "Arguments to pass to subcommand", cxxopts::value<std::string>());
+    inter->options->allow_unrecognised_options().add_options()(
+        "command",
+        "Command to run",
+        cxxopts::value<std::string>()->default_value("help"))(
+        "subcommand", "Subcommand to run", cxxopts::value<std::string>())(
+        "h,help", "Print usage")("args",
+                                 "Arguments to pass to subcommand",
+                                 cxxopts::value<std::string>());
     return inter->parse();
   }
+
   std::vector<Handler> handlers(std::shared_ptr<Interface> inter) {
-    return {
-      Handler{
-        .aliases = {"license","lc"},
-        .positional_args = {"license"},
-        .docs = "Set the project's license",
-        .callback = &License::set,
-        .requires_project = true,
-      },
-      Handler{
-        .aliases = {"name","n"},
-        .docs = "Set the project's name",
-        .callback = &Name::set,
-        .requires_project = true,
-      },
-      Handler{
-        .aliases = {"version","ver","v"},
-        .docs = "Set the project's version",
-//         .callback = [inter]() {
-// 
-//           return true;//Version::set(inter);
-//         },
-        .implemented = false,
-        .requires_project = true,
-      },
-      Handler{
-        .aliases = {"server","s"},
-        .docs = "Set the project's build server",
-        .callback = &RemoteServers::set,
-        .requires_project = true,
-      }
-    };
+    return {Handler{
+                .aliases = {"license", "lc"},
+                .positional_args = {"license"},
+                .docs = "Set the project's license",
+                .callback = &License::set,
+                .requires_project = true,
+            },
+            Handler{
+                .aliases = {"name", "n"},
+                .docs = "Set the project's name",
+                .callback = &Name::set,
+                .requires_project = true,
+            },
+            Handler{
+                .aliases = {"version", "ver", "v"},
+                .docs = "Set the project's version",
+                //         .callback = [inter]() {
+                //
+                //           return true;//Version::set(inter);
+                //         },
+                .implemented = false,
+                .requires_project = true,
+            },
+            Handler{
+                .aliases = {"server", "s"},
+                .docs = "Set the project's build server",
+                .callback = &RemoteServers::set,
+                .requires_project = true,
+            }};
   }
+
   bool run(std::shared_ptr<Interface> inter) {
     options(inter);
     std::vector<Handler> set_handlers = handlers(inter);
     std::string subcommand;
 
-    if(inter->args->count("subcommand")){
+    if (inter->args->count("subcommand")) {
 
       subcommand = inter->args->operator[]("subcommand").as<std::string>();
 
-    }else{
+    } else {
       Utils::error << "No subcommand given" << std::endl;
 
       inter->getHelpString("set", set_handlers);
@@ -68,6 +72,6 @@ namespace Frate::Command::Set {
     }
 
     inter->pro->load();
-    return runCommand(inter,subcommand, set_handlers);
+    return runCommand(inter, subcommand, set_handlers);
   }
-}
+} // namespace Frate::Command::Set

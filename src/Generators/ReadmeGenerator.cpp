@@ -1,12 +1,13 @@
 #include "Frate/Utils/General.hpp"
-#include <Frate/Generators.hpp>
 #include <Frate/Constants.hpp>
+#include <Frate/Generators.hpp>
+#include <Frate/Project.hpp>
 #include <fstream>
 #include <memory>
-#include <Frate/Project.hpp>
+
 namespace Frate::Generators::Readme {
-    bool create(std::shared_ptr<Command::Interface> inter){
-      std::string readme = R"(
+  bool create(std::shared_ptr<Command::Interface> inter) {
+    std::string readme = R"(
 # {project_name} with {name}
 - {description}
 - {author}
@@ -39,26 +40,29 @@ Find more information at the [Frate Github]({help_url})
 
 )";
 
-      Utils::replaceKey(readme, "{project_name}", inter->pro->name + Constants::VERSION);
-      Utils::replaceKey(readme, "{name}", Constants::NAME);
-      Utils::replaceKey(readme, "{description}", inter->pro->description);
-      Utils::replaceKey(readme, "{author}", inter->pro->authors.size() > 0 ? inter->pro->authors[0] : "");
+    Utils::replaceKey(
+        readme, "{project_name}", inter->pro->name + Constants::VERSION);
+    Utils::replaceKey(readme, "{name}", Constants::NAME);
+    Utils::replaceKey(readme, "{description}", inter->pro->description);
+    Utils::replaceKey(readme,
+                      "{author}",
+                      inter->pro->authors.size() > 0 ? inter->pro->authors[0]
+                                                     : "");
 
-      std::time_t t = std::time(nullptr);
-      std::tm tm = *std::localtime(&t);
-      std::stringstream ss;
-      ss << std::put_time(&tm, "%d/%m/%Y");
-      Utils::replaceKey(readme, "{date}", ss.str());
-      Utils::replaceKey(readme, "{help_url}", Constants::PROJECT_URL);
-      std::ofstream readme_file(inter->pro->path / "README.md");
+    std::time_t t = std::time(nullptr);
+    std::tm tm = *std::localtime(&t);
+    std::stringstream ss;
+    ss << std::put_time(&tm, "%d/%m/%Y");
+    Utils::replaceKey(readme, "{date}", ss.str());
+    Utils::replaceKey(readme, "{help_url}", Constants::PROJECT_URL);
+    std::ofstream readme_file(inter->pro->path / "README.md");
 
-      try{
-        readme_file << readme;
-      }catch(...){
-        Utils::error << "Failed to create README.md file" << std::endl;
-        return false;
-      }
-      return true;
+    try {
+      readme_file << readme;
+    } catch (...) {
+      Utils::error << "Failed to create README.md file" << std::endl;
+      return false;
     }
-}
-
+    return true;
+  }
+} // namespace Frate::Generators::Readme

@@ -1,12 +1,11 @@
 #ifdef TEST
-#include <Frate/Test/Test.hpp>
 #include <Frate/Project.hpp>
-
+#include <Frate/Test/Test.hpp>
 
 namespace Tests::Command {
-  bool testAddFlagsWithMode(){
+  bool testAddFlagsWithMode() {
     std::cout << "Testing add flags command with a mode specified" << std::endl;
-    if(!testNew()){
+    if (!testNew()) {
       Frate::Utils::error << "Failed to create new project" << std::endl;
       return false;
     }
@@ -18,15 +17,12 @@ namespace Tests::Command {
     }
     if (inter->pro->modes[0].flags[1] != "-O3") {
       std::cout << inter->pro->modes[0].flags[0] << std::endl;
-      
+
       Frate::Utils::error << "Failed to add flags project" << std::endl;
       return false;
     }
 
-    
-
     return true;
-
   }
-}
+} // namespace Tests::Command
 #endif

@@ -6,4 +6,4 @@ namespace Frate::Command::Author {
   bool list(std::shared_ptr<Interface> inter);
   bool options(std::shared_ptr<Interface> inter);
   bool remove(std::shared_ptr<Interface> inter);
-}
+} // namespace Frate::Command::Author

@@ -1,9 +1,10 @@
 #include "Frate/Command/Flags.hpp"
 #include <Frate/Project.hpp>
+
 namespace Frate::Command::Flags {
   bool add(std::shared_ptr<Interface> inter) {
     options(inter);
-    std::cout << "Adding flags" << std::endl; 
+    std::cout << "Adding flags" << std::endl;
     std::vector<std::string> flags = makeFlags(inter);
 
     if (inter->args->count("mode") > 0) {
@@ -24,4 +25,4 @@ namespace Frate::Command::Flags {
     }
     return true;
   }
-}
+} // namespace Frate::Command::Flags

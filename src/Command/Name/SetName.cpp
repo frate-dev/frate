@@ -5,7 +5,7 @@
 namespace Frate::Command::Name {
   bool set(std::shared_ptr<Interface> inter) {
     options(inter);
-    if(inter->args->count("name") == 0) {
+    if (inter->args->count("name") == 0) {
       Utils::error << "No name given.\n";
       return false;
     }
@@ -16,4 +16,4 @@ namespace Frate::Command::Name {
 
     return true;
   }
-}
+} // namespace Frate::Command::Name

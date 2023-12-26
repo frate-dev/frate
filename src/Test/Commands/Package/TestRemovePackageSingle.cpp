@@ -2,18 +2,15 @@
 #include <Frate/Test/Test.hpp>
 #include <fstream>
 
-
-bool Tests::Command::testRemovePackage(std::string package_name){
+bool Tests::Command::testRemovePackage(std::string package_name) {
   std::cout << "Testing remove package command" << std::endl;
 
-  
-  
-  if(!testNew()){
+  if (!testNew()) {
     Frate::Utils::error << "Failed to create new project" << std::endl;
     return false;
   }
 
-  if(!testAddPackage(package_name)){
+  if (!testAddPackage(package_name)) {
     Frate::Utils::error << "Failed to add package" << std::endl;
     return false;
   }
@@ -24,7 +21,8 @@ bool Tests::Command::testRemovePackage(std::string package_name){
     return false;
   }
 
-  std::cout << "Searching for " +package_name+ " in frate-project.json" << std::endl;
+  std::cout << "Searching for " + package_name + " in frate-project.json"
+            << std::endl;
 
   std::ifstream config_file(test_path / "frate-project.json");
 
@@ -33,16 +31,18 @@ bool Tests::Command::testRemovePackage(std::string package_name){
   try {
     config_file >> config;
   } catch (...) {
-    
-    Frate::Utils::error << "Failed to remove package : could not open file - file possibly never created" << std::endl;
+
+    Frate::Utils::error << "Failed to remove package : could not open file - "
+                           "file possibly never created"
+                        << std::endl;
     return false;
   }
 
-
-  for (auto& dep : config["dependencies"]) {
+  for (auto &dep : config["dependencies"]) {
     if (dep["name"] == package_name) {
-      Frate::Utils::error << "Failed to remove package : " << package_name << " still in frate-project.json" << std::endl;
-      
+      Frate::Utils::error << "Failed to remove package : " << package_name
+                          << " still in frate-project.json" << std::endl;
+
       return false;
     }
   }

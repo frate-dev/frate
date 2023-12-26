@@ -1,18 +1,18 @@
-#include <filesystem>
-#include <fstream>
-#include <nlohmann/json_fwd.hpp>
-#include <string>
-#include <nlohmann/json.hpp>
+#include <Frate/LuaAPI.hpp>
 #include <Frate/Project.hpp>
 #include <Frate/Utils/General.hpp>
-#include <sol/sol.hpp>
+#include <filesystem>
+#include <fstream>
 #include <inja.hpp>
-#include <Frate/LuaAPI.hpp>
+#include <nlohmann/json.hpp>
+#include <nlohmann/json_fwd.hpp>
+#include <sol/sol.hpp>
+#include <string>
 
 namespace Frate::Generators::CMakeList {
   using nlohmann::json;
 
-  bool createCMakeLists(std::shared_ptr<Command::Project> pro){
+  bool createCMakeLists(std::shared_ptr<Command::Project> pro) {
     std::cout << "Creating CMakeLists.txt" << std::endl;
 
 #ifdef DEBUG
@@ -20,13 +20,15 @@ namespace Frate::Generators::CMakeList {
     std::cout << json(*pro).dump(2) << std::endl;
 #endif
 #endif
-    std::string CPM = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/CPM.cmake/v0.38.6/cmake/CPM.cmake");
+    std::string CPM =
+        Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/"
+                         "CPM.cmake/v0.38.6/cmake/CPM.cmake");
     std::ofstream CPMFile;
-    try{
-      if(!std::filesystem::exists(pro->path / "cmake"))
+    try {
+      if (!std::filesystem::exists(pro->path / "cmake"))
         std::filesystem::create_directories(pro->path / "cmake");
       CPMFile.open(pro->path / "cmake/CPM.cmake");
-    }catch(...){
+    } catch (...) {
       Utils::debug("Error while opening file: CPM.cmake");
       return false;
     }
@@ -36,12 +38,13 @@ namespace Frate::Generators::CMakeList {
     sol::state lua;
     LuaAPI::registerAPI(lua);
 
-    if(!LuaAPI::registerProject(lua, pro)){
+    if (!LuaAPI::registerProject(lua, pro)) {
       Utils::debug("Error while registering project");
       return false;
     }
-    
-    if(!LuaAPI::registerProjectScripts(env, lua,pro->path / "templates/scripts",pro)){
+
+    if (!LuaAPI::registerProjectScripts(
+            env, lua, pro->path / "templates/scripts", pro)) {
       Utils::debug("Error while registering project scripts");
       return false;
     }
@@ -49,9 +52,10 @@ namespace Frate::Generators::CMakeList {
     std::cout << "Rendering CMakeLists.txt" << std::endl;
 
     std::string CMakeListsExecutable;
-    try{
-      CMakeListsExecutable = env.render_file(pro->path /"templates" / "CMakeLists.txt.inja", *pro);
-    }catch(...){
+    try {
+      CMakeListsExecutable = env.render_file(
+          pro->path / "templates" / "CMakeLists.txt.inja", *pro);
+    } catch (...) {
       Utils::debug("Error while rendering CMakeLists.txt");
       return false;
     }
@@ -59,17 +63,15 @@ namespace Frate::Generators::CMakeList {
     std::cout << "Writing CMakeLists.txt" << std::endl;
     std::ofstream file;
     std::string file_name = "CMakeLists.txt";
-    
-    if(std::filesystem::exists(pro->path / file_name)){
+
+    if (std::filesystem::exists(pro->path / file_name)) {
 
       std::filesystem::remove(pro->path / file_name);
-
     }
 
-
-    try{
+    try {
       file.open(pro->path / file_name);
-    }catch(...){
+    } catch (...) {
       Utils::debug("Error while opening file: " + file_name);
       return false;
     }
@@ -79,8 +81,4 @@ namespace Frate::Generators::CMakeList {
     file.close();
     return true;
   }
-}
-
-
-
-
+} // namespace Frate::Generators::CMakeList

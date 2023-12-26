@@ -1,26 +1,24 @@
 #include <Frate/Generators.hpp>
+#include <Frate/Project.hpp>
+#include <Frate/Template.hpp>
 #include <fstream>
 #include <inja.hpp>
-#include <Frate/Template.hpp>
-#include <Frate/Project.hpp>
-
 
 namespace Frate::Generators::Project {
-  bool loadTemplateConfig(std::shared_ptr<Command::Project> pro){
+  bool loadTemplateConfig(std::shared_ptr<Command::Project> pro) {
 
     std::ifstream template_config_file;
 
-    try{
+    try {
 
       template_config_file.open(pro->path / "template/template.json");
 
-    }catch(...){
+    } catch (...) {
 
-      Utils::error << "Error while opening file: " << pro->path / "template/template.json" << std::endl;
+      Utils::error << "Error while opening file: "
+                   << pro->path / "template/template.json" << std::endl;
       return false;
-
     }
-
 
     json j = json::parse(template_config_file);
 
@@ -28,4 +26,4 @@ namespace Frate::Generators::Project {
     pro->fromTemplate(template_config);
     return true;
   }
-}
+} // namespace Frate::Generators::Project
