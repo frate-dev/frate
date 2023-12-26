@@ -1,10 +1,10 @@
+#include "Frate/System/Capability.hpp"
 #include "Frate/System.hpp"
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>
 namespace Frate::System {
 
-  Capability::Capability(){
-  }
+  Capability::Capability() = default;
   void from_json(const nlohmann::json &json_obj, Capability& capability){
     FROM_JSON_FIELD(capability, executable);
     FROM_JSON_FIELD(capability, version);

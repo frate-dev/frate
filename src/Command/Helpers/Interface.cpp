@@ -301,10 +301,10 @@ namespace Frate::Command {
           std::cout << " | ";
         }
       }
-      if(handler.positional_args.size() > 0){
+      if(!handler.positional_args.empty()){
         renderPositionals(handler.positional_args, handler.unlimited_args);
       }
-      if(handler.flags.size() > 0){
+      if(!handler.flags.empty()){
         renderFlags(handler.flags);
       }
       if(is_subcommand){
@@ -316,7 +316,7 @@ namespace Frate::Command {
         }
         std::cout << "     " << termcolor::blue << handler.docs << termcolor::reset;
       }else{
-        if(handler.subcommands.size() > 0){
+        if(!handler.subcommands.empty()){
           std::cout << termcolor::blue << " <subcommand>" << termcolor::reset;
 
         }else{
@@ -328,13 +328,12 @@ namespace Frate::Command {
       }else{
         std::cout << std::endl;
       }
-      if(handler.subcommands.size() > 0){
+      if(!handler.subcommands.empty()){
         getHelpString(name + " " + handler.aliases[0], handler.subcommands, true);
         std::cout << std::endl;
       }
     }
   }
-  Interface::~Interface(){
-  }
+  Interface::~Interface()= default;
 
 } // namespace Command

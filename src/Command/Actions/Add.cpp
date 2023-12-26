@@ -21,7 +21,7 @@ namespace Frate::Command::Add {
   }
   bool run(std::shared_ptr<Interface> inter){
     options(inter);
-    std::vector<Handler> addHandlers = handlers(inter);
+    std::vector<Handler> add_handlers = handlers(inter);
     std::string subcommand;
     if(inter->args->count("subcommand") > 0){
 
@@ -30,14 +30,14 @@ namespace Frate::Command::Add {
     }else{
       Utils::error << "No subcommand given" << std::endl;
 
-      inter->getHelpString("add", addHandlers);
+      inter->getHelpString("add", add_handlers);
 
       return false;
     }
 
     inter->pro->load();
 
-    return runCommand(inter,subcommand, addHandlers);
+    return runCommand(inter,subcommand, add_handlers);
 
     return true;
   }

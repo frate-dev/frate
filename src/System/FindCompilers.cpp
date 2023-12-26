@@ -1,0 +1,6 @@
+
+
+namespace Frate::System {
+
+
+}

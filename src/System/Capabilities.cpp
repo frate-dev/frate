@@ -1,36 +1,63 @@
-#include <Frate/System.hpp>
+#include <Frate/System/Capability.hpp>
+#include <Frate/System/Capabilities.hpp>
 #include <filesystem>
 #include "Frate/Utils/General.hpp"
 #include "Frate/Utils/Logging.hpp"
 #include "Frate/Utils/Macros.hpp"
 
-
 namespace Frate::System {
-  void Capabilities::search_path(std::filesystem::path& path) {
-    for (auto& p : std::filesystem::directory_iterator(path)) {
-      if (p.is_regular_file()) {
-        std::string filename = p.path().filename().string();
-#ifdef _WIN32
-        filename = filename.substr(0, filename.find(".exe"));
-#endif
-        if (filename.find("gcc") != std::string::npos) {
-          this->compilers[filename] = Capability();
-          this->compilers[filename].path = p.path();
-          this->compilers[filename].installed = true;
-          this->compilers[filename].version = getGccVersion(p.path());
-          Utils::info << "Found gcc(" << p.path()
-            << ") with version: " << this->compilers[filename].version
-            << std::endl;
+using std::filesystem::directory_entry;
 
-        } else if (filename.find("cmake") != std::string::npos) {
-          this->cmake.path = p.path();
-          this->cmake.installed = true;
-          this->cmake.version = getCmakeVersion(p.path());
-          Utils::info << "Found cmake(" << p.path()
-            << ") with version: " << this->cmake.version << std::endl;
+void Capabilities::search_path(std::filesystem::path& path) {
+
+
+  for (const directory_entry& current_path :
+       std::filesystem::directory_iterator(path)) {
+
+
+    if (current_path.is_regular_file()) {
+
+      std::string filename = current_path.path().filename().string();
+
+#ifdef _WIN32
+
+        filename = filename.substr(0, filename.find(".exe"));
+
+#endif
+
+//         if (filename.find("gcc") != std::string::npos) {
+// 
+//           if(this->compilers.find(filename) != this->compilers.end()){
+//             continue;
+//           }
+// 
+//           std::string gcc_version = getGccVersion(current_path.path());
+//           
+//           Utils::info << "version size: " << gcc_version.size() << std::endl;
+//           //If we don't get back a compiler version then it isn't a valid compiler
+//           if(gcc_version.empty()){
+//             continue;
+//           }
+// 
+//           Utils::info << "Found gcc(" << current_path.path()
+//             << ") with version: " << gcc_version
+//             << std::endl;
+// 
+//           this->compilers[filename].path = current_path.path();
+//           this->compilers[filename].installed = true;
+//           this->compilers[filename].version = gcc_version;
+// 
+        if (filename == "cmake") {
+          
+          if(this->cmake.installed){
+            continue;
+          }
+          this->get_cmake_capability(current_path.path());
+
+
         }
       }
-    }
+  }
   }
   bool Capabilities::search() {
     std::string path_env = std::getenv("PATH");
@@ -39,7 +66,7 @@ namespace Frate::System {
     const std::string extension = ".exe";
 #else
     const char delimiter = ':';
-    const std::string extension = "";
+    const std::string extension;
 #endif
 
     std::vector<std::string> paths = Utils::split(path_env, delimiter);
@@ -60,7 +87,7 @@ namespace Frate::System {
 
   Capability Capabilities::getLatestCompiler(std::string compiler){
 
-    return Capability();
+    return {};
   }
   void from_json(const nlohmann::json &json_obj, Capabilities& capabilities){
     FROM_JSON_FIELD(capabilities, compilers);
@@ -84,4 +111,4 @@ namespace Frate::System {
     TO_JSON_FIELD(capabilities, archive_compress);
     TO_JSON_FIELD(capabilities, archive_expand);
   }
-}
+  }  // namespace Frate::System

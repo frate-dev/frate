@@ -4,7 +4,6 @@
 #include <Frate/Command/Name.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Generators.hpp>
-#include "Frate/Project.hpp"
 
 namespace Frate::Command::Set {
 
@@ -53,7 +52,7 @@ namespace Frate::Command::Set {
   }
   bool run(std::shared_ptr<Interface> inter) {
     options(inter);
-    std::vector<Handler> setHandlers = handlers(inter);
+    std::vector<Handler> set_handlers = handlers(inter);
     std::string subcommand;
 
     if(inter->args->count("subcommand")){
@@ -63,12 +62,12 @@ namespace Frate::Command::Set {
     }else{
       Utils::error << "No subcommand given" << std::endl;
 
-      inter->getHelpString("set", setHandlers);
+      inter->getHelpString("set", set_handlers);
 
       return false;
     }
 
     inter->pro->load();
-    return runCommand(inter,subcommand, setHandlers);
+    return runCommand(inter,subcommand, set_handlers);
   }
 }

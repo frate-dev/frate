@@ -2,6 +2,7 @@
 #include <Frate/RemoteServer.hpp>
 #include <vector>
 #include "Frate/System.hpp"
+#include "Frate/System/Capabilities.hpp"
 
 namespace Frate::Config {
   //TODO: work in progress

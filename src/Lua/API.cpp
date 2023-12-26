@@ -23,11 +23,11 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
 
   lua.set("global", global_table);
   try{
-    for (const std::filesystem::path &p :
+    for (const std::filesystem::path &current_path :
         std::filesystem::recursive_directory_iterator(script_path)) {
-      if (p.extension() == ".lua") {
-        std::string file_name = p.filename();
-        std::string full_script_path = p.string();
+      if (current_path.extension() == ".lua") {
+        std::string file_name = current_path.filename();
+        std::string full_script_path = current_path.string();
         // Yoinkin off the lua extension
         file_name = file_name.substr(0, file_name.find(".lua"));
 
@@ -47,7 +47,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
 
         prefix = full_script_path;
 
-        scripts[prefix + file_name] = p.string();
+        scripts[prefix + file_name] = current_path.string();
       }
     }
   }catch(...){
@@ -87,10 +87,11 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
 
           if (result.valid()) {
             return result;
-          } else {
-            Utils::error << "Error while executing lua script at: " << script_path << std::endl;
-            exit(1);
-          }
+          }              
+
+          Utils::error << "Error while executing lua script at: " << script_path << std::endl;
+          exit(1);
+         
         });
   }
   return true;

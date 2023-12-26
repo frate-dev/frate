@@ -98,6 +98,8 @@ namespace Frate::Utils {
    * @return The output of the command
    */
   CmdOutput hSystemWithOutput(std::string cmd);
+
+
   struct TableFormat {
       int width;
       char fill;
@@ -108,18 +110,25 @@ namespace Frate::Utils {
           return *this;
       }
   };
+
   /*
    * F*CKING MAGIC
    */
   int levensteinDistance(std::string aStr, std::string bStr);
-  int getStringScore(std::string &text, std::string &query);
 
+  /*
+   * This is a function get a score between two strings, essentialy how similar they are
+   * @param text The text to be compared
+   * @param query The query to be compared
+   * @return The score of the two strings
+   */
+  int getStringScore(std::string &text, std::string &query);
 
   /*
    * Debug stuff
+   * Prints out a stack trace
    */
   void debug(std::string something);
-
 
   /*
    * replaces the provided key with the value

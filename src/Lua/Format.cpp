@@ -40,8 +40,8 @@ namespace Frate::LuaAPI {
           result += std::to_string(value.as<bool>());
         }else if(value.is<sol::table>()){
           result += resolveSpecifier(specifiers, value.as<sol::table>(), result, index+1);
-        }else if(value.is<sol::object>()){
-          result += resolveSpecifier(specifiers, value.as<sol::table>(), result, index+1);
+        // }else if(value.is<sol::object>()){
+        //   result += resolveSpecifier(specifiers, value.as<sol::table>(), result, index+1);
         }else{
           Utils::error << "LuaAPI Error: Unrecognized type while resolving specifier" << std::endl;
           exit(1);
@@ -52,11 +52,11 @@ namespace Frate::LuaAPI {
   }
   
 
-  std::string FrateApi::format(const std::string &str, sol::table in_table, sol::this_state s) {
+  std::string FrateApi::format(const std::string &str, sol::table in_table, sol::this_state current_state) {
 
-    std::string result = "";
+    std::string result;
 
-    sol::state_view lua(s);
+    sol::state_view lua(current_state);
 
     std::string keyword_buffer;
 
@@ -106,18 +106,18 @@ namespace Frate::LuaAPI {
       }
     }
     std::vector<std::string> specifiers;
-    for(size_t i = 0; i < tokens.size(); i++){
+    for(auto & token : tokens){
       //If we have a specifier then we start recording it in the specifier vector
-      if(tokens[i].type == specifier){
-        specifiers.emplace_back(tokens[i].value);
+      if(token.type == specifier){
+        specifiers.emplace_back(token.value);
         //If we have a close bracket then we resolve the specifier
         //By recursively looking through the table
-      }else if(tokens[i].type == close_bracket){
+      }else if(token.type == close_bracket){
         result += resolveSpecifier(specifiers, in_table);
         specifiers.clear();
         //All char literals get added to the result
-      }else if(tokens[i].type == char_literal){
-        result += tokens[i].value;
+      }else if(token.type == char_literal){
+        result += token.value;
       }
     }
     //Utils::info << result << std::endl;

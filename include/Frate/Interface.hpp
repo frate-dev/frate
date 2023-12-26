@@ -26,7 +26,7 @@ namespace Frate::Command{
       bool implemented{true};
       bool requires_project{true};
       bool unlimited_args{false};
-      std::string docs{""};
+      std::string docs;
       std::function<bool(std::shared_ptr<Interface> )> callback{
         [](std::shared_ptr<Interface> inter) -> bool {
           (void)inter;
@@ -39,12 +39,12 @@ namespace Frate::Command{
 
   };
 
-  typedef struct Handler_s {
+  using Handler = struct Handler_s {
     std::vector<std::string> aliases;
     std::vector<std::string> flags{};
     std::vector<Handler> subcommands{};
     std::vector<std::string> positional_args{};
-    std::string docs{""};
+    std::string docs;
     std::function<bool(std::shared_ptr<Interface> )> callback{
       [](std::shared_ptr<Interface> inter) -> bool {
         (void)inter;
@@ -55,7 +55,7 @@ namespace Frate::Command{
     bool implemented{true};
     bool requires_project{true};
     bool unlimited_args{false};
-  } Handler;
+  };
 
   class Interface : public std::enable_shared_from_this<Interface>{
     public:

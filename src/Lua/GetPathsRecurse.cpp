@@ -19,8 +19,8 @@ namespace Frate::LuaAPI {
     
 
     std::vector<std::string> paths;
-    for (const auto &p : std::filesystem::recursive_directory_iterator(input_path)) {
-      paths.emplace_back(p.path().string());
+    for (const auto &current_path : std::filesystem::recursive_directory_iterator(input_path)) {
+      paths.emplace_back(current_path.path().string());
     }
 
     return paths;
