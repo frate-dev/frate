@@ -5,10 +5,8 @@
 
 namespace Frate::Command {
 
-  Template::Template(){
-
-  }
-  void from_json(const json &j, Template& template_){
+  Template::Template()= default;
+  void from_json(const json &json_obj, Template& template_){
     FROM_JSON_FIELD(template_, name);
     FROM_JSON_FIELD(template_, description);
     FROM_JSON_FIELD(template_, version);
@@ -30,7 +28,7 @@ namespace Frate::Command {
     FROM_JSON_FIELD(template_, global);
   }
 
-  void to_json(json &j, const Template& template_){
+  void to_json(json &json_obj, const Template& template_){
     Utils::info << "Template to json" << std::endl;
     TO_JSON_FIELD(template_, name);
     TO_JSON_FIELD(template_, description);

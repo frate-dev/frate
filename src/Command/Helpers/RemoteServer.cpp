@@ -21,7 +21,7 @@ namespace Frate::Command {
     this->key = key;
     this->port = port;
   }
-  void from_json(const nlohmann::json &j, RemoteServer& remoteServer){
+  void from_json(const nlohmann::json &json_obj, RemoteServer& remoteServer){
     FROM_JSON_FIELD(remoteServer, name);
     FROM_JSON_FIELD(remoteServer, ip);
     FROM_JSON_FIELD(remoteServer, username);
@@ -30,13 +30,13 @@ namespace Frate::Command {
     FROM_JSON_FIELD(remoteServer, key);
     FROM_JSON_FIELD(remoteServer, port);
   }
-  void to_json(nlohmann::json &j, const RemoteServer& remoteServer){
+  void to_json(nlohmann::json &json_obj, const RemoteServer& remoteServer){
     TO_JSON_FIELD(remoteServer, name);
     TO_JSON_FIELD(remoteServer, ip);
     TO_JSON_FIELD(remoteServer, username);
     TO_JSON_FIELD(remoteServer, authMethod);
-    j["password"] = remoteServer.password.value_or("");
-    j["key"] = remoteServer.key.value_or("");
+    json_obj["password"] = remoteServer.password.value_or("");
+    json_obj["key"] = remoteServer.key.value_or("");
     TO_JSON_FIELD(remoteServer, port);
   }
 }

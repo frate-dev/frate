@@ -10,7 +10,7 @@
 namespace Frate::Command {
 
 
-  Project::Project(){};
+  Project::Project()= default;
   bool Project::save(){
     std::ofstream file;
     std::string file_name = "frate-project.json";
@@ -42,22 +42,20 @@ namespace Frate::Command {
     //Generators::CMakeList::createCMakeLists(std::make_shared<Project>(*this));
     return true;
   }
-  void Project::fromTemplate(Template &t){
-    this->src_dir = t.src_dir;
-    this->include_dir = t.include_dir;
-    this->build_dir = t.build_dir;
-    this->dependencies = t.dependencies;
-    this->default_mode = t.default_mode;
-    this->modes = t.modes;
-    this->flags = t.flags;
-    // Check is toolchain is present
-    // this->toolchains = t.toolchains;
-    this->global = t.global;
-    this->prompts = t.prompts;
-    this->libs = t.system_libs;
+  void Project::fromTemplate(Template &temp){
+    this->src_dir = temp.src_dir;
+    this->include_dir = temp.include_dir;
+    this->build_dir = temp.build_dir;
+    this->dependencies = temp.dependencies;
+    this->default_mode = temp.default_mode;
+    this->modes = temp.modes;
+    this->flags = temp.flags;
+    this->global = temp.global;
+    this->prompts = temp.prompts;
+    this->libs = temp.system_libs;
   }
 
-  void from_json (const json &j, Project& pro){
+  void from_json(const json &json_obj, Project& pro){
 
     FROM_JSON_FIELD(pro,name);
     FROM_JSON_FIELD(pro,description);
@@ -85,7 +83,7 @@ namespace Frate::Command {
     FROM_JSON_FIELD(pro,bugs);
 
   }
-  void to_json(json &j, const Project& pro){
+  void to_json(json &json_obj, const Project& pro){
     TO_JSON_FIELD(pro,name);
     TO_JSON_FIELD(pro,description);
     TO_JSON_FIELD(pro,cmake_version);

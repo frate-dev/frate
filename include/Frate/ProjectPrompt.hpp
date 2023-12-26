@@ -15,8 +15,8 @@ namespace Frate::Command {
       std::string default_value{""};
       bool required{false};
       std::vector<std::string> options{};
-      friend void from_json(const json &j, ProjectPrompt& prompt);
-      friend void to_json(json &j, const ProjectPrompt& prompt);
+      friend void from_json(const json &json_obj, ProjectPrompt& prompt);
+      friend void to_json(json &json_obj, const ProjectPrompt& prompt);
       std::function<bool(std::string)> validator{
         [this](std::string s) -> bool {
           if(options.size() == 0) {

@@ -55,7 +55,7 @@ typedef struct Template {
      * @param j: the json object
      * @param t: the template object
      */
-    void from_json(const json& j, Template& t);
+    void from_json(const json& json_obj, Template& temp);
     /*
      * Prompts the user for a template name, only used if the template has not been specified
      * @param index: the json index of the templates

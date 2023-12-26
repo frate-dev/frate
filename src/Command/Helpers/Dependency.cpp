@@ -13,14 +13,14 @@ namespace Frate::Command {
     this->git_short = package.git_short;
     this->git_prefixed = package.git_prefixed;
   }
-  void to_json(json &j, const Dependency &dep){
+  void to_json(json &json_obj, const Dependency &dep){
     TO_JSON_FIELD(dep,name);
     TO_JSON_FIELD(dep,version);
     TO_JSON_FIELD(dep,git);
     TO_JSON_FIELD(dep,git_short);
     TO_JSON_FIELD(dep,git_prefixed);
   }
-  void from_json(const json &j, Dependency &dep){
+  void from_json(const json &json_obj, Dependency &dep){
     FROM_JSON_FIELD(dep,name);
     FROM_JSON_FIELD(dep,version);
     FROM_JSON_FIELD(dep,git);

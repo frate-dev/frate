@@ -11,7 +11,7 @@ namespace Frate::Command {
     this->dependencies = dependencies;
   }
 
-  void from_json(const json &j, Command::Mode& mode){
+  void from_json(const json &json_obj, Command::Mode& mode){
     FROM_JSON_FIELD(mode,name);
     FROM_JSON_FIELD(mode,flags);
     FROM_JSON_FIELD(mode,dependencies);
@@ -21,7 +21,7 @@ namespace Frate::Command {
     //   mode.dependencies.emplace_back(element);
     // }
   }
-  void to_json(json &j, const Command::Mode &mode){
+  void to_json(json &json_obj, const Command::Mode &mode){
     TO_JSON_FIELD(mode,name);
     TO_JSON_FIELD(mode,flags);
     TO_JSON_FIELD(mode,dependencies);

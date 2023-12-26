@@ -37,6 +37,8 @@ namespace Frate::Command {
       std::string license{""};
       std::string default_mode{"Release"};
       std::string build_command{"cmake --build ."};
+      std::string test_command{"ctest"};
+      std::string run_command{"./bin/"};
       std::vector<Mode> modes{
         Mode("Release",{"-O2"}),
         Mode("Debug",{"-g"}),
@@ -62,8 +64,8 @@ namespace Frate::Command {
       };
       std::unordered_map<std::string,ProjectPrompt> prompts{};
       std::unordered_map<std::string,json> global{};
-      friend void from_json(const json &j, Project& pro);
-      friend void to_json(json &j, const Project& pro);
+      friend void from_json(const json &json_obj, Project& pro);
+      friend void to_json(json &json_obj, const Project& pro);
       void fromTemplate(Template &t);
   };
 }

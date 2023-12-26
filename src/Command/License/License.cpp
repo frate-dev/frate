@@ -2,21 +2,21 @@
 #include <Frate/Utils/Macros.hpp>
 namespace Frate::Command::License { 
 
-  void to_json(json& j, const License& license) {
+  void to_json(json& json_obj, const License& license) {
     TO_JSON_FIELD(license,name);
     TO_JSON_FIELD(license,key);
     TO_JSON_FIELD(license,url);
     TO_JSON_FIELD(license,spdx_id);
   }
 
-  void from_json(const json& j, License& license) {
+  void from_json(const json& json_obj, License& license) {
     FROM_JSON_FIELD(license,name);
     FROM_JSON_FIELD(license,key);
     FROM_JSON_FIELD(license,url);
     FROM_JSON_FIELD(license,spdx_id);
   }
 
-  void to_json(json& j, const FullLicense& license) {
+  void to_json(json& json_obj, const FullLicense& license) {
     TO_JSON_FIELD(license,key);
     TO_JSON_FIELD(license,name);
     TO_JSON_FIELD(license,spdx_id);
@@ -31,7 +31,7 @@ namespace Frate::Command::License {
     TO_JSON_FIELD(license,featured);
   }
 
-  void from_json(const json& j, FullLicense& license) {
+  void from_json(const json& json_obj, FullLicense& license) {
     FROM_JSON_FIELD(license,key);
     FROM_JSON_FIELD(license,name);
     FROM_JSON_FIELD(license,spdx_id);
