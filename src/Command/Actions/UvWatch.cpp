@@ -152,7 +152,7 @@ namespace Frate::Command::UvWatch{
     #endif
 
 
-    bool build_server =inter->args->operator[]("remote").as<bool>();
+    bool build_server = inter->args->operator[]("remote").as<bool>();
     if (build_server == true) {
 
       command = remote_build_command(inter);
