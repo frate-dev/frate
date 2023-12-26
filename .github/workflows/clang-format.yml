@@ -20,13 +20,13 @@ jobs:
       run: sudo apt-get install -y clang-format git
 
     - name: Run Clang-Format
-      run: find . -regex '.*\.\(cpp\|hpp\|cc\|cxx\|h\|hh\)' -exec clang-format -style=file -i {} \+
+      run: find . -regex './**/**.\(cpp\|hpp\|cc\|cxx\|h\|hh\)' -exec clang-format -style=file -i {} \+
 
     - name: Commit changes
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Apply clang-format
         branch: ${{ github.head_ref }}
-        file_pattern: .*\.(cpp|hpp|cc|cxx|h|hh)
+        file_pattern: ./**/**.(cpp|hpp|cc|cxx|h|hh)
         token: ${{ secrets.CI_TOKEN }}
 
