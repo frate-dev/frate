@@ -1,5 +1,4 @@
 #include "Frate/System/Capability.hpp"
-#include "Frate/System.hpp"
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>
 namespace Frate::System {

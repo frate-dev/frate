@@ -17,7 +17,7 @@ namespace Frate::System {
     return cmake_version_match[1];
   }
 
-  void Capabilities::get_cmake_capability(const std::filesystem::path &path){
+  void Capabilities::get_cmake_capability(const std::filesystem::path &path, std::string &name) {
     std::string cmake_version = getCmakeVersion(path);
     if(cmake_version.empty()){
       return;

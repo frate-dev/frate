@@ -27,7 +27,9 @@ message("${BRANCH}")
 
 set(BUILD_SHARED_LIBS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+
 add_definitions(-DVMINOR=${VMINOR})
 add_definitions(-DVMAJOR=${VMAJOR})
 add_definitions(-DVPATCH=${VPATCH})

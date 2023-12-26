@@ -6,58 +6,43 @@
 #include "Frate/Utils/Macros.hpp"
 
 namespace Frate::System {
-using std::filesystem::directory_entry;
+  using std::filesystem::directory_entry;
 
-void Capabilities::search_path(std::filesystem::path& path) {
-
-
-  for (const directory_entry& current_path :
-       std::filesystem::directory_iterator(path)) {
+  void Capabilities::search_path(std::filesystem::path& path) {
+    for (const directory_entry& current_path :
+        std::filesystem::directory_iterator(path)) {
 
 
-    if (current_path.is_regular_file()) {
+      if (current_path.is_regular_file()) {
 
-      std::string filename = current_path.path().filename().string();
+        std::string filename = current_path.path().filename().string();
 
 #ifdef _WIN32
 
         filename = filename.substr(0, filename.find(".exe"));
 
 #endif
+        if(filename.find("gcc") != std::string::npos){
+          Utils::info << "Found gcc: " + filename << std::endl;
+          if(this->compilers[filename].installed){
+            continue;
+          }
 
-//         if (filename.find("gcc") != std::string::npos) {
-// 
-//           if(this->compilers.find(filename) != this->compilers.end()){
-//             continue;
-//           }
-// 
-//           std::string gcc_version = getGccVersion(current_path.path());
-//           
-//           Utils::info << "version size: " << gcc_version.size() << std::endl;
-//           //If we don't get back a compiler version then it isn't a valid compiler
-//           if(gcc_version.empty()){
-//             continue;
-//           }
-// 
-//           Utils::info << "Found gcc(" << current_path.path()
-//             << ") with version: " << gcc_version
-//             << std::endl;
-// 
-//           this->compilers[filename].path = current_path.path();
-//           this->compilers[filename].installed = true;
-//           this->compilers[filename].version = gcc_version;
-// 
-        if (filename == "cmake") {
-          
+          this->get_compilers_capability(current_path.path(),filename);
+
+          Utils::info << "Found gcc: " + filename << " with version" << this->compilers[filename].version << std::endl;
+
+        }else if (filename == "cmake") {
           if(this->cmake.installed){
             continue;
           }
-          this->get_cmake_capability(current_path.path());
 
+          this->get_cmake_capability(current_path.path(),filename);
+          Utils::info << "Found cmake: " + filename << " with version" << this->cmake.version << std::endl;
 
         }
       }
-  }
+    }
   }
   bool Capabilities::search() {
     std::string path_env = std::getenv("PATH");
@@ -81,9 +66,7 @@ void Capabilities::search_path(std::filesystem::path& path) {
     return false;
   }
 
-  Capabilities::Capabilities(){
-
-  }
+  Capabilities::Capabilities()= default;
 
   Capability Capabilities::getLatestCompiler(std::string compiler){
 

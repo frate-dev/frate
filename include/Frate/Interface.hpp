@@ -18,7 +18,6 @@ namespace Frate::Command{
   class CommandHandler {
     public:
       //Tree of commands
-      static std::vector<CommandHandler> commands;
       std::vector<std::string> aliases;
       std::vector<std::string> flags{};
       std::vector<CommandHandler> subcommands{};

@@ -1,1 +1,34 @@
-BasedOnStyle : Google
+BasedOnStyle : LLVM
+
+# Insert a blank line before a return statement
+#BreakBeforeBraces: Allman
+
+SeparateDefinitionBlocks: Always
+NamespaceIndentation: All
+
+BinPackArguments: No
+BinPackParameters: No
+
+# Aligns consecutive function parameters
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+
+
+# Penalty for breaking a function call after a call parameter
+PenaltyBreakBeforeFirstCallParameter: 19
+
+
+
+# # Configure new lines around different constructs
+# BraceWrapping:
+#   AfterClass: true       # New line after the opening brace of a class
+#   AfterControlStatement: true   # New line after the opening brace of a control statement (if, for, while, ...)
+#   AfterEnum: true        # New line after the opening brace of an enum
+#   AfterFunction: true    # New line after the opening brace of a function
+#   AfterNamespace: true   # New line after the opening brace of a namespace
+#   AfterStruct: true      # New line after the opening brace of a struct
+#   AfterUnion: true       # New line after the opening brace of a union
+#   BeforeCatch: true      # New line before the 'catch' in try-catch blocks
+#   BeforeElse: true       # New line before 'else' in if-else blocks
+#   BeforeLambdaBody: true # New line before the body of a lambda function

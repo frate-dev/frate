@@ -10,22 +10,22 @@ namespace Frate::System {
      */
     private:
       void search_path(std::filesystem::path &path);
-      void get_make_capability(const std::filesystem::path &path);
-      void get_cmake_capability(const std::filesystem::path &path);
-      void get_git_capability(const std::filesystem::path &path);
-      void get_zip_capability(const std::filesystem::path &path);
-      void get_unzip_capability(const std::filesystem::path &path);
-      void get_tar_capability(const std::filesystem::path &path);
-      void get_archive_compress_capability(const std::filesystem::path &path);
-      void get_archive_expand_capability(const std::filesystem::path &path);
-      void get_sccache_capability(const std::filesystem::path &path);
-      void get_ninja_capability(const std::filesystem::path &path);
-      void get_rsync_capability(const std::filesystem::path &path);
-      void get_ssh_capability(const std::filesystem::path &path);
-      void get_python_capability(const std::filesystem::path &path);
-      void get_python3_capability(const std::filesystem::path &path);
-      void get_python2_capability(const std::filesystem::path &path);
-      void get_compilers_capability(const std::filesystem::path &path);
+      void get_make_capability(const std::filesystem::path &path,std::string &name);
+      void get_cmake_capability(const std::filesystem::path &path,std::string &name);
+      void get_git_capability(const std::filesystem::path &path,std::string &name);
+      void get_zip_capability(const std::filesystem::path &path,std::string &name);
+      void get_unzip_capability(const std::filesystem::path &path,std::string &name);
+      void get_tar_capability(const std::filesystem::path &path,std::string &name);
+      void get_archive_compress_capability(const std::filesystem::path &path,std::string &name);
+      void get_archive_expand_capability(const std::filesystem::path &path,std::string &name);
+      void get_sccache_capability(const std::filesystem::path &path,std::string &name);
+      void get_ninja_capability(const std::filesystem::path &path,std::string &name);
+      void get_rsync_capability(const std::filesystem::path &path,std::string &name);
+      void get_ssh_capability(const std::filesystem::path &path,std::string &name);
+      void get_python_capability(const std::filesystem::path &path,std::string &name);
+      void get_python3_capability(const std::filesystem::path &path,std::string &name);
+      void get_python2_capability(const std::filesystem::path &path,std::string &name);
+      void get_compilers_capability(const std::filesystem::path &path,std::string &name);
 
     public:
       Capabilities();
