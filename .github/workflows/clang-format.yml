@@ -6,10 +6,15 @@ jobs:
   clang-format:
     runs-on: ubuntu-latest
 
+    permissions: 
+      contents: write
+
     steps:
 
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        ${{ secrets.CI_TOKEN }}
 
     - name: Install Clang-Format
       run: sudo apt-get install -y clang-format git
@@ -23,4 +28,5 @@ jobs:
         commit_message: Apply clang-format
         branch: ${{ github.head_ref }}
         file_pattern: .*\.(cpp|hpp|cc|cxx|h|hh)
+        token: ${{ secrets.CI_TOKEN }}
 
