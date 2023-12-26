@@ -17,19 +17,19 @@ namespace Frate::Utils::CLI {
     this->color = Ansi::GREEN;
   }
   Prompt& Prompt::addOption(std::string option){
-    this->options.push_back(option);
+    this->options.emplace_back(option);
     return *this;
   }
   Prompt& Prompt::addOption(int option){
-    this->options.push_back(std::to_string(option));
+    this->options.emplace_back(std::to_string(option));
     return *this;
   }
   Prompt& Prompt::addOption(float option){
-    this->options.push_back(std::to_string(option));
+    this->options.emplace_back(std::to_string(option));
     return *this;
   }
   Prompt& Prompt::addOption(size_t option){
-    this->options.push_back(std::to_string(option));
+    this->options.emplace_back(std::to_string(option));
     return *this; }
   Prompt& Prompt::maxLength(int max_length){
     this->max_length = max_length;
@@ -176,7 +176,7 @@ namespace Frate::Utils::CLI {
       }
       for(std::string &option : options){
         if(option.find(input) != std::string::npos){
-          visible_options.push_back(option);
+          visible_options.emplace_back(option);
           if(visible_options.size() >= result_limit){
             break;
           }

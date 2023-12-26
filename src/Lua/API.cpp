@@ -128,7 +128,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
     for(const path& current_path :
         std::filesystem::recursive_directory_iterator(script_path)){
       if(current_path.extension() == ".lua"){
-        script_paths.push_back(current_path);
+        script_paths.emplace_back(current_path);
       }
     }
     
@@ -176,7 +176,7 @@ bool registerProjectScripts(inja::Environment &env, sol::state &lua,
 
 
       if(current_path.extension() == ".lua"){
-        scripts.push_back(current_path);
+        scripts.emplace_back(current_path);
       }
     }
 

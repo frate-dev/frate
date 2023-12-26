@@ -18,7 +18,7 @@ namespace Frate::Command::Packages {
     Utils::info << "Adding package to mode " << selected_mode << std::endl;
     for(Mode &mode : inter->pro->modes){
       if(selected_mode == mode.name){
-        mode.dependencies.push_back(package);
+        mode.dependencies.emplace_back(package);
         return true;
       }
     }
@@ -92,7 +92,7 @@ namespace Frate::Command::Packages {
       // package.selected_version = version;
       package.git = git;
       package.target_link = target_link;
-      package.versions.push_back(version);
+      package.versions.emplace_back(version);
       if (mode != "") {
         if (!addPackageToMode(inter, Dependency(package,version), mode)) {
           Utils::error << "Failed to add package to mode" << std::endl;
@@ -101,7 +101,7 @@ namespace Frate::Command::Packages {
         return true;
       }
       std::cout << "Package: " << nlohmann::json(package) << std::endl;
-      inter->pro->dependencies.push_back(Dependency(package, version));
+      inter->pro->dependencies.emplace_back(Dependency(package, version));
       if (!inter->pro->save()){
         Utils::error << "Failed to save project" << std::endl;
         return false;
@@ -153,7 +153,7 @@ namespace Frate::Command::Packages {
           return false;
         }
       }
-      inter->pro->dependencies.push_back(Dependency(chosen_package, version));
+      inter->pro->dependencies.emplace_back(Dependency(chosen_package, version));
     }
 
     return true;

@@ -12,7 +12,7 @@ namespace Frate::Command::Flags {
         if (m.name == mode) {
           for (std::string flag : flags) {
             std::cout << "Adding flag: " << flag << std::endl;
-            m.flags.push_back(flag);
+            m.flags.emplace_back(flag);
           }
           return true;
         }
@@ -20,7 +20,7 @@ namespace Frate::Command::Flags {
     }
     for (std::string flag : flags) {
       std::cout << "Adding flag: " << flag << std::endl;
-      inter->pro->flags.push_back(flag);
+      inter->pro->flags.emplace_back(flag);
     }
     return true;
   }

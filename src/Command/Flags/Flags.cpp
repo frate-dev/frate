@@ -19,7 +19,7 @@ namespace Frate::Command::Flags {
     for (std::string flag : raw_flags) {
       if (flag[0] == '-' && flag[1] == '-') {
         build_flags = "-" + build_flags;
-        flags.push_back(build_flags);
+        flags.emplace_back(build_flags);
         build_flags = "";
       }
       flag.erase(std::remove(flag.begin(), flag.end(), '-'), flag.end());
@@ -27,7 +27,7 @@ namespace Frate::Command::Flags {
     }
     if (build_flags != "") {
       build_flags = "-" + build_flags;
-      flags.push_back(build_flags);
+      flags.emplace_back(build_flags);
     }
     for(std::string &flag : flags){
       flag.erase(std::remove(flag.begin(), flag.end(), ' '), flag.end());

@@ -18,7 +18,7 @@ namespace Frate::Command::License {
       int score = Utils::getStringScore(license.name,query);
       score += Utils::getStringScore(license.spdx_id,query);
       score += Utils::getStringScore(license.key,query);
-      licenses.push_back(std::make_pair(license, score));
+      licenses.emplace_back(std::make_pair(license, score));
     }
 
     std::sort(licenses.begin(), licenses.end(),

@@ -59,7 +59,7 @@ namespace Frate::Generators::Project {
     for(auto [key, source_files]: related_source_exts){
       if(pro->lang != key){
         for(std::string source_file: source_files){
-          source_file_extensions_to_remove.push_back(source_file);
+          source_file_extensions_to_remove.emplace_back(source_file);
         }
       }
     }
@@ -81,11 +81,11 @@ namespace Frate::Generators::Project {
           return false;
         }
         file << rendered_file;
-        paths_to_remove.push_back(current_p);
+        paths_to_remove.emplace_back(current_p);
       }
       //Removes the scripts from the project directory
       if(current_p.string().find("/scripts") != std::string::npos){
-        paths_to_remove.push_back(current_p);
+        paths_to_remove.emplace_back(current_p);
       }
     }
 
@@ -94,7 +94,7 @@ namespace Frate::Generators::Project {
     for(const path& current_p: std::filesystem::recursive_directory_iterator(pro->path / pro->src_dir)){
       for(std::string ext: source_file_extensions_to_remove){
         if(current_p.extension() == ext){
-          paths_to_remove.push_back(current_p);
+          paths_to_remove.emplace_back(current_p);
         }
       }
     }

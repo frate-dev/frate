@@ -27,7 +27,7 @@ bool Tests::Command::testAddPackageMultiple(std::vector<std::string> packages) {
 
 
   for(std::string &p : packages){
-    package_results.push_back(std::make_pair(p, false));
+    package_results.emplace_back(std::make_pair(p, false));
   }
 
   for(nlohmann::json &dep : config["dependencies"]){

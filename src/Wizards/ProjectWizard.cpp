@@ -32,7 +32,7 @@ namespace Frate::Wizard {
     {
       auto [valid, author] = author_prompt.get<std::string>();
       if(valid){
-        pro->authors.push_back(author);
+        pro->authors.emplace_back(author);
       }else{
         return false;
       }

@@ -74,14 +74,14 @@ CURL* curl = curl_easy_init();
 
     for (char x : str) {
       if (x == delimiter) {
-        result.push_back(word);
+        result.emplace_back(word);
         word = "";
       } else {
         word = word + x;
       }
     }
     if(word.size() > 0){
-      result.push_back(word);
+      result.emplace_back(word);
     }
     return result;
   }

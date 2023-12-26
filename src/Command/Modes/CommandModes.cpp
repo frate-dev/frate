@@ -38,7 +38,7 @@ bool getModeName(Mode &mode) {
     Mode mode;
     mode.name = interface->args->operator[]("args").as<std::string>();
 
-    interface->pro->modes.push_back(mode);
+    interface->pro->modes.emplace_back(mode);
 
     return true;
   }

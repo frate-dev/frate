@@ -70,7 +70,7 @@ namespace Frate::LuaAPI {
       if(str[i] == '{'){
         i++;
         if(next_char != std::string::npos && next_char == '%'){
-          tokens.push_back(token{open_bracket, "{%"});
+          tokens.emplace_back(token{open_bracket, "{%"});
           keyword_buffer = "";
           i++;
           //Start of the opening bracket
@@ -88,20 +88,20 @@ namespace Frate::LuaAPI {
             //If we have a dot then we start looking for the specifier
             if(str[i] == '.'){
               keyword_buffer.pop_back();
-              tokens.push_back(token{specifier, keyword_buffer});
+              tokens.emplace_back(token{specifier, keyword_buffer});
               keyword_buffer = "";
             }
             i++;
           }
           i++;
           //Start of the closing bracket
-          tokens.push_back(token{specifier, keyword_buffer});
-          tokens.push_back(token{close_bracket, "%}"});
+          tokens.emplace_back(token{specifier, keyword_buffer});
+          tokens.emplace_back(token{close_bracket, "%}"});
           keyword_buffer = "";
         }
       }else{
         //Everything else gets stored as a char literal
-        tokens.push_back(token{char_literal, keyword_buffer});
+        tokens.emplace_back(token{char_literal, keyword_buffer});
         keyword_buffer = "";
       }
     }
@@ -109,7 +109,7 @@ namespace Frate::LuaAPI {
     for(size_t i = 0; i < tokens.size(); i++){
       //If we have a specifier then we start recording it in the specifier vector
       if(tokens[i].type == specifier){
-        specifiers.push_back(tokens[i].value);
+        specifiers.emplace_back(tokens[i].value);
         //If we have a close bracket then we resolve the specifier
         //By recursively looking through the table
       }else if(tokens[i].type == close_bracket){

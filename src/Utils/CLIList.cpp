@@ -77,6 +77,6 @@ namespace Frate::Utils::CLI {
     items.insert(items.begin(), item);
   }
   void List::pushBack(ListItem item){
-    items.push_back(item);
+    items.emplace_back(item);
   }
 }

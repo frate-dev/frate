@@ -47,7 +47,7 @@ namespace Frate::Command::Packages {
 
     for(auto &package: packages){
       if(package.second > ( averageScore * 1.3 )){
-        filterResultsVec.push_back(package.first);
+        filterResultsVec.emplace_back(package.first);
       }
     }
 

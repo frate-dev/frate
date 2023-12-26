@@ -5,7 +5,11 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Utils/General.hpp>
 
+
+
+
 namespace Frate::Command::UvWatch{
+
   bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command"});
@@ -15,6 +19,99 @@ namespace Frate::Command::UvWatch{
       ("r,remote", "Build server to use", cxxopts::value<bool>()->default_value("false"));
     return inter->parse();
   }
+ 
+  static bool event_triggered = false;
+  class Watch{
+    public:
+      std::function<bool(std::shared_ptr<Interface>)> callback;
+      std::shared_ptr<Interface> data;
+      Watch(std::shared_ptr<Interface> data, std::string path){
+        uv_loop_t* loop = uv_default_loop();
+
+        if (loop == nullptr) {
+          std::cerr << "Error initializing uv loop" << std::endl;
+          return;
+        }
+        this->loop = loop;
+        auto watcher = new uv_fs_event_t;
+        this->data = data;
+        std::cout << "watching path: " << path << std::endl;
+        watcher->data = this;
+        watchers.emplace_back(watcher);
+        uv_fs_event_init(this->loop,watcher);
+        uv_fs_event_start(watcher, fs_event_callback, path.c_str(), 0);
+        start_watchers_for_directory(path, loop, watchers);
+      };
+
+      void addCallback(std::function<bool(std::shared_ptr<Interface>)> callback){
+        this->callback = callback;
+      };
+      static void fs_event_callback(uv_fs_event_t *handle, const char *filename, int events, int status) {
+        (void)filename, (void)events;
+        if (event_triggered) {
+          // Ignoring subsequent events
+          return;
+        }
+        std::cout << "get data" << std::endl;
+
+        Watch* watch = static_cast<Watch*>(handle->data);
+        std::cout << "got data" << std::endl;
+
+        if (status < 0) {
+          fprintf(stderr, "Filesystem watch error: %s\n", uv_strerror(status));
+          return;
+        }
+        event_triggered = true;
+        std::cout << "Filesystem change detected, rebuilding..." << std::endl;
+        std::cout << "\nWatching for changes..." << std::endl;
+        watch->callback(watch->data);
+
+        uv_timer_t timer;
+        uv_timer_init(handle->loop, &timer);
+        timer.data = handle;
+
+        uv_timer_start(&timer, [](uv_timer_t *_) {
+            event_triggered = false;
+        }, 1000, 0);
+      }
+      void start_watchers_for_directory(const std::filesystem::path& path, uv_loop_t* loop, std::vector<uv_fs_event_t*>& watchers) {
+        for (const auto& entry : std::filesystem::directory_iterator(path)) {
+          if (std::filesystem::is_directory(entry)) {
+            auto watcher = new uv_fs_event_t;
+            watcher->data = this;
+            uv_fs_event_init(loop, watcher);
+            uv_fs_event_start(watcher, fs_event_callback, entry.path().c_str(), 0);
+            watchers.emplace_back(watcher);
+          }
+        }
+      }
+
+      bool run(){
+        std::cout << "Watching for changes..." << std::endl;
+        if (uv_run(loop, UV_RUN_DEFAULT) != 0) {
+          std::cerr << "Error running uv loop" << std::endl;
+          return false;
+        }
+
+        return true;
+      };
+
+      ~Watch(){
+        int close = uv_loop_close(loop);
+        if (close != 0) {
+          std::cerr << "Error closing uv loop" << std::endl;
+        }
+        for (auto watcher : watchers) {
+          uv_fs_event_stop(watcher);
+        }
+        uv_fs_event_stop(&fs_event);
+      };
+    private:
+      uv_loop_t* loop;
+      uv_fs_event_t fs_event;
+      std::vector<uv_fs_event_t*> watchers;
+  };
+
 
   std::string remote_build_command(std::shared_ptr<Interface> inter) {
     inter->pro->build_server = inter->config.getBuildServer();
@@ -26,7 +123,7 @@ namespace Frate::Command::UvWatch{
     std::cout << "pro->name: " << inter->pro->name << std::endl;
     // Construct the rsync command
     std::string sync_files = "rsync -avh --exclude-from='.gitignore' --update -e 'ssh -p " +
-                             std::to_string(inter->pro->build_server.port) + "' --progress " + inter->pro->path.string() +
+                             std::to_string(inter->pro->build_server.port) + "' --progress " + inter->pro->path.string() + " " +
                              inter->pro->build_server.username + "@" + inter->pro->build_server.ip +
                              ":" + remote_dest_path + " ";
 
@@ -46,18 +143,14 @@ namespace Frate::Command::UvWatch{
   }
 
   bool runCommand(std::shared_ptr<Interface> inter){
-    //TODO  CLEAN UP THIS SHIT
+    
+    std::cout << "Running command" << std::endl;
     std::string command = "cmake . && make  && " + inter->pro->path.string() + "/" + inter->pro->build_dir + "/" +inter->pro->name;
     #ifdef DEBUG
+      std::cout << "Running in debug mode" << std::endl;
       command = "cd build && cmake . && make  && " + inter->pro->build_dir + "/" +inter->pro->name;
     #endif
-    if (inter->args->count("command") != 0) {
-      std::string command_run;
-      
-      std::string command_to_run = inter->args->operator[]("command").as<std::string>();
-      command = "cmake . && make && ./" + inter->pro->build_dir + "/" +
-        inter->pro->name + " " + command_run;
-    }
+
 
     bool build_server =inter->args->operator[]("remote").as<bool>();
     if (build_server == true) {
@@ -73,89 +166,16 @@ namespace Frate::Command::UvWatch{
     return true;
   }
 
-  static int event_triggered = 0;
-
-  void fs_event_callback(uv_fs_event_t *handle, const char *filename, int events, int status) {
-    (void)filename, (void)events;
-    if (event_triggered) {
-      // Ignoring subsequent events
-      return;
-    }
-    std::shared_ptr<Interface> inter = *static_cast<std::shared_ptr<Interface>*>(handle->data);
-
-    if (status < 0) {
-      fprintf(stderr, "Filesystem watch error: %s\n", uv_strerror(status));
-      return;
-    }
-
-    event_triggered = 1;
-    std::cout << "Filesystem change detected, rebuilding..." << std::endl;
-    runCommand(inter);
-    std::cout << "\nWatching for changes..." << std::endl;
-
-    // Reset the flag after a delay
-    uv_timer_t *timer = new uv_timer_t;
-    uv_timer_init(handle->loop, timer);
-    timer->data = handle;
-
-    uv_timer_start(timer, [](uv_timer_t *timer) {
-      event_triggered = 0;
-      uv_close((uv_handle_t *)timer, [](uv_handle_t *handle) {
-        free(handle);
-      });
-    }, 2000, 0); // 1000 ms delay
-  }
-
-
-
-#ifdef __linux__
-  namespace fs = std::filesystem;
-
-  void start_watchers_for_directory(const fs::path& path, uv_loop_t* loop, std::vector<uv_fs_event_t*>& watchers, std::shared_ptr<Interface> inter) {
-    for (const auto& entry : fs::directory_iterator(path)) {
-      if (fs::is_directory(entry)) {
-        uv_fs_event_t* watcher = new uv_fs_event_t{
-          .data = inter.get()
-        };
-        uv_fs_event_init(loop, watcher);
-        uv_fs_event_start(watcher, fs_event_callback, entry.path().c_str(), 0);
-        watchers.push_back(watcher);
-        start_watchers_for_directory(entry.path(), loop, watchers, inter);
-      }
-    }
-  }
-#endif
 
   bool watch(std::shared_ptr<Interface> inter){
     options(inter);
     inter->pro->load();
     Generators::Project::refresh(inter->pro);
-    uv_loop_t *loop = uv_default_loop();
-    std::vector<uv_fs_event_t*> watchers;
 
-    uv_fs_event_t fs_event{.data = inter.get()};
-    uv_fs_event_init(loop, &fs_event);
-    if (uv_fs_event_start(&fs_event, fs_event_callback, (inter->pro->path / inter->pro->src_dir).c_str(), UV_FS_EVENT_RECURSIVE)!=0) {
-      fprintf(stderr, "Error starting filesystem watcher.\n");
-      return 1;
-    }
-    std::cout << "Watching for changes in " << inter->pro->src_dir << std::endl;
+    Watch watch(inter, inter->pro->path /  inter->pro->src_dir);
+    watch.addCallback(runCommand);
+    watch.run();
 
-    if (uv_run(loop, UV_RUN_DEFAULT) != 0) {
-      std::cerr << "Error running uv loop" << std::endl;
-      return false;
-    }
-
-    #ifdef __linux__
-      start_watchers_for_directory(inter->pro->src_dir, loop, watchers, inter);
-    #endif
-
-    int close = uv_loop_close(loop);
-    if (close != 0) {
-      std::cerr << "Error closing uv loop" << std::endl;
-      return false;
-    }
-
-    return true; 
-  };
+    return true;
+  }; 
 }

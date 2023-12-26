@@ -28,7 +28,7 @@ namespace Frate::Command::RemoteServers{
 
     RemoteServer build_server = RemoteServer(name, address, username, authMethod, password, key,  port);
 
-    inter->config.build_servers.push_back(build_server);
+    inter->config.build_servers.emplace_back(build_server);
 
     return true;
   }

@@ -31,7 +31,7 @@ namespace Frate::Command::Author {
           return false;
         }
       }
-      inter->pro->authors.push_back(author);
+      inter->pro->authors.emplace_back(author);
       Utils::info << "Added author " << author << std::endl;
     }
     inter->pro->save();

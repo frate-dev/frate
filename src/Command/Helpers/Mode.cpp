@@ -18,7 +18,7 @@ namespace Frate::Command {
     // j.at("name").get_to(mode.name);
     // j.at("flags").get_to(mode.flags);
     // for (const Command::Package &element : j["dependencies"]) {
-    //   mode.dependencies.push_back(element);
+    //   mode.dependencies.emplace_back(element);
     // }
   }
   void to_json(json &j, const Command::Mode &mode){

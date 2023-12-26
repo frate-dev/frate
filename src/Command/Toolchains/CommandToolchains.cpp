@@ -50,7 +50,7 @@ namespace Frate::Command::Toolchains{
     std::string toolchain_template = Generators::Toolchain::generateToolchain(toolchain);
     std::cout << toolchain_template << std::endl;
     file << toolchain_template;
-    inter->pro->toolchains.push_back(toolchain);
+    inter->pro->toolchains.emplace_back(toolchain);
     return true;
   }
   bool remove(std::string toolchain_name, std::shared_ptr<Interface> interface){

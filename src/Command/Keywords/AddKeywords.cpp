@@ -18,7 +18,7 @@ namespace Frate::Command::Keywords{
           return false;
         }
       }
-      inter->pro->keywords.push_back(keyword);
+      inter->pro->keywords.emplace_back(keyword);
     }
     return true;
   }

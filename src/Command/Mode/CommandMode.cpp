@@ -12,7 +12,7 @@ namespace Frate::Command::ModeCommands {
     for(Mode m : inter->pro->modes){
       if(m.name == mode){
         for(std::string f : flags){
-          m.flags.push_back(f);
+          m.flags.emplace_back(f);
         }
       }
     }
@@ -32,7 +32,7 @@ namespace Frate::Command::ModeCommands {
         //Push the found package to the dependencies
         for(Mode &m : inter->pro->modes){
           if(m.name == mode){
-            m.dependencies.push_back(new_package);
+            m.dependencies.emplace_back(new_package);
           }
         }
       }else{

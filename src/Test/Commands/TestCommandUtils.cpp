@@ -51,7 +51,7 @@ namespace Tests::Command {
         inQuotes = !inQuotes;
       } else if (ch == ' ' && !inQuotes) {
         if (!arg.empty()) {
-          args.push_back(arg);
+          args.emplace_back(arg);
           arg.clear();
         }
       } else {
@@ -60,7 +60,7 @@ namespace Tests::Command {
     }
 
     if (!arg.empty()) {
-      args.push_back(arg);
+      args.emplace_back(arg);
     }
 
     return args;
