@@ -12,6 +12,7 @@ namespace Frate::Command {
     std::string git;
     std::string git_short;
     std::string git_prefixed;
+    std::string target_link;
     friend void to_json(json &json_obj, const Dependency &dep);
     friend void from_json(const json &json_obj, Dependency &dep);
   };
