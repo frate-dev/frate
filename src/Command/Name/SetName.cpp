@@ -12,8 +12,6 @@ namespace Frate::Command::Name {
     inter->pro->name = inter->args->operator[]("name").as<std::string>();
     Utils::info << "Name set to " << inter->pro->name << ".\n";
 
-    inter->pro->save();
-
     return true;
   }
 } // namespace Frate::Command::Name

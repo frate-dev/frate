@@ -7,13 +7,13 @@ namespace Frate::Command::Build {
   bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command"});
-    inter->options->add_options()(
-        "command",
-        "Command to run",
-        cxxopts::value<std::string>()->default_value("help"))(
-        "m,mode", "mode to build in", cxxopts::value<std::string>())(
-        "t,target", "Target to build", cxxopts::value<std::string>())(
-        "j,jobs", "Number of jobs to run", cxxopts::value<int>());
+    // clang-format off
+    inter->options->add_options()
+      ("command","Command to run",cxxopts::value<std::string>()->default_value("help"))
+      ("m,mode", "mode to build in", cxxopts::value<std::string>())
+      ("t,target", "Target to build", cxxopts::value<std::string>())
+      ("j,jobs", "Number of jobs to run", cxxopts::value<int>());
+    // clang-format on
     return inter->parse();
   }
 
@@ -49,7 +49,8 @@ namespace Frate::Command::Build {
         if (Utils::hSystem(workdir_cmd + ";" + full_build_cmd) != 0) {
           Utils::error << "Build failed" << std::endl;
           return false;
-        } else {
+        }
+        else {
           Utils::info << "Build success" << std::endl;
           return true;
         }

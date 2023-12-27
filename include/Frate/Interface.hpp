@@ -28,12 +28,12 @@ namespace Frate::Command {
     bool unlimited_args{false};
     std::string docs;
     std::function<bool(std::shared_ptr<Interface>)> callback{
-        [](std::shared_ptr<Interface> inter) -> bool {
-          (void)inter;
-          Utils::error << "This command has not been implemented yet"
-                       << std::endl;
-          return false;
-        }};
+      [](std::shared_ptr<Interface> inter) -> bool {
+        (void)inter;
+        Utils::error << "This command has not been implemented yet"
+                     << std::endl;
+        return false;
+      }};
     bool run(std::shared_ptr<Interface> inter);
     bool options(std::shared_ptr<Interface> inter);
   };
@@ -45,12 +45,12 @@ namespace Frate::Command {
     std::vector<std::string> positional_args{};
     std::string docs;
     std::function<bool(std::shared_ptr<Interface>)> callback{
-        [](std::shared_ptr<Interface> inter) -> bool {
-          (void)inter;
-          Utils::error << "This command has not been implemented yet"
-                       << std::endl;
-          return false;
-        }};
+      [](std::shared_ptr<Interface> inter) -> bool {
+        (void)inter;
+        Utils::error << "This command has not been implemented yet"
+                     << std::endl;
+        return false;
+      }};
     bool implemented{true};
     bool requires_project{true};
     bool unlimited_args{false};
@@ -69,9 +69,7 @@ namespace Frate::Command {
     int argc;
     bool confirm_all{false};
     bool parse();
-    void getHelpString(std::string name,
-                       std::vector<Handler> &handlers,
-                       bool is_subcommand = false);
+    void getHelpString(std::string name, std::vector<Handler> &handlers, bool is_subcommand = false);
     void getHelpString(Handler &handler);
     bool InitHeader();
     bool CreateCMakelists();
@@ -84,7 +82,5 @@ namespace Frate::Command {
     bool Main(std::shared_ptr<Interface> inter);
   };
 
-  bool runCommand(std::shared_ptr<Interface> inter,
-                  std::string command,
-                  std::vector<Handler> &handlers);
+  bool runCommand(std::shared_ptr<Interface> inter, std::string command, std::vector<Handler> &handlers);
 } // namespace Frate::Command

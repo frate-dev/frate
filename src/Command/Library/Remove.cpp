@@ -13,6 +13,6 @@ namespace Frate::Command::Library {
       }
       return false;
     });
-    return inter->pro->save();
+    return true;
   }
 } // namespace Frate::Command::Library

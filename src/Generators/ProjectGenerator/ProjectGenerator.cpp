@@ -59,8 +59,7 @@ namespace Frate::Generators::Project {
 
     Utils::info << "Copying template to project" << std::endl;
     std::filesystem::copy(
-        pro->path / "template",
-        pro->path,
+        pro->path / "template", pro->path,
         std::filesystem::copy_options::recursive |
             std::filesystem::copy_options::overwrite_existing);
     Utils::info << "Loading template config" << std::endl;
@@ -93,6 +92,9 @@ namespace Frate::Generators::Project {
 
     LuaAPI::postScripts(lua, pro);
 
+    // This ia bit of a hack, because create doesn't actually load a project so
+    // we have to emulate the loading process
+    pro->loaded_json = true;
     pro->save();
 
     return true;

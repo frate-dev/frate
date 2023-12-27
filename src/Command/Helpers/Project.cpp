@@ -14,6 +14,12 @@ namespace Frate::Command {
   bool Project::save() {
     std::ofstream file;
     std::string file_name = "frate-project.json";
+    // Used as a safe guard to prevent overwriting the project file
+    if (!loaded_json) {
+      Utils::error << "Project not loaded" << std::endl;
+      return false;
+    }
+
     if (!std::filesystem::exists(this->path)) {
       try {
         std::filesystem::create_directory(this->path);
@@ -135,7 +141,8 @@ namespace Frate::Command {
       Utils::debug(e.what());
       return false;
     }
-
+    // Used to prevent overwriting the project file
+    loaded_json = true;
     return true;
   }
 } // namespace Frate::Command

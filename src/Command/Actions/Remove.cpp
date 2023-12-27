@@ -13,17 +13,14 @@ namespace Frate::Command::Remove {
   bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
-    inter->options->allow_unrecognised_options().add_options()(
-        "command",
-        "Command to run",
-        cxxopts::value<std::string>()->default_value("help"))(
-        "m,mode",
-        "make changes to compile mode",
-        cxxopts::value<std::string>())(
-        "subcommand", "Subcommand to run", cxxopts::value<std::string>())(
-        "h,help", "Print usage")("args",
-                                 "Arguments to pass to subcommand",
-                                 cxxopts::value<std::vector<std::string>>());
+    // clang-format off
+    inter->options->allow_unrecognised_options().add_options()
+      ("command","Command to run",cxxopts::value<std::string>()->default_value("help"))
+      ("m,mode","make changes to compile mode",cxxopts::value<std::string>())
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())
+      ("h,help", "Print usage")
+      ("args","Arguments to pass to subcommand",cxxopts::value<std::vector<std::string>>());
+    // clang-format on
     return inter->parse();
   }
 
@@ -78,8 +75,8 @@ namespace Frate::Command::Remove {
     if (inter->args->count("subcommand")) {
 
       subcommand = inter->args->operator[]("subcommand").as<std::string>();
-
-    } else {
+    }
+    else {
       Utils::error << "No subcommand given" << std::endl;
 
       inter->getHelpString("remove", removeHandlers);

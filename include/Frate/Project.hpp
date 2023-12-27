@@ -19,8 +19,10 @@ namespace Frate::Command {
   using nlohmann::json;
 
   class Project {
+
   public:
     Project();
+    bool loaded_json{false};
     std::string name;
     std::string description;
     std::string type{""};
@@ -38,8 +40,8 @@ namespace Frate::Command {
     std::string build_command{"cmake --build ."};
     std::string test_command{"ctest"};
     std::string run_command{"./bin/"};
-    std::vector<Mode> modes{
-        Mode("Release", {"-O2"}), Mode("Debug", {"-g"}), Mode("Test", {"-g"})};
+    std::vector<Mode> modes{Mode("Release", {"-O2"}), Mode("Debug", {"-g"}),
+                            Mode("Test", {"-g"})};
     std::vector<std::string> authors{};
     std::vector<std::string> keywords{};
     std::string src_dir{"src"};

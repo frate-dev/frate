@@ -21,23 +21,45 @@ namespace Frate::System {
         filename = filename.substr(0, filename.find(".exe"));
 
 #endif
+
         if (filename.find("gcc") != std::string::npos) {
-          Utils::info << "Found gcc: " + filename << std::endl;
           if (this->compilers[filename].installed) {
             continue;
           }
 
           this->get_compilers_capability(current_path.path(), filename);
 
-          Utils::info << "Found gcc: " + filename << " with version"
+          Utils::info << "Found compiler: " + filename << " with version"
                       << this->compilers[filename].version << std::endl;
+        }
+        else if (filename.find("g++") != std::string::npos) {
 
-        } else if (filename == "cmake") {
+          if (this->compilers[filename].installed) {
+            continue;
+          }
+
+          this->get_compilers_capability(current_path.path(), filename);
+
+          Utils::info << "Found compiler: " + filename << " with version"
+                      << this->compilers[filename].version << std::endl;
+        }
+        else if (filename.find("clang") != std::string::npos) {
+          if (this->compilers[filename].installed) {
+            continue;
+          }
+
+          this->get_compilers_capability(current_path.path(), filename);
+
+          Utils::info << "Found compiler: " + filename << " with version"
+                      << this->compilers[filename].version << std::endl;
+        }
+        else if (filename == "cmake") {
           if (this->cmake.installed) {
             continue;
           }
 
           this->get_cmake_capability(current_path.path(), filename);
+
           Utils::info << "Found cmake: " + filename << " with version"
                       << this->cmake.version << std::endl;
         }

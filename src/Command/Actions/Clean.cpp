@@ -7,17 +7,14 @@ namespace Frate::Command::Clean {
   bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
-    inter->options->add_options()(
-        "command",
-        "Command to run",
-        cxxopts::value<std::string>()->default_value("help"))(
-        "subcommand", "Subcommand to run", cxxopts::value<std::string>())(
-        "h,help", "Print usage")("args",
-                                 "Arguments to pass to subcommand",
-                                 cxxopts::value<std::vector<std::string>>())(
-        "c,cache",
-        "Cleans build and cache",
-        cxxopts::value<bool>()->default_value("false"));
+    // clang-format off
+    inter->options->add_options()
+      ("command","Command to run",cxxopts::value<std::string>()->default_value("help"))
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())
+      ("h,help", "Print usage")
+      ("args","Arguments to pass to subcommand",cxxopts::value<std::vector<std::string>>())
+      ("c,cache","Cleans build and cache",cxxopts::value<bool>()->default_value("false"));
+    // clang-format on
     return inter->parse();
   }
 
@@ -25,10 +22,8 @@ namespace Frate::Command::Clean {
 
   bool cleanCache(std::shared_ptr<Project> pro) {
     const std::vector<path> files_to_delete = {
-        pro->path / "CMakeCache.txt",
-        pro->path / "install_manifest.txt",
-        pro->path / "cmake_install.cmake",
-        pro->path / "Makefile"};
+        pro->path / "CMakeCache.txt", pro->path / "install_manifest.txt",
+        pro->path / "cmake_install.cmake", pro->path / "Makefile"};
     const std::vector<std::filesystem::path> dirs_to_delete = {
         pro->path / "CMakeFiles/", pro->path / "_deps/"};
 
@@ -77,11 +72,13 @@ namespace Frate::Command::Clean {
         Utils::verbose << "Deleting" << p.path() << std::endl;
         if (p.is_directory()) {
           remove_all(p.path());
-        } else {
+        }
+        else {
           std::filesystem::remove(p.path());
         }
       }
-    } else {
+    }
+    else {
       Utils::error << "Could not find ./build" << std::endl;
     }
 

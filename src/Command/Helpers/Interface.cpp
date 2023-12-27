@@ -26,17 +26,14 @@ namespace Frate::Command {
   bool OptionsInit::Main(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command"});
-    inter->options->allow_unrecognised_options().add_options()(
-        "command",
-        "Command to run",
-        cxxopts::value<std::string>()->default_value("help"))(
-        "verbose",
-        "Verbose output",
-        cxxopts::value<bool>()->default_value("false"))(
-        "y,confirm-all",
-        "skip all y/n prompts",
-        cxxopts::value<bool>()->default_value("false"))("version",
-                                                        "Print version");
+    // clang-format off
+    inter->options->allow_unrecognised_options().add_options()
+        ("command", "Command to run",cxxopts::value<std::string>()->default_value("help"))
+        ("verbose", "Verbose output",cxxopts::value<bool>()->default_value("false"))
+        ("y,confirm-all", "skip all y/n prompts",cxxopts::value<bool>()->default_value("false"))
+        ("version","Print version");
+    // clang-format on
+
     return inter->parse();
   }
 
@@ -196,7 +193,7 @@ namespace Frate::Command {
           }
 
           // Save the project if the command has the possibility of changing it
-          if (handler.requires_project) {
+          if (inter->pro->loaded_json) {
             inter->pro->save();
           }
           inter->config.save();
@@ -226,15 +223,15 @@ namespace Frate::Command {
       if (unlimited_args) {
         std::cout << termcolor::bold << termcolor::green << " [" << positional
                   << " ...]" << termcolor::reset;
-      } else {
+      }
+      else {
         std::cout << termcolor::bold << termcolor::green << " [" << positional
                   << "]" << termcolor::reset;
       }
     }
   }
 
-  bool runCommand(std::shared_ptr<Interface> inter,
-                  std::string command,
+  bool runCommand(std::shared_ptr<Interface> inter, std::string command,
                   std::vector<Handler> &handlers) {
     for (Handler handler : handlers) {
       for (std::string alias : handler.aliases) {
@@ -251,10 +248,6 @@ namespace Frate::Command {
             inter->getHelpString(handler);
             return false;
           }
-          if (handler.requires_project) {
-            inter->pro->save();
-          }
-          inter->config.save();
           return true;
         }
       }
@@ -283,7 +276,8 @@ namespace Frate::Command {
       if (is_subcommand) {
         if (index == handlers.size()) {
           std::cout << " └── ";
-        } else {
+        }
+        else {
           std::cout << " ├── ";
         }
         alias_str_len += 4;
@@ -308,16 +302,18 @@ namespace Frate::Command {
         std::cout << " ";
         if (index != handlers.size()) {
           std::cout << "\n   │";
-        } else {
+        }
+        else {
           std::cout << "\n    ";
         }
         std::cout << "     " << termcolor::blue << handler.docs
                   << termcolor::reset;
-      } else {
+      }
+      else {
         if (!handler.subcommands.empty()) {
           std::cout << termcolor::blue << " <subcommand>" << termcolor::reset;
-
-        } else {
+        }
+        else {
           std::cout << " : " << termcolor::blue << handler.docs
                     << termcolor::reset;
         }
@@ -325,12 +321,13 @@ namespace Frate::Command {
       if (!handler.implemented) {
         std::cout << termcolor::red << " (Not implemented)" << termcolor::reset
                   << std::endl;
-      } else {
+      }
+      else {
         std::cout << std::endl;
       }
       if (!handler.subcommands.empty()) {
-        getHelpString(
-            name + " " + handler.aliases[0], handler.subcommands, true);
+        getHelpString(name + " " + handler.aliases[0], handler.subcommands,
+                      true);
         std::cout << std::endl;
       }
     }

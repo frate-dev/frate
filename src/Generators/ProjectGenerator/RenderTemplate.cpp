@@ -27,9 +27,9 @@ namespace Frate::Generators::Project {
 
     // Array to store all the paths to remove at the end of the function
     std::vector<path> paths_to_remove = {
-        pro->path / "__init__",
-        pro->path / "__post__",
-    };
+        pro->path / "__init__", pro->path / "__post__",
+        pro->path / "frate-callbacks", pro->path / "LICENSE",
+        pro->path / "cmake_includes"};
 
     // Array of all the file extensions that we're going to ignore when copying
     // files
@@ -40,8 +40,8 @@ namespace Frate::Generators::Project {
     std::unordered_map<std::string, std::vector<std::string>>
         related_source_exts = {};
 
-    related_source_exts["cpp"] = {
-        ".cpp", ".cxx", ".cc", ".C", ".c++", ".hpp", ".hxx", ".hh"};
+    related_source_exts["cpp"] = {".cpp", ".cxx", ".cc",  ".C",
+                                  ".c++", ".hpp", ".hxx", ".hh"};
     related_source_exts["c"] = {".c", ".h"};
     // Removes all source files that are not related to the project language
     for (auto [key, source_files] : related_source_exts) {
@@ -94,7 +94,8 @@ namespace Frate::Generators::Project {
     for (const path &p : paths_to_remove) {
       if (std::filesystem::is_directory(p)) {
         std::filesystem::remove_all(p);
-      } else {
+      }
+      else {
         std::filesystem::remove(p);
       }
     }

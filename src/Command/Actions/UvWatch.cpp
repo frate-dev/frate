@@ -10,16 +10,12 @@ namespace Frate::Command::UvWatch {
   bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command"});
-    inter->options->add_options()(
-        "c,command",
-        "Command to run",
-        cxxopts::value<std::string>()->default_value("help"))(
-        "e,execute",
-        "Execute command",
-        cxxopts::value<std::string>()->default_value("false"))(
-        "r,remote",
-        "Build server to use",
-        cxxopts::value<bool>()->default_value("false"));
+    // clang-format off
+    inter->options->add_options()
+      ("c,command","Command to run",cxxopts::value<std::string>()->default_value("help"))
+      ("e,execute","Execute command",cxxopts::value<std::string>()->default_value("false"))
+      ("r,remote","Build server to use",cxxopts::value<bool>()->default_value("false"));
+    // clang-format on
     return inter->parse();
   }
 
@@ -52,10 +48,8 @@ namespace Frate::Command::UvWatch {
       this->callback = callback;
     };
 
-    static void fs_event_callback(uv_fs_event_t *handle,
-                                  const char *filename,
-                                  int events,
-                                  int status) {
+    static void fs_event_callback(uv_fs_event_t *handle, const char *filename,
+                                  int events, int status) {
       (void)filename, (void)events;
       if (event_triggered) {
         // Ignoring subsequent events
@@ -91,8 +85,8 @@ namespace Frate::Command::UvWatch {
           auto watcher = new uv_fs_event_t;
           watcher->data = this;
           uv_fs_event_init(loop, watcher);
-          uv_fs_event_start(
-              watcher, fs_event_callback, entry.path().c_str(), 0);
+          uv_fs_event_start(watcher, fs_event_callback, entry.path().c_str(),
+                            0);
           watchers.emplace_back(watcher);
         }
       }

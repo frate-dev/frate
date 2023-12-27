@@ -6,29 +6,39 @@ BasedOnStyle : LLVM
 SeparateDefinitionBlocks: Always
 NamespaceIndentation: All
 
-BinPackArguments: No
-BinPackParameters: No
-
-# Aligns consecutive function parameters
-AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: false
-AlignConsecutiveDeclarations: false
-
-
-# Penalty for breaking a function call after a call parameter
-PenaltyBreakBeforeFirstCallParameter: 19
+# ColumnLimit: 0
+# AlignAfterOpenBracket: AlwaysBreak
+# AllowAllParametersOfDeclarationOnNextLine: false
+# BinPackArguments: false
+# BinPackParameters: false
+IndentWidth: 2
+#ContinuationIndentWidth: 2
 
 
+# BinPackArguments: No
+# BinPackParameters: No
+# 
+# # Aligns consecutive function parameters
+# AlignAfterOpenBracket: true
+# AlignConsecutiveAssignments: false
+# AlignConsecutiveDeclarations: false
+# 
+# 
+# # Penalty for breaking a function call after a call parameter
 
-# # Configure new lines around different constructs
-# BraceWrapping:
-#   AfterClass: true       # New line after the opening brace of a class
-#   AfterControlStatement: true   # New line after the opening brace of a control statement (if, for, while, ...)
-#   AfterEnum: true        # New line after the opening brace of an enum
-#   AfterFunction: true    # New line after the opening brace of a function
-#   AfterNamespace: true   # New line after the opening brace of a namespace
-#   AfterStruct: true      # New line after the opening brace of a struct
-#   AfterUnion: true       # New line after the opening brace of a union
-#   BeforeCatch: true      # New line before the 'catch' in try-catch blocks
-#   BeforeElse: true       # New line before 'else' in if-else blocks
-#   BeforeLambdaBody: true # New line before the body of a lambda function
+
+
+
+BraceWrapping:
+  AfterClass:      false
+  AfterControlStatement: false
+  AfterEnum:       false
+  AfterFunction:   false
+  AfterNamespace:  false
+  AfterObjCDeclaration: false
+  AfterStruct:     false 
+  AfterUnion:      false
+  BeforeCatch:     false
+  BeforeElse:      true
+  IndentBraces:    false
+BreakBeforeBraces: Custom

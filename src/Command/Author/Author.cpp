@@ -7,10 +7,12 @@ namespace Frate::Command::Author {
   bool options(std::shared_ptr<Interface> inter) {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "authors"});
-    inter->options->add_options()(
-        "command", "Command to run", cxxopts::value<std::string>())(
-        "subcommand", "Subcommand to run", cxxopts::value<std::string>())(
-        "authors", "Authors", cxxopts::value<std::vector<std::string>>());
+    // clang-format off
+    inter->options->add_options()
+      ("command", "Command to run", cxxopts::value<std::string>())
+      ("subcommand", "Subcommand to run", cxxopts::value<std::string>())
+      ("authors", "Authors", cxxopts::value<std::vector<std::string>>());
+    // clang-format on
     return inter->parse();
   }
 
@@ -34,7 +36,6 @@ namespace Frate::Command::Author {
       inter->pro->authors.emplace_back(author);
       Utils::info << "Added author " << author << std::endl;
     }
-    inter->pro->save();
     return true;
   }
 
@@ -54,7 +55,6 @@ namespace Frate::Command::Author {
                                                 author),
                                     inter->pro->authors.end());
           Utils::info << "Removed author " << author << std::endl;
-          inter->pro->save();
           return true;
         }
       }

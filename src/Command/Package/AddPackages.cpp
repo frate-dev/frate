@@ -10,8 +10,7 @@
 namespace Frate::Command::Packages {
   using Utils::CLI::Prompt;
 
-  bool addPackageToMode(std::shared_ptr<Interface> inter,
-                        Dependency package,
+  bool addPackageToMode(std::shared_ptr<Interface> inter, Dependency package,
                         std::string selected_mode) {
     Utils::info << "Adding package to mode " << selected_mode << std::endl;
     for (Mode &mode : inter->pro->modes) {
@@ -96,10 +95,6 @@ namespace Frate::Command::Packages {
       }
       std::cout << "Package: " << nlohmann::json(package) << std::endl;
       inter->pro->dependencies.emplace_back(package, version);
-      if (!inter->pro->save()) {
-        Utils::error << "Failed to save project" << std::endl;
-        return false;
-      };
       return true;
     }
 
@@ -112,7 +107,8 @@ namespace Frate::Command::Packages {
       if (!exact) {
         Utils::error << "No exact match found" << std::endl;
         chosen_package = promptSearchResults(package_name);
-      } else {
+      }
+      else {
         Utils::info << "Exact match found" << std::endl;
         chosen_package = exact_package;
       }
@@ -125,7 +121,8 @@ namespace Frate::Command::Packages {
       if (!latest) {
         version = promptForVersion(chosen_package);
         // chosen_package.selected_version = version;
-      } else {
+      }
+      else {
         if (chosen_package.versions.empty()) {
           Utils::error << "No versions found" << std::endl;
           return false;
@@ -140,8 +137,8 @@ namespace Frate::Command::Packages {
       }
 
       if (!mode.empty()) {
-        if (!addPackageToMode(
-                inter, Dependency(chosen_package, version), mode)) {
+        if (!addPackageToMode(inter, Dependency(chosen_package, version),
+                              mode)) {
           Utils::error << "Failed to add package to mode" << std::endl;
           return false;
         }
