@@ -12,6 +12,12 @@ namespace Frate::Command {
     this->git = package.git;
     this->git_short = package.git_short;
     this->git_prefixed = package.git_prefixed;
+    if (package.target_link.empty()) {
+      this->target_link = package.name;
+    }
+    else {
+      this->target_link = package.target_link;
+    }
   }
 
   void to_json(json &json_obj, const Dependency &dep) {
@@ -20,6 +26,7 @@ namespace Frate::Command {
     TO_JSON_FIELD(dep, git);
     TO_JSON_FIELD(dep, git_short);
     TO_JSON_FIELD(dep, git_prefixed);
+    TO_JSON_FIELD(dep, target_link);
   }
 
   void from_json(const json &json_obj, Dependency &dep) {
@@ -28,5 +35,6 @@ namespace Frate::Command {
     FROM_JSON_FIELD(dep, git);
     FROM_JSON_FIELD(dep, git_short);
     FROM_JSON_FIELD(dep, git_prefixed);
+    FROM_JSON_FIELD(dep, target_link);
   }
 } // namespace Frate::Command
