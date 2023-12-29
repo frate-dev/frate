@@ -26,7 +26,7 @@ namespace Frate::Command {
     std::string name;
     std::string description;
     std::string type{""};
-    RemoteServer build_server;
+    [[deprecated("use inter->config.build_server")]] RemoteServer build_server;
     std::filesystem::path path;
     std::string git{"null"};
     std::string homepage{"null"};
@@ -54,16 +54,29 @@ namespace Frate::Command {
     std::vector<std::string> flags{};
     std::vector<std::string> toolchains{};
     std::vector<std::string> libs{};
+    /*
+     * This loads the project from the frate-project.json located at the root of
+     * the project path
+     */
     bool load();
+    /*
+     * This saves the project to the frate-project.json located at the root of
+     * the project path
+     */
     bool save();
     void checkKeys(json j);
-
-    std::string getPath() { return path.string(); };
+    /*
+     * is what you use if you are using the path in a command
+     * This will add quotes around the path to avoid issues with spaces
+     * for example: path/to/project some crazy path name
+     * becomes: 'path/to/project some crazy path name'
+     */
+    std::string safePath();
 
     std::unordered_map<std::string, ProjectPrompt> prompts{};
     std::unordered_map<std::string, json> global{};
     friend void from_json(const json &json_obj, Project &pro);
     friend void to_json(json &json_obj, const Project &pro);
-    void fromTemplate(Template &t);
+    void fromTemplate(Template &_template);
   };
 } // namespace Frate::Command

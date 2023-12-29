@@ -51,6 +51,10 @@ namespace Frate::Command {
     return true;
   }
 
+  std::string Project::safePath() {
+    return "'" + std::filesystem::path(this->path).string() + "'";
+  };
+
   void Project::fromTemplate(Template &temp) {
     this->src_dir = temp.src_dir;
     this->include_dir = temp.include_dir;

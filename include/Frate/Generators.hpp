@@ -95,7 +95,8 @@ namespace Frate::Generators {
      * @param project_path: the path of the project
      * @return true if the download was successful
      */
-    bool downloadTemplate(std::string git_url, path project_path);
+    bool downloadTemplate(std::string git_url,
+                          std::shared_ptr<Command::Project> pro);
 
     /*
      * Loads the template config file and merges into the project context
@@ -112,8 +113,7 @@ namespace Frate::Generators {
      * @param pro: the project context
      * @return true if the initialization was successful
      */
-    bool initializeLua(Environment &env,
-                       sol::state &lua,
+    bool initializeLua(Environment &env, sol::state &lua,
                        std::shared_ptr<Command::Project> pro);
   } // namespace Project
 

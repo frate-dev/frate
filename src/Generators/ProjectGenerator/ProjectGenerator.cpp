@@ -52,7 +52,7 @@ namespace Frate::Generators::Project {
     }
     Utils::info << "Downloading template at: " << current_template.git
                 << std::endl;
-    if (!downloadTemplate(current_template.git, pro->path)) {
+    if (!downloadTemplate(current_template.git, pro)) {
       Utils::error << "Error while downloading template" << std::endl;
       return false;
     }

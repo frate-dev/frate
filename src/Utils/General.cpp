@@ -1,6 +1,8 @@
 #include "Frate/Utils/General.hpp"
+#include "Frate/Utils/Logging.hpp"
 #include <Frate/Generators.hpp>
 #include <curl/curl.h>
+#include <filesystem>
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <vector>
@@ -14,9 +16,7 @@ namespace Frate::Utils {
   };
 
   // Callback function to handle incoming data
-  size_t WriteCallback(void *contents,
-                       size_t size,
-                       size_t nmemb,
+  size_t WriteCallback(void *contents, size_t size, size_t nmemb,
                        std::string *output) {
     size_t totalSize = size * nmemb;
     output->append(static_cast<char *>(contents), totalSize);
@@ -75,17 +75,18 @@ namespace Frate::Utils {
   std::vector<std::string> split(std::string str, char delimiter) {
     std::vector<std::string> result;
 
-    std::string word = "";
+    std::string word;
 
     for (char x : str) {
       if (x == delimiter) {
         result.emplace_back(word);
         word = "";
-      } else {
+      }
+      else {
         word = word + x;
       }
     }
-    if (word.size() > 0) {
+    if (!word.empty()) {
       result.emplace_back(word);
     }
     return result;
@@ -101,9 +102,10 @@ namespace Frate::Utils {
   std::string fetchText(std::string url, bool verbose) {
     std::string requrl = url;
     CurlResponse r = HttpGet(requrl);
-    if (verbose)
+    if (verbose) {
       Utils::info << "Attempting to download: " << termcolor::bright_blue << url
                   << std::endl;
+    }
 
     switch (r.status_code) {
     case 200:
@@ -125,40 +127,165 @@ namespace Frate::Utils {
   }
 
   json fetchJson(std::string url) {
-    std::string responseStr = fetchText(url);
+    std::string response_str = fetchText(url);
     try {
-      return json::parse(responseStr);
+      return json::parse(response_str);
     } catch (json::parse_error &e) {
       Utils::error << "At: " << e.byte << std::endl;
       Utils::error << "Error: " << e.what() << std::endl;
       Utils::error << "Failed to parse index.json" << std::endl;
-      Utils::error << "Text: " << responseStr << std::endl;
+      Utils::error << "Text: " << response_str << std::endl;
       Utils::debug("Failed to parse index.json");
       exit(-1);
     }
+  }
+
+  /*
+   * If we have a internal path we're going to take the extracted zip and
+   * move the contents of that interal path to the unzip_to path for
+   * example if we have a zip file with the following structure
+   * test.zip \
+   *          test \
+   *            test.txt
+   *            test2.txt
+   *            test3.txt
+   *            test4.txt
+   * and we want to extract the test folder to the current directory we
+   * would do the following
+   * unzipZip("test.zip", ".", "test");
+   * and the result in the unzip_to directory would be
+   * unzip_dir \
+   *  test.txt
+   *  test2.txt
+   *  test3.txt
+   *  test4.txt
+   */
+  void unzipZip(const path &zip_path, const path &unzip_to,
+                std::string internal_path) {
+
+    std::filesystem::path zip_dir = zip_path.parent_path();
+
+    Utils::info << "Unzipping: " << zip_path << std::endl;
+    std::string cmd =
+        "unzip -q " + zip_path.string() + " -d " + zip_dir.string();
+
+    int return_code = Utils::hSystem(cmd);
+    if (return_code != 0) {
+      Utils::error << "Failed to unzip: " << zip_path << std::endl;
+      exit(-1);
+    }
+
+    if (!internal_path.empty()) {
+      std::filesystem::create_directories(unzip_to);
+      for (std::filesystem::directory_entry current_path :
+           std::filesystem::recursive_directory_iterator(zip_dir /
+                                                         internal_path)) {
+
+        std::filesystem::path current_path_relative =
+            std::filesystem::relative(current_path, zip_dir / internal_path);
+        std::filesystem::path new_path = unzip_to / current_path_relative;
+
+        if (std::filesystem::is_directory(current_path)) {
+          Utils::verbose << "Creating directory: " << new_path << std::endl;
+
+          std::filesystem::create_directories(new_path);
+        }
+        else {
+          Utils::verbose << "Copying: " << current_path << " to " << new_path
+                         << std::endl;
+
+          std::filesystem::copy(current_path, new_path);
+        }
+      }
+    }
+  }
+
+  void fetchGitArchive(const std::string &git_url, const std::string &branch,
+                       const std::filesystem::path &unzip_to) {
+
+    std::string stripped_git_url = git_url;
+    // Removes .git from the end of the url
+    if (stripped_git_url.find(".git") != std::string::npos) {
+      Utils::replaceKey(stripped_git_url, ".git", "");
+    }
+    /*
+     * Uses the stripped github url to get the archive url to generate a url
+     * like https://www.github.com/frate-dev/index/archive/refs/heads/main.zip
+     */
+    std::string url =
+        stripped_git_url + "/archive/refs/heads/" + branch + ".zip";
+    /*
+     * Gets the last part of the stripped github url so that it goes from
+     * https://www.github.com/frate-dev/index to index
+     */
+    std::string repo_name =
+        stripped_git_url.substr(git_url.find_last_of("/\\") + 1);
+
+    Utils::info << "Downloading archive: " << url << std::endl;
+    std::string requrl = url;
+    CurlResponse res = HttpGet(requrl);
+
+    std::filesystem::path tmp_path = Utils::randomTmpPath("frate-git-archive-");
+
+    switch (res.status_code) {
+    case 200:
+      break;
+    case 404:
+      Utils::error << "Failed to download: " << url << std::endl;
+      Utils::error << "Error: " << res.error << std::endl;
+      exit(-1);
+      break;
+    default:
+      Utils::error << "Failed to download: " << url << std::endl;
+      Utils::error << "Error: " << res.error << std::endl;
+      exit(-1);
+      break;
+    }
+    // gets the last part of the url
+    std::string filename = url.substr(url.find_last_of("/\\") + 1);
+    std::filesystem::path archive_path = tmp_path / filename;
+    std::ofstream file(archive_path, std::ios::binary);
+
+    file << res.text;
+    file.close();
+    Utils::unzipZip(archive_path, unzip_to, repo_name + "-" + branch);
+
+    std::filesystem::path sub_directory_to_extract =
+        unzip_to / (repo_name + "-" +
+                    branch); // this is the directory that github generates
+                             // inside the archive that we would like to
+                             // extract to the current folder
+
+    // // Removes the archive
+    // std::filesystem::remove_all(tmp_path);
+
+    file << res.text;
+    file.close();
   }
 
   int hSystem(std::string cmd) {
     int return_code = std::system(cmd.c_str());
     if (WIFEXITED(return_code)) {
       return WEXITSTATUS(return_code);
-    } else {
+    }
+    else {
       return -1;
     }
   }
 
   CmdOutput hSystemWithOutput(std::string cmd) {
     CmdOutput output;
-    std::string cmd_stdout = "";
-    std::string cmd_stderr = "";
+    std::string cmd_stdout;
+    std::string cmd_stderr;
     FILE *pipe = popen(cmd.c_str(), "r");
-    if (!pipe) {
+    if (pipe == nullptr) {
       Utils::error << "Failed to execute command: " << cmd << std::endl;
       exit(-1);
     }
-    char buffer[128];
+    const int buffer_size = 128;
+    char buffer[buffer_size];
     while (!feof(pipe)) {
-      if (fgets(buffer, 128, pipe) != nullptr) {
+      if (fgets(buffer, buffer_size, pipe) != nullptr) {
         cmd_stdout += buffer;
       }
     }
@@ -169,12 +296,11 @@ namespace Frate::Utils {
   }
 
   std::string genUUIDv4() {
-    std::string uuid = "";
+    std::string uuid;
     // Pattern: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
     std::string chars = "0123456789abcdef";
     // Seeding the random number gererator with time
     std::srand(std::time(nullptr));
-
     for (int i = 0; i < 8; i++) {
       uuid += chars[std::rand() % chars.length()];
     }
@@ -203,6 +329,7 @@ namespace Frate::Utils {
   path randomTmpPath(std::string prefix) {
     path tmp_path = std::filesystem::temp_directory_path();
     tmp_path /= prefix + genUUIDv4();
+    std::filesystem::create_directories(tmp_path);
     return tmp_path;
   }
 
@@ -217,8 +344,7 @@ namespace Frate::Utils {
     }
     try {
       std::filesystem::copy(
-          p,
-          tmp_path,
+          p, tmp_path,
           std::filesystem::copy_options::recursive |
               std::filesystem::copy_options::overwrite_existing);
     } catch (std::filesystem::filesystem_error &e) {

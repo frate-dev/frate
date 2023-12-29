@@ -79,6 +79,57 @@ namespace Frate::Utils {
   std::string fetchText(std::string url, bool verbose = false);
 
   /*
+   * Fetches zip, tar, tar.gz, tar.xz, tar.bz2 archives
+   * @param url The url to be fetched
+   * @param unzip_to The path to unzip to
+   */
+  void fetchGitArchive(const std::string &git_url, const std::string &branch,
+                       const path &unzip_to);
+  /*
+   * Fetches git projects
+   * @param url The url to be fetched
+   * @param unzip_to The path to unzip to
+   */
+  void fetchGitProject(const std::string &git_url, const std::string &branch,
+                       const path &clone_to, bool recurse_submodules = false);
+
+  /*
+   * Unzips the tar file
+   * @param tar_path The path to the tar file
+   * @param unzip_to The path to unzip to
+   */
+  void unzipTar(const path &tar_path, const path &unzip_to);
+
+  /*
+   * Unzips the tar.gz file
+   * @param tar_path The path to the tar.gz file
+   * @param unzip_to The path to unzip to
+   */
+  void unzipTarGz(const path &tar_path, const path &unzip_to);
+
+  /*
+   * Unzips the tar.xz file
+   * @param tar_path The path to the tar.xz file
+   * @param unzip_to The path to unzip to
+   */
+  void unzipTarXz(const path &tar_path, const path &unzip_to);
+
+  /*
+   * Unzips the tar.bz2 file
+   * @param tar_path The path to the tar.bz2 file
+   * @param unzip_to The path to unzip to
+   */
+  void unzipTarBz2(const path &tar_path, const path &unzip_to);
+
+  /*
+   * Unzips the zip file
+   * @param zip_path The path to the zip file
+   * @param unzip_to The path to unzip to
+   */
+  void unzipZip(const path &zip_path, const path &unzip_to,
+                std::string internal_path = "");
+
+  /*
    * A new Utils::hSystem command which returns the exit code of the command
    * And we also take std::string
    * @param command The command to be executed
