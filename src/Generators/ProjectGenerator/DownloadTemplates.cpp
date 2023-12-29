@@ -19,10 +19,10 @@ namespace Frate::Generators::Project {
       std::filesystem::remove_all(pro->path / "template");
     }
 
-    auto git = System::GitProvider()
-                   .setGitUrl(git_url)
-                   .setWorkingDir(pro->path / "template" / "deez")
-                   .clone();
+    // auto git = System::GitProvider()
+    //                .setGitUrl(git_url)
+    //                .setWorkingDir(pro->path / "template" / "deez")
+    //                .clone();
 
     Utils::fetchGitArchive(git_url, "new_function_prefix",
                            pro->path / "template");
