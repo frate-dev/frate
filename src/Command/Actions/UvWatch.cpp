@@ -1,3 +1,4 @@
+#include "Frate/System/Build.hpp"
 #include <Frate/Generators.hpp>
 #include <Frate/Interface.hpp>
 #include <Frate/Project.hpp>
@@ -48,8 +49,7 @@ namespace Frate::Command::UvWatch {
       this->callback = callback;
     };
 
-    static void fs_event_callback(uv_fs_event_t *handle, const char *filename,
-                                  int events, int status) {
+    static void fs_event_callback(uv_fs_event_t *handle, const char *filename, int events, int status) {
       (void)filename, (void)events;
       if (event_triggered) {
         // Ignoring subsequent events
@@ -119,57 +119,14 @@ namespace Frate::Command::UvWatch {
     std::vector<uv_fs_event_t *> watchers;
   };
 
-  std::string remote_build_command(std::shared_ptr<Interface> inter) {
-    inter->pro->build_server = inter->config.getBuildServer();
-
-    // Get the destination path from environment variables
-    std::string remote_dest_path = std::getenv("REMOTE_DEST_PATH")
-                                       ? std::getenv("REMOTE_PATH")
-                                       : "/tmp/" + inter->pro->name;
-    std::cout << "Remote destination path: " << remote_dest_path << std::endl;
-    std::cout << "project: " << json(*inter->pro).dump(2) << std::endl;
-    std::cout << "pro->name: " << inter->pro->name << std::endl;
-    // Construct the rsync command
-    std::string sync_files =
-        "rsync -avh --exclude-from='.gitignore' --update -e 'ssh -p " +
-        std::to_string(inter->pro->build_server.port) + "' --progress " +
-        inter->pro->path.string() + " " + inter->pro->build_server.username +
-        "@" + inter->pro->build_server.ip + ":" + remote_dest_path + " ";
-
-    // SSH command to build the project
-    std::string ssh = "&& ssh -p " +
-                      std::to_string(inter->pro->build_server.port) + " " +
-                      inter->pro->build_server.username + "@" +
-                      inter->pro->build_server.ip + " ";
-    std::string build =
-        "'cd " + remote_dest_path + " && cmake . && make -j $(nproc)'";
-
-    // Add option to run a specific command after building, if set
-    std::string command;
-    if (inter->args->count("execute")) {
-      std::string command_to_run =
-          inter->args->operator[]("execute").as<std::string>();
-      command = ssh + command_to_run;
-    }
-
-    return sync_files + ssh + build + command;
-  }
-
   bool runCommand(std::shared_ptr<Interface> inter) {
 
-    std::cout << "Running command" << std::endl;
-    std::string command = "cmake . && make  && " + inter->pro->path.string() +
-                          "/" + inter->pro->build_dir + "/" + inter->pro->name;
-#ifdef DEBUG
-    std::cout << "Running in debug mode" << std::endl;
-    command = "cd build && cmake . && make  && " + inter->pro->build_dir + "/" +
-              inter->pro->name;
-#endif
+    BuildCommand build_command(inter);
+    std::string command = build_command.get_local_build_command();
 
     bool build_server = inter->args->operator[]("remote").as<bool>();
-    if (build_server == true) {
-
-      command = remote_build_command(inter);
+    if (build_server) {
+      command = build_command.get_remote_build_command();
     }
 
     if (Utils::hSystem(command) != 0) {
