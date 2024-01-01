@@ -35,13 +35,16 @@ namespace Frate::Command::UvWatch {
         return;
       }
       this->loop = loop;
-      auto watcher = new uv_fs_event_t;
+      auto *watcher = new uv_fs_event_t;
       this->data = data;
       std::cout << "watching path: " << path << std::endl;
       watcher->data = this;
       watchers.emplace_back(watcher);
       uv_fs_event_init(this->loop, watcher);
-      uv_fs_event_start(watcher, fs_event_callback, path.c_str(), 0);
+      if (uv_fs_event_start(watcher, fs_event_callback, path.c_str(), UV_FS_EVENT_RECURSIVE) != 0) {
+        std::cerr << "Error starting uv watcher" << std::endl;
+        return;
+      }
       start_watchers_for_directory(path, loop, watchers);
     };
 
@@ -55,26 +58,33 @@ namespace Frate::Command::UvWatch {
         // Ignoring subsequent events
         return;
       }
-      std::cout << "get data" << std::endl;
 
-      Watch *watch = static_cast<Watch *>(handle->data);
-      std::cout << "got data" << std::endl;
+      auto *watch = static_cast<Watch *>(handle->data);
 
       if (status < 0) {
         fprintf(stderr, "Filesystem watch error: %s\n", uv_strerror(status));
         return;
       }
+
       event_triggered = true;
+
       std::cout << "Filesystem change detected, rebuilding..." << std::endl;
-      std::cout << "\nWatching for changes..." << std::endl;
+
+      std::cout <<  watch->data->pro->name << std::endl;
       watch->callback(watch->data);
+      
+      auto *timer = new uv_timer_t;
+      uv_timer_init(handle->loop, timer);
 
-      uv_timer_t timer;
-      uv_timer_init(handle->loop, &timer);
-      timer.data = handle;
+      uv_timer_start(timer, [](uv_timer_t *timer) {
+          // Reset the event_triggered flag after 1 second
+          event_triggered = false;
 
-      uv_timer_start(
-          &timer, [](uv_timer_t *_) { event_triggered = false; }, 1000, 0);
+          // Clean up the timer
+          uv_close((uv_handle_t *)timer, [](uv_handle_t *handle) {
+              delete reinterpret_cast<uv_timer_t *>(handle);
+              });
+          }, 1000, 0); // 1000 ms delay
     }
 
     void start_watchers_for_directory(const std::filesystem::path &path,
@@ -82,11 +92,16 @@ namespace Frate::Command::UvWatch {
                                       std::vector<uv_fs_event_t *> &watchers) {
       for (const auto &entry : std::filesystem::directory_iterator(path)) {
         if (std::filesystem::is_directory(entry)) {
-          auto watcher = new uv_fs_event_t;
+          auto *watcher = new uv_fs_event_t;
           watcher->data = this;
-          uv_fs_event_init(loop, watcher);
-          uv_fs_event_start(watcher, fs_event_callback, entry.path().c_str(),
-                            0);
+          if (uv_fs_event_init(loop, watcher) != 0) {
+            std::cerr << "Error initializing uv watcher" << std::endl;
+            return;
+          }
+          if( uv_fs_event_start(watcher, fs_event_callback, entry.path().c_str(), 0) != 0){
+            std::cerr << "Error starting uv watcher" << std::endl;
+            return;
+          };
           watchers.emplace_back(watcher);
         }
       }
@@ -107,8 +122,9 @@ namespace Frate::Command::UvWatch {
       if (close != 0) {
         std::cerr << "Error closing uv loop" << std::endl;
       }
-      for (auto watcher : watchers) {
+      for (auto *watcher : watchers) {
         uv_fs_event_stop(watcher);
+        delete watcher;
       }
       uv_fs_event_stop(&fs_event);
     };
