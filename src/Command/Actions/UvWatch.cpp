@@ -21,6 +21,7 @@ namespace Frate::Command::UvWatch {
   }
 
   static bool event_triggered = false;
+  const time_t timeout = 1000;
 
   class Watch {
   public:
@@ -51,7 +52,7 @@ namespace Frate::Command::UvWatch {
     void addCallback(std::function<bool(std::shared_ptr<Interface>)> callback) {
       this->callback = callback;
     };
-
+    
     static void fs_event_callback(uv_fs_event_t *handle, const char *filename, int events, int status) {
       (void)filename, (void)events;
       if (event_triggered) {
@@ -84,7 +85,7 @@ namespace Frate::Command::UvWatch {
           uv_close((uv_handle_t *)timer, [](uv_handle_t *handle) {
               delete reinterpret_cast<uv_timer_t *>(handle);
               });
-          }, 1000, 0); // 1000 ms delay
+          }, timeout, 0); // 1000 ms delay
     }
 
     void start_watchers_for_directory(const std::filesystem::path &path,
