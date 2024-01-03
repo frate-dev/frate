@@ -15,7 +15,7 @@ namespace Frate::Command::Run {
     options(inter);
     // inter->loadProjectJson();
     inter->pro->load();
-    Generators::Project::refresh(inter->pro);
+    Generators::Project::refresh(inter);
     std::cout << "Running project: " << inter->pro->name << std::endl;
 
     const std::string work_dir_cmd = "cd " + inter->pro->path.string();

@@ -1,5 +1,6 @@
 #pragma once
 #include "Frate/Dependency.hpp"
+#include "Frate/TemplateMeta.hpp"
 #include <Frate/Mode.hpp>
 #include <Frate/Package.hpp>
 #include <Frate/ProjectPrompt.hpp>
@@ -23,6 +24,8 @@ namespace Frate::Command {
   public:
     Project();
     bool loaded_json{false};
+    std::filesystem::path template_path;
+    TemplateMeta current_template;
     std::string name;
     std::string description;
     std::string type{""};

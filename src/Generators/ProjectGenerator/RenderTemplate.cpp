@@ -54,7 +54,7 @@ namespace Frate::Generators::Project {
 
     for (const path &current_p :
          std::filesystem::recursive_directory_iterator(pro->path)) {
-      if (current_p.string().find("template/") != std::string::npos) {
+      if (current_p.string().find("override/") != std::string::npos) {
         continue;
       }
       if (current_p.extension() == ".inja") {

@@ -9,7 +9,7 @@
 namespace Frate::Command {
   class Project;
   class Interface;
-  typedef struct Handler_s Handler;
+  using Handler = struct Handler_s;
   /* =============================
    * Future interface for commands
    * =============================
@@ -18,7 +18,7 @@ namespace Frate::Command {
 
   class CommandHandler {
   public:
-    // Tree of commands
+    virtual ~CommandHandler() = default;
     std::vector<std::string> aliases;
     std::vector<std::string> flags{};
     std::vector<CommandHandler> subcommands{};
@@ -28,14 +28,14 @@ namespace Frate::Command {
     bool unlimited_args{false};
     std::string docs;
     std::function<bool(std::shared_ptr<Interface>)> callback{
-      [](std::shared_ptr<Interface> inter) -> bool {
-        (void)inter;
-        Utils::error << "This command has not been implemented yet"
-                     << std::endl;
-        return false;
-      }};
-    bool run(std::shared_ptr<Interface> inter);
-    bool options(std::shared_ptr<Interface> inter);
+        [](std::shared_ptr<Interface> inter) -> bool {
+          (void)inter;
+          Utils::error << "This command has not been implemented yet"
+                       << std::endl;
+          return false;
+        }};
+    virtual bool run(std::shared_ptr<Interface> inter) = 0;
+    virtual bool options(std::shared_ptr<Interface> inter) = 0;
   };
 
   using Handler = struct Handler_s {
@@ -45,12 +45,12 @@ namespace Frate::Command {
     std::vector<std::string> positional_args{};
     std::string docs;
     std::function<bool(std::shared_ptr<Interface>)> callback{
-      [](std::shared_ptr<Interface> inter) -> bool {
-        (void)inter;
-        Utils::error << "This command has not been implemented yet"
-                     << std::endl;
-        return false;
-      }};
+        [](std::shared_ptr<Interface> inter) -> bool {
+          (void)inter;
+          Utils::error << "This command has not been implemented yet"
+                       << std::endl;
+          return false;
+        }};
     bool implemented{true};
     bool requires_project{true};
     bool unlimited_args{false};
@@ -69,7 +69,8 @@ namespace Frate::Command {
     int argc;
     bool confirm_all{false};
     bool parse();
-    void getHelpString(std::string name, std::vector<Handler> &handlers, bool is_subcommand = false);
+    void getHelpString(std::string name, std::vector<Handler> &handlers,
+                       bool is_subcommand = false);
     void getHelpString(Handler &handler);
     bool InitHeader();
     bool CreateCMakelists();
@@ -82,5 +83,6 @@ namespace Frate::Command {
     bool Main(std::shared_ptr<Interface> inter);
   };
 
-  bool runCommand(std::shared_ptr<Interface> inter, std::string command, std::vector<Handler> &handlers);
+  bool runCommand(std::shared_ptr<Interface> inter, std::string command,
+                  std::vector<Handler> &handlers);
 } // namespace Frate::Command

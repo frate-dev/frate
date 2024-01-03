@@ -1,4 +1,6 @@
 #pragma once
 #include <Frate/Utils/General.hpp>
 
-namespace Frate {}
+namespace Frate {
+  template <class T> using Some = std::variant<T, bool>;
+}

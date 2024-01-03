@@ -1,10 +1,14 @@
+#include "Frate/Template.hpp"
 #include <Frate/Generators.hpp>
 #include <Frate/Project.hpp>
+#include <Frate/TemplateMeta.hpp>
 
 namespace Frate::Generators::Project {
-  std::pair<bool, Template> promptForTemplateName(json index) {
+  using Command::TemplateMeta;
+
+  std::pair<bool, TemplateMeta> promptForTemplateName(json index) {
     Prompt template_name_prompt("Project type: ");
-    for (Template templ : index) {
+    for (TemplateMeta templ : index) {
       template_name_prompt.addOption(templ.name);
     }
 
@@ -16,20 +20,20 @@ namespace Frate::Generators::Project {
 
     if (!success) {
       Utils::error << "Error while getting template name" << std::endl;
-      return {false, Template()};
+      return {false, TemplateMeta()};
     }
 
-    Template templ;
-    for (Template t : index) {
-      if (t.name == template_id) {
-        templ = t;
+    TemplateMeta templ;
+    for (TemplateMeta temp : index) {
+      if (temp.name == template_id) {
+        templ = temp;
         break;
       }
     }
 
     if (templ.name.empty()) {
-      Utils::error << "Template not found" << std::endl;
-      return {false, Template()};
+      Utils::error << "TemplateMeta not found" << std::endl;
+      return {false, TemplateMeta()};
     }
     return {true, templ};
   }

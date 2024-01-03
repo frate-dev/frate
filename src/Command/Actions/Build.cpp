@@ -33,7 +33,7 @@ namespace Frate::Command::Build {
     }
 
     inter->pro->load();
-    Generators::Project::refresh(inter->pro);
+    Generators::Project::refresh(inter);
 
     Utils::info << "Building project with: " << std::endl;
     Utils::info << "Target: " << target << std::endl;

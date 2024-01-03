@@ -1,8 +1,14 @@
+#include "Frate/Interface.hpp"
 #include "Frate/Utils/General.hpp"
 #include <Frate/System/GitException.hpp>
 #include <Frate/System/GitProvider.hpp>
 
 namespace Frate::System {
+  GitProvider::GitProvider(std::filesystem::path path) {
+    *this = GitProvider();
+    this->working_dir = path;
+  };
+
   GitProvider::GitProvider() {
     this->working_dir = std::filesystem::current_path();
     this->branch = "main";
@@ -66,12 +72,30 @@ namespace Frate::System {
 
   GitProvider &GitProvider::pull() { return *this; }
 
-  GitProvider &GitProvider::clone() {
+  GitProvider &GitProvider::clone(std::string url) {
     if (this->git_url.empty()) {
-      throw std::runtime_error("Git url is empty");
+      if (url.empty()) {
+        throw std::runtime_error("Git url is empty");
+      }
+      this->git_url = url;
     }
-    Utils::CmdOutput out = Utils::hSystemWithOutput(
-        "git clone " + this->git_url + " " + this->working_dir.string());
+    std::string flags;
+
+    if (this->recurse_submodules) {
+      flags += " --recurse-submodules ";
+    }
+
+    if (!this->branch.empty()) {
+      flags += " --branch " + this->branch;
+    }
+
+    std::string cmd = "git clone " + flags + " " + this->git_url + " " +
+                      this->working_dir.string();
+
+    Utils::verbose << "Running: " << cmd << std::endl;
+
+    Utils::CmdOutput out = Utils::hSystemWithOutput(cmd);
+
     this->raw_result = out.std_out;
     this->raw_error = out.std_err;
 
@@ -82,7 +106,18 @@ namespace Frate::System {
     return *this;
   }
 
-  GitProvider &GitProvider::checkout() { return *this; }
+  GitProvider &GitProvider::checkout(std::string branch) {
+    Utils::CmdOutput out =
+        Utils::hSystemWithOutput(work_dir_cmd() + "git checkout " + branch);
+    this->raw_result = out.std_out;
+    this->raw_error = out.std_err;
+
+    if (!this->raw_error.empty()) {
+      throw GitException(this->raw_error);
+    }
+
+    return *this;
+  }
 
   GitProvider &GitProvider::fetch() {
     Utils::CmdOutput out =
@@ -97,7 +132,14 @@ namespace Frate::System {
     return *this;
   }
 
-  GitProvider &GitProvider::lsRemote() {
+  GitProvider &GitProvider::lsRemote(std::string url) {
+
+    if (this->git_url.empty()) {
+      if (url.empty()) {
+        throw std::runtime_error("Git url is empty");
+      }
+      this->git_url = url;
+    }
 
     Utils::CmdOutput out =
         Utils::hSystemWithOutput(work_dir_cmd() + "git --no-pager ls-remote");
@@ -135,8 +177,8 @@ namespace Frate::System {
   GitProvider &GitProvider::log() {
 
     Utils::CmdOutput out = Utils::hSystemWithOutput(
-        work_dir_cmd() +
-        "git --no-pager log --format='hash:%H name:%an date:%ad message:%s'");
+        // MUST BE IN THIS ORDER FUCK YOU!
+        work_dir_cmd() + "git --no-pager log --format='{%H} {%an} {%ad} {%s}'");
 
     this->raw_result = out.std_out;
     this->raw_error = out.std_err;
@@ -202,8 +244,6 @@ namespace Frate::System {
     return *this;
   }
 
-  GitProvider &GitProvider::downloadArchive(ArchiveType type) { return *this; }
-
   /*
    * Private methods
    */
@@ -259,26 +299,27 @@ namespace Frate::System {
     if (line.empty()) {
       return {};
     }
+    // Pattern for {hash} {author} {date} {message}
+    std::regex pattern(R"(\{([^\}]+)\})");
+    std::sregex_iterator next(line.begin(), line.end(), pattern);
+    std::sregex_iterator end;
     GitCommit commit;
-    std::vector<std::string> parts = Utils::split(line, ' ');
-    const std::string hash_key = "hash:";
-    const std::string name_key = "name:";
-    const std::string date_key = "date:";
-    const std::string message_key = "message:";
-    for (auto &part : parts) {
-      if (part.find(hash_key) != std::string::npos) {
-        commit.hash = part.substr(hash_key.size());
-      }
-      else if (part.find(name_key) != std::string::npos) {
-        commit.author = part.substr(name_key.size());
-      }
-      else if (part.find(date_key) != std::string::npos) {
-        commit.date = part.substr(date_key.size());
-      }
-      else if (part.find(message_key) != std::string::npos) {
-        commit.message = part.substr(message_key.size());
-      }
+    std::vector<std::string> values;
+
+    while (next != end) {
+      values.push_back(next->str());
+      values.back().erase(0, 1);
+      values.back().pop_back();
+      next++;
     }
+    if (values.size() != 4) {
+      throw GitException("Failed to parse commit");
+    }
+    commit.hash = values[0];
+    commit.author = values[1];
+    commit.date = values[2];
+    commit.message = values[3];
+
     return commit;
   }
 
@@ -296,6 +337,11 @@ namespace Frate::System {
 
   GitProvider &GitProvider::setGitUrl(std::string url) {
     this->git_url = url;
+    return *this;
+  }
+
+  GitProvider &GitProvider::setRecurseSubmodules(bool recurse) {
+    this->recurse_submodules = recurse;
     return *this;
   }
 

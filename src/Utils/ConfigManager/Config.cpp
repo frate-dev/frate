@@ -11,6 +11,7 @@ namespace Frate::Config {
     FROM_JSON_FIELD(config, first_time_setup);
     FROM_JSON_FIELD(config, build_server);
     FROM_JSON_FIELD(config, build_servers);
+    FROM_JSON_FIELD(config, templates);
   }
 
   void to_json(nlohmann::json &json_obj, const ConfigManager &config) {
@@ -18,6 +19,7 @@ namespace Frate::Config {
     TO_JSON_FIELD(config, first_time_setup);
     TO_JSON_FIELD(config, build_server);
     TO_JSON_FIELD(config, build_servers);
+    TO_JSON_FIELD(config, templates);
   }
 
   Command::RemoteServer ConfigManager::getBuildServer() {

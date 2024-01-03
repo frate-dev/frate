@@ -42,7 +42,8 @@ namespace Frate::Command::UvWatch {
       watcher->data = this;
       watchers.emplace_back(watcher);
       uv_fs_event_init(this->loop, watcher);
-      if (uv_fs_event_start(watcher, fs_event_callback, path.c_str(), UV_FS_EVENT_RECURSIVE) != 0) {
+      if (uv_fs_event_start(watcher, fs_event_callback, path.c_str(),
+                            UV_FS_EVENT_RECURSIVE) != 0) {
         std::cerr << "Error starting uv watcher" << std::endl;
         return;
       }
@@ -52,8 +53,9 @@ namespace Frate::Command::UvWatch {
     void addCallback(std::function<bool(std::shared_ptr<Interface>)> callback) {
       this->callback = callback;
     };
-    
-    static void fs_event_callback(uv_fs_event_t *handle, const char *filename, int events, int status) {
+
+    static void fs_event_callback(uv_fs_event_t *handle, const char *filename,
+                                  int events, int status) {
       (void)filename, (void)events;
       if (event_triggered) {
         // Ignoring subsequent events
@@ -71,21 +73,24 @@ namespace Frate::Command::UvWatch {
 
       std::cout << "Filesystem change detected, rebuilding..." << std::endl;
 
-      std::cout <<  watch->data->pro->name << std::endl;
+      std::cout << watch->data->pro->name << std::endl;
       watch->callback(watch->data);
-      
+
       auto *timer = new uv_timer_t;
       uv_timer_init(handle->loop, timer);
 
-      uv_timer_start(timer, [](uv_timer_t *timer) {
-          // Reset the event_triggered flag after 1 second
-          event_triggered = false;
+      uv_timer_start(
+          timer,
+          [](uv_timer_t *timer) {
+            // Reset the event_triggered flag after 1 second
+            event_triggered = false;
 
-          // Clean up the timer
-          uv_close((uv_handle_t *)timer, [](uv_handle_t *handle) {
+            // Clean up the timer
+            uv_close((uv_handle_t *)timer, [](uv_handle_t *handle) {
               delete reinterpret_cast<uv_timer_t *>(handle);
-              });
-          }, timeout, 0); // 1000 ms delay
+            });
+          },
+          timeout, 0); // 1000 ms delay
     }
 
     void start_watchers_for_directory(const std::filesystem::path &path,
@@ -99,7 +104,8 @@ namespace Frate::Command::UvWatch {
             std::cerr << "Error initializing uv watcher" << std::endl;
             return;
           }
-          if( uv_fs_event_start(watcher, fs_event_callback, entry.path().c_str(), 0) != 0){
+          if (uv_fs_event_start(watcher, fs_event_callback,
+                                entry.path().c_str(), 0) != 0) {
             std::cerr << "Error starting uv watcher" << std::endl;
             return;
           };
@@ -157,7 +163,7 @@ namespace Frate::Command::UvWatch {
   bool watch(std::shared_ptr<Interface> inter) {
     options(inter);
     inter->pro->load();
-    Generators::Project::refresh(inter->pro);
+    Generators::Project::refresh(inter);
 
     Watch watch(inter, inter->pro->path / inter->pro->src_dir);
     watch.addCallback(runCommand);

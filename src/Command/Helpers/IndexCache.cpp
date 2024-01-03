@@ -16,7 +16,7 @@ namespace Frate::Command {
       std::string(std::getenv("HOME")) + "/.local/frate/index.json";
 
   // to scare away javascript kiddies
-  std::string indexUrl = static_cast<std::string>(Constants::FRATE_PACKAGES);
+  std::string indexUrl = Constants::PACKAGE_INDEX_URL;
 
   /*
    * If index is not in path then we create one
@@ -30,8 +30,8 @@ namespace Frate::Command {
       indexFile = std::ifstream(indexFileName);
       index = json::parse(indexFile);
       std::cout << "index file exists" << std::endl;
-
-    } else {
+    }
+    else {
       ofstream indexFile;
       cout << "Creating a new index file" << std::endl;
 

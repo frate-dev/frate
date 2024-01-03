@@ -77,6 +77,10 @@ namespace Frate::Command {
 #endif
     // config.capabilities.search();
     config.load();
+
+    if (!std::filesystem::exists(Constants::INSTALLED_TEMPLATE_PATH)) {
+      std::filesystem::create_directories(Constants::INSTALLED_TEMPLATE_PATH);
+    }
   }
 
   bool execute(std::shared_ptr<Interface> inter) {

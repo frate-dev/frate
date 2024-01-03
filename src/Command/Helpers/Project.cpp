@@ -72,6 +72,7 @@ namespace Frate::Command {
 
     FROM_JSON_FIELD(pro, name);
     FROM_JSON_FIELD(pro, description);
+    FROM_JSON_FIELD(pro, current_template);
     FROM_JSON_FIELD(pro, cmake_version);
     FROM_JSON_FIELD(pro, version);
     FROM_JSON_FIELD(pro, type);
@@ -99,6 +100,7 @@ namespace Frate::Command {
   void to_json(json &json_obj, const Project &pro) {
     TO_JSON_FIELD(pro, name);
     TO_JSON_FIELD(pro, description);
+    TO_JSON_FIELD(pro, current_template);
     TO_JSON_FIELD(pro, cmake_version);
     TO_JSON_FIELD(pro, version);
     TO_JSON_FIELD(pro, type);

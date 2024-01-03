@@ -15,8 +15,7 @@ namespace Frate::LuaAPI {
   using Command::Project;
   using std::filesystem::path;
 
-  bool registerProjectScripts(inja::Environment &env,
-                              sol::state &lua,
+  bool registerProjectScripts(inja::Environment &env, sol::state &lua,
                               path script_path,
                               std::shared_ptr<Project> project) {
 
@@ -66,11 +65,14 @@ namespace Frate::LuaAPI {
             for (const nlohmann::json *arg : input_args) {
               if (arg->is_string()) {
                 args_table.add(arg->get<std::string>());
-              } else if (arg->is_number()) {
+              }
+              else if (arg->is_number()) {
                 args_table.add(arg->get<int>());
-              } else if (arg->is_boolean()) {
+              }
+              else if (arg->is_boolean()) {
                 args_table.add(arg->get<bool>());
-              } else {
+              }
+              else {
                 Utils::error << "Error while converting arguments in inja "
                                 "callback for script at: "
                              << script_path << std::endl;
@@ -103,28 +105,16 @@ namespace Frate::LuaAPI {
   void registerAPI(sol::state &lua) {
     lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string);
 
-    lua.new_usertype<FrateApi>("frate",
-                               "new",
-                               sol::no_constructor,
-                               "get_os",
-                               &FrateApi::get_os,
-                               "get_path",
-                               &FrateApi::get_path,
-                               "get_paths_recurse",
-                               &FrateApi::get_paths_recurse,
-                               "format",
-                               &FrateApi::format,
-                               "print_table",
-                               &FrateApi::print_table,
-                               "fetch_text",
-                               &FrateApi::fetch_text,
-                               "fetch_json",
-                               &FrateApi::fetch_json);
+    lua.new_usertype<FrateApi>(
+        "frate", "new", sol::no_constructor, "get_os", &FrateApi::get_os,
+        "get_path", &FrateApi::get_path, "get_paths_recurse",
+        &FrateApi::get_paths_recurse, "format", &FrateApi::format,
+        "print_table", &FrateApi::print_table, "fetch_text",
+        &FrateApi::fetch_text, "fetch_json", &FrateApi::fetch_json);
   }
 
   bool initScripts(sol::state &lua, std::shared_ptr<Project> project) {
-    path script_path = project->path / (Constants::TEMPLATE_PATH +
-                                        Constants::INIT_SCRIPTS_PATH);
+    path script_path = project->template_path / Constants::INIT_SCRIPTS_PATH;
 
     if (!std::filesystem::exists(script_path)) {
       Utils::verbose << "No init scripts found at: " << script_path
@@ -165,8 +155,7 @@ namespace Frate::LuaAPI {
   }
 
   bool postScripts(sol::state &lua, std::shared_ptr<Project> project) {
-    path script_path = project->path / (Constants::TEMPLATE_PATH +
-                                        Constants::POST_SCRIPTS_PATH);
+    path script_path = project->template_path / Constants::POST_SCRIPTS_PATH;
 
     if (!std::filesystem::exists(script_path)) {
       Utils::verbose << "No post scripts found"

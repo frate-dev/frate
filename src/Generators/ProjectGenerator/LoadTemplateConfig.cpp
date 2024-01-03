@@ -11,12 +11,12 @@ namespace Frate::Generators::Project {
 
     try {
 
-      template_config_file.open(pro->path / "template/template.json");
+      template_config_file.open(pro->template_path / "template.json");
 
     } catch (...) {
 
       Utils::error << "Error while opening file: "
-                   << pro->path / "template/template.json" << std::endl;
+                   << pro->template_path / "template.json" << std::endl;
       return false;
     }
 

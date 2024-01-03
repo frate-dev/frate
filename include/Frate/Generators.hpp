@@ -1,23 +1,19 @@
 #pragma once
 #include <Frate/Interface.hpp>
 #include <Frate/Project.hpp>
+#include <Frate/TemplateMeta.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <inja.hpp>
 #include <vector>
 
 namespace Frate::Generators {
   namespace Project {
+    using Command::TemplateMeta;
     using inja::Environment;
     using nlohmann::json;
     using std::filesystem::path;
     using Utils::CLI::Prompt;
     json getTemplateIndex();
-
-    typedef struct Template {
-      std::string name;
-      std::string git;
-      std::string description;
-    } Template;
 
     /*
      * ===========================
@@ -30,7 +26,7 @@ namespace Frate::Generators {
      * @param pro: the project context
      * @return true if the creation was successful
      */
-    bool create(std::shared_ptr<Command::Project> pro);
+    bool create(std::shared_ptr<Command::Interface> inter);
 
     /*
      * This is the external callback used when ever the tempalte needs to be
@@ -38,7 +34,7 @@ namespace Frate::Generators {
      * @param pro: the project context
      * @return true if the refresh was successful
      */
-    bool refresh(std::shared_ptr<Command::Project> pro);
+    bool refresh(std::shared_ptr<Command::Interface> inter);
 
     /*
      * ===========================
@@ -47,21 +43,13 @@ namespace Frate::Generators {
      */
 
     /*
-     * Impliceitly converts a json object to a Template object
-     * Intended to to convert the json objects from the template index to
-     * Template objects
-     * @param j: the json object
-     * @param t: the template object
-     */
-    void from_json(const json &json_obj, Template &temp);
-    /*
      * Prompts the user for a template name, only used if the template has not
      * been specified
      * @param index: the json index of the templates
      * @return a pair of bool and Template, the bool is true if the template was
      * found and the Template is the template that was found
      */
-    std::pair<bool, Template> promptForTemplateName(json index);
+    std::pair<bool, TemplateMeta> promptForTemplateName(json index);
 
     /*
      * Renders the entire template, this is only used when creating a new
@@ -72,7 +60,6 @@ namespace Frate::Generators {
      */
     bool renderTemplate(Environment &env,
                         std::shared_ptr<Command::Project> pro);
-
     /*
      * Refreshes only specific files that are considerer dynamic files
      * @param env: the inja environment
@@ -95,8 +82,8 @@ namespace Frate::Generators {
      * @param project_path: the path of the project
      * @return true if the download was successful
      */
-    bool downloadTemplate(std::string git_url,
-                          std::shared_ptr<Command::Project> pro);
+    bool downloadTemplate(std::string template_name,
+                          std::shared_ptr<Command::Interface> inter);
 
     /*
      * Loads the template config file and merges into the project context

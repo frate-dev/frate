@@ -1,6 +1,6 @@
 #pragma once
-#include "Frate/System.hpp"
 #include "Frate/System/Capabilities.hpp"
+#include <Frate/Project/TemplateManager.hpp>
 #include <Frate/RemoteServer.hpp>
 #include <vector>
 
@@ -9,9 +9,10 @@ namespace Frate::Config {
   class ConfigManager {
   public:
     bool first_time_setup{false};
-    std::string build_server{""};
+    std::string build_server;
     std::vector<Command::RemoteServer> build_servers;
     System::Capabilities capabilities;
+    TemplateManager templates;
 
     bool load();
     bool save();

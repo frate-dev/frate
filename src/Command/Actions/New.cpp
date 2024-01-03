@@ -18,22 +18,17 @@ namespace Frate::Command::New {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->add_options()(
-        "command",
-        "Command to run",
+        "command", "Command to run",
         cxxopts::value<std::string>()->default_value("help"))(
-        "subcommand", "Subcommand to run", cxxopts::value<std::string>())(
-        "h,help",
-        "Print usage")("d,defaults",
-                       "Sets all the defaults",
-                       cxxopts::value<bool>()->default_value("false"))(
-        "name",
-        "Name of the project",
+        "subcommand", "Subcommand to run",
+        cxxopts::value<std::string>())("h,help", "Print usage")(
+        "d,defaults", "Sets all the defaults",
+        cxxopts::value<bool>()->default_value("false"))(
+        "name", "Name of the project",
         cxxopts::value<std::string>()->default_value("false"))(
-        "t,type",
-        "Type of the project",
+        "t,type", "Type of the project",
         cxxopts::value<std::string>()->default_value(ProjectType::EXECUTABLE))(
-        "l,language",
-        "Language of the project",
+        "l,language", "Language of the project",
         cxxopts::value<std::string>()->default_value("cpp"));
     return inter->parse();
   }
@@ -46,7 +41,7 @@ namespace Frate::Command::New {
   }
 
   bool createProjectWizard(std::shared_ptr<Interface> inter) {
-    if (!Generators::Project::create(inter->pro)) {
+    if (!Generators::Project::create(inter)) {
       return false;
     }
 #ifdef RELEASE
@@ -132,8 +127,8 @@ namespace Frate::Command::New {
             std::filesystem::remove_all(entry.path());
           }
         }
-
-      } else {
+      }
+      else {
 
         Utils::error << "Aborting: can't initialize a new project on top of a "
                         "existing one"
@@ -159,7 +154,8 @@ namespace Frate::Command::New {
       if (!createProjectWizard(inter)) {
         return false;
       }
-    } else {
+    }
+    else {
       Utils::info << "Creating project" << std::endl;
       Utils::info << "Creating frate-project.json" << std::endl;
       inter->pro->type = "";
