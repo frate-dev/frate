@@ -37,6 +37,7 @@ namespace Frate::System {
     std::vector<GitRef> pulls;
     std::vector<GitCommit> commits;
     bool recurse_submodules{false};
+    bool no_checkout{false};
     GitStatus status_result;
     std::string raw_result;
     std::string raw_error;
@@ -142,6 +143,12 @@ namespace Frate::System {
      * @return &GitProvider
      */
     GitProvider &setRecurseSubmodules(bool recurse);
+    /*
+     * Intended to be chained before other commands
+     * @param no_checkout adds --no-checkout to clone command
+     * @return &GitProvider
+     */
+    GitProvider &setNoCheckout(bool no_checkout);
 
     const std::vector<GitRef> &getTags() { return tags; };
 

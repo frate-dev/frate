@@ -50,6 +50,7 @@ project (
 set(CMAKE_CXX_STANDARD 20)
 set(-DUSE_CCACHE=YES -DCCACHE_OPTIONS="CCACHE_CPP2=true;CCACHE_SLOPPINESS=clang_index_store")
 
+
 find_program(SCCACHE_FOUND sccache)
 find_program(CCACHE_FOUND ccache)
 

@@ -7,7 +7,6 @@
 #include <Frate/Project/TemplateManager.hpp>
 #include <Frate/Utils/Macros.hpp>
 #include <filesystem>
-#include <variant>
 
 namespace Frate {
   using Project::InstalledTemplate;
@@ -189,6 +188,23 @@ namespace Frate {
         throw std::runtime_error("Failed to copy file: " + relative_path);
       }
     }
+
+    if (std::filesystem::exists(override_path)) {
+      Utils::verbose << "Copying override files from: " << override_path
+                     << " to " << tmp_gen_path << std::endl;
+
+      for (std::filesystem::directory_entry entry :
+           std::filesystem::recursive_directory_iterator(override_path)) {
+        std::string relative_path =
+            entry.path().string().substr(override_path.string().length() + 1);
+
+        std::filesystem::path new_file_path = tmp_gen_path / relative_path;
+
+        Utils::verbose << "Copying: " << relative_path + " to "
+                       << new_file_path.string() << std::endl;
+      }
+    }
+    exit(-1);
     return tmp_gen_path;
   }
 
@@ -219,16 +235,12 @@ namespace Frate {
                     << std::endl;
 
         try {
-          git.setRecurseSubmodules(true).clone(template_info.git).log();
 
-          if (!hash.empty()) {
-            git.checkout(hash);
-          }
+          git.setNoCheckout(true).clone(template_info.git).log();
 
         } catch (std::exception &e) {
-          Utils::error << "Failed to clone template: " << name << std::endl;
           Utils::error << e.what() << std::endl;
-          throw std::runtime_error("Failed to clone template");
+          throw std::runtime_error("Failed to clone template " + name);
         }
 
         if (git.getCommits().empty()) {
@@ -237,15 +249,23 @@ namespace Frate {
 
         System::GitCommit latest_commit = git.getCommits().front();
 
+        Utils::info << "Latest commit: " << latest_commit << std::endl;
+
         // appending on the hash to the path so we can have multiple versions
         new_template_path /= latest_commit.hash;
 
         template_info.hash = latest_commit.hash;
 
-        if (is_installed(name, latest_commit.hash)) {
+        if (!hash.empty()) {
+          template_info.hash = hash;
+        }
+
+        if (is_installed(name, template_info.hash)) {
           Utils::warning << "Template already installed" << std::endl;
           return template_info;
         }
+
+        git.checkout(hash);
 
         if (std::filesystem::exists(new_template_path)) {
           Utils::verbose << "Template already exists at: " << new_template_path
@@ -275,7 +295,11 @@ namespace Frate {
         InstalledTemplate installed_template;
         installed_template.name = name;
         installed_template.git = template_info.git;
-        installed_template.commits = git.getCommits();
+        // We only want to add the latest commit
+        installed_template.commits.push_back(latest_commit);
+
+        Utils::info << "Putting template in config: " << installed_template
+                    << std::endl;
 
         // Installing the template in the config
         installed.push_back(installed_template);
@@ -297,4 +321,5 @@ namespace Frate {
   void to_json(nlohmann::json &json_obj, const TemplateManager &templ) {
     TO_JSON_FIELD(templ, installed);
   }
+
 } // namespace Frate

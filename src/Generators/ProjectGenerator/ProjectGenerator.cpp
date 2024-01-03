@@ -47,8 +47,8 @@ namespace Frate::Generators::Project {
       Utils::info << "Creating project from template: " << templ.name
                   << std::endl;
     }
-    Utils::info << "Downloading template at: " << current_template.git
-                << std::endl;
+
+    std::filesystem::create_directories(inter->pro->path / "override");
 
     TemplateMeta installed_template =
         inter->config.templates.install(current_template.name);

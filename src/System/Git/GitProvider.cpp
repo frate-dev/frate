@@ -85,6 +85,10 @@ namespace Frate::System {
       flags += " --recurse-submodules ";
     }
 
+    if (this->no_checkout) {
+      flags += " --no-checkout ";
+    }
+
     if (!this->branch.empty()) {
       flags += " --branch " + this->branch;
     }
@@ -146,6 +150,11 @@ namespace Frate::System {
 
     this->raw_result = out.std_out;
     this->raw_error = out.std_err;
+
+    if (!this->raw_error.empty()) {
+      throw GitException(this->raw_error);
+    }
+
     std::vector<GitRef> refs = parse_refs(out.std_out);
     /*
      * sorts refs into their respective vectors
@@ -168,9 +177,6 @@ namespace Frate::System {
       }
     }
 
-    if (!this->raw_error.empty()) {
-      throw GitException(this->raw_error);
-    }
     return *this;
   }
 
@@ -342,6 +348,11 @@ namespace Frate::System {
 
   GitProvider &GitProvider::setRecurseSubmodules(bool recurse) {
     this->recurse_submodules = recurse;
+    return *this;
+  }
+
+  GitProvider &GitProvider::setNoCheckout(bool no_checkout) {
+    this->no_checkout = no_checkout;
     return *this;
   }
 

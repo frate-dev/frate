@@ -22,5 +22,7 @@ namespace Frate::Project {
     System::GitCommit &getLatestCommit();
     friend void to_json(nlohmann::json &j, const InstalledTemplate &t);
     friend void from_json(const nlohmann::json &j, InstalledTemplate &t);
+    friend std::ostream &operator<<(std::ostream &os_stream,
+                                    const InstalledTemplate &temp);
   };
 } // namespace Frate::Project
