@@ -263,8 +263,17 @@ namespace Frate {
           Utils::warning << "Template already installed" << std::endl;
           return template_info;
         }
-
-        git.checkout(hash);
+        try {
+          git.setRecurseSubmodules(true)
+              .checkout(hash)
+              .pull()
+              .setInit(true)
+              .setRemote(true)
+              .submoduleUpdate();
+        } catch (std::exception &e) {
+          Utils::error << e.what() << std::endl;
+          throw std::runtime_error("Failed to checkout template");
+        }
 
         if (std::filesystem::exists(new_template_path)) {
           Utils::verbose << "Template already exists at: " << new_template_path
@@ -305,7 +314,7 @@ namespace Frate {
 
         // Cleanup
 
-        std::filesystem::remove_all(tmp_path);
+        // std::filesystem::remove_all(tmp_path);
 
         return template_info;
       }

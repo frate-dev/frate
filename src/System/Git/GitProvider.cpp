@@ -70,8 +70,6 @@ namespace Frate::System {
     return *this;
   }
 
-  GitProvider &GitProvider::pull() { return *this; }
-
   GitProvider &GitProvider::clone(std::string url) {
     if (this->git_url.empty()) {
       if (url.empty()) {
@@ -113,6 +111,50 @@ namespace Frate::System {
   GitProvider &GitProvider::checkout(std::string branch) {
     Utils::CmdOutput out =
         Utils::hSystemWithOutput(work_dir_cmd() + "git checkout " + branch);
+    this->raw_result = out.std_out;
+    this->raw_error = out.std_err;
+
+    if (!this->raw_error.empty()) {
+      throw GitException(this->raw_error);
+    }
+
+    return *this;
+  }
+
+  GitProvider &GitProvider::pull() {
+
+    std::string flags;
+
+    if (this->recurse_submodules) {
+      flags += " --recurse-submodules ";
+    }
+
+    Utils::CmdOutput out = Utils::hSystemWithOutput(
+        work_dir_cmd() + "git pull " + flags + " origin " + this->branch);
+
+    this->raw_result = out.std_out;
+    this->raw_error = out.std_err;
+
+    if (!this->raw_error.empty()) {
+      throw GitException(this->raw_error);
+    }
+
+    return *this;
+  }
+
+  GitProvider &GitProvider::submoduleUpdate() {
+    std::string flags;
+
+    if (this->init) {
+      flags += " --init ";
+    }
+
+    if (this->remote) {
+      flags += " --remote ";
+    }
+
+    Utils::CmdOutput out = Utils::hSystemWithOutput(
+        work_dir_cmd() + "git submodule update" + flags);
     this->raw_result = out.std_out;
     this->raw_error = out.std_err;
 
@@ -348,6 +390,21 @@ namespace Frate::System {
 
   GitProvider &GitProvider::setRecurseSubmodules(bool recurse) {
     this->recurse_submodules = recurse;
+    return *this;
+  }
+
+  GitProvider &GitProvider::setVerbose(bool verbose) {
+    this->verbose = verbose;
+    return *this;
+  }
+
+  GitProvider &GitProvider::setRemote(bool remote) {
+    this->remote = remote;
+    return *this;
+  }
+
+  GitProvider &GitProvider::setInit(bool init) {
+    this->init = init;
     return *this;
   }
 
