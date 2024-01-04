@@ -204,7 +204,6 @@ namespace Frate {
                        << new_file_path.string() << std::endl;
       }
     }
-    exit(-1);
     return tmp_gen_path;
   }
 

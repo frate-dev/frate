@@ -100,6 +100,13 @@ namespace Frate::Generators::Project {
 
     LuaAPI::postScripts(lua, inter->pro);
 
+    Utils::info << "Copying rendered template to project" << std::endl;
+
+    std::filesystem::copy(
+        render_path, inter->pro->path,
+        std::filesystem::copy_options::recursive |
+            std::filesystem::copy_options::overwrite_existing);
+
     // This ia bit of a hack, because create doesn't actually load a project so
     // we have to emulate the loading process
     inter->pro->loaded_json = true;
@@ -138,6 +145,13 @@ namespace Frate::Generators::Project {
     }
 
     LuaAPI::postScripts(lua, inter->pro);
+
+    Utils::verbose << "Copying rendered template to project" << std::endl;
+
+    std::filesystem::copy(
+        render_path, inter->pro->path,
+        std::filesystem::copy_options::recursive |
+            std::filesystem::copy_options::overwrite_existing);
 
     std::filesystem::remove_all(render_path);
 
