@@ -27,7 +27,7 @@ IndentWidth: 2
 # # Penalty for breaking a function call after a call parameter
 
 
-
+BreakBeforeBraces: Custom
 
 BraceWrapping:
   AfterClass:      false
@@ -41,4 +41,3 @@ BraceWrapping:
   BeforeCatch:     false
   BeforeElse:      true
   IndentBraces:    false
-BreakBeforeBraces: Custom

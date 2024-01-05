@@ -1,18 +1,16 @@
 #pragma once
-#include <Frate/System/SSH.hpp>
-#include <Frate/System/Build.hpp>
 #include <Frate/Interface.hpp>
 #include <Frate/Project.hpp>
+#include <Frate/System/Build.hpp>
+#include <Frate/System/SSH.hpp>
 #include <string>
 
-namespace Frate::Command  {
-  using  Interface = Command::Interface;
+namespace Frate::Command {
+  using Interface = Command::Interface;
 
   class BuildCommand {
   public:
-    BuildCommand(std::shared_ptr<Interface> &inter)   {
-      this->inter = inter;
-    }
+    BuildCommand(std::shared_ptr<Interface> &inter) { this->inter = inter; }
 
     [[nodiscard]] std::string get_local_build_command() const {
 #ifdef DEBUG
@@ -24,7 +22,7 @@ namespace Frate::Command  {
 
     [[nodiscard]] std::string get_remote_build_command() const {
       std::string remote_dest_path = get_remote_destination_path();
-      SSHConnection ssh( inter->config.getBuildServer());
+      SSHConnection ssh(inter->config.getBuildServer());
       std::string build_command =
           "cd " + remote_dest_path + " && cmake . && make -j $(nproc)";
       return ssh.createRsyncCommand(inter->pro->path.string(),
@@ -45,4 +43,4 @@ namespace Frate::Command  {
              inter->pro->name;
     }
   };
-}
+} // namespace Frate::Command

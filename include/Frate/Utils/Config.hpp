@@ -5,7 +5,6 @@
 #include <vector>
 
 namespace Frate::Config {
-  // TODO: work in progress
   class ConfigManager {
   public:
     bool first_time_setup{false};

@@ -20,12 +20,6 @@ namespace Frate::Command::ModeCommands {
     return true;
   }
 
-  // TODO: Implement this
-  bool removeFlags(std::shared_ptr<Interface> inter, std::string mode) {
-    (void)inter, (void)mode;
-    return true;
-  }
-
   [[deprecated("Use addPackage in the package module")]] bool
   addPackages(std::shared_ptr<Interface> inter, std::string mode) {
     std::vector<std::string> dependencies =
@@ -39,7 +33,8 @@ namespace Frate::Command::ModeCommands {
             m.dependencies.emplace_back(new_package);
           }
         }
-      } else {
+      }
+      else {
         std::cout << "Package " << dep_str << " not found" << std::endl;
       }
     }

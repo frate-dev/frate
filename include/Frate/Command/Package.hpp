@@ -17,7 +17,6 @@ namespace Frate::Command::Packages {
 
   /*
    * Remove package command, removes a package from the project
-   * TODO: implement local package search
    */
   bool remove(std::shared_ptr<Interface> inter);
 
@@ -26,7 +25,6 @@ namespace Frate::Command::Packages {
 
   /*
    * Get package command, lists information about a pacakge
-   * TODO: implement search if package is not exact
    */
   bool get(std::shared_ptr<Interface> inter);
 

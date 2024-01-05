@@ -122,9 +122,7 @@ namespace Frate {
     InstalledTemplate installed_temp;
 
     try {
-
       installed_temp = find_template(name);
-
     } catch (std::exception &e) {
       Utils::warning << "Couldn't find template with name: " << name
                      << " and hash: " << hash << std::endl;
@@ -184,7 +182,6 @@ namespace Frate {
         std::filesystem::copy_file(entry.path(), new_file_path);
 
       } catch (std::exception &e) {
-
         throw std::runtime_error("Failed to copy file: " + relative_path);
       }
     }
@@ -258,19 +255,22 @@ namespace Frate {
         if (!hash.empty()) {
           template_info.hash = hash;
         }
-
         if (is_installed(name, template_info.hash)) {
           Utils::warning << "Template already installed" << std::endl;
           return template_info;
         }
+
         try {
+
           git.setRecurseSubmodules(true)
               .checkout(hash)
               .pull()
               .setInit(true)
               .setRemote(true)
               .submoduleUpdate();
+
         } catch (std::exception &e) {
+
           Utils::error << e.what() << std::endl;
           throw std::runtime_error("Failed to checkout template");
         }

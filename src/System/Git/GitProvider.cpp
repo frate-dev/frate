@@ -1,7 +1,8 @@
-#include "Frate/Interface.hpp"
 #include "Frate/Utils/General.hpp"
+#include "Frate/Utils/Logging.hpp"
 #include <Frate/System/GitException.hpp>
 #include <Frate/System/GitProvider.hpp>
+#include <regex>
 
 namespace Frate::System {
   GitProvider::GitProvider(std::filesystem::path path) {
