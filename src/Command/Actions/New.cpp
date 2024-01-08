@@ -1,7 +1,7 @@
 #include "Frate/Command.hpp"
 #include <Frate/Command/Actions/Help.hpp>
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/General.hpp>
 #include <Frate/Wizards.hpp>
 #include <cxxopts.hpp>

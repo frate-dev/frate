@@ -1,5 +1,5 @@
 #include <Frate/Command/RemoteServers.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/General.hpp>
 #include <fstream>
 
@@ -14,9 +14,11 @@ namespace Frate::Command::RemoteServers {
           << "Username"
           << "AuthMethod"
           << "\n";
-    table << inter->pro->build_server.name << inter->pro->build_server.ip
-          << inter->pro->build_server.port << inter->pro->build_server.username
-          << inter->pro->build_server.authMethod << "\n";
+    table << inter->config->getBuildServer().name
+          << inter->config->getBuildServer().ip
+          << inter->config->getBuildServer().port
+          << inter->config->getBuildServer().username
+          << inter->config->getBuildServer().authMethod << "\n";
     return true;
   }
 
@@ -37,29 +39,30 @@ namespace Frate::Command::RemoteServers {
     }
   }
 
-  RemoteServer get_current_build_server() {
-    std::string current_build_server = std::string(std::getenv("HOME")) +
-                                       "/.config/frate/" +
-                                       "current_build_server.json";
-    std::optional<json> data = parseJsonFile(current_build_server);
-    if (!data.has_value()) {
-      std::cerr << "No current build server found" << std::endl;
-      std::cerr << "Please run frate add server to add a server" << std::endl;
-      std::cerr << "Please run frate set server to set a default a server"
-                << std::endl;
-      return RemoteServer();
-    }
-    json current_build_server_json = data.value();
-    if (!current_build_server_json["name"].is_null()) {
-      return RemoteServer(
-          current_build_server_json["name"].get<std::string>(),
-          current_build_server_json["address"].get<std::string>(),
-          current_build_server_json["username"].get<std::string>(),
-          current_build_server_json["authMethod"].get<std::string>(),
-          current_build_server_json["password"].get<std::string>(),
-          current_build_server_json["key"].get<std::string>(),
-          current_build_server_json["port"].get<int>());
-    }
-    return RemoteServer();
-  }
+  // RemoteServer get_current_build_server() {
+  //   std::string current_build_server = std::string(std::getenv("HOME")) +
+  //                                      "/.config/frate/" +
+  //                                      "current_build_server.json";
+  //   std::optional<json> data = parseJsonFile(current_build_server);
+  //   if (!data.has_value()) {
+  //     std::cerr << "No current build server found" << std::endl;
+  //     std::cerr << "Please run frate add server to add a server" <<
+  //     std::endl; std::cerr << "Please run frate set server to set a default a
+  //     server"
+  //               << std::endl;
+  //     return RemoteServer();
+  //   }
+  //   json current_build_server_json = data.value();
+  //   if (!current_build_server_json["name"].is_null()) {
+  //     return RemoteServer(
+  //         current_build_server_json["name"].get<std::string>(),
+  //         current_build_server_json["address"].get<std::string>(),
+  //         current_build_server_json["username"].get<std::string>(),
+  //         current_build_server_json["authMethod"].get<std::string>(),
+  //         current_build_server_json["password"].get<std::string>(),
+  //         current_build_server_json["key"].get<std::string>(),
+  //         current_build_server_json["port"].get<int>());
+  //   }
+  //   return RemoteServer();
+  // }
 } // namespace Frate::Command::RemoteServers

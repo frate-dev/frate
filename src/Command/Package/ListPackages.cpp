@@ -1,7 +1,7 @@
 #include "Frate/Dependency.hpp"
 #include <Frate/Command/Package.hpp>
 #include <Frate/Interface.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 
 namespace Frate::Command::Packages {
   bool list(std::shared_ptr<Interface> inter) {

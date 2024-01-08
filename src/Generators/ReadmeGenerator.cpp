@@ -1,7 +1,7 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Constants.hpp>
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <fstream>
 #include <memory>
 
@@ -40,12 +40,11 @@ Find more information at the [Frate Github]({help_url})
 
 )";
 
-    Utils::replaceKey(
-        readme, "{project_name}", inter->pro->name + Constants::VERSION);
+    Utils::replaceKey(readme, "{project_name}",
+                      inter->pro->name + Constants::VERSION);
     Utils::replaceKey(readme, "{name}", Constants::NAME);
     Utils::replaceKey(readme, "{description}", inter->pro->description);
-    Utils::replaceKey(readme,
-                      "{author}",
+    Utils::replaceKey(readme, "{author}",
                       inter->pro->authors.size() > 0 ? inter->pro->authors[0]
                                                      : "");
 

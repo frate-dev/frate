@@ -1,10 +1,10 @@
 #include <Frate/LuaAPI.hpp>
-#include <Frate/Mode.hpp>
-#include <Frate/Project.hpp>
-#include <Frate/ProjectPrompt.hpp>
+#include <Frate/Project/Config.hpp>
+#include <Frate/Project/Mode.hpp>
+#include <Frate/Project/ProjectPrompt.hpp>
 
 namespace Frate::LuaAPI {
-  bool registerProject(sol::state &lua, std::shared_ptr<Command::Project> pro) {
+  bool registerProject(sol::state &lua, std::shared_ptr<Project::Config> pro) {
 
     lua.set("project", pro);
     // clang-format off
@@ -59,76 +59,76 @@ namespace Frate::LuaAPI {
         "target_link", 
         &Command::Dependency::target_link);
 
-    lua.new_usertype<Command::Mode>("Mode",
+    lua.new_usertype<Project::Mode>("Mode",
         "new",
         sol::no_constructor,
         "name",
-        &Command::Mode::name,
+        &Project::Mode::name,
         "flags",
-        &Command::Mode::flags,
+        &Project::Mode::flags,
         "dependencies",
-        &Command::Mode::dependencies);
+        &Project::Mode::dependencies);
 
-    lua.new_usertype<Command::Project>("Project"
+    lua.new_usertype<Project::Config>("Project"
         "new",
         sol::no_constructor,
         "name",
-        &Command::Project::name,
+        &Project::Config::name,
         "version",
-        &Command::Project::version,
+        &Project::Config::version,
         "description",
-        &Command::Project::description,
+        &Project::Config::description,
         "authors",
-        &Command::Project::authors,
+        &Project::Config::authors,
         "dependencies",
-        &Command::Project::dependencies,
+        &Project::Config::dependencies,
         "toolchains",
-        &Command::Project::toolchains,
+        &Project::Config::toolchains,
         "flags",
-        &Command::Project::flags,
+        &Project::Config::flags,
         "modes",
-        &Command::Project::modes,
+        &Project::Config::modes,
         "libs",
-        &Command::Project::libs,
+        &Project::Config::libs,
         "license",
-        &Command::Project::license,
+        &Project::Config::license,
         "git",
-        &Command::Project::git,
+        &Project::Config::git,
         "cmake_version",
-        &Command::Project::cmake_version,
+        &Project::Config::cmake_version,
         "build_command",
-        &Command::Project::build_command,
+        &Project::Config::build_command,
         "build_dir",
-        &Command::Project::build_dir,
+        &Project::Config::build_dir,
         "src_dir",
-        &Command::Project::src_dir,
+        &Project::Config::src_dir,
         "include_dir",
-        &Command::Project::include_dir,
+        &Project::Config::include_dir,
         "lang_version",
-        &Command::Project::lang_version,
+        &Project::Config::lang_version,
         "lang",
-        &Command::Project::lang,
+        &Project::Config::lang,
         "project_type",
-        &Command::Project::type,
+        &Project::Config::type,
         "keywords",
-        &Command::Project::keywords,
+        &Project::Config::keywords,
         "prompts",
-        &Command::Project::prompts);
+        &Project::Config::prompts);
 
-    lua.new_usertype<Command::ProjectPrompt>(
+    lua.new_usertype<Project::ProjectPrompt>(
         "ProjectPrompt",
         "value",
-        &Command::ProjectPrompt::value,
+        &Project::ProjectPrompt::value,
         "default",
-        &Command::ProjectPrompt::default_value,
+        &Project::ProjectPrompt::default_value,
         "getstr",
-        &Command::ProjectPrompt::get<std::string>,
+        &Project::ProjectPrompt::get<std::string>,
         "getint",
-        &Command::ProjectPrompt::get<int>,
+        &Project::ProjectPrompt::get<int>,
         "getbool",
-        &Command::ProjectPrompt::get<bool>,
+        &Project::ProjectPrompt::get<bool>,
         "getfloat",
-        &Command::ProjectPrompt::get<float>);
+        &Project::ProjectPrompt::get<float>);
 
     // clang-format on
     return true;

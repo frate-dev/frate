@@ -1,6 +1,6 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <fstream>
 #include <memory>
@@ -70,7 +70,8 @@ compile_commands.json
         return false;
       }
       write_gitignore(gitignore, gitignore_path);
-    } else {
+    }
+    else {
       write_gitignore(gitignore, gitignore_path);
     }
 

@@ -1,6 +1,6 @@
 #include <Frate/Command/Set.hpp>
 #include <Frate/Interface.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 
 namespace Frate::Command::Set {
 

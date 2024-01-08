@@ -2,7 +2,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-namespace Frate::Command {
+namespace Frate::Project {
   class TemplateMeta {
   public:
     TemplateMeta() = default;
@@ -16,4 +16,4 @@ namespace Frate::Command {
     friend std::ostream &operator<<(std::ostream &os_stream,
                                     const TemplateMeta &temp);
   };
-} // namespace Frate::Command
+} // namespace Frate::Project

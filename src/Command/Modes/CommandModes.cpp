@@ -1,7 +1,7 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Interface.hpp>
-#include <Frate/Mode.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
+#include <Frate/Project/Mode.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <sys/socket.h>
 
@@ -10,10 +10,10 @@ namespace Frate::Command {}
 namespace Frate::Command::Modes {
   using Generators::Project::Prompt;
 
-  bool getModeName(Mode &mode) {
-    Prompt *name = new Prompt("Name: ");
-    name->run();
-    auto [valid, mode_name] = name->get<std::string>();
+  bool getModeName(Project::Mode &mode) {
+    Prompt name("Name: ");
+    name.run();
+    auto [valid, mode_name] = name.get<std::string>();
     if (!valid) {
       Utils::error << "Failed to get mode name" << std::endl;
       return false;
@@ -26,8 +26,7 @@ namespace Frate::Command::Modes {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand", "args"});
     inter->options->add_options()(
-        "command",
-        "Command to run",
+        "command", "Command to run",
         cxxopts::value<std::string>()->default_value("help"))(
         "subcommand", "Subcommand to run", cxxopts::value<std::string>())(
         "args", "Subcommand to run", cxxopts::value<std::string>());
@@ -37,7 +36,7 @@ namespace Frate::Command::Modes {
   bool add(std::shared_ptr<Interface> interface) {
     options(interface);
     std::cout << "Adding mode" << std::endl;
-    Mode mode;
+    Project::Mode mode;
     mode.name = interface->args->operator[]("args").as<std::string>();
 
     interface->pro->modes.emplace_back(mode);
@@ -49,8 +48,9 @@ namespace Frate::Command::Modes {
     options(inter);
     std::string mode_name = inter->args->operator[]("args").as<std::string>();
     std::cout << "Removing mode: " << mode_name << std::endl;
-    std::erase_if(inter->pro->modes,
-                  [&mode_name](Mode &mode) { return mode.name == mode_name; });
+    std::erase_if(inter->pro->modes, [&mode_name](Project::Mode &mode) {
+      return mode.name == mode_name;
+    });
 
     return true;
   }

@@ -1,17 +1,15 @@
-
-#include "Frate/Interface.hpp"
 #include "Frate/LuaAPI.hpp"
 #include "Frate/System/Build.hpp"
 #include "Frate/Utils/General.hpp"
 #include "inja.hpp"
 #include <Frate/Constants.hpp>
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
-#include <Frate/TemplateMeta.hpp>
+#include <Frate/Project/Config.hpp>
+#include <Frate/Project/TemplateMeta.hpp>
 #include <filesystem>
 
 namespace Frate::Generators::Project {
-  using Command::TemplateMeta;
+  using Project::TemplateMeta;
 
   json getTemplateIndex() {
     std::cout << "Getting Template Index" << std::endl;
@@ -27,7 +25,7 @@ namespace Frate::Generators::Project {
     json index = getTemplateIndex();
     bool has_template = false;
 
-    Command::TemplateMeta current_template;
+    Project::TemplateMeta current_template;
 
     for (TemplateMeta templ : index) {
       if (inter->pro->type == templ.name) {
@@ -51,11 +49,11 @@ namespace Frate::Generators::Project {
     std::filesystem::create_directories(inter->pro->path / "override");
 
     TemplateMeta installed_template =
-        inter->config.templates.install(current_template.name);
+        inter->templates->install(current_template.name);
 
     const std::filesystem::path override_path = inter->pro->path / "override";
 
-    std::filesystem::path render_path = inter->config.templates.makeTemplate(
+    std::filesystem::path render_path = inter->templates->makeTemplate(
         override_path, installed_template.name, installed_template.hash);
 
     inter->pro->template_path = render_path;
@@ -123,7 +121,7 @@ namespace Frate::Generators::Project {
 
     const std::filesystem::path override_path = inter->pro->path / "override";
 
-    std::filesystem::path render_path = inter->config.templates.makeTemplate(
+    std::filesystem::path render_path = inter->templates->makeTemplate(
         override_path, inter->pro->current_template.name,
         inter->pro->current_template.hash);
 

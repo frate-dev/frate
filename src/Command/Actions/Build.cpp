@@ -1,7 +1,7 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/Build.hpp>
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 
 namespace Frate::Command::Build {
   bool options(std::shared_ptr<Interface> inter) {
@@ -41,8 +41,8 @@ namespace Frate::Command::Build {
     Utils::info << "Jobs: " << jobs << std::endl;
     // TODO: Handle different targets
 
-    for (Mode &m : inter->pro->modes) {
-      if (m.name == mode) {
+    for (Project::Mode &curr_mode : inter->pro->modes) {
+      if (curr_mode.name == mode) {
         std::string workdir_cmd = "cd " + inter->pro->path.string();
         Utils::replaceKey(inter->pro->build_command, "\n", ";");
         std::string full_build_cmd = inter->pro->build_command;

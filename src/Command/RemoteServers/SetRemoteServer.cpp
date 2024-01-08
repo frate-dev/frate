@@ -8,11 +8,11 @@ namespace Frate::Command::RemoteServers {
     // std::vector<RemoteServer> servers =  remoteServerData(inter);
     std::string name;
     getServerName(name);
-    for (auto &server : inter->config.build_servers) {
+    for (auto &server : inter->config->build_servers) {
       std::cout << "server.name:" << server.name << std::endl;
       std::cout << "name:" << name << std::endl;
       if (server.name == name) {
-        inter->config.build_server = server.name;
+        inter->config->build_server = server.name;
         return true;
       }
     }

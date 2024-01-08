@@ -1,6 +1,6 @@
 #include "Frate/Command/Library.hpp"
 #include "Frate/Generators.hpp"
-#include "Frate/Project.hpp"
+#include "Frate/Project/Config.hpp"
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/Remove.hpp>
 #include <Frate/Command/Author.hpp>

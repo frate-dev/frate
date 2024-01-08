@@ -1,35 +1,29 @@
 #pragma once
 #include "Frate/Dependency.hpp"
-#include "Frate/TemplateMeta.hpp"
-#include <Frate/Mode.hpp>
+#include "Frate/Project/Mode.hpp"
+#include "Frate/Project/ProjectPrompt.hpp"
+#include "Frate/Project/Template.hpp"
+#include "Frate/Project/TemplateMeta.hpp"
 #include <Frate/Package.hpp>
-#include <Frate/ProjectPrompt.hpp>
 #include <Frate/RemoteServer.hpp>
-#include <Frate/Template.hpp>
 #include <filesystem>
 #include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-namespace Frate::Command {
-  // class Template;
-  // class RemoteServer;
-  // class Mode;
-  // class ProjectPrompt;
-  using nlohmann::json;
+namespace Frate::Project {
 
-  class Project {
+  class Config {
 
   public:
-    Project();
+    Config() = default;
     bool loaded_json{false};
     std::filesystem::path template_path;
     TemplateMeta current_template;
     std::string name;
     std::string description;
     std::string type{""};
-    [[deprecated("use inter->config.build_server")]] RemoteServer build_server;
     std::filesystem::path path;
     std::string git{"null"};
     std::string homepage{"null"};
@@ -49,8 +43,8 @@ namespace Frate::Command {
     std::vector<std::string> keywords{};
     std::string src_dir{"src"};
     std::string include_dir{"include"};
-    std::vector<RemoteServer> build_servers{};
-    std::vector<Dependency> dependencies{};
+    std::vector<Command::RemoteServer> build_servers{};
+    std::vector<Command::Dependency> dependencies{};
     std::string build_dir{"build"};
     // Package testing_lib;
     std::string version{"0.0.1"};
@@ -78,8 +72,9 @@ namespace Frate::Command {
 
     std::unordered_map<std::string, ProjectPrompt> prompts{};
     std::unordered_map<std::string, json> global{};
-    friend void from_json(const json &json_obj, Project &pro);
-    friend void to_json(json &json_obj, const Project &pro);
+    friend void from_json(const json &json_obj, Config &pro);
+    friend void to_json(json &json_obj, const Config &pro);
     void fromTemplate(Template &_template);
   };
-} // namespace Frate::Command
+
+} // namespace Frate::Project

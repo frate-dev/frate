@@ -17,9 +17,11 @@ namespace Frate::Command::RemoteServers {
     getServerAuthMethod(authMethod);
     if (authMethod == "password") {
       getServerPassword(password);
-    } else if (authMethod == "pem") {
+    }
+    else if (authMethod == "pem") {
       getServerKey(key);
-    } else {
+    }
+    else {
       std::cout << "Invalid authentication method" << std::endl;
       return false;
     }
@@ -27,7 +29,7 @@ namespace Frate::Command::RemoteServers {
     RemoteServer build_server =
         RemoteServer(name, address, username, authMethod, password, key, port);
 
-    inter->config.build_servers.emplace_back(build_server);
+    inter->config->build_servers.emplace_back(build_server);
 
     return true;
   }

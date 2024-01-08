@@ -1,18 +1,16 @@
 #pragma once
 #include "Frate/Dependency.hpp"
-#include <Frate/Mode.hpp>
-#include <Frate/ProjectPrompt.hpp>
+
+#include "Frate/Project/Mode.hpp"
+#include "Frate/Project/ProjectPrompt.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-namespace Frate::Command {
-  // class Mode;
-  // class Package;
-  // class ProjectPrompt;
-  class Project;
+namespace Frate::Project {
   using nlohmann::json;
+  class Config;
 
   class Template {
   public:
@@ -23,7 +21,7 @@ namespace Frate::Command {
     std::string src_dir{"src"};
     std::string include_dir{"include"};
     std::string build_dir{"build"};
-    std::vector<Dependency> dependencies{};
+    std::vector<Command::Dependency> dependencies{};
     std::string default_mode{"Release"};
     std::vector<Mode> modes{};
     std::vector<std::string> flags{};
@@ -38,7 +36,6 @@ namespace Frate::Command {
     std::unordered_map<std::string, json> global{};
     friend void from_json(const json &json_obj, Template &temp);
     friend void to_json(json &json_obj, const Template &temp);
-    friend void to_project(Project &pro, const Template &temp);
+    friend void to_project(Config &pro, const Template &temp);
   };
-
-} // namespace Frate::Command
+} // namespace Frate::Project

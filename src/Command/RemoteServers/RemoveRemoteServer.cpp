@@ -8,7 +8,7 @@ namespace Frate::Command::RemoteServers {
     // std::vector<RemoteServer> servers =  remoteServerData(inter);
     std::string name;
     getServerName(name);
-    std::erase_if(inter->config.build_servers, [&name](RemoteServer &server) {
+    std::erase_if(inter->config->build_servers, [&name](RemoteServer &server) {
       return server.name == name;
     });
     return true;

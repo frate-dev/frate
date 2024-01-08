@@ -1,11 +1,13 @@
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
-#include <Frate/Template.hpp>
+#include <Frate/Project/Config.hpp>
+#include <Frate/Project/Template.hpp>
 #include <fstream>
 #include <inja.hpp>
 
 namespace Frate::Generators::Project {
-  bool loadTemplateConfig(std::shared_ptr<Command::Project> pro) {
+  using ::Frate::Project::Template;
+
+  bool loadTemplateConfig(std::shared_ptr<Project::Config> pro) {
 
     std::ifstream template_config_file;
 
@@ -22,7 +24,7 @@ namespace Frate::Generators::Project {
 
     json j = json::parse(template_config_file);
 
-    Command::Template template_config = j;
+    Template template_config = j;
     pro->fromTemplate(template_config);
     return true;
   }

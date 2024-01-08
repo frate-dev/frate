@@ -1,7 +1,7 @@
 #include "Frate/Utils/General.hpp"
 #include "Frate/Utils/Logging.hpp"
 #include <Frate/Command/Actions/Clean.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 
 namespace Frate::Command::Clean {
   bool options(std::shared_ptr<Interface> inter) {
@@ -20,7 +20,7 @@ namespace Frate::Command::Clean {
 
   using namespace std::filesystem;
 
-  bool cleanCache(std::shared_ptr<Project> pro) {
+  bool cleanCache(std::shared_ptr<Project::Config> pro) {
     const std::vector<path> files_to_delete = {
         pro->path / "CMakeCache.txt", pro->path / "install_manifest.txt",
         pro->path / "cmake_install.cmake", pro->path / "Makefile"};

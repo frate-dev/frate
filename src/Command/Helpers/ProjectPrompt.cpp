@@ -1,8 +1,8 @@
-#include <Frate/ProjectPrompt.hpp>
+#include <Frate/Project/ProjectPrompt.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>
 
-namespace Frate::Command {
+namespace Frate::Project {
 
   void to_json(json &json_obj, const ProjectPrompt &project_prompt) {
     TO_JSON_FIELD(project_prompt, text);
@@ -99,4 +99,4 @@ namespace Frate::Command {
 
     return std::stoi(this->value);
   }
-} // namespace Frate::Command
+} // namespace Frate::Project

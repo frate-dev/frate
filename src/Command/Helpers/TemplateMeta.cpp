@@ -1,8 +1,8 @@
-#include <Frate/TemplateMeta.hpp>
+#include <Frate/Project/TemplateMeta.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>
 
-namespace Frate::Command {
+namespace Frate::Project {
 
   TemplateMeta::TemplateMeta(const nlohmann::json &json_obj) {
     from_json(json_obj, *this);
@@ -30,4 +30,4 @@ namespace Frate::Command {
     return os_stream;
   }
 
-} // namespace Frate::Command
+} // namespace Frate::Project

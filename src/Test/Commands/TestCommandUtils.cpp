@@ -1,6 +1,6 @@
 #ifdef TEST
 #include <Frate/Interface.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Test/Test.hpp>
 #include <Frate/Utils/General.hpp>
 #include <filesystem>
@@ -50,12 +50,14 @@ namespace Tests::Command {
     for (char ch : input) {
       if (ch == '\'') {
         inQuotes = !inQuotes;
-      } else if (ch == ' ' && !inQuotes) {
+      }
+      else if (ch == ' ' && !inQuotes) {
         if (!arg.empty()) {
           args.emplace_back(arg);
           arg.clear();
         }
-      } else {
+      }
+      else {
         arg += ch;
       }
     }

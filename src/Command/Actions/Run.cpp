@@ -1,6 +1,6 @@
 #include <Frate/Command/Actions/Run.hpp>
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/General.hpp>
 
 namespace Frate::Command::Run {

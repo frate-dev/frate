@@ -1,5 +1,5 @@
 #include <Frate/LuaAPI.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/General.hpp>
 #include <filesystem>
 #include <fstream>
@@ -12,7 +12,7 @@
 namespace Frate::Generators::CMakeList {
   using nlohmann::json;
 
-  bool createCMakeLists(std::shared_ptr<Command::Project> pro) {
+  bool createCMakeLists(std::shared_ptr<Project::Config> pro) {
     std::cout << "Creating CMakeLists.txt" << std::endl;
 
 #ifdef DEBUG
@@ -43,8 +43,8 @@ namespace Frate::Generators::CMakeList {
       return false;
     }
 
-    if (!LuaAPI::registerProjectScripts(
-            env, lua, pro->path / "templates/scripts", pro)) {
+    if (!LuaAPI::registerProjectScripts(env, lua,
+                                        pro->path / "templates/scripts", pro)) {
       Utils::debug("Error while registering project scripts");
       return false;
     }

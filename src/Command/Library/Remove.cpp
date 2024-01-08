@@ -1,5 +1,5 @@
 #include <Frate/Command/Library.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 
 namespace Frate::Command::Library {
   bool remove(std::shared_ptr<Interface> inter) {

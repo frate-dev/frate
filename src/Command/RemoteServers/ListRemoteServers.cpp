@@ -14,7 +14,7 @@ namespace Frate::Command::RemoteServers {
           << "Username"
           << "AuthMethod"
           << "\n";
-    for (auto &server : inter->config.build_servers) {
+    for (auto &server : inter->config->build_servers) {
       table << server.name << server.ip << server.port << server.username
             << server.authMethod << "\n";
     }

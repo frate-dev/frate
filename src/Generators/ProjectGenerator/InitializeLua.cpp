@@ -1,4 +1,3 @@
-#include "Frate/Project.hpp"
 #include <Frate/Generators.hpp>
 #include <Frate/LuaAPI.hpp>
 #include <inja.hpp>
@@ -7,7 +6,7 @@ namespace Frate::Generators::Project {
   using inja::Environment;
 
   bool initializeLua(Environment &env, sol::state &lua,
-                     std::shared_ptr<Command::Project> pro) {
+                     std::shared_ptr<Project::Config> pro) {
     LuaAPI::registerAPI(lua);
     Utils::info << "Registering project" << std::endl;
     if (!LuaAPI::registerProject(lua, pro)) {

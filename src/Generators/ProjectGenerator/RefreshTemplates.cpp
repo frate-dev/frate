@@ -1,13 +1,11 @@
-#include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <inja.hpp>
 
 namespace Frate::Generators::Project {
   using inja::Environment;
 
-  bool refreshTemplate(Environment &env,
-                       std::shared_ptr<Command::Project> pro) {
+  bool refreshTemplate(Environment &env, std::shared_ptr<Project::Config> pro) {
     Utils::info << "Refreshing template" << std::endl;
 
     const std::string render_suffix = ".inja";

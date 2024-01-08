@@ -1,14 +1,15 @@
 #pragma once
 #include <Frate/Interface.hpp>
-#include <Frate/Project.hpp>
-#include <Frate/TemplateMeta.hpp>
+#include <Frate/Project/Config.hpp>
+#include <Frate/Project/TemplateMeta.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <inja.hpp>
 #include <vector>
 
 namespace Frate::Generators {
   namespace Project {
-    using Command::TemplateMeta;
+    using ::Frate::Project::Config;
+    using ::Frate::Project::TemplateMeta;
     using inja::Environment;
     using nlohmann::json;
     using std::filesystem::path;
@@ -58,8 +59,7 @@ namespace Frate::Generators {
      * @param pro: the project context
      * @return true if the render was successful
      */
-    bool renderTemplate(Environment &env,
-                        std::shared_ptr<Command::Project> pro);
+    bool renderTemplate(Environment &env, std::shared_ptr<Project::Config> pro);
     /*
      * Refreshes only specific files that are considerer dynamic files
      * @param env: the inja environment
@@ -67,14 +67,14 @@ namespace Frate::Generators {
      * @return true if the refresh was successful
      */
     bool refreshTemplate(Environment &env,
-                         std::shared_ptr<Command::Project> pro);
+                         std::shared_ptr<Project::Config> pro);
 
     /*
      * Runs user prompts from the template
      * @param pro: the project context
      * @return true if the prompts were successful
      */
-    bool runTemplatePrompts(std::shared_ptr<Command::Project> pro);
+    bool runTemplatePrompts(std::shared_ptr<Project::Config> pro);
 
     /*
      * Downloads the templates from from the github repo
@@ -90,7 +90,7 @@ namespace Frate::Generators {
      * @param pro: the project context
      * @return true if the load was successful
      */
-    bool loadTemplateConfig(std::shared_ptr<Command::Project> pro);
+    bool loadTemplateConfig(std::shared_ptr<Project::Config> pro);
 
     /*
      * Initializes the lua environment after by loading user scripts into the
@@ -101,7 +101,7 @@ namespace Frate::Generators {
      * @return true if the initialization was successful
      */
     bool initializeLua(Environment &env, sol::state &lua,
-                       std::shared_ptr<Command::Project> pro);
+                       std::shared_ptr<Project::Config> pro);
   } // namespace Project
 
   namespace GitIgnore {
@@ -155,8 +155,8 @@ namespace Frate::Generators {
      * cmake file
      */
 
-    bool create(std::shared_ptr<Command::Project> pro);
-    bool createCMakeLists(std::shared_ptr<Command::Project> pro);
+    bool create(std::shared_ptr<Project::Config> pro);
+    bool createCMakeLists(std::shared_ptr<Project::Config> pro);
   } // namespace CMakeList
 
   namespace ConfigJson {
@@ -176,7 +176,7 @@ namespace Frate::Generators {
     } Config;
 
     [[deprecated("Use project->save() instead")]] bool
-    writeConfig(std::shared_ptr<Command::Project> &ctx);
+    writeConfig(std::shared_ptr<Project::Config> &ctx);
   } // namespace ConfigJson
 
 } // namespace Frate::Generators

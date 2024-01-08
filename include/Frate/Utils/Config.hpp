@@ -11,7 +11,7 @@ namespace Frate::Config {
     std::string build_server;
     std::vector<Command::RemoteServer> build_servers;
     System::Capabilities capabilities;
-    TemplateManager templates;
+    //  TemplateManager templates;
 
     bool load();
     bool save();

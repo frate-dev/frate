@@ -2,15 +2,15 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Interface.hpp>
-#include <Frate/Mode.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
+#include <Frate/Project/Mode.hpp>
 
 namespace Frate::Command::ModeCommands {
   bool addFlags(std::shared_ptr<Interface> inter, std::string mode) {
     // std::vector<std::string> flags =
     // inter->args->operator[]("args").as<std::vector<std::string>>();
     std::vector<std::string> flags = inter->args->unmatched();
-    for (Mode m : inter->pro->modes) {
+    for (Project::Mode m : inter->pro->modes) {
       if (m.name == mode) {
         for (std::string f : flags) {
           m.flags.emplace_back(f);
@@ -28,7 +28,7 @@ namespace Frate::Command::ModeCommands {
       auto [found, new_package] = Packages::searchWithPrompt(dep_str, false);
       if (found) {
         // Push the found package to the dependencies
-        for (Mode &m : inter->pro->modes) {
+        for (Project::Mode &m : inter->pro->modes) {
           if (m.name == mode) {
             m.dependencies.emplace_back(new_package);
           }
@@ -46,7 +46,7 @@ namespace Frate::Command::ModeCommands {
     std::vector<std::string> dependencies =
         inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep : dependencies) {
-      for (Mode &m : inter->pro->modes) {
+      for (Project::Mode &m : inter->pro->modes) {
         if (m.name == mode) {
           std::erase_if(m.dependencies,
                         [&dep](auto &d) { return d.name == dep; });

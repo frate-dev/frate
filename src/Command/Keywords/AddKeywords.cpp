@@ -1,5 +1,5 @@
 #include <Frate/Command/Keywords.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 
 namespace Frate::Command::Keywords {
   bool add(std::shared_ptr<Interface> inter) {

@@ -29,6 +29,93 @@ namespace Frate::System {
     return os_stream;
   }
 
+  std::string GitProvider::work_dir_cmd() {
+    return "cd '" + this->working_dir.string() + "' ;";
+  }
+
+  GitRef GitProvider::parse_ref(std::string &line) {
+    if (line.empty()) {
+      return {};
+    }
+    GitRef ref;
+    std::vector<std::string> parts = Utils::split(line, ' ');
+    for (auto &part : parts) {
+      // Parts are speperate by multiple spaces so we need to remove the empty
+      if (part.empty()) {
+        continue;
+      }
+      // if the hash is empty then we know we are on the first part
+      if (ref.hash.empty()) {
+        ref.hash = part;
+      }
+      // if the name is empty then we know we are on the second part
+      else if (ref.name.empty()) {
+        ref.name = part;
+      }
+    }
+    ref.hash = parts[0];
+    ref.name = parts[1];
+    return ref;
+  }
+
+  std::vector<GitRef> GitProvider::parse_refs(std::string &lines) {
+    if (lines.empty()) {
+      return {};
+    }
+    std::vector<GitRef> refs;
+    std::vector<std::string> lines_vec = Utils::split(lines, '\n');
+    bool first_line = true;
+    for (auto &line : lines_vec) {
+      // Skip the first line because it's not a ref
+      if (first_line) {
+        first_line = false;
+        continue;
+      }
+      refs.push_back(parse_ref(line));
+    }
+    return refs;
+  }
+
+  GitCommit GitProvider::parse_commit(std::string &line) {
+    if (line.empty()) {
+      return {};
+    }
+    // Pattern for {hash} {author} {date} {message}
+    std::regex pattern(R"(\{([^\}]+)\})");
+    std::sregex_iterator next(line.begin(), line.end(), pattern);
+    std::sregex_iterator end;
+    GitCommit commit;
+    std::vector<std::string> values;
+
+    while (next != end) {
+      values.push_back(next->str());
+      values.back().erase(0, 1);
+      values.back().pop_back();
+      next++;
+    }
+    if (values.size() != 4) {
+      throw GitException("Failed to parse commit");
+    }
+    commit.hash = values[0];
+    commit.author = values[1];
+    commit.date = values[2];
+    commit.message = values[3];
+
+    return commit;
+  }
+
+  std::vector<GitCommit> GitProvider::parse_commits(std::string &lines) {
+    if (lines.empty()) {
+      return {};
+    }
+    std::vector<GitCommit> commits;
+    std::vector<std::string> lines_vec = Utils::split(lines, '\n');
+    for (auto &line : lines_vec) {
+      commits.push_back(parse_commit(line));
+    }
+    return commits;
+  }
+
   GitProvider &GitProvider::add(std::string pattern) {
     Utils::CmdOutput out =
         Utils::hSystemWithOutput(work_dir_cmd() + "git add " + pattern);
@@ -291,97 +378,6 @@ namespace Frate::System {
     }
 
     return *this;
-  }
-
-  /*
-   * Private methods
-   */
-
-  std::string GitProvider::work_dir_cmd() {
-    return "cd '" + this->working_dir.string() + "' ;";
-  }
-
-  GitRef GitProvider::parse_ref(std::string &line) {
-    if (line.empty()) {
-      return {};
-    }
-    GitRef ref;
-    std::vector<std::string> parts = Utils::split(line, ' ');
-    for (auto &part : parts) {
-      // Parts are speperate by multiple spaces so we need to remove the empty
-      if (part.empty()) {
-        continue;
-      }
-      // if the hash is empty then we know we are on the first part
-      if (ref.hash.empty()) {
-        ref.hash = part;
-      }
-      // if the name is empty then we know we are on the second part
-      else if (ref.name.empty()) {
-        ref.name = part;
-      }
-    }
-    ref.hash = parts[0];
-    ref.name = parts[1];
-    return ref;
-  }
-
-  std::vector<GitRef> GitProvider::parse_refs(std::string &lines) {
-    if (lines.empty()) {
-      return {};
-    }
-    std::vector<GitRef> refs;
-    std::vector<std::string> lines_vec = Utils::split(lines, '\n');
-    bool first_line = true;
-    for (auto &line : lines_vec) {
-      // Skip the first line because it's not a ref
-      if (first_line) {
-        first_line = false;
-        continue;
-      }
-      refs.push_back(parse_ref(line));
-    }
-    return refs;
-  }
-
-  GitCommit GitProvider::parse_commit(std::string &line) {
-    if (line.empty()) {
-      return {};
-    }
-    // Pattern for {hash} {author} {date} {message}
-    std::regex pattern(R"(\{([^\}]+)\})");
-    std::sregex_iterator next(line.begin(), line.end(), pattern);
-    std::sregex_iterator end;
-    GitCommit commit;
-    std::vector<std::string> values;
-
-    while (next != end) {
-      values.push_back(next->str());
-      values.back().erase(0, 1);
-      values.back().pop_back();
-      next++;
-    }
-    if (values.size() != 4) {
-      throw GitException("Failed to parse commit");
-    }
-    commit.hash = values[0];
-    commit.author = values[1];
-    commit.date = values[2];
-    commit.message = values[3];
-
-    return commit;
-  }
-
-  std::vector<GitCommit> GitProvider::parse_commits(std::string &lines) {
-    if (lines.empty()) {
-      return {};
-    }
-    std::vector<GitCommit> commits;
-    std::vector<std::string> lines_vec = Utils::split(lines, '\n');
-    for (auto &line : lines_vec) {
-      commits.push_back(parse_commit(line));
-    }
-    return commits;
   }
 
   GitProvider &GitProvider::setGitUrl(std::string url) {

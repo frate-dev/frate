@@ -1,10 +1,10 @@
-#include "Frate/Template.hpp"
+#include "Frate/Project/Template.hpp"
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
-#include <Frate/TemplateMeta.hpp>
+#include <Frate/Project/Config.hpp>
+#include <Frate/Project/TemplateMeta.hpp>
 
 namespace Frate::Generators::Project {
-  using Command::TemplateMeta;
+  using Project::TemplateMeta;
 
   std::pair<bool, TemplateMeta> promptForTemplateName(json index) {
     Prompt template_name_prompt("Project type: ");
@@ -38,7 +38,7 @@ namespace Frate::Generators::Project {
     return {true, templ};
   }
 
-  bool runTemplatePrompts(std::shared_ptr<Command::Project> pro) {
+  bool runTemplatePrompts(std::shared_ptr<Project::Config> pro) {
     for (auto [key, tmpl_prompt] : pro->prompts) {
       Prompt prompt(tmpl_prompt.text, tmpl_prompt.default_value);
       if (tmpl_prompt.type == "bool") {

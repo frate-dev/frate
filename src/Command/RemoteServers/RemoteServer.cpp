@@ -1,8 +1,7 @@
 #include <Frate/Command/RemoteServers.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <Frate/Utils/General.hpp>
-#include <fstream>
 
 namespace Frate::Command::RemoteServers {
   using namespace Utils::CLI;
@@ -11,11 +10,10 @@ namespace Frate::Command::RemoteServers {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->add_options()(
-        "command",
-        "Command to run",
+        "command", "Command to run",
         cxxopts::value<std::string>()->default_value("help"))(
-        "subcommand", "Subcommand to run", cxxopts::value<std::string>())(
-        "h,help", "Print usage");
+        "subcommand", "Subcommand to run",
+        cxxopts::value<std::string>())("h,help", "Print usage");
     return inter->parse();
   }
 
@@ -67,7 +65,8 @@ namespace Frate::Command::RemoteServers {
 
   bool getServerUsername(std::string &username) {
     Prompt username_prompt("Enter the username of the server: ");
-    username_prompt.maxLength(32).run();
+    const int max_username_length = 32;
+    username_prompt.maxLength(max_username_length).run();
     auto [valid, _username] = username_prompt.get<std::string>();
     if (!valid) {
       return false;
@@ -76,15 +75,15 @@ namespace Frate::Command::RemoteServers {
     return true;
   }
 
-  bool getServerAuthMethod(std::string &authMethod) {
-    Prompt authMethod_promp(
+  bool getServerAuthMethod(std::string &auth_method) {
+    Prompt auth_method_promp(
         "Enter the authentication method of the server[pem/password]: ");
-    authMethod_promp.run();
-    auto [valid, _authMethod] = authMethod_promp.get<std::string>();
+    auth_method_promp.run();
+    auto [valid, _authMethod] = auth_method_promp.get<std::string>();
     if (!valid) {
       return false;
     }
-    authMethod = _authMethod;
+    auth_method = _authMethod;
     return true;
   }
 

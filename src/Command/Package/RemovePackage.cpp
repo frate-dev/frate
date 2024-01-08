@@ -1,5 +1,4 @@
-#include "Frate/Mode.hpp"
-#include "Frate/Project.hpp"
+#include "Frate/Project/Mode.hpp"
 #include <Frate/Command/CommandMode.hpp>
 #include <Frate/Command/Package.hpp>
 #include <Frate/Generators.hpp>
@@ -11,7 +10,7 @@ namespace Frate::Command::Packages {
     std::vector<std::string> dependencies =
         inter->args->operator[]("args").as<std::vector<std::string>>();
     for (std::string dep : dependencies) {
-      for (Mode &m : inter->pro->modes) {
+      for (Project::Mode &m : inter->pro->modes) {
         if (m.name == mode) {
           std::erase_if(m.dependencies,
                         [&dep](auto &d) { return d.name == dep; });

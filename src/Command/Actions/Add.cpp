@@ -7,7 +7,7 @@
 #include <Frate/Command/Package.hpp>
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Command/Toolchains.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/General.hpp>
 
 namespace Frate::Command::Add {
@@ -15,11 +15,10 @@ namespace Frate::Command::Add {
     inter->InitHeader();
     inter->options->parse_positional({"command", "subcommand"});
     inter->options->allow_unrecognised_options().add_options()(
-        "command",
-        "Command to run",
+        "command", "Command to run",
         cxxopts::value<std::string>()->default_value("help"))(
-        "subcommand", "Subcommand to run", cxxopts::value<std::string>())(
-        "h,help", "Print usage");
+        "subcommand", "Subcommand to run",
+        cxxopts::value<std::string>())("h,help", "Print usage");
     inter->options->help();
     return inter->parse();
   }
@@ -31,8 +30,8 @@ namespace Frate::Command::Add {
     if (inter->args->count("subcommand") > 0) {
 
       subcommand = inter->args->operator[]("subcommand").as<std::string>();
-
-    } else {
+    }
+    else {
       Utils::error << "No subcommand given" << std::endl;
 
       inter->getHelpString("add", add_handlers);
@@ -51,12 +50,8 @@ namespace Frate::Command::Add {
     return {
         Handler{
             .aliases = {"packages", "p", "package"},
-            .flags = {"-l,--latest",
-                      "-m,--mode",
-                      "-t,--target",
-                      "-pv,--package-version",
-                      "-g,--git",
-                      "-t,--target-link"},
+            .flags = {"-l,--latest", "-m,--mode", "-t,--target",
+                      "-pv,--package-version", "-g,--git", "-t,--target-link"},
             .positional_args = {"package_name"},
             .docs = "Add a package to the project",
             .callback = &Packages::add,

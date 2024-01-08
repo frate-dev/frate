@@ -1,7 +1,7 @@
 #include "Frate/System/Build.hpp"
 #include <Frate/Generators.hpp>
 #include <Frate/Interface.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/System/Watcher.hpp>
 #include <Frate/Utils/General.hpp>
 #include <uv.h>

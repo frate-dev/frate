@@ -2,7 +2,7 @@
 #include "Frate/Dependency.hpp"
 #include <Frate/Command/CommandMode.hpp>
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/CLI.hpp>
 #include <Frate/Utils/General.hpp>
 #include <cxxopts.hpp>
@@ -13,7 +13,7 @@ namespace Frate::Command::Packages {
   bool addPackageToMode(std::shared_ptr<Interface> inter, Dependency package,
                         std::string selected_mode) {
     Utils::info << "Adding package to mode " << selected_mode << std::endl;
-    for (Mode &mode : inter->pro->modes) {
+    for (Project::Mode &mode : inter->pro->modes) {
       if (selected_mode == mode.name) {
         mode.dependencies.emplace_back(package);
         return true;

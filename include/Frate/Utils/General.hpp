@@ -137,11 +137,11 @@ namespace Frate::Utils {
    */
   int hSystem(std::string command);
 
-  typedef struct CmdOutput_s {
+  using CmdOutput = struct CmdOutputS {
     std::string std_out;
     std::string std_err;
     int return_code;
-  } CmdOutput;
+  };
 
   /*
    * Runs the command and returns all the output of the command using a
@@ -152,10 +152,9 @@ namespace Frate::Utils {
   CmdOutput hSystemWithOutput(std::string cmd);
 
   struct TableFormat {
-    int width;
-    char fill;
-
-    TableFormat() : width(14), fill(' ') {}
+    int width{};
+    char fill{};
+    TableFormat() = default;
 
     template <typename T> TableFormat &operator<<(const T &data) {
       std::cout << std::setw(width) << data << std::setfill(fill);
@@ -166,7 +165,7 @@ namespace Frate::Utils {
   /*
    * F*CKING MAGIC
    */
-  int levensteinDistance(std::string aStr, std::string bStr);
+  int levensteinDistance(std::string a_str, std::string b_str);
 
   /*
    * This is a function get a score between two strings, essentialy how similar

@@ -15,7 +15,7 @@ namespace Frate::Command::RemoteServers {
   //  inter);
   bool getServerName(std::string &name);
   bool getServerUsername(std::string &username);
-  bool getServerAuthMethod(std::string &authMethod);
+  bool getServerAuthMethod(std::string &auth_method);
   bool getServerAddress(std::string &address);
   bool getServerPort(int &port);
   bool getServerPassword(std::string &password);

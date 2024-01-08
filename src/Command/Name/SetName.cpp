@@ -1,6 +1,6 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Command/Name.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 
 namespace Frate::Command::Name {
   bool set(std::shared_ptr<Interface> inter) {

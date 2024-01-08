@@ -1,19 +1,18 @@
 #include "Frate/Dependency.hpp"
-#include <Frate/Mode.hpp>
+#include <Frate/Project/Mode.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>
 
-namespace Frate::Command {
+namespace Frate::Project {
 
-  Mode::Mode(std::string name,
-             std::vector<std::string> flags,
-             std::vector<Dependency> dependencies) {
+  Mode::Mode(std::string name, std::vector<std::string> flags,
+             std::vector<Command::Dependency> dependencies) {
     this->name = name;
     this->flags = flags;
     this->dependencies = dependencies;
   }
 
-  void from_json(const json &json_obj, Command::Mode &mode) {
+  void from_json(const json &json_obj, Mode &mode) {
     FROM_JSON_FIELD(mode, name);
     FROM_JSON_FIELD(mode, flags);
     FROM_JSON_FIELD(mode, dependencies);
@@ -24,7 +23,7 @@ namespace Frate::Command {
     // }
   }
 
-  void to_json(json &json_obj, const Command::Mode &mode) {
+  void to_json(json &json_obj, const Mode &mode) {
     TO_JSON_FIELD(mode, name);
     TO_JSON_FIELD(mode, flags);
     TO_JSON_FIELD(mode, dependencies);
@@ -34,4 +33,4 @@ namespace Frate::Command {
     //   {"dependencies", mode.dependencies}
     // };
   }
-} // namespace Frate::Command
+} // namespace Frate::Project

@@ -1,5 +1,6 @@
 #pragma once
 #include "Frate/Utils/Logging.hpp"
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/Config.hpp>
 #include <cxxopts.hpp>
 #include <memory>
@@ -7,7 +8,6 @@
 #include <vector>
 
 namespace Frate::Command {
-  class Project;
   class Interface;
   using Handler = struct Handler_s;
   /* =============================
@@ -59,12 +59,13 @@ namespace Frate::Command {
   class Interface : public std::enable_shared_from_this<Interface> {
   public:
     Interface(int argc, char **argv);
-    std::shared_ptr<Project> pro;
+    std::shared_ptr<Project::Config> pro;
     bool project_present{false};
     std::shared_ptr<cxxopts::Options> options;
     std::shared_ptr<cxxopts::ParseResult> args;
     std::vector<Handler> commands{};
-    Config::ConfigManager config;
+    std::shared_ptr<Config::ConfigManager> config;
+    std::shared_ptr<Project::TemplateManager> templates;
     char **argv;
     int argc;
     bool confirm_all{false};

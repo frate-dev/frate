@@ -6,7 +6,7 @@
 #include "Frate/Command/Actions/Run.hpp"
 #include "Frate/Command/Actions/Update.hpp"
 #include "Frate/Command/Actions/Watch.hpp"
-#include "Frate/Project.hpp"
+#include "Frate/Project/Config.hpp"
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
 #include <Frate/Command/Actions/Add.hpp>
@@ -65,7 +65,7 @@ namespace Frate::Command {
   Interface::Interface(int argc, char **argv) {
     this->argc = argc;
     this->argv = argv;
-    this->pro = std::make_shared<Project>();
+    this->pro = std::make_shared<Project::Config>();
 #ifdef DEBUG
 #ifndef TEST
     Utils::verbose_mode = true;
@@ -76,10 +76,20 @@ namespace Frate::Command {
     pro->path = std::filesystem::current_path();
 #endif
     // config.capabilities.search();
-    config.load();
+    config = std::make_shared<Config::ConfigManager>();
+
+    config->load();
 
     if (!std::filesystem::exists(Constants::INSTALLED_TEMPLATE_PATH)) {
       std::filesystem::create_directories(Constants::INSTALLED_TEMPLATE_PATH);
+    }
+
+    templates = std::make_shared<Project::TemplateManager>();
+    try {
+      templates->load();
+    } catch (std::exception &e) {
+      Utils::error << "Error loading installed templates: " << e.what()
+                   << std::endl;
     }
   }
 
@@ -200,7 +210,7 @@ namespace Frate::Command {
           if (inter->pro->loaded_json) {
             inter->pro->save();
           }
-          inter->config.save();
+          inter->config->save();
           return true;
         }
       }

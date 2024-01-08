@@ -2,7 +2,7 @@
 #include <Frate/Command/AvailableTriples.hpp>
 #include <Frate/Command/Toolchains.hpp>
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/General.hpp>
 #include <filesystem>
 #include <fstream>

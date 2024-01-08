@@ -2,7 +2,7 @@
 #include "Frate/Utils/General.hpp"
 #include "Frate/Utils/Logging.hpp"
 #include <Frate/Command/Actions/FTP.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/CLI.hpp>
 
 namespace Frate::Command::FTP {
@@ -36,7 +36,8 @@ namespace Frate::Command::FTP {
         if (std::filesystem::is_directory(path)) {
           std::filesystem::remove_all(path);
           Utils::verbose << "Deleting: " << path << std::endl;
-        } else {
+        }
+        else {
           std::filesystem::remove(path);
           Utils::verbose << "Deleting: " << path << std::endl;
         }

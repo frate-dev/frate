@@ -1,17 +1,16 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
-#include <Frate/Project.hpp>
-#include <Frate/ProjectPrompt.hpp>
-#include <Frate/Template.hpp>
+#include <Frate/Project/Config.hpp>
+#include <Frate/Project/ProjectPrompt.hpp>
+#include <Frate/Project/Template.hpp>
 #include <Frate/Utils/Macros.hpp>
 #include <fstream>
 #include <nlohmann/json_fwd.hpp>
 
-namespace Frate::Command {
+namespace Frate::Project {
 
-  Project::Project() = default;
+  bool Config::save() {
 
-  bool Project::save() {
     std::ofstream file;
     std::string file_name = "frate-project.json";
     // Used as a safe guard to prevent overwriting the project file
@@ -47,15 +46,14 @@ namespace Frate::Command {
 
     file << new_json.dump(2);
 
-    // Generators::CMakeList::createCMakeLists(std::make_shared<Project>(*this));
     return true;
   }
 
-  std::string Project::safePath() {
+  std::string Project::Config::safePath() {
     return "'" + std::filesystem::path(this->path).string() + "'";
   };
 
-  void Project::fromTemplate(Template &temp) {
+  void Project::Config::fromTemplate(Template &temp) {
     this->src_dir = temp.src_dir;
     this->include_dir = temp.include_dir;
     this->build_dir = temp.build_dir;
@@ -68,7 +66,7 @@ namespace Frate::Command {
     this->libs = temp.system_libs;
   }
 
-  void from_json(const json &json_obj, Project &pro) {
+  void from_json(const json &json_obj, Project::Config &pro) {
 
     FROM_JSON_FIELD(pro, name);
     FROM_JSON_FIELD(pro, description);
@@ -97,7 +95,7 @@ namespace Frate::Command {
     FROM_JSON_FIELD(pro, bugs);
   }
 
-  void to_json(json &json_obj, const Project &pro) {
+  void to_json(json &json_obj, const Project::Config &pro) {
     TO_JSON_FIELD(pro, name);
     TO_JSON_FIELD(pro, description);
     TO_JSON_FIELD(pro, current_template);
@@ -125,7 +123,7 @@ namespace Frate::Command {
     TO_JSON_FIELD(pro, bugs);
   }
 
-  bool Project::load() {
+  bool Project::Config::load() {
     using nlohmann::json;
     std::fstream file;
     std::string file_name = "frate-project.json";
@@ -140,7 +138,7 @@ namespace Frate::Command {
       file.open(this->path / file_name);
       std::filesystem::path current_path = this->path;
       json j = json::parse(file);
-      Project temp = j;
+      Project::Config temp = j;
       *this = temp;
       this->path = current_path;
     } catch (std::exception &e) {
@@ -151,4 +149,4 @@ namespace Frate::Command {
     loaded_json = true;
     return true;
   }
-} // namespace Frate::Command
+} // namespace Frate::Project

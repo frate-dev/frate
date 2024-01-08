@@ -1,14 +1,13 @@
-#include "Frate/Interface.hpp"
 #include "Frate/Utils/CLI.hpp"
 #include <Frate/Constants.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/Validation.hpp>
 #include <Frate/Wizards.hpp>
 
 namespace Frate::Wizard {
   using Utils::CLI::Prompt;
 
-  bool Project(std::shared_ptr<Command::Project> pro) {
+  bool Project(std::shared_ptr<Project::Config> pro) {
 
     Prompt prompt("Project name", pro->name);
     prompt.setValidator(Utils::Validation::ProjectName);
@@ -21,7 +20,8 @@ namespace Frate::Wizard {
 
       if (valid) {
         pro->name = project_name;
-      } else {
+      }
+      else {
         return false;
       }
     }
@@ -34,7 +34,8 @@ namespace Frate::Wizard {
       auto [valid, author] = author_prompt.get<std::string>();
       if (valid) {
         pro->authors.emplace_back(author);
-      } else {
+      }
+      else {
         return false;
       }
     }
@@ -48,7 +49,8 @@ namespace Frate::Wizard {
       auto [valid, project_description] = description_prompt.get<std::string>();
       if (valid) {
         pro->description = project_description;
-      } else {
+      }
+      else {
         return false;
       }
     }
@@ -85,7 +87,8 @@ namespace Frate::Wizard {
       auto [valid, lang] = language.get<std::string>();
       if (valid) {
         pro->lang = lang;
-      } else {
+      }
+      else {
         return false;
       }
     }
@@ -105,7 +108,8 @@ namespace Frate::Wizard {
         auto [valid, lang_version] = cpp_version.get<std::string>();
         if (valid) {
           pro->lang_version = lang_version;
-        } else {
+        }
+        else {
           return false;
         }
       }
@@ -124,12 +128,13 @@ namespace Frate::Wizard {
         auto [valid, compiler] = cpp_compiler.get<std::string>();
         if (valid) {
           pro->compiler = compiler;
-        } else {
+        }
+        else {
           return false;
         }
       }
-
-    } else if (pro->lang == "c") {
+    }
+    else if (pro->lang == "c") {
       Prompt c_version("C Version", pro->lang_version);
       for (std::string version : Constants::SUPPORTED_C_STANDARDS) {
         c_version.addOption(version);
@@ -143,7 +148,8 @@ namespace Frate::Wizard {
         auto [valid, lang_version] = c_version.get<std::string>();
         if (valid) {
           pro->lang_version = lang_version;
-        } else {
+        }
+        else {
           return false;
         }
       }
@@ -163,12 +169,13 @@ namespace Frate::Wizard {
         auto [valid, compiler] = c_compiler.get<std::string>();
         if (valid) {
           pro->compiler = compiler;
-        } else {
+        }
+        else {
           return false;
         }
       }
-
-    } else {
+    }
+    else {
       return false;
     }
 
@@ -185,7 +192,8 @@ namespace Frate::Wizard {
       auto [valid, cmake_version] = cmake_version_prompt.get<std::string>();
       if (valid) {
         pro->cmake_version = cmake_version;
-      } else {
+      }
+      else {
         return false;
       }
     }
@@ -198,7 +206,8 @@ namespace Frate::Wizard {
       auto [valid, project_version] = project_version_prompt.get<std::string>();
       if (valid) {
         pro->version = project_version;
-      } else {
+      }
+      else {
         return false;
       }
     }

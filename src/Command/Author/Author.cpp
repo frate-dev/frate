@@ -1,6 +1,6 @@
 #include <Frate/Command/Author.hpp>
 #include <Frate/Frate.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 
 namespace Frate::Command::Author {
 

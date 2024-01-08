@@ -1,5 +1,5 @@
 #include "Frate/Command/Flags.hpp"
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 
 namespace Frate::Command::Flags {
   bool add(std::shared_ptr<Interface> inter) {
@@ -9,7 +9,7 @@ namespace Frate::Command::Flags {
 
     if (inter->args->count("mode") > 0) {
       std::string mode = inter->args->operator[]("mode").as<std::string>();
-      for (Mode &m : inter->pro->modes) {
+      for (Project::Mode &m : inter->pro->modes) {
         if (m.name == mode) {
           for (std::string flag : flags) {
             std::cout << "Adding flag: " << flag << std::endl;

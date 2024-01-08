@@ -1,5 +1,5 @@
 #pragma once
-#include "Frate/Project.hpp"
+#include "Frate/Project/Config.hpp"
 #include "inja.hpp"
 #include <filesystem>
 #include <nlohmann/json.hpp>
@@ -8,8 +8,8 @@
 #include <sol/sol.hpp>
 
 namespace Frate::LuaAPI {
-  using Command::Project;
   using nlohmann::json;
+  using Project::Config;
   using std::filesystem::path;
 
   class FrateApi {
@@ -20,8 +20,8 @@ namespace Frate::LuaAPI {
     static std::vector<std::string> get_paths_recurse(std::string input_path);
     static std::string get_path();
 
-    static std::string
-    format(const std::string &str, sol::table in_table, sol::this_state s);
+    static std::string format(const std::string &str, sol::table in_table,
+                              sol::this_state s);
 
     static void print_table(sol::table in_table);
     static std::string fetch_text(const std::string &url);
@@ -34,14 +34,13 @@ namespace Frate::LuaAPI {
   /*
    * Registers the project scripts with the project that is specifed
    */
-  bool registerProjectScripts(inja::Environment &env,
-                              sol::state &lua,
+  bool registerProjectScripts(inja::Environment &env, sol::state &lua,
                               path script_path,
-                              std::shared_ptr<Project> project);
+                              std::shared_ptr<Project::Config> project);
   /*
    * Registers the project with the user types for the project struct
    */
-  bool registerProject(sol::state &lua, std::shared_ptr<Command::Project> pro);
+  bool registerProject(sol::state &lua, std::shared_ptr<Project::Config> pro);
   /*
    * Registers api functions for the lua state
    * and initializes the lua state
@@ -51,10 +50,10 @@ namespace Frate::LuaAPI {
   /*
    * Runs __init__ scripts
    */
-  bool initScripts(sol::state &lua, std::shared_ptr<Project> project);
+  bool initScripts(sol::state &lua, std::shared_ptr<Project::Config> project);
 
   /*
    * Runs __post__ scripts
    */
-  bool postScripts(sol::state &lua, std::shared_ptr<Project> project);
+  bool postScripts(sol::state &lua, std::shared_ptr<Project::Config> project);
 } // namespace Frate::LuaAPI

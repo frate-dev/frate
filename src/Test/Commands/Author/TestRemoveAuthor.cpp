@@ -1,5 +1,5 @@
 #ifdef TEST
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Test/Test.hpp>
 
 namespace Tests::Command {

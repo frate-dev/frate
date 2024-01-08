@@ -1,9 +1,9 @@
-#include <Frate/Project.hpp>
-#include <Frate/Template.hpp>
+#include <Frate/Project/Config.hpp>
+#include <Frate/Project/Template.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>
 
-namespace Frate::Command {
+namespace Frate::Project {
 
   Template::Template() = default;
 
@@ -52,7 +52,7 @@ namespace Frate::Command {
     TO_JSON_FIELD(template_, global);
   }
 
-  void to_project(Project &pro, const Template &template_) {
+  void to_project(Project::Config &pro, const Template &template_) {
     Utils::info << "Template to project" << std::endl;
     pro.name = template_.name;
     pro.description = template_.description;
@@ -65,4 +65,4 @@ namespace Frate::Command {
     pro.modes = template_.modes;
     Utils::info << "Template to project end" << std::endl;
   }
-}; // namespace Frate::Command
+}; // namespace Frate::Project

@@ -1,10 +1,9 @@
-// #include "Frate/Interface.hpp"
-#include "Frate/Project.hpp"
+#include "Frate/Project/Config.hpp"
 #include "Frate/Utils/General.hpp"
 #include "inja.hpp"
 #include <Frate/Constants.hpp>
 #include <Frate/LuaAPI.hpp>
-#include <Frate/ProjectPrompt.hpp>
+#include <Frate/Project/ProjectPrompt.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <filesystem>
 #include <memory>
@@ -12,12 +11,12 @@
 #include <sol/variadic_args.hpp>
 
 namespace Frate::LuaAPI {
-  using Command::Project;
+  using Project::Config;
   using std::filesystem::path;
 
   bool registerProjectScripts(inja::Environment &env, sol::state &lua,
                               path script_path,
-                              std::shared_ptr<Project> project) {
+                              std::shared_ptr<Project::Config> project) {
 
     std::unordered_map<std::string, std::string> scripts = {};
 
@@ -113,7 +112,7 @@ namespace Frate::LuaAPI {
         &FrateApi::fetch_text, "fetch_json", &FrateApi::fetch_json);
   }
 
-  bool initScripts(sol::state &lua, std::shared_ptr<Project> project) {
+  bool initScripts(sol::state &lua, std::shared_ptr<Project::Config> project) {
     path script_path = project->template_path / Constants::INIT_SCRIPTS_PATH;
 
     if (!std::filesystem::exists(script_path)) {
@@ -149,12 +148,12 @@ namespace Frate::LuaAPI {
         return false;
       }
 
-      project = lua.get<std::shared_ptr<Project>>("project");
+      project = lua.get<std::shared_ptr<Project::Config>>("project");
     }
     return true;
   }
 
-  bool postScripts(sol::state &lua, std::shared_ptr<Project> project) {
+  bool postScripts(sol::state &lua, std::shared_ptr<Project::Config> project) {
     path script_path = project->template_path / Constants::POST_SCRIPTS_PATH;
 
     if (!std::filesystem::exists(script_path)) {
@@ -189,7 +188,7 @@ namespace Frate::LuaAPI {
         return false;
       }
 
-      project = lua.get<std::shared_ptr<Project>>("project");
+      project = lua.get<std::shared_ptr<Project::Config>>("project");
     }
     return true;
   }

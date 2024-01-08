@@ -3,39 +3,24 @@
 #include <Frate/Utils/Macros.hpp>
 
 namespace Frate::Command {
-  RemoteServer::RemoteServer(std::string name,
-                             std::string ip,
-                             std::string username,
-                             std::string authMethod,
-                             std::optional<std::string> password,
-                             std::optional<std::string> key,
-                             int port) {
-    this->name = name;
-    this->ip = ip;
-    this->username = username;
-    this->authMethod = authMethod;
-    this->password = password;
-    this->key = key;
-    this->port = port;
+
+  void from_json(const nlohmann::json &json_obj, RemoteServer &remote_server) {
+    FROM_JSON_FIELD(remote_server, name);
+    FROM_JSON_FIELD(remote_server, ip);
+    FROM_JSON_FIELD(remote_server, username);
+    FROM_JSON_FIELD(remote_server, authMethod);
+    FROM_JSON_FIELD(remote_server, password);
+    FROM_JSON_FIELD(remote_server, key);
+    FROM_JSON_FIELD(remote_server, port);
   }
 
-  void from_json(const nlohmann::json &json_obj, RemoteServer &remoteServer) {
-    FROM_JSON_FIELD(remoteServer, name);
-    FROM_JSON_FIELD(remoteServer, ip);
-    FROM_JSON_FIELD(remoteServer, username);
-    FROM_JSON_FIELD(remoteServer, authMethod);
-    FROM_JSON_FIELD(remoteServer, password);
-    FROM_JSON_FIELD(remoteServer, key);
-    FROM_JSON_FIELD(remoteServer, port);
-  }
-
-  void to_json(nlohmann::json &json_obj, const RemoteServer &remoteServer) {
-    TO_JSON_FIELD(remoteServer, name);
-    TO_JSON_FIELD(remoteServer, ip);
-    TO_JSON_FIELD(remoteServer, username);
-    TO_JSON_FIELD(remoteServer, authMethod);
-    json_obj["password"] = remoteServer.password.value_or("");
-    json_obj["key"] = remoteServer.key.value_or("");
-    TO_JSON_FIELD(remoteServer, port);
+  void to_json(nlohmann::json &json_obj, const RemoteServer &remote_server) {
+    TO_JSON_FIELD(remote_server, name);
+    TO_JSON_FIELD(remote_server, ip);
+    TO_JSON_FIELD(remote_server, username);
+    TO_JSON_FIELD(remote_server, authMethod);
+    json_obj["password"] = remote_server.password.value_or("");
+    json_obj["key"] = remote_server.key.value_or("");
+    TO_JSON_FIELD(remote_server, port);
   }
 } // namespace Frate::Command

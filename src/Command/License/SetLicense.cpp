@@ -1,6 +1,6 @@
 #include "Frate/Utils/CLI.hpp"
 #include <Frate/Command/License.hpp>
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Utils/General.hpp>
 #include <chrono>
 #include <ctime>
@@ -23,8 +23,7 @@ namespace Frate::Command::License {
     }
 
     std::sort(
-        licenses.begin(),
-        licenses.end(),
+        licenses.begin(), licenses.end(),
         [](const std::pair<License, int> &a, const std::pair<License, int> &b) {
           return a.second > b.second;
         });

@@ -3,12 +3,12 @@
 #include <string>
 #include <vector>
 
-namespace Frate::Command {
+namespace Frate::Project {
   using nlohmann::json;
 
   class ProjectPrompt {
   public:
-    ProjectPrompt(){};
+    ProjectPrompt() = default;
     std::string value{""};
     std::string text{""};
     std::string type{"string"};
@@ -20,7 +20,8 @@ namespace Frate::Command {
     std::function<bool(std::string)> validator{[this](std::string s) -> bool {
       if (options.size() == 0) {
         return true;
-      } else {
+      }
+      else {
         for (std::string option : options) {
           if (s == option) {
             return true;
@@ -31,4 +32,4 @@ namespace Frate::Command {
     }};
     template <typename T> T get();
   };
-} // namespace Frate::Command
+} // namespace Frate::Project

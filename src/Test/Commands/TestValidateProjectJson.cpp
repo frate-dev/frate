@@ -1,6 +1,6 @@
 #ifdef TEST
 #include "Frate/Interface.hpp"
-#include <Frate/Project.hpp>
+#include <Frate/Project/Config.hpp>
 #include <Frate/Test/Test.hpp>
 #include <catch2/catch_test_macros.hpp>
 
@@ -50,8 +50,9 @@ namespace Tests::Command {
     if (inter->pro->modes.size() == 0) {
       valid = false;
       Frate::Utils::error << "modes is empty" << std::endl;
-    } else {
-      for (Frate::Command::Mode mode : inter->pro->modes) {
+    }
+    else {
+      for (Frate::Project::Mode mode : inter->pro->modes) {
         if (mode.name == "") {
           valid = false;
           Frate::Utils::error << "mode " + mode.name + " has no name"
