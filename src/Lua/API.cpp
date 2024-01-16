@@ -1,8 +1,10 @@
+#include "Frate/Lua/Exceptions.hpp"
+#include "Frate/Lua/LuaAPI.hpp"
 #include "Frate/Project/Config.hpp"
 #include "Frate/Utils/General.hpp"
+#include <Frate/Lua/Utils.hpp>
 #include "inja.hpp"
 #include <Frate/Constants.hpp>
-#include <Frate/LuaAPI.hpp>
 #include <Frate/Project/ProjectPrompt.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <filesystem>
@@ -10,9 +12,30 @@
 #include <sol/forward.hpp>
 #include <sol/variadic_args.hpp>
 
-namespace Frate::LuaAPI {
+namespace Frate::Lua {
   using Project::Config;
   using std::filesystem::path;
+
+  void registerTemplateMacroScript(inja::Environment &env, sol::state &lua,
+                                   path script_path,
+                                   std::shared_ptr<Project::Config> project) {
+
+    if (!std::filesystem::exists(script_path)) {
+      Utils::error << "Script not found at path: " << script_path << std::endl;
+      throw LuaException("Script not found at path: " + script_path.string());
+    }
+
+    lua.set("project", project);
+
+    auto result = lua.script_file(script_path);
+
+    if (!result.valid()) {
+      throw LuaException("Error while executing lua script at: " +
+                         script_path.string());
+    }
+
+    project = lua.get<std::shared_ptr<Project::Config>>("project");
+  }
 
   bool registerProjectScripts(inja::Environment &env, sol::state &lua,
                               path script_path,
@@ -103,13 +126,19 @@ namespace Frate::LuaAPI {
 
   void registerAPI(sol::state &lua) {
     lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::string);
-
+    // clang-format off
     lua.new_usertype<FrateApi>(
-        "frate", "new", sol::no_constructor, "get_os", &FrateApi::get_os,
-        "get_path", &FrateApi::get_path, "get_paths_recurse",
-        &FrateApi::get_paths_recurse, "format", &FrateApi::format,
-        "print_table", &FrateApi::print_table, "fetch_text",
-        &FrateApi::fetch_text, "fetch_json", &FrateApi::fetch_json);
+        "frate", 
+        "new", sol::no_constructor,
+        "get_os", &FrateApi::get_os,
+        "get_path", &FrateApi::get_path,
+        "get_paths_recurse", &FrateApi::get_paths_recurse,
+        "format", &FrateApi::format,
+        "print_table", &FrateApi::print_table,
+        "fetch_text", &FrateApi::fetch_text,
+        "fetch_json", &FrateApi::fetch_json
+        );
+    // clang-format on
   }
 
   bool initScripts(sol::state &lua, std::shared_ptr<Project::Config> project) {
@@ -192,4 +221,4 @@ namespace Frate::LuaAPI {
     }
     return true;
   }
-} // namespace Frate::LuaAPI
+} // namespace Frate::Lua

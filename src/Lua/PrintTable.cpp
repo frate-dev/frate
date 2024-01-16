@@ -1,6 +1,6 @@
-#include <Frate/LuaAPI.hpp>
+#include <Frate/Lua/LuaAPI.hpp>
 
-namespace Frate::LuaAPI {
+namespace Frate::Lua {
   void print_table(sol::table in_table, int indent = 0) {
     for (auto [key, value] : in_table) {
       if (value.is<sol::table>()) {
@@ -26,8 +26,8 @@ namespace Frate::LuaAPI {
       }
     }
   }
-} // namespace Frate::LuaAPI
+} // namespace Frate::Lua
 
-void Frate::LuaAPI::FrateApi::print_table(sol::table in_table) {
-  Frate::LuaAPI::print_table(in_table);
+void Frate::Lua::FrateApi::print_table(sol::table in_table) {
+  Frate::Lua::print_table(in_table);
 }

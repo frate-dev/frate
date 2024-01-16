@@ -9,7 +9,13 @@ namespace Frate::Project {
 
   private:
     std::vector<TemplateMeta> index;
-    std::vector<InstalledTemplate> installed;
+
+    std::unordered_map<std::string,
+                       std::unordered_map<std::string, TemplateMeta>>
+        installed;
+
+    std::unordered_map<std::string, std::string> latest_hashes;
+
     bool index_loaded = false;
     /*
      * Loads the index from the github repo
@@ -21,7 +27,8 @@ namespace Frate::Project {
      * @param hash the hash of the template if it is installed
      * @return true if the template is installed
      */
-    Project::InstalledTemplate &find_template(const std::string &name);
+    Project::TemplateMeta &find_template(const std::string &name,
+                                         std::string &hash);
     /*
      * Checks if a template specifed is installed
      * nice helper function
@@ -66,16 +73,18 @@ namespace Frate::Project {
      * @param name the name of the template to create
      * @param hash the hash of the template to create
      */
-    std::filesystem::path
-    makeTemplate(const std::filesystem::path &override_path,
-                 const std::string &name, std::string &hash);
-    void save();
-    void load();
+    // std::filesystem::path makeTemplate(const std::filesystem::path
+    // &override_path,const std::string &name, std::string &hash);
+
+    void save(); // Saves this object to the config file
+    void load(); // Loads this object from the config file
     /*
      * Grabs the current installed templates from the config file
      * @return a vector of TemplateMeta objects
      */
-    std::vector<Project::InstalledTemplate> &getInstalled();
+    std::unordered_map<std::string,
+                       std::unordered_map<std::string, TemplateMeta>> &
+    getInstalled();
     /*
      * Grabs the current index from the the github repo, if called more than
      * once then it will pull the index from memory

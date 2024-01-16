@@ -1,8 +1,8 @@
 #include "Frate/Utils/Logging.hpp"
-#include <Frate/LuaAPI.hpp>
+#include <Frate/Lua/LuaAPI.hpp>
 #include <filesystem>
 
-namespace Frate::LuaAPI {
+namespace Frate::Lua {
   std::vector<std::string> FrateApi::get_paths_recurse(std::string input_path) {
     std::filesystem::path deepest_path = std::filesystem::current_path();
     Utils::info << "Getting paths from " << input_path << std::endl;
@@ -29,4 +29,4 @@ namespace Frate::LuaAPI {
 
     return paths;
   }
-} // namespace Frate::LuaAPI
+} // namespace Frate::Lua

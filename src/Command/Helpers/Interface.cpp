@@ -211,6 +211,7 @@ namespace Frate::Command {
             inter->pro->save();
           }
           inter->config->save();
+          inter->templates->save();
           return true;
         }
       }

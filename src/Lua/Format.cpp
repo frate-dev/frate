@@ -1,7 +1,7 @@
 #include "Frate/Utils/Logging.hpp"
-#include <Frate/LuaAPI.hpp>
+#include <Frate/Lua/LuaAPI.hpp>
 
-namespace Frate::LuaAPI {
+namespace Frate::Lua {
   enum token_type { open_bracket, close_bracket, char_literal, specifier };
 
   struct token {
@@ -121,4 +121,4 @@ namespace Frate::LuaAPI {
     // Utils::info << result << std::endl;
     return result;
   }
-} // namespace Frate::LuaAPI
+} // namespace Frate::Lua

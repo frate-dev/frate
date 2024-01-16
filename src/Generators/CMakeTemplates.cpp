@@ -1,4 +1,4 @@
-#include <Frate/LuaAPI.hpp>
+#include <Frate/Lua/LuaAPI.hpp>
 #include <Frate/Project/Config.hpp>
 #include <Frate/Utils/General.hpp>
 #include <filesystem>
@@ -36,14 +36,14 @@ namespace Frate::Generators::CMakeList {
     CPMFile << CPM;
     inja::Environment env;
     sol::state lua;
-    LuaAPI::registerAPI(lua);
+    Lua::registerAPI(lua);
 
-    if (!LuaAPI::registerProject(lua, pro)) {
+    if (!Lua::registerProject(lua, pro)) {
       Utils::debug("Error while registering project");
       return false;
     }
 
-    if (!LuaAPI::registerProjectScripts(env, lua,
+    if (!Lua::registerProjectScripts(env, lua,
                                         pro->path / "templates/scripts", pro)) {
       Utils::debug("Error while registering project scripts");
       return false;

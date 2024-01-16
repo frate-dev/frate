@@ -1,7 +1,7 @@
-#include <Frate/LuaAPI.hpp>
+#include <Frate/Lua/LuaAPI.hpp>
 #include <filesystem>
 
-namespace Frate::LuaAPI {
+namespace Frate::Lua {
   std::string FrateApi::get_path() {
     return std::filesystem::current_path().string()
 #ifdef DEBUG
@@ -9,4 +9,4 @@ namespace Frate::LuaAPI {
 #endif
         ;
   }
-} // namespace Frate::LuaAPI
+} // namespace Frate::Lua

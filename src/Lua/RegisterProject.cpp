@@ -1,9 +1,9 @@
-#include <Frate/LuaAPI.hpp>
+#include <Frate/Lua/LuaAPI.hpp>
 #include <Frate/Project/Config.hpp>
 #include <Frate/Project/Mode.hpp>
 #include <Frate/Project/ProjectPrompt.hpp>
 
-namespace Frate::LuaAPI {
+namespace Frate::Lua {
   bool registerProject(sol::state &lua, std::shared_ptr<Project::Config> pro) {
 
     lua.set("project", pro);
@@ -133,4 +133,4 @@ namespace Frate::LuaAPI {
     // clang-format on
     return true;
   }
-} // namespace Frate::LuaAPI
+} // namespace Frate::Lua

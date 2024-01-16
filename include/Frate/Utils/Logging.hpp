@@ -1,6 +1,6 @@
 #pragma once
+#include <cstdint>
 #include <iostream>
-#include <stdint.h>
 #include <termcolor/termcolor.hpp>
 
 namespace Frate::Utils {

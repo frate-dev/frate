@@ -23,7 +23,7 @@ namespace Frate::Config {
   Command::RemoteServer ConfigManager::getBuildServer() {
     if (this->build_server.empty()) {
       Utils::error << "No build server set" << std::endl;
-      exit(1);
+      throw std::runtime_error("No build server set");
     }
     for (auto &server : this->build_servers) {
       if (server.name == this->build_server) {

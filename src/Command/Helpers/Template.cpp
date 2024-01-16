@@ -5,9 +5,9 @@
 
 namespace Frate::Project {
 
-  Template::Template() = default;
+  TemplateConfig::TemplateConfig() = default;
 
-  void from_json(const json &json_obj, Template &template_) {
+  void from_json(const json &json_obj, TemplateConfig &template_) {
     FROM_JSON_FIELD(template_, name);
     FROM_JSON_FIELD(template_, description);
     FROM_JSON_FIELD(template_, version);
@@ -29,7 +29,7 @@ namespace Frate::Project {
     FROM_JSON_FIELD(template_, global);
   }
 
-  void to_json(json &json_obj, const Template &template_) {
+  void to_json(json &json_obj, const TemplateConfig &template_) {
     Utils::info << "Template to json" << std::endl;
     TO_JSON_FIELD(template_, name);
     TO_JSON_FIELD(template_, description);
@@ -52,7 +52,7 @@ namespace Frate::Project {
     TO_JSON_FIELD(template_, global);
   }
 
-  void to_project(Project::Config &pro, const Template &template_) {
+  void to_project(Project::Config &pro, const TemplateConfig &template_) {
     Utils::info << "Template to project" << std::endl;
     pro.name = template_.name;
     pro.description = template_.description;

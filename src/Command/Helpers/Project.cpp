@@ -53,7 +53,7 @@ namespace Frate::Project {
     return "'" + std::filesystem::path(this->path).string() + "'";
   };
 
-  void Project::Config::fromTemplate(Template &temp) {
+  void Project::Config::fromTemplate(TemplateConfig &temp) {
     this->src_dir = temp.src_dir;
     this->include_dir = temp.include_dir;
     this->build_dir = temp.build_dir;

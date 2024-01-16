@@ -9,7 +9,7 @@ namespace Frate::Generators::Project {
   std::pair<bool, TemplateMeta> promptForTemplateName(json index) {
     Prompt template_name_prompt("Project type: ");
     for (TemplateMeta templ : index) {
-      template_name_prompt.addOption(templ.name);
+      template_name_prompt.addOption(templ.getName());
     }
 
     template_name_prompt.printValidOptions();
@@ -25,13 +25,13 @@ namespace Frate::Generators::Project {
 
     TemplateMeta templ;
     for (TemplateMeta temp : index) {
-      if (temp.name == template_id) {
+      if (temp.getName() == template_id) {
         templ = temp;
         break;
       }
     }
 
-    if (templ.name.empty()) {
+    if (templ.getName().empty()) {
       Utils::error << "TemplateMeta not found" << std::endl;
       return {false, TemplateMeta()};
     }

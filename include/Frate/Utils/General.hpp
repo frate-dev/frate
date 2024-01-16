@@ -3,11 +3,7 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <string>
-#include <termcolor/termcolor.hpp>
 #include <vector>
-#define DEBUGTHIS(x)                                                           \
-  std::cout << termcolor::bright_red << "##x"                                  \
-            << " -> " << x << std::endl;
 
 #ifdef DEBUG
 #include <cpptrace/cpptrace.hpp>

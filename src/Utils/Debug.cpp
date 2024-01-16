@@ -1,15 +1,14 @@
 #include <Frate/Utils/General.hpp>
-#include <stdint.h>
-#include <termcolor/termcolor.hpp>
+#include <Frate/Utils/Logging.hpp>
 
 namespace Frate::Utils {
   void debug(std::string something) {
 #ifdef DEBUG
     cpptrace::generate_trace().print();
-    DEBUGTHIS(something);
+    Utils::error << something << std::endl;
 #elif TEST
     cpptrace::generate_trace().print();
-    DEBUGTHIS(something);
+    Utils::error << something << std::endl;
 #else
     std::cout << termcolor::bright_red << something << std::endl;
 #endif

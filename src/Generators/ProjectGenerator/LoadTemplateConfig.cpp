@@ -5,7 +5,7 @@
 #include <inja.hpp>
 
 namespace Frate::Generators::Project {
-  using ::Frate::Project::Template;
+  using ::Frate::Project::TemplateConfig;
 
   bool loadTemplateConfig(std::shared_ptr<Project::Config> pro) {
 
@@ -24,7 +24,7 @@ namespace Frate::Generators::Project {
 
     json j = json::parse(template_config_file);
 
-    Template template_config = j;
+    TemplateConfig template_config = j;
     pro->fromTemplate(template_config);
     return true;
   }

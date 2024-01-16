@@ -21,6 +21,8 @@ namespace Frate::Project {
     bool loaded_json{false};
     std::filesystem::path template_path;
     TemplateMeta current_template;
+    std::vector<std::filesystem::path> template_files;
+    std::vector<std::filesystem::path> script_files;
     std::string name;
     std::string description;
     std::string type{""};
@@ -74,7 +76,7 @@ namespace Frate::Project {
     std::unordered_map<std::string, json> global{};
     friend void from_json(const json &json_obj, Config &pro);
     friend void to_json(json &json_obj, const Config &pro);
-    void fromTemplate(Template &_template);
+    void fromTemplate(TemplateConfig &_template);
   };
 
 } // namespace Frate::Project

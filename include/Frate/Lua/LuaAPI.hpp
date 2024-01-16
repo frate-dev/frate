@@ -3,11 +3,11 @@
 #include "inja.hpp"
 #include <filesystem>
 #include <nlohmann/json.hpp>
-#include <nlohmann/json_fwd.hpp>
 #include <sol/forward.hpp>
 #include <sol/sol.hpp>
 
-namespace Frate::LuaAPI {
+namespace Frate::Lua {
+
   using nlohmann::json;
   using Project::Config;
   using std::filesystem::path;
@@ -28,32 +28,35 @@ namespace Frate::LuaAPI {
     static sol::table fetch_json(const std::string &url, sol::this_state lua);
   };
 
-  sol::table to_table(nlohmann::json json, sol::state_view &lua);
-  nlohmann::json from_table(sol::table in_table);
-
   /*
    * Registers the project scripts with the project that is specifed
    */
+  [[deprecated("Use TemplateEnvironment")]]
   bool registerProjectScripts(inja::Environment &env, sol::state &lua,
                               path script_path,
                               std::shared_ptr<Project::Config> project);
+
   /*
    * Registers the project with the user types for the project struct
    */
+  [[deprecated("Use TemplateEnvironment")]]
   bool registerProject(sol::state &lua, std::shared_ptr<Project::Config> pro);
   /*
    * Registers api functions for the lua state
    * and initializes the lua state
    */
+  [[deprecated("Use TemplateEnvironment")]]
   void registerAPI(sol::state &lua);
 
   /*
    * Runs __init__ scripts
    */
+  [[deprecated("Use TemplateEnvironment")]]
   bool initScripts(sol::state &lua, std::shared_ptr<Project::Config> project);
 
   /*
    * Runs __post__ scripts
    */
+  [[deprecated("Use TemplateEnvironment")]]
   bool postScripts(sol::state &lua, std::shared_ptr<Project::Config> project);
-} // namespace Frate::LuaAPI
+} // namespace Frate::Lua

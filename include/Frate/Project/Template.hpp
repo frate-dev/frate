@@ -12,9 +12,9 @@ namespace Frate::Project {
   using nlohmann::json;
   class Config;
 
-  class Template {
+  class TemplateConfig {
   public:
-    Template();
+    TemplateConfig();
     std::string name;
     std::string description;
     std::string version;
@@ -34,8 +34,8 @@ namespace Frate::Project {
     std::vector<std::string> keywords{};
     std::unordered_map<std::string, ProjectPrompt> prompts{};
     std::unordered_map<std::string, json> global{};
-    friend void from_json(const json &json_obj, Template &temp);
-    friend void to_json(json &json_obj, const Template &temp);
-    friend void to_project(Config &pro, const Template &temp);
+    friend void from_json(const json &json_obj, TemplateConfig &temp);
+    friend void to_json(json &json_obj, const TemplateConfig &temp);
+    friend void to_project(Config &pro, const TemplateConfig &temp);
   };
 } // namespace Frate::Project

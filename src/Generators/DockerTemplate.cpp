@@ -1,6 +1,6 @@
 #include <Frate/Command.hpp>
 #include <Frate/Generators.hpp>
-#include <Frate/LuaAPI.hpp>
+#include <Frate/Lua/LuaAPI.hpp>
 #include <inja.hpp>
 #include <sol/sol.hpp>
 
@@ -23,14 +23,14 @@ namespace Frate::Generators::DockerTemplate {
   bool create(std::shared_ptr<Command::Interface> inter) {
     inja::Environment env;
     sol::state lua;
-    LuaAPI::registerAPI(lua);
+    Lua::registerAPI(lua);
 
-    if (!LuaAPI::registerProject(lua, inter->pro)) {
+    if (!Lua::registerProject(lua, inter->pro)) {
       Utils::debug("Error while registering project");
       return false;
     }
 
-    if (!LuaAPI::registerProjectScripts(
+    if (!Lua::registerProjectScripts(
             env, lua, inter->pro->path / "templates/scripts", inter->pro)) {
       Utils::debug("Error while registering project scripts");
       return false;
