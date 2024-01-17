@@ -4,6 +4,7 @@
 
 namespace Frate::System {
 
+
   void UVDirectoryWatcher::add_watcher(const std::string &path) {
     Watcher watcher;
     watcher.handle = std::make_unique<uv_fs_event_t>();
@@ -11,7 +12,7 @@ namespace Frate::System {
     watcher.handle->data = this;
     uv_fs_event_init(loop.get(), watcher.handle.get());
     uv_fs_event_start(watcher.handle.get(), fs_event_callback,
-                      watcher.path.c_str(), 0);
+                      watcher.path.c_str(), UV_FS_EVENT_RECURSIVE);
     watchers.push_back(std::move(watcher));
   };
 
@@ -22,7 +23,7 @@ namespace Frate::System {
     auto *watcher = static_cast<UVDirectoryWatcher *>(handle->data);
     // combining the path and the filename
     std::string changed_path =
-        (std::string)handle->path + "/" + (std::string)filename;
+        static_cast<std::string>(handle->path) + "/" + static_cast<std::string>(filename);
     // For some reason the filename returns a number, so we need to check if the
     // path exists
     bool path_exists = std::filesystem::exists(changed_path);
@@ -55,13 +56,14 @@ namespace Frate::System {
                                  std::function<void(std::string)> callback) {
     this->callback = callback;
     add_watcher(path);
-
+    #ifdef linux
     for (const auto &entry :
          std::filesystem::recursive_directory_iterator(path)) {
       if (entry.is_directory()) {
         add_watcher(entry.path().string());
       }
     }
+    #endif
   }
 
   void UVDirectoryWatcher::run() { uv_run(loop.get(), UV_RUN_DEFAULT); };
