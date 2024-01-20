@@ -20,6 +20,12 @@ namespace Frate::Project {
         : TemplateException(message) {}
   };
 
+  class TemplateIndexFailedToLoad : public TemplateException {
+  public:
+    TemplateIndexFailedToLoad(const std::string &message)
+        : TemplateException(message) {}
+  };
+
   class TemplateConfigNotFound : public TemplateException {
   public:
     TemplateConfigNotFound(const std::string &message)

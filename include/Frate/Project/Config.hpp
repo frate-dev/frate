@@ -2,7 +2,7 @@
 #include "Frate/Dependency.hpp"
 #include "Frate/Project/Mode.hpp"
 #include "Frate/Project/ProjectPrompt.hpp"
-#include "Frate/Project/Template.hpp"
+#include "Frate/Project/TemplateConfig.hpp"
 #include "Frate/Project/TemplateMeta.hpp"
 #include <Frate/Package.hpp>
 #include <Frate/RemoteServer.hpp>

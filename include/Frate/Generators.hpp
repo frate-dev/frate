@@ -9,6 +9,7 @@
 namespace Frate::Generators {
   namespace Project {
     using ::Frate::Project::Config;
+    using ::Frate::Project::TemplateIndexEntry;
     using ::Frate::Project::TemplateMeta;
     using inja::Environment;
     using nlohmann::json;

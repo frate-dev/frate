@@ -1,13 +1,14 @@
+#include "Frate/Project/TemplateIndexEntry.hpp"
 #include "Frate/System/Build.hpp"
 #include "Frate/Utils/General.hpp"
 #include <Frate/Constants.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Project/Config.hpp>
+#include <Frate/Project/Exceptions.hpp>
 #include <Frate/Project/TemplateMeta.hpp>
 #include <filesystem>
 
 namespace Frate::Generators::Project {
-  using Project::TemplateMeta;
 
   json getTemplateIndex() {
     std::cout << "Getting Template Index" << std::endl;
@@ -25,7 +26,7 @@ namespace Frate::Generators::Project {
 
     Project::TemplateMeta current_template;
 
-    for (TemplateMeta templ : index) {
+    for (TemplateIndexEntry templ : index) {
       if (inter->pro->type == templ.getName()) {
         has_template = true;
         current_template = templ;
@@ -50,7 +51,9 @@ namespace Frate::Generators::Project {
         inter->templates->install(current_template.getName());
 
     Utils::verbose << "Installed template: "
-                   << inter->pro->current_template.getName() << " with hash of: " << inter->pro->current_template.getHash() << std::endl;
+                   << inter->pro->current_template.getName()
+                   << " with hash of: "
+                   << inter->pro->current_template.getHash() << std::endl;
 
     inter->pro->current_template.build(inter->pro);
 

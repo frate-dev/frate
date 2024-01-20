@@ -14,6 +14,39 @@
 namespace Frate::Project {
 
   void TemplateManager::load_index() {
+
+    if (this->index_loaded) {
+      return;
+    }
+
+    Utils::verbose << "Attempting to load template index file" << std::endl;
+
+    if (!std::filesystem::exists(Constants::TEMPLATE_INDEX_PATH)) {
+      Utils::verbose << "Template index file doesn't exist" << std::endl;
+    }
+    else {
+      std::ifstream file(Constants::TEMPLATE_INDEX_PATH);
+      if (!file.is_open()) {
+        Utils::error << "Failed to open template index file" << std::endl;
+        throw TemplateIndexNotLoaded("Failed to open template index file");
+      }
+
+      nlohmann::json json_obj;
+
+      try {
+        file >> json_obj;
+      } catch (std::exception &e) {
+        throw TemplateIndexFailedToLoad("Failed to parse template index file");
+      }
+
+      this->index = json_obj;
+      this->index_loaded = true;
+      Utils::verbose << "Loaded template index file" << std::endl;
+
+      return;
+    }
+
+    Utils::verbose << "Attempting to load template index upstream" << std::endl;
     try {
       nlohmann::json index_json =
           Utils::fetchJson(Constants::TEMPLATE_INDEX_URL);
@@ -21,6 +54,23 @@ namespace Frate::Project {
         index.push_back(template_json);
       }
       index_loaded = true;
+
+      try {
+        std::ofstream file(Constants::TEMPLATE_INDEX_PATH);
+        if (!file.is_open()) {
+          Utils::error
+              << "Failed to open template index file to save upstream index"
+              << std::endl;
+        }
+        else {
+          file << index_json.dump(2);
+          file.close();
+        }
+      } catch (std::exception &e) {
+        Utils::error << "Failed to save template upstream index file"
+                     << std::endl;
+      }
+
     } catch (std::exception &e) {
       Utils::error << "Failed to load template index" << std::endl;
       Utils::error << e.what() << std::endl;
@@ -66,6 +116,22 @@ namespace Frate::Project {
     return installed[name][hash];
   }
 
+  std::string TemplateManager::get_latest_hash(const std::string &name){
+    //TODO: implement
+    //BLOCKED: need index template class
+//     Utils::verbose << "Getting latest hash for template: " << name << std::endl;
+// 
+//     TemplateManager templ;
+//     templ.load_index();
+// 
+//     for (TemplateMeta template_info : templ.getIndex()) {
+//       if (template_info.getName() == name) {
+//         return template_info.getHash();
+//       }
+//     }
+//     throw std::runtime_error("Template not found");
+
+  };
   void TemplateManager::template_to_installed_path(
       std::filesystem::path &tmp_path, std::filesystem::path &new_template_path,
       std::string &hash) {
@@ -91,7 +157,7 @@ namespace Frate::Project {
       Utils::verbose << "Copying: " << tmp_filtered_path << " to "
                      << new_file_path << std::endl;
 
-      if(!std::filesystem::exists(new_file_path.parent_path())){
+      if (!std::filesystem::exists(new_file_path.parent_path())) {
         std::filesystem::create_directories(new_file_path.parent_path());
       }
 
@@ -108,14 +174,7 @@ namespace Frate::Project {
   }
 
   std::vector<Project::TemplateMeta> &TemplateManager::getIndex() {
-    if (index.empty() && !index_loaded) {
-      try {
-        load_index();
-      } catch (std::exception &e) {
-        Utils::error << e.what() << std::endl;
-        throw std::runtime_error("Failed to load template index");
-      }
-    }
+    load_index();
     return index;
   }
 
@@ -125,16 +184,45 @@ namespace Frate::Project {
     return installed;
   }
 
+  void updateIndex() {
+    Utils::verbose << "Updating template index" << std::endl;
+
+    if (!std::filesystem::exists(Constants::TEMPLATE_INDEX_PATH)) {
+      Utils::verbose << "Template index file doesn't exist" << std::endl;
+
+      std::ofstream file(Constants::TEMPLATE_INDEX_PATH);
+
+      if (!file.is_open()) {
+        Utils::error << "Failed to open template index file" << std::endl;
+        throw std::runtime_error("Failed to open template index file");
+      }
+
+      file.close();
+    }
+
+    try {
+      auto upstream_index = Utils::fetchJson(Constants::TEMPLATE_INDEX_URL);
+      std::ofstream file(Constants::TEMPLATE_INDEX_PATH);
+      if (!file.is_open()) {
+        Utils::error
+            << "Failed to open template index file to save upstream index"
+            << std::endl;
+      }
+      else {
+        file << upstream_index.dump(2);
+        file.close();
+      }
+    } catch (std::exception &e) {
+      Utils::error << "Failed to save template upstream index file"
+                   << std::endl;
+    }
+  }
+
   TemplateMeta TemplateManager::install(const std::string &name,
                                         std::string hash) {
     Utils::info << "Installing template: " << name << std::endl;
 
-    try {
-      load_index();
-    } catch (TemplateIndexNotLoaded &e) {
-      Utils::error << e.what() << std::endl;
-      throw std::runtime_error("Failed to load template index");
-    }
+    load_index();
 
     std::filesystem::path tmp_path =
         Utils::randomTmpPath("frate-template-download-");
@@ -227,19 +315,6 @@ namespace Frate::Project {
         }
 
         installed[name][latest_commit.hash] = template_info;
-
-        //         InstalledTemplate installed_template;
-        //         installed_template.getName() = name;
-        //         installed_template.getGit() = template_info.git;
-        //         // We only want to add the latest commit
-        //         installed_template.getCommits().push_back(latest_commit);
-        //
-        //         Utils::info << "Putting template in config: " <<
-        //         installed_template
-        //                     << std::endl;
-        //
-        //         // Installing the template in the config
-        //         installed.push_back(installed_template);
 
         // Cleanup
 

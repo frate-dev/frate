@@ -13,21 +13,23 @@
 namespace Frate::Project {
   using std::filesystem::directory_entry;
 
-  TemplateMeta::TemplateMeta(const nlohmann::json &json_obj) {
+  TemplateMeta::TemplateMeta(const nlohmann::json &json_obj): install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash) {
     Utils::verbose << "Creating template meta from json with contents: "
                    << json_obj << std::endl;
 
     from_json(json_obj, *this);
-    this->install_path =
-        Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash;
     file_map = {};
   }
 
-  TemplateMeta::TemplateMeta() {
-    this->install_path =
-        Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash;
+  TemplateMeta::TemplateMeta(): install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash) {
     file_map = {};
   }
+
+  TemplateMeta::TemplateMeta(TemplateIndexEntry &entry)
+      : name(entry.getName()), description(entry.getDescription()),
+        hash(entry.getLatestHash()), git(entry.getGit()),
+        install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name /
+                     this->hash) {}
 
   void from_json(const nlohmann::json &json_obj, TemplateMeta &temp) {
     FROM_JSON_FIELD(temp, name);
@@ -107,14 +109,13 @@ namespace Frate::Project {
   void TemplateMeta::refresh(std::shared_ptr<Config> config) {
 
     std::filesystem::path override_path = config->path / "override";
-    
+
     Utils::FileFilter template_filter(install_path);
-    template_filter.addDirs({"scripts", "__init__", "__post__", "cmake_includes"});
+    template_filter.addDirs(
+        {"scripts", "__init__", "__post__", "cmake_includes"});
     template_filter.addFiles({"CMakeLists.txt"});
 
-
     auto install_path_files = template_filter.filterIn();
-
 
     for (auto &file : install_path_files) {
       std::filesystem::path relative_path =
@@ -123,7 +124,8 @@ namespace Frate::Project {
     }
 
     Utils::FileFilter override_filter(override_path);
-    override_filter.addDirs({"scripts", "__init__", "__post__", "cmake_includes"});
+    override_filter.addDirs(
+        {"scripts", "__init__", "__post__", "cmake_includes"});
     override_filter.addFiles({"CMakeLists.txt"});
 
     auto override_path_files = override_filter.filterIn();
@@ -207,7 +209,7 @@ namespace Frate::Project {
 
     std::ofstream cpm_file;
     try {
-      if (!std::filesystem::exists(config->path / "cmake")){
+      if (!std::filesystem::exists(config->path / "cmake")) {
         std::filesystem::create_directories(config->path / "cmake");
       }
       cpm_file.open(config->path / "cmake/CPM.cmake");
@@ -222,7 +224,6 @@ namespace Frate::Project {
   void TemplateMeta::render(std::shared_ptr<Config> config) {
     Utils::info << "Rendering template" << std::endl;
     this->env = std::make_shared<Lua::TemplateEnvironment>(config);
-      
 
     if (!scripts_loaded) {
 
@@ -233,7 +234,6 @@ namespace Frate::Project {
         throw Lua::LuaException("Error loading scripts");
       }
     }
-
 
     // Generate a list of all files that are not templates
     std::vector<std::filesystem::path> all_files;
@@ -248,7 +248,6 @@ namespace Frate::Project {
     non_template_filter.addDirs(
         {"scripts", "__init__", "__post__", "cmake_includes"});
     non_template_filter.addFiles({"template.json"});
-
 
     all_files = non_template_filter.filterOut();
 

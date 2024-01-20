@@ -9,6 +9,7 @@
 int main(int argc, char **argv) {
   // std::shared_ptr<Command::Context> ctx =
   // std::make_shared<Command::Context>();
+  
 
 #ifdef TEST
   Catch::Session session;
@@ -29,7 +30,7 @@ int main(int argc, char **argv) {
   // TODO: Get some path checking in this bitch
   using namespace Frate::Command;
 
-  Interface inter_ptr = Interface(argc, argv);
+  Interface inter_ptr(argc, argv);
   auto inter = std::make_shared<Interface>(inter_ptr);
   if (execute(inter)) {
     return 0;

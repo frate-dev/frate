@@ -1,5 +1,6 @@
 #pragma once
 #include "Frate/Constants.hpp"
+#include "Frate/Project/TemplateIndexEntry.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>
@@ -23,7 +24,7 @@ namespace Frate::Project {
      * Contains the mapping of the template and the relative path to the project
      * path
      */
-    std::unordered_map<std::filesystem::path, std::filesystem::path> file_map;
+    std::unordered_map<std::filesystem::path, std::filesystem::path> file_map{};
 
     std::vector<std::filesystem::path> non_template_files;
 
@@ -43,6 +44,7 @@ namespace Frate::Project {
   public:
     TemplateMeta();
     TemplateMeta(const nlohmann::json &json_obj);
+    TemplateMeta(TemplateIndexEntry &entry);
     friend void from_json(const nlohmann::json &json_obj, TemplateMeta &temp);
     friend void to_json(nlohmann::json &json_obj, const TemplateMeta &temp);
     friend std::ostream &operator<<(std::ostream &os_stream,

@@ -1,6 +1,6 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Project/Config.hpp>
-#include <Frate/Project/Template.hpp>
+#include <Frate/Project/TemplateConfig.hpp>
 #include <fstream>
 #include <inja.hpp>
 

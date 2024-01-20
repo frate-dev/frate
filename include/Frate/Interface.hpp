@@ -10,33 +10,6 @@
 namespace Frate::Command {
   class Interface;
   using Handler = struct Handler_s;
-  /* =============================
-   * Future interface for commands
-   * =============================
-   */
-  class CommandHandler;
-
-  class CommandHandler {
-  public:
-    virtual ~CommandHandler() = default;
-    std::vector<std::string> aliases;
-    std::vector<std::string> flags{};
-    std::vector<CommandHandler> subcommands{};
-    std::vector<std::string> positional_args{};
-    bool implemented{true};
-    bool requires_project{true};
-    bool unlimited_args{false};
-    std::string docs;
-    std::function<bool(std::shared_ptr<Interface>)> callback{
-        [](std::shared_ptr<Interface> inter) -> bool {
-          (void)inter;
-          Utils::error << "This command has not been implemented yet"
-                       << std::endl;
-          return false;
-        }};
-    virtual bool run(std::shared_ptr<Interface> inter) = 0;
-    virtual bool options(std::shared_ptr<Interface> inter) = 0;
-  };
 
   using Handler = struct Handler_s {
     std::vector<std::string> aliases;

@@ -1,6 +1,5 @@
 #include "Frate/Project/TemplateMeta.hpp"
 #include <Frate/Project/Config.hpp>
-#include <Frate/Project/InstalledTemplate.hpp>
 #include <vector>
 
 namespace Frate::Project {
@@ -13,8 +12,6 @@ namespace Frate::Project {
     std::unordered_map<std::string,
                        std::unordered_map<std::string, TemplateMeta>>
         installed;
-
-    std::unordered_map<std::string, std::string> latest_hashes;
 
     bool index_loaded = false;
     /*
@@ -48,6 +45,12 @@ namespace Frate::Project {
                                     std::filesystem::path &template_path,
                                     std::string &hash);
 
+    /*
+     * From the template index it will find the latest hash of the template name
+     * provided
+     */
+    std::string get_latest_hash(const std::string &name);
+
   public:
     TemplateManager() = default;
     ~TemplateManager() = default;
@@ -65,6 +68,8 @@ namespace Frate::Project {
      * @param name the name of the template to update
      */
     void update(const std::string &name);
+
+    void updateIndex();
 
     /*
      * Creates a tempalte in a tmp path and then returns the path that rendering

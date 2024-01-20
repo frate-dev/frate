@@ -20,6 +20,7 @@
 #include <Frate/Interface.hpp>
 #include <memory>
 #include <nlohmann/json_fwd.hpp>
+#include <Frate/CommandTargetHandler.hpp>
 
 namespace Frate::Command {
 
@@ -94,6 +95,14 @@ namespace Frate::Command {
   }
 
   bool execute(std::shared_ptr<Interface> inter) {
+
+
+    std::vector<std::unique_ptr<CommandHandler>> root_commands;
+
+    root_commands.push_back(std::make_unique<TargetPackageIndexHandler>(inter));
+    root_commands.push_back(std::make_unique<TargetPackageHandler>(inter));
+
+    TargetPackageHandler add_handler(inter);
 
     OptionsInit::Main(inter);
     inter->parse();

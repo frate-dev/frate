@@ -1,5 +1,5 @@
 #include <Frate/Project/Config.hpp>
-#include <Frate/Project/Template.hpp>
+#include <Frate/Project/TemplateConfig.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>
 
