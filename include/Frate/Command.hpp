@@ -1,7 +1,6 @@
 #pragma once
 #include <Frate/Frate.hpp>
 #include <Frate/Package.hpp>
-#include <Frate/Utils/CLI.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <cxxopts.hpp>
 #include <nlohmann/json.hpp>

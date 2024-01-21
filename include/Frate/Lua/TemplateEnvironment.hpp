@@ -2,6 +2,7 @@
 #include "Frate/Project/Config.hpp"
 #include "Frate/Utils/Logging.hpp"
 #include "inja.hpp"
+#include <Frate/FrateException.hpp>
 #include <Frate/Lua/Exceptions.hpp>
 #include <sol/state.hpp>
 #include <string>

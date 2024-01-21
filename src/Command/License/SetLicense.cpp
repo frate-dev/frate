@@ -1,4 +1,5 @@
-#include "Frate/Utils/CLI.hpp"
+#include "Frate/Utils/CLIList.hpp"
+#include <Frate/Utils/CLIPrompt.hpp>
 #include <Frate/Command/License.hpp>
 #include <Frate/Project/Config.hpp>
 #include <Frate/Utils/General.hpp>
@@ -51,12 +52,8 @@ namespace Frate::Command::License {
 
     license_prompt.run();
 
-    auto [valid, index] = license_prompt.get<int>();
+    auto index = license_prompt.get<int>();
 
-    if (!valid) {
-      Utils::error << "Invalid license" << std::endl;
-      return selected_license;
-    }
 
     selected_license = licenses[index].first;
 
@@ -79,11 +76,7 @@ namespace Frate::Command::License {
     Utils::CLI::Prompt name_prompt("Enter your name or organization");
     name_prompt.exitOnFailure();
     name_prompt.run();
-    auto [valid, org] = name_prompt.get<std::string>();
-    if (!valid) {
-      Utils::error << "Invalid name" << std::endl;
-      return;
-    }
+    auto org = name_prompt.get<std::string>();
     Utils::replaceKey(license, "[fullname]", org);
 
     Utils::replaceKey(license, "[project]", inter->pro->name);
@@ -109,7 +102,7 @@ namespace Frate::Command::License {
       Utils::CLI::Prompt overwrite_prompt("Overwrite existing license?");
       overwrite_prompt.run();
       overwrite_prompt.isBool();
-      if (!overwrite_prompt.get<bool>().second) {
+      if (!overwrite_prompt.get<bool>()) {
         return false;
       }
     }

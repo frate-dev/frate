@@ -8,7 +8,7 @@ namespace Frate::Command {
   class Interface;
 
   class CommandHandler {
-  private:
+  protected:
     std::vector<std::string> aliases;
     std::vector<std::string> flags{};
     std::vector<CommandHandler> subcommands{};

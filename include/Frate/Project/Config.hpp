@@ -13,6 +13,12 @@
 #include <vector>
 
 namespace Frate::Project {
+  class Cache {
+    private:
+    std::string build_command{"cmake --build ."};
+    std::string test_command{"ctest"};
+    std::string run_command{"./bin/"};
+  };
 
   class Config {
 
@@ -45,7 +51,7 @@ namespace Frate::Project {
     std::vector<std::string> keywords{};
     std::string src_dir{"src"};
     std::string include_dir{"include"};
-    std::vector<Command::RemoteServer> build_servers{};
+    //std::vector<Command::RemoteServer> build_servers{};
     std::vector<Command::Dependency> dependencies{};
     std::string build_dir{"build"};
     // Package testing_lib;
@@ -64,13 +70,6 @@ namespace Frate::Project {
      */
     bool save();
     void checkKeys(json j);
-    /*
-     * is what you use if you are using the path in a command
-     * This will add quotes around the path to avoid issues with spaces
-     * for example: path/to/project some crazy path name
-     * becomes: 'path/to/project some crazy path name'
-     */
-    std::string safePath();
 
     std::unordered_map<std::string, ProjectPrompt> prompts{};
     std::unordered_map<std::string, json> global{};

@@ -1,10 +1,12 @@
-#include "Frate/Utils/General.hpp"
-#include <Frate/Utils/CLI.hpp>
-#include <exception>
-#include <string>
+#include <stdint.h>
+#include <termcolor/termcolor.hpp>
+#include <Frate/Utils/CLIPrompt.hpp>
+#include <Frate/Utils/CLIColors.hpp>
+#include <Frate/Utils/CLIExceptions.hpp>
 #include <termio.h>
 #include <termios.h>
 #include <unistd.h>
+#include <sstream>
 
 namespace Frate::Utils::CLI {
   Prompt::Prompt(std::string prompt) {
@@ -12,11 +14,8 @@ namespace Frate::Utils::CLI {
     this->color = Ansi::GREEN;
   }
 
-  Prompt::Prompt(std::string prompt, std::string default_input) {
-    this->prompt = prompt;
-    this->input = default_input;
-    this->color = Ansi::GREEN;
-  }
+  Prompt::Prompt(std::string prompt, std::string default_input)
+      : prompt(prompt), color(Ansi::GREEN), input(default_input) {}
 
   Prompt &Prompt::addOption(std::string option) {
     this->options.emplace_back(option);
@@ -73,7 +72,7 @@ namespace Frate::Utils::CLI {
     return *this;
   }
 
-  bool Prompt::has_options() { return options.size() > 0; }
+  bool Prompt::has_options() { return !options.empty(); }
 
   bool Prompt::has_max_length() { return max_length > 0; }
 
@@ -101,7 +100,8 @@ namespace Frate::Utils::CLI {
   void Prompt::current_input() {
     if (is_valid()) {
       std::cout << termcolor::green << input << Ansi::RESET;
-    } else {
+    }
+    else {
       std::cout << termcolor::red << input << Ansi::RESET;
     }
   }
@@ -113,7 +113,8 @@ namespace Frate::Utils::CLI {
       std::cout << color << prompt << termcolor::white << booloptions
                 << Ansi::RESET;
       text_length += prompt.length() + booloptions.length();
-    } else if (has_options()) {
+    }
+    else if (has_options()) {
       // Displays the default option
       std::cout << color << prompt << termcolor::white << "[" << color
                 << default_input << termcolor::white << "]:" << Ansi::RESET
@@ -133,8 +134,8 @@ namespace Frate::Utils::CLI {
             std::cout << "\n";
             text_length = 0;
             cursor_position++;
-
-          } else if (i == visible_options.size() - 1) {
+          }
+          else if (i == visible_options.size() - 1) {
 
             text_length = 0;
             cursor_position++;
@@ -144,12 +145,14 @@ namespace Frate::Utils::CLI {
       }
       std::cout << ">";
       text_length += 1;
-    } else {
+    }
+    else {
       std::ostringstream size_fraction;
       if (has_max_length()) {
         size_fraction << termcolor::green << "[" << input.size() << "/"
                       << max_length << "]";
-      } else {
+      }
+      else {
         size_fraction << "";
       }
       std::cout << color << prompt << termcolor::white << size_fraction.str()
@@ -213,15 +216,18 @@ namespace Frate::Utils::CLI {
         tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
         return;
         // Tab
-      } else if (c == 9) {
+      }
+      else if (c == 9) {
         if (has_options()) {
           if (completion.empty()) {
             if (visible_options.size() == 1) {
               completion = visible_options[0];
-            } else {
+            }
+            else {
               completion = visible_options[completion_index];
             }
-          } else {
+          }
+          else {
             completion_index++;
             if (completion_index > visible_options.size()) {
               completion_index = 0;
@@ -229,7 +235,8 @@ namespace Frate::Utils::CLI {
             completion = visible_options[completion_index];
           }
         }
-      } else if (c == 127) {
+      }
+      else if (c == 127) {
         if (completion.size() > 0) {
           input = completion;
           completion = "";
@@ -238,7 +245,8 @@ namespace Frate::Utils::CLI {
         if (input.size() > 0) {
           input.pop_back();
         }
-      } else {
+      }
+      else {
         input += c;
       }
       for (int i = 0; i < cursor_position; i++) {
@@ -250,7 +258,8 @@ namespace Frate::Utils::CLI {
       prompt_prefix(term_size.ws_col);
       if (completion.size() > 0) {
         std::cout << completion;
-      } else {
+      }
+      else {
         current_input();
       }
     }
@@ -266,88 +275,90 @@ namespace Frate::Utils::CLI {
     return false;
   }
 
-  template <> std::pair<bool, bool> Prompt::get() {
+  template <> bool Prompt::get() {
 #ifdef TEST
-    return std::make_pair(true, true);
+    return true;
 #endif
     if (input == "y" || input == "Y") {
-      return std::make_pair(true, true);
-    } else if (input == "n" || input == "N") {
-      return std::make_pair(true, false);
-    } else {
-      return std::make_pair(false, false);
+      return true;
+    }
+    else if (input == "n" || input == "N") {
+      return false;
+    }
+    else {
+      throw InputInvalid("Input is not a boolean");
     }
   }
 
-  template <> std::pair<bool, std::string> Prompt::get() {
+  template <> std::string Prompt::get() {
     if (has_options()) {
       if (is_in_options(input)) {
-        return std::make_pair(true, input);
-      } else {
-        std::cout << "Invalid option: " << input << std::endl;
-        return std::make_pair(false, "");
+        return input;
       }
-    } else {
-      return std::make_pair(true, input);
+      else {
+        throw InputNotInOptions("Input is not in option " + input);
+      }
+    }
+    else {
+      return input;
     }
   }
 
-  template <> std::pair<bool, int> Prompt::get() {
+  template <> int Prompt::get() {
     if (has_options()) {
       if (is_in_options(input)) {
         try {
-          return std::make_pair(true, std::stoi(input));
+          return std::stoi(input);
         } catch (std::exception &e) {
           std::cout << "Invalid int: " << input << std::endl;
-          return std::make_pair(false, 0);
+          throw InputInvalid("Input " + input + " is not an int");
         }
-      } else {
-        return std::make_pair(false, 0);
       }
-    } else {
+      else {
+        throw InputNotInOptions("Input is not in option " + input);
+      }
+    }
+    else {
       try {
-        return std::make_pair(true, std::stoi(input));
+        return std::stoi(input);
       } catch (std::exception &e) {
-        std::cout << "Invalid int: " << input << std::endl;
-        return std::make_pair(false, 0);
+        throw InputInvalid("Input " + input + " is not an int");
       }
     }
   }
 
-  template <> std::pair<bool, float> Prompt::get() {
+  template <> float Prompt::get() {
     if (has_options()) {
       if (is_in_options(input)) {
         try {
-          return std::make_pair(true, std::stof(input));
+          return std::stof(input);
         } catch (std::exception &e) {
-          std::cout << "Invalid float: " << input << std::endl;
-          return std::make_pair(false, 0);
+          throw InputInvalid("Input " + input + " is not a float");
         }
-      } else {
-        return std::make_pair(false, 0);
       }
-    } else {
+      else {
+        throw InputNotInOptions("Input is not in option " + input);
+      }
+    }
+    else {
       try {
-        return std::make_pair(true, std::stof(input));
+        return std::stof(input);
       } catch (std::exception &e) {
-        std::cout << "Invalid float: " << input << std::endl;
-        return std::make_pair(false, 0);
+        throw InputInvalid("Input " + input + " is not a float");
       }
     }
   }
 
-  bool Prompt::run() {
+  void Prompt::run() {
     get_input();
     if (has_max_length()) {
       while (input.length() > max_length) {
-        std::cout << "Input too long" << std::endl;
         if (exit_on_failure) {
           exit(1);
         }
-        return false;
+        throw InputTooLong("Input too long");
       }
     }
     std::cout << std::endl;
-    return true;
   }
 } // namespace Frate::Utils::CLI

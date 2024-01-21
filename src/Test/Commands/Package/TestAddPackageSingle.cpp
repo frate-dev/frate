@@ -18,14 +18,14 @@ bool Tests::Command::testAddPackage(std::string package_name) {
     return false;
   }
 
-  std::ifstream config_file(test_path / "frate-project.json");
+  std::ifstream config_file(test_path / Frate::Constants::PROJECT_CONFIG_NAME);
   try {
     nlohmann::json config;
     config_file >> config;
     if (config["dependencies"].size() != 1) {
 
-      Frate::Utils::error << "Failed to add package : no pacakge add detected "
-                             "frate-project.json"
+      Frate::Utils::error << "Failed to add package : no pacakge add detected " +
+                            Frate::Constants::PROJECT_CONFIG_NAME 
                           << std::endl;
       return false;
     }
@@ -33,7 +33,7 @@ bool Tests::Command::testAddPackage(std::string package_name) {
 
     Frate::Utils::error << "Failed to add package : could not open file - file "
                            "path: " +
-                               (test_path / "frate-project.json").string() +
+                               (test_path / Frate::Constants::PROJECT_CONFIG_NAME).string() +
                                "possibly never created"
                         << std::endl;
     return false;

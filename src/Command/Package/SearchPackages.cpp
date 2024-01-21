@@ -2,7 +2,9 @@
 #include <Frate/Command.hpp>
 #include <Frate/Command/CommandMode.hpp>
 #include <Frate/Command/Package.hpp>
-#include <Frate/Utils/CLI.hpp>
+#include <Frate/Utils/CLIPrompt.hpp>
+#include <Frate/Utils/CLIColors.hpp>
+#include <Frate/Utils/CLIList.hpp>
 #include <Frate/Utils/General.hpp>
 
 namespace Frate::Command::Packages {
@@ -132,10 +134,7 @@ namespace Frate::Command::Packages {
       prompt.addOption(i);
     }
     prompt.run();
-    auto [valid, index] = prompt.get<int>();
-    if (!valid) {
-      return {false, Dependency()};
-    }
+    auto index = prompt.get<int>();
     Package chosen_package = results[index].first;
     Dependency dep;
 

@@ -1,7 +1,8 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
 #include <Frate/Project/Config.hpp>
-#include <Frate/Utils/CLI.hpp>
+#include <Frate/Utils/CLIPrompt.hpp>
+#include <Frate/Utils/CLIColors.hpp>
 #include <fstream>
 #include <memory>
 
@@ -65,8 +66,8 @@ compile_commands.json
       Prompt prompt("Do you want to overwrite it?");
       prompt.setColor(Ansi::RED).exitOnFailure().run();
       prompt.isBool();
-      auto [valid, value] = prompt.get<bool>();
-      if (!valid || !value) {
+      auto value = prompt.get<bool>();
+      if (!value) {
         return false;
       }
       write_gitignore(gitignore, gitignore_path);

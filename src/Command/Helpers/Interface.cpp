@@ -7,6 +7,7 @@
 #include "Frate/Command/Actions/Update.hpp"
 #include "Frate/Command/Actions/Watch.hpp"
 #include "Frate/Project/Config.hpp"
+#include "Frate/Utils/Logging.hpp"
 #include "cxxopts.hpp"
 #include "termcolor/termcolor.hpp"
 #include <Frate/Command/Actions/Add.hpp>
@@ -68,13 +69,19 @@ namespace Frate::Command {
     this->argv = argv;
     this->pro = std::make_shared<Project::Config>();
 #ifdef DEBUG
-#ifndef TEST
-    Utils::verbose_mode = true;
-#endif
     std::cout << "DEBUG MODE ENABLED\n";
     pro->path = std::filesystem::current_path() / "build";
 #else
     pro->path = std::filesystem::current_path();
+#endif
+
+
+#ifdef DEBUG
+    Utils::verbose_mode = true;
+#endif
+
+#ifdef TEST
+  Utils::verbose_mode = true;
 #endif
     // config.capabilities.search();
     config = std::make_shared<Config::ConfigManager>();
@@ -85,7 +92,7 @@ namespace Frate::Command {
       std::filesystem::create_directories(Constants::INSTALLED_TEMPLATE_PATH);
     }
 
-    templates = std::make_shared<Project::TemplateManager>();
+    templates = std::make_shared<Project::TemplateManager>(Constants::TEMPLATE_BRANCH);
     try {
       templates->load();
     } catch (std::exception &e) {
@@ -97,12 +104,12 @@ namespace Frate::Command {
   bool execute(std::shared_ptr<Interface> inter) {
 
 
-    std::vector<std::unique_ptr<CommandHandler>> root_commands;
-
-    root_commands.push_back(std::make_unique<TargetPackageIndexHandler>(inter));
-    root_commands.push_back(std::make_unique<TargetPackageHandler>(inter));
-
-    TargetPackageHandler add_handler(inter);
+//     std::vector<std::unique_ptr<CommandHandler>> root_commands;
+// 
+//     root_commands.push_back(std::make_unique<TargetPackageIndexHandler>(inter));
+//     root_commands.push_back(std::make_unique<TargetPackageHandler>(inter));
+// 
+//     TargetPackageHandler add_handler(inter);
 
     OptionsInit::Main(inter);
     inter->parse();

@@ -1,4 +1,5 @@
-#include "Frate/Frate.hpp"
+#pragma once
+#include "Frate/FrateException.hpp"
 #include <string>
 
 namespace Frate::Project {
@@ -11,6 +12,18 @@ namespace Frate::Project {
   class TemplateNotInstalled : public TemplateException {
   public:
     TemplateNotInstalled(const std::string &message)
+        : TemplateException(message) {}
+  };
+
+  class TemplateNotFoundInIndex : public TemplateException {
+  public:
+    TemplateNotFoundInIndex(const std::string &message)
+        : TemplateException(message) {}
+  };
+
+  class TemplateFailedToDownload : public TemplateException {
+  public:
+    TemplateFailedToDownload(const std::string &message)
         : TemplateException(message) {}
   };
 
@@ -35,6 +48,12 @@ namespace Frate::Project {
   class TemplateFileMapEmpty : public TemplateException {
   public:
     TemplateFileMapEmpty(const std::string &message)
+        : TemplateException(message) {}
+  };
+
+  class TemplatePromptFailed : public TemplateException {
+  public:
+    TemplatePromptFailed(const std::string &message)
         : TemplateException(message) {}
   };
 

@@ -32,6 +32,8 @@ namespace Frate::Constants {
   const std::string TEMPLATE_CALLBACKS_PATH = "frate-callbacks/";
   const std::string INIT_SCRIPTS_PATH = "__init__/";
   const std::string POST_SCRIPTS_PATH = "__post__/";
+  const std::string PROJECT_CONFIG_NAME = "frate-project.json";
+  const std::string PROJECT_CACHE_NAME = ".cache.json";
 
   const std::string config_name = "config.json";
 

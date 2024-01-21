@@ -1,30 +1,21 @@
-#include <Frate/Utils/CLI.hpp>
+#include <Frate/Utils/CLIList.hpp>
+#include <Frate/Utils/CLIColors.hpp>
 #include <iostream>
 #include <sstream>
-#include <stdint.h>
 #include <string>
-#include <termcolor/termcolor.hpp>
 
 namespace Frate::Utils::CLI {
-  ListItem::ListItem(std::string primary, std::string subtext) {
-    this->primary = primary;
-    this->subtext = subtext;
+  ListItem::ListItem(std::string primary, std::string subtext) : primary(primary), subtext(subtext) {
   }
 
-  List::List() {
-    numbered = false;
+  List::List() : index_color(Ansi::GREEN), primary_color(Ansi::WHITE), subtext_color(Ansi::BLUE) {
     stream = std::stringstream();
-    index_color = Ansi::GREEN;
-    primary_color = Ansi::WHITE;
-    subtext_color = Ansi::BLUE;
   }
 
-  List::List(std::string _title) {
-    title = _title;
-    List();
+  List::List(std::string title) : List() {
+    this->title = title;
   }
 
-  List::~List() {}
 
   List &List::IndexColor(std::string color) {
     index_color = color;

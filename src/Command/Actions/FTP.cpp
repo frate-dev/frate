@@ -3,7 +3,8 @@
 #include "Frate/Utils/Logging.hpp"
 #include <Frate/Command/Actions/FTP.hpp>
 #include <Frate/Project/Config.hpp>
-#include <Frate/Utils/CLI.hpp>
+#include <Frate/Utils/CLIPrompt.hpp>
+#include <Frate/Utils/CLIColors.hpp>
 
 namespace Frate::Command::FTP {
   using namespace std::filesystem;
@@ -15,8 +16,7 @@ namespace Frate::Command::FTP {
     Prompt prompt("Are you sure you would like to delete the entire project?");
 
     prompt.setColor(RED).isBool().run();
-    auto [valid, value] = prompt.get<bool>();
-    if (!valid || !value) {
+    if (!prompt.get<bool>()) {
       Utils::error << "Aborting..." << std::endl;
       return false;
     }

@@ -1,5 +1,6 @@
 #include <Frate/Command/Package.hpp>
-#include <Frate/Utils/CLI.hpp>
+#include <Frate/Utils/CLIList.hpp>
+#include <Frate/Utils/CLIPrompt.hpp>
 
 namespace Frate::Command::Packages {
   using namespace Utils::CLI;
@@ -31,14 +32,9 @@ namespace Frate::Command::Packages {
       prompt.addOption(i);
     }
     prompt.run();
-    auto [valid, index] = prompt.get<int>();
+    auto index = prompt.get<int>();
 
-    if (!valid) {
-      std::cout << "Invalid option" << std::endl;
-      exit(0);
-    } else {
-      return searchResults[index].first;
-    }
+    return searchResults[index].first;
   }
 
   std::string promptForVersion(Package &chosen_package) {
@@ -58,14 +54,7 @@ namespace Frate::Command::Packages {
     }
 
     prompt.run();
-
-    auto [valid, index] = prompt.get<int>();
-
-    if (!valid) {
-      std::cout << "Invalid option" << std::endl;
-      exit(0);
-    } else {
-      return chosen_package.versions[index];
-    }
+    auto index = prompt.get<int>();
+    return chosen_package.versions[index];
   }
 } // namespace Frate::Command::Packages

@@ -98,10 +98,10 @@ namespace Tests::Command {
       return std::make_pair(true, inter_ptr);
     }
     if (check_config) {
-      std::ifstream config_file(test_path / "frate-project.json");
+      std::ifstream config_file(test_path / Frate::Constants::PROJECT_CONFIG_NAME);
       nlohmann::json config;
 
-      if (!std::filesystem::exists(test_path / "frate-project.json")) {
+      if (!std::filesystem::exists(test_path / Frate::Constants::PROJECT_CONFIG_NAME)) {
         Frate::Utils::error << "Failed to run command : " << command
                             << " : no config file" << std::endl;
         return std::make_pair(true, inter_ptr);

@@ -1,5 +1,5 @@
 #pragma once
-#include <Frate/Frate.hpp>
+#include <Frate/FrateException.hpp>
 
 namespace Frate::Command {
 

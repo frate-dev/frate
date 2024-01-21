@@ -1,4 +1,4 @@
-#include <Frate/Frate.hpp>
+#include <Frate/FrateException.hpp>
 #include <filesystem>
 #include <vector>
 

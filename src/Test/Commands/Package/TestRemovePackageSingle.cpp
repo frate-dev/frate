@@ -24,7 +24,7 @@ bool Tests::Command::testRemovePackage(std::string package_name) {
   std::cout << "Searching for " + package_name + " in frate-project.json"
             << std::endl;
 
-  std::ifstream config_file(test_path / "frate-project.json");
+  std::ifstream config_file(test_path / Frate::Constants::PROJECT_CONFIG_NAME);
 
   nlohmann::json config;
 

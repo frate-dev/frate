@@ -1,3 +1,4 @@
+#include "Frate/Constants.hpp"
 #include "Frate/Utils/General.hpp"
 #include <Frate/Generators.hpp>
 #include <Frate/Project/Config.hpp>
@@ -12,7 +13,7 @@ namespace Frate::Project {
   bool Config::save() {
 
     std::ofstream file;
-    std::string file_name = "frate-project.json";
+    std::string file_name = Constants::PROJECT_CONFIG_NAME;
     // Used as a safe guard to prevent overwriting the project file
     if (!loaded_json) {
       Utils::error << "Project not loaded" << std::endl;
@@ -49,9 +50,6 @@ namespace Frate::Project {
     return true;
   }
 
-  std::string Project::Config::safePath() {
-    return "'" + std::filesystem::path(this->path).string() + "'";
-  };
 
   void Project::Config::fromTemplate(TemplateConfig &temp) {
     this->src_dir = temp.src_dir;
@@ -126,7 +124,7 @@ namespace Frate::Project {
   bool Project::Config::load() {
     using nlohmann::json;
     std::fstream file;
-    std::string file_name = "frate-project.json";
+    std::string file_name = Constants::PROJECT_CONFIG_NAME;
 
     Utils::info << "Loading: " << (this->path / file_name) << std::endl;
 

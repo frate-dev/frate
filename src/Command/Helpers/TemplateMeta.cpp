@@ -1,11 +1,13 @@
 #include "Frate/Constants.hpp"
 #include "Frate/Lua/TemplateEnvironment.hpp"
+#include "Frate/Utils/General.hpp"
 #include <Frate/Project/Config.hpp>
 #include <Frate/Project/Exceptions.hpp>
 #include <Frate/Project/TemplateMeta.hpp>
 #include <Frate/Utils/FileFilter.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>
+#include <Frate/Utils/CLIPrompt.hpp>
 #include <filesystem>
 #include <fstream>
 #include <sol/stack.hpp>
@@ -16,18 +18,15 @@ namespace Frate::Project {
   TemplateMeta::TemplateMeta(const nlohmann::json &json_obj): install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash) {
     Utils::verbose << "Creating template meta from json with contents: "
                    << json_obj << std::endl;
-
     from_json(json_obj, *this);
-    file_map = {};
   }
 
   TemplateMeta::TemplateMeta(): install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash) {
-    file_map = {};
   }
 
   TemplateMeta::TemplateMeta(TemplateIndexEntry &entry)
       : name(entry.getName()), description(entry.getDescription()),
-        hash(entry.getLatestHash()), git(entry.getGit()),
+        hash(entry.getBranchHash(Constants::TEMPLATE_BRANCH)), git(entry.getGit()),
         install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name /
                      this->hash) {}
 
@@ -201,6 +200,30 @@ namespace Frate::Project {
     scripts_loaded = true;
   }
 
+  void TemplateMeta::run_prompts(std::shared_ptr<Config> config){
+    for (auto [key, tmpl_prompt] : config->prompts) {
+      Utils::CLI::Prompt prompt(tmpl_prompt.text, tmpl_prompt.default_value);
+      if (tmpl_prompt.type == "bool") {
+        prompt.isBool();
+      }
+
+      for (std::string option : tmpl_prompt.options) {
+        prompt.addOption(option);
+      }
+
+      prompt.printValidOptions();
+
+      prompt.run();
+      auto value = prompt.get<std::string>();
+      try{
+        value = prompt.get<std::string>();
+      }catch(std::exception &e){
+        throw TemplatePromptFailed("Error while getting prompt value");
+      }
+      config->prompts[key].value = value;
+    }
+
+  }
   void TemplateMeta::install_cpm(std::shared_ptr<Config> config) {
     std::string cpm;
 
@@ -223,6 +246,7 @@ namespace Frate::Project {
 
   void TemplateMeta::render(std::shared_ptr<Config> config) {
     Utils::info << "Rendering template" << std::endl;
+    Utils::verbose << *this << std::endl;
     this->env = std::make_shared<Lua::TemplateEnvironment>(config);
 
     if (!scripts_loaded) {
@@ -235,23 +259,22 @@ namespace Frate::Project {
       }
     }
 
-    // Generate a list of all files that are not templates
-    std::vector<std::filesystem::path> all_files;
+    std::vector<std::filesystem::path> all_other_files;
 
     for (auto [relative_path, file_path] : file_map) {
-      all_files.emplace_back(file_path);
+      all_other_files.emplace_back(file_path);
     }
 
-    Utils::FileFilter non_template_filter(all_files);
+    Utils::FileFilter non_template_filter(all_other_files);
 
     non_template_filter.addExtensions({".lua", ".inja"});
     non_template_filter.addDirs(
         {"scripts", "__init__", "__post__", "cmake_includes"});
     non_template_filter.addFiles({"template.json"});
 
-    all_files = non_template_filter.filterOut();
+    all_other_files = non_template_filter.filterOut();
 
-    for (auto &file : all_files) {
+    for (auto &file : all_other_files) {
       // Finds the relative path i nthe original file map and copies it to the
       // output directory
       for (auto [relative_path, file_path] : file_map) {
@@ -269,7 +292,8 @@ namespace Frate::Project {
         }
       }
     }
-
+    
+    // Generate a list of all files that are templates
     for (auto [relative_path, file_path] : file_map) {
 
       if (file_path.extension() == ".inja") {

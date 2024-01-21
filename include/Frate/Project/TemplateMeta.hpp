@@ -16,6 +16,7 @@ namespace Frate::Project {
     std::string name;
     std::string description;
     std::string hash;
+    std::string branch;
     std::string git;
     std::filesystem::path install_path;
     std::shared_ptr<Lua::TemplateEnvironment> env;
@@ -26,10 +27,11 @@ namespace Frate::Project {
      */
     std::unordered_map<std::filesystem::path, std::filesystem::path> file_map{};
 
-    std::vector<std::filesystem::path> non_template_files;
 
-
-
+    /*
+     * loads scripts from __init__ , __post__ , and scripts from the template
+     * into the template environment
+     */
     void load_scripts();
     /*
      * Middleware function to render .inja files in the project path
@@ -40,6 +42,13 @@ namespace Frate::Project {
     void render(std::shared_ptr<Config> config);
 
     void install_cpm(std::shared_ptr<Config> config);
+
+    /*
+     * Runs the prompts from the template and updates from the template config and sets the values
+     * in the project config
+     * @param config the project config to run the prompts into
+     */
+    void run_prompts(std::shared_ptr<Config> config);
 
   public:
     TemplateMeta();

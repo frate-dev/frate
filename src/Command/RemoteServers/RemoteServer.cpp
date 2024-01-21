@@ -1,6 +1,6 @@
 #include <Frate/Command/RemoteServers.hpp>
 #include <Frate/Project/Config.hpp>
-#include <Frate/Utils/CLI.hpp>
+#include <Frate/Utils/CLIPrompt.hpp>
 #include <Frate/Utils/General.hpp>
 
 namespace Frate::Command::RemoteServers {
@@ -33,10 +33,7 @@ namespace Frate::Command::RemoteServers {
     name_promp.setValidator(validateServerInput);
     name_promp.run();
 
-    auto [valid, _name] = name_promp.get<std::string>();
-    if (!valid) {
-      return false;
-    }
+    auto _name = name_promp.get<std::string>();
     name = _name;
     return true;
   }
@@ -44,10 +41,7 @@ namespace Frate::Command::RemoteServers {
   bool getServerAddress(std::string &address) {
     Prompt address_prompt("Enter the address of the server: ");
     address_prompt.run();
-    auto [valid, _address] = address_prompt.get<std::string>();
-    if (!valid) {
-      return false;
-    }
+    auto _address = address_prompt.get<std::string>();
     address = _address;
     return true;
   }
@@ -55,10 +49,7 @@ namespace Frate::Command::RemoteServers {
   bool getServerPort(int &port) {
     Prompt port_prompt("Enter the port of the server: ");
     port_prompt.run();
-    auto [valid, _port] = port_prompt.get<int>();
-    if (!valid) {
-      return false;
-    }
+    auto _port = port_prompt.get<int>();
     port = _port;
     return true;
   }
@@ -67,10 +58,7 @@ namespace Frate::Command::RemoteServers {
     Prompt username_prompt("Enter the username of the server: ");
     const int max_username_length = 32;
     username_prompt.maxLength(max_username_length).run();
-    auto [valid, _username] = username_prompt.get<std::string>();
-    if (!valid) {
-      return false;
-    }
+    auto _username = username_prompt.get<std::string>();
     username = _username;
     return true;
   }
@@ -79,10 +67,7 @@ namespace Frate::Command::RemoteServers {
     Prompt auth_method_promp(
         "Enter the authentication method of the server[pem/password]: ");
     auth_method_promp.run();
-    auto [valid, _authMethod] = auth_method_promp.get<std::string>();
-    if (!valid) {
-      return false;
-    }
+    auto _authMethod = auth_method_promp.get<std::string>();
     auth_method = _authMethod;
     return true;
   }
@@ -90,10 +75,7 @@ namespace Frate::Command::RemoteServers {
   bool getServerPassword(std::string &password) {
     Prompt password_prompt("Enter the password of the server: ");
     password_prompt.run();
-    auto [valid, _password] = password_prompt.get<std::string>();
-    if (!valid) {
-      return false;
-    }
+    auto _password = password_prompt.get<std::string>();
     password = _password;
     return true;
   }
@@ -101,10 +83,7 @@ namespace Frate::Command::RemoteServers {
   bool getServerKey(std::string &key) {
     Prompt key_prompt("Enter path the ssh key for the server: ");
     key_prompt.run();
-    auto [valid, _key] = key_prompt.get<std::string>();
-    if (!valid) {
-      return false;
-    }
+    auto _key = key_prompt.get<std::string>();
     key = _key;
     return true;
   }

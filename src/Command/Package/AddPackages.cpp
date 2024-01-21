@@ -3,7 +3,7 @@
 #include <Frate/Command/CommandMode.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Project/Config.hpp>
-#include <Frate/Utils/CLI.hpp>
+#include <Frate/Utils/CLIPrompt.hpp>
 #include <Frate/Utils/General.hpp>
 #include <cxxopts.hpp>
 
@@ -70,13 +70,9 @@ namespace Frate::Command::Packages {
       if (target_link.empty()) {
         Prompt target_link_prompt("Specify target_link: ");
         target_link_prompt.run();
-        auto [valid, target] = target_link_prompt.get<std::string>();
+        auto target = target_link_prompt.get<std::string>();
 
         target_link = target;
-        if (!valid) {
-          Utils::error << "Failed to get target_link" << std::endl;
-          return false;
-        }
       }
 
       std::cout << "Target_link: " << target_link << std::endl;

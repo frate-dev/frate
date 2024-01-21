@@ -1,4 +1,3 @@
-#include "Frate/Utils/CLI.hpp"
 #include <Frate/Command/AvailableTriples.hpp>
 #include <Frate/Command/Toolchains.hpp>
 #include <Frate/Generators.hpp>
@@ -32,11 +31,7 @@ namespace Frate::Command::Toolchains {
       toolchain_prompt.addOption(toolchain.triple);
     }
     toolchain_prompt.printValidOptions().run();
-    auto [valid, toolchain] = toolchain_prompt.get<std::string>();
-    if (!valid) {
-      std::cout << "Invalid toolchain" << std::endl;
-      return false;
-    }
+    auto toolchain = toolchain_prompt.get<std::string>();
     json data = load();
     Generators::Toolchain::generateToolchain(toolchain);
     std::ofstream file;

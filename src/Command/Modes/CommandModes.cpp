@@ -2,22 +2,16 @@
 #include <Frate/Interface.hpp>
 #include <Frate/Project/Config.hpp>
 #include <Frate/Project/Mode.hpp>
-#include <Frate/Utils/CLI.hpp>
 #include <sys/socket.h>
 
 namespace Frate::Command {}
 
 namespace Frate::Command::Modes {
-  using Generators::Project::Prompt;
 
   bool getModeName(Project::Mode &mode) {
-    Prompt name("Name: ");
+    Utils::CLI::Prompt name("Name: ");
     name.run();
-    auto [valid, mode_name] = name.get<std::string>();
-    if (!valid) {
-      Utils::error << "Failed to get mode name" << std::endl;
-      return false;
-    }
+    auto mode_name = name.get<std::string>();
     mode.name = mode_name;
     return true;
   }

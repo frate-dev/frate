@@ -1,6 +1,8 @@
 #include "Frate/Constants.hpp"
+#include "Frate/Project/TemplateIndexEntry.hpp"
 #include "Frate/Project/TemplateMeta.hpp"
 #include "Frate/System/GitProvider.hpp"
+#include "Frate/Utils/CLIPrompt.hpp"
 #include "Frate/Utils/General.hpp"
 #include "Frate/Utils/Logging.hpp"
 #include <Frate/Frate.hpp>
@@ -12,7 +14,6 @@
 #include <fstream>
 
 namespace Frate::Project {
-
   void TemplateManager::load_index() {
 
     if (this->index_loaded) {
@@ -50,7 +51,7 @@ namespace Frate::Project {
     try {
       nlohmann::json index_json =
           Utils::fetchJson(Constants::TEMPLATE_INDEX_URL);
-      for (TemplateMeta template_json : index_json) {
+      for (TemplateIndexEntry template_json : index_json) {
         index.push_back(template_json);
       }
       index_loaded = true;
@@ -82,7 +83,7 @@ namespace Frate::Project {
                                      std::string &hash) {
 
     if (name.empty() || hash.empty()) {
-      Utils::error << "Name or hash is empty" << std::endl;
+      Utils::verbose << "Name or hash is empty" << std::endl;
       return false;
     }
 
@@ -90,22 +91,25 @@ namespace Frate::Project {
         Constants::INSTALLED_TEMPLATE_PATH / name / hash;
 
     if (!installed.contains(name)) {
-      Utils::error << "Template not installed in config" << std::endl;
+      Utils::verbose << "Template not installed in config" << std::endl;
       return false;
     }
 
     if (!installed[name].contains(hash)) {
-      Utils::error << "Template not installed in config" << std::endl;
+      Utils::verbose << "Template not installed in config" << std::endl;
       return false;
     }
 
     if (!std::filesystem::exists(template_path)) {
-      Utils::error << "Template not installed in template path at: "
+      Utils::verbose << "Template not installed in template path at: "
                    << template_path << std::endl;
       return false;
     }
 
     return true;
+  }
+  bool TemplateManager::is_installed(TemplateIndexEntry &entry){
+    return is_installed(entry.getName(), branch);
   }
 
   Project::TemplateMeta &TemplateManager::find_template(const std::string &name,
@@ -116,22 +120,7 @@ namespace Frate::Project {
     return installed[name][hash];
   }
 
-  std::string TemplateManager::get_latest_hash(const std::string &name){
-    //TODO: implement
-    //BLOCKED: need index template class
-//     Utils::verbose << "Getting latest hash for template: " << name << std::endl;
-// 
-//     TemplateManager templ;
-//     templ.load_index();
-// 
-//     for (TemplateMeta template_info : templ.getIndex()) {
-//       if (template_info.getName() == name) {
-//         return template_info.getHash();
-//       }
-//     }
-//     throw std::runtime_error("Template not found");
 
-  };
   void TemplateManager::template_to_installed_path(
       std::filesystem::path &tmp_path, std::filesystem::path &new_template_path,
       std::string &hash) {
@@ -173,7 +162,7 @@ namespace Frate::Project {
     }
   }
 
-  std::vector<Project::TemplateMeta> &TemplateManager::getIndex() {
+  std::vector<TemplateIndexEntry> &TemplateManager::getIndex() {
     load_index();
     return index;
   }
@@ -184,7 +173,27 @@ namespace Frate::Project {
     return installed;
   }
 
-  void updateIndex() {
+  void TemplateManager::uninstall(std::string &name) {
+    // TODO: implement
+  }
+
+  void TemplateManager::update(std::string &name) {
+    // TODO: implement
+  }
+
+  void TemplateManager::installAll() {
+    load_index();
+    for (TemplateIndexEntry template_info : index) {
+
+      if(is_installed(template_info)){
+        continue;
+      }
+
+      install(template_info);
+    }
+  }
+
+  void TemplateManager::updateIndex() {
     Utils::verbose << "Updating template index" << std::endl;
 
     if (!std::filesystem::exists(Constants::TEMPLATE_INDEX_PATH)) {
@@ -218,112 +227,149 @@ namespace Frate::Project {
     }
   }
 
-  TemplateMeta TemplateManager::install(const std::string &name,
-                                        std::string hash) {
-    Utils::info << "Installing template: " << name << std::endl;
+  TemplateMeta TemplateManager::getLatest(std::string &name) {
+    load_index();
+
+    for (TemplateIndexEntry template_info : index) {
+      if (template_info.getName() == name) {
+
+        if (!is_installed(template_info)) {
+          install(template_info);
+        }
+
+        return template_info;
+      }
+    }
+
+    throw TemplateNotFoundInIndex("Template " + name + " not found in index");
+  }
+
+  TemplateMeta TemplateManager::promptList(){
 
     load_index();
+
+    std::vector<std::string> template_names;
+
+    for (TemplateIndexEntry template_info : index) {
+      template_names.push_back(template_info.getName());
+    }
+
+    auto template_prompt = Utils::CLI::Prompt("Template").addOptions(template_names);
+    template_prompt.run();
+    auto template_name = template_prompt.get<std::string>();
+
+    for (TemplateIndexEntry template_info : index) {
+      if (template_info.getName() == template_name) {
+
+        if (!is_installed(template_info)) {
+          throw TemplateNotInstalled("Template " + template_info.getName() +
+                                     " not installed");
+        }
+        return template_info;
+      }
+    }
+    throw TemplateNotFoundInIndex("Template " + template_name + " not found in index");
+  };
+  TemplateMeta TemplateManager::get(std::string &name, std::string &hash) {
+
+    load_index();
+    for (TemplateIndexEntry template_info : index) {
+      for(auto &branch : template_info.getBranches()){
+        if (template_info.getName() == name &&
+            branch == hash) {
+
+          if (!is_installed(template_info)) {
+            throw TemplateNotInstalled("Template " + template_info.getName() +
+                                       " not installed");
+          }
+
+          return template_info;
+        }
+      }
+    }
+    throw TemplateNotFoundInIndex("Template " + name + " not found in index");
+  }
+
+  TemplateMeta TemplateManager::install(TemplateIndexEntry &template_info) {
+    Utils::info << "Installing template: " << template_info.getName() << " on branch: " << branch << std::endl;
+
 
     std::filesystem::path tmp_path =
         Utils::randomTmpPath("frate-template-download-");
 
     std::filesystem::path new_template_path =
-        Constants::INSTALLED_TEMPLATE_PATH / name;
+        Constants::INSTALLED_TEMPLATE_PATH / template_info.getName();
+    
+    std::string selected_hash;
+
+    if(branch.empty()){
+      selected_hash = template_info.getHead();
+    }else{
+      selected_hash = template_info.getBranchHash(branch);
+    }
+
+    new_template_path /= selected_hash;
+
+    if (is_installed(template_info.getName(), selected_hash)) {
+      Utils::warning << "Template already installed" << std::endl;
+      return template_info;
+    }
 
     System::GitProvider git(tmp_path);
-    git.setBranch("new_function_prefix");
 
-    for (TemplateMeta template_info : index) {
-      // Searching for the template in index
-      if (template_info.getName() == name) {
-        Utils::info << "Downloading template at: " << template_info.getGit()
-                    << std::endl;
+    try {
 
-        try {
+      git.setBranch(branch)
+        .clone(template_info.getGit())
+        .checkout(selected_hash)
+        .setRemote(true)
+        .setInit(true)
+        .submoduleUpdate();
 
-          git.setNoCheckout(true).clone(template_info.getGit()).log();
+    } catch (std::exception &e) {
 
-        } catch (std::exception &e) {
-          Utils::error << e.what() << std::endl;
-          throw std::runtime_error("Failed to clone template " + name);
-        }
+      Utils::error << e.what() << std::endl;
+      throw TemplateFailedToDownload("Failed to download template " + template_info.getName());
+    }
 
-        if (git.getCommits().empty()) {
-          throw std::runtime_error("Failed to get commits");
-        }
+    if (std::filesystem::exists(new_template_path)) {
+      Utils::verbose << "Template already exists at: " << new_template_path
+        << " we're going to delete it because we already "
+        "assume that it's not installed"
+        << std::endl;
+      // This should only happen in rare cases
+      std::filesystem::remove_all(new_template_path);
+    }
+    try {
 
-        System::GitCommit latest_commit = git.getCommits().front();
+      std::filesystem::create_directories(new_template_path);
 
-        Utils::info << "Latest commit: " << latest_commit << std::endl;
+    } catch (std::exception &e) {
 
-        // appending on the hash to the path so we can have multiple versions
-        new_template_path /= latest_commit.hash;
+      Utils::error << e.what() << std::endl;
+      throw std::runtime_error("Failed to create directories: " +
+          new_template_path.string());
+    }
 
-        template_info.setHash(latest_commit.hash);
+    try {
 
-        if (!hash.empty()) {
-          template_info.setHash(hash);
-        }
-        if (is_installed(name, template_info.getHash())) {
-          Utils::warning << "Template already installed" << std::endl;
-          return template_info;
-        }
+      template_to_installed_path(tmp_path, new_template_path,
+          selected_hash);
 
-        try {
+    } catch (std::exception &e) {
+      Utils::error << e.what() << std::endl;
+      throw std::runtime_error("Failed to transfer template");
+    }
 
-          git.setRecurseSubmodules(true)
-              .checkout(hash)
-              .pull()
-              .setInit(true)
-              .setRemote(true)
-              .submoduleUpdate();
-
-        } catch (std::exception &e) {
-
-          Utils::error << e.what() << std::endl;
-          throw std::runtime_error("Failed to checkout template");
-        }
-
-        if (std::filesystem::exists(new_template_path)) {
-          Utils::verbose << "Template already exists at: " << new_template_path
-                         << " we're going to delete it because we already "
-                            "assume that it's not installed"
-                         << std::endl;
-          // This should only happen in rare cases
-          std::filesystem::remove_all(new_template_path);
-        }
-
-        try {
-
-          std::filesystem::create_directories(new_template_path);
-
-        } catch (std::exception &e) {
-
-          Utils::error << e.what() << std::endl;
-          throw std::runtime_error("Failed to create directories: " +
-                                   new_template_path.string());
-        }
-
-        try {
-
-          template_to_installed_path(tmp_path, new_template_path,
-                                     latest_commit.hash);
-
-        } catch (std::exception &e) {
-          Utils::error << e.what() << std::endl;
-          throw std::runtime_error("Failed to transfer template");
-        }
-
-        installed[name][latest_commit.hash] = template_info;
+    installed[template_info.getName()][selected_hash] = template_info;
 
         // Cleanup
 
-        std::filesystem::remove_all(tmp_path);
+    //std::filesystem::remove_all(tmp_path);
 
-        return template_info;
-      }
-    }
-    throw std::runtime_error("Template not found");
+    this->save();
+
+    return template_info;
   }
 
   void from_json(const nlohmann::json &json_obj, TemplateManager &templ) {
@@ -376,8 +422,7 @@ namespace Frate::Project {
     std::ifstream file(config_path);
 
     if (!file.is_open()) {
-      throw std::runtime_error("Failed to open config file");
-    }
+      throw std::runtime_error("Failed to open config file"); }
 
     nlohmann::json json_obj;
 
@@ -388,7 +433,7 @@ namespace Frate::Project {
     }
 
     try {
-      *this = json_obj;
+      from_json(json_obj, *this);
     } catch (std::exception &e) {
       throw std::runtime_error("Failed to parse config file");
     }

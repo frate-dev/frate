@@ -1,3 +1,4 @@
+#include "Frate/Project/TemplateIndexEntry.hpp"
 #include "Frate/Project/TemplateMeta.hpp"
 #include <Frate/Project/Config.hpp>
 #include <vector>
@@ -7,7 +8,8 @@ namespace Frate::Project {
   class TemplateManager {
 
   private:
-    std::vector<TemplateMeta> index;
+    std::vector<TemplateIndexEntry> index;
+    std::string branch;
 
     std::unordered_map<std::string,
                        std::unordered_map<std::string, TemplateMeta>>
@@ -34,7 +36,7 @@ namespace Frate::Project {
      * @return true if the template is installed
      */
     bool is_installed(const std::string &name, std::string &hash);
-
+    bool is_installed(TemplateIndexEntry &entry);
     /*
      * Moves downloaded template to the installpath specified
      * @param tmp_path the path to the downloaded template
@@ -45,31 +47,37 @@ namespace Frate::Project {
                                     std::filesystem::path &template_path,
                                     std::string &hash);
 
-    /*
-     * From the template index it will find the latest hash of the template name
-     * provided
-     */
-    std::string get_latest_hash(const std::string &name);
-
   public:
-    TemplateManager() = default;
+    TemplateManager(std::string branch) : branch(branch) {}
     ~TemplateManager() = default;
     /*
-     * Installs a template based on the index
+     * Installs a template based on the local index, if hash is not provided then it will defult to the latest hash
      */
-    TemplateMeta install(const std::string &name, std::string hash = "");
+    TemplateMeta install(TemplateIndexEntry &entry);
+    /*
+     * Install the local latest based on the latest hash in the index is
+     * installed
+     * If there is no templates installed for the name specified name then it will
+     * install that template
+     * @param name the name of the template to install
+     */
+    TemplateMeta getLatest(std::string &name);
+    TemplateMeta get(std::string &name,std::string &hash);
+    TemplateMeta promptList();
     /*
      * Uninstalls a template
      * @param name the name of the template to uninstall
      */
-    void uninstall(const std::string &name);
+    void uninstall(std::string &name);
     /*
      * Updates to the latest version of the template
      * @param name the name of the template to update
      */
-    void update(const std::string &name);
+    void update(std::string &name);
 
     void updateIndex();
+
+    void installAll();
 
     /*
      * Creates a tempalte in a tmp path and then returns the path that rendering
@@ -95,7 +103,9 @@ namespace Frate::Project {
      * once then it will pull the index from memory
      * @return a vector of TemplateMeta objects
      */
-    std::vector<TemplateMeta> &getIndex();
+    std::vector<TemplateIndexEntry> &getIndex();
+
+    std::string& getBranch();
 
     friend void from_json(const nlohmann::json &json_obj,
                           TemplateManager &config);

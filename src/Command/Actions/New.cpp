@@ -1,4 +1,5 @@
 #include "Frate/Command.hpp"
+#include "Frate/Constants.hpp"
 #include <Frate/Command/Actions/Help.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Project/Config.hpp>
@@ -40,8 +41,39 @@ namespace Frate::Command::New {
     (void)inter;
   }
 
+  bool create(std::shared_ptr<Command::Interface> inter) {
+    Utils::info << "Creating Project" << std::endl;
+
+    Project::TemplateMeta current_template;
+
+    inter->templates->installAll();
+    
+    if(inter->pro->type.empty()){
+      current_template = inter->templates->promptList();
+    }else{
+      current_template = inter->templates->getLatest(inter->pro->type);
+    }
+
+    std::filesystem::create_directories(inter->pro->path / "override");
+
+    inter->pro->current_template = current_template;
+
+    inter->pro->current_template.build(inter->pro);
+
+    inter->pro->loaded_json = true;
+
+    inter->pro->save();
+
+    return true;
+  }
+
+  bool refresh(std::shared_ptr<Command::Interface> inter) {
+    inter->pro->current_template.refresh(inter->pro);
+    return true;
+  }
+
   bool createProjectWizard(std::shared_ptr<Interface> inter) {
-    if (!Generators::Project::create(inter)) {
+    if (!create(inter)) {
       return false;
     }
 #ifdef RELEASE
@@ -50,10 +82,9 @@ namespace Frate::Command::New {
     return true;
   }
 
-  bool initTemplate() { return true; }
 
   bool checkForProject(std::shared_ptr<Interface> inter) {
-    if (std::filesystem::exists(inter->pro->path / "frate-project.json")) {
+    if (std::filesystem::exists(inter->pro->path / Constants::PROJECT_CONFIG_NAME)) {
       Utils::error << "Project already exists" << std::endl;
       return true;
     }
@@ -65,15 +96,15 @@ namespace Frate::Command::New {
     Prompt prompt("Do you want to overwrite it?");
     prompt.setColor(RED).exitOnFailure();
     prompt.isBool().run();
-    auto [valid, value] = prompt.get<bool>();
-    if (!valid) {
-      return false;
-    }
-    return value;
+    return prompt.get<bool>();
   }
 
   bool run(std::shared_ptr<Interface> inter) {
     options(inter);
+    std::string project_name;
+    bool defaults = false;
+    std::string language = "cpp";
+    std::string project_type = "executable";
 #ifdef RELEASE
     if (!inter->args->count("subcommand")) {
       Help::run(inter);
@@ -87,11 +118,7 @@ namespace Frate::Command::New {
       inter->pro->path = std::filesystem::current_path();
     }
 #endif
-    std::string project_config_file = "frate-project.json";
-    std::string project_name = "";
-    bool defaults = false;
-    std::string language = "cpp";
-    std::string project_type = "executable";
+
 #ifdef DEBUG
     project_name = "debug-frate";
 #else
