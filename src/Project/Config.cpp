@@ -3,7 +3,7 @@
 #include <Frate/Generators.hpp>
 #include <Frate/Project/Config.hpp>
 #include <Frate/Project/ProjectPrompt.hpp>
-#include <Frate/Project/TemplateConfig.hpp>
+#include <Frate/Template/Config.hpp>
 #include <Frate/Utils/Macros.hpp>
 #include <fstream>
 #include <nlohmann/json_fwd.hpp>

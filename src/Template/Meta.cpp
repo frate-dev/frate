@@ -2,8 +2,8 @@
 #include "Frate/Lua/TemplateEnvironment.hpp"
 #include "Frate/Utils/General.hpp"
 #include <Frate/Project/Config.hpp>
-#include <Frate/Project/Exceptions.hpp>
-#include <Frate/Project/TemplateMeta.hpp>
+#include <Frate/Template/Exceptions.hpp>
+#include <Frate/Template/Meta.hpp>
 #include <Frate/Utils/FileFilter.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>

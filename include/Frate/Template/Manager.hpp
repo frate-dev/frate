@@ -1,5 +1,5 @@
-#include "Frate/Project/TemplateIndexEntry.hpp"
-#include "Frate/Project/TemplateMeta.hpp"
+#include "Frate/Template/IndexEntry.hpp"
+#include "Frate/Template/Meta.hpp"
 #include <Frate/Project/Config.hpp>
 #include <vector>
 

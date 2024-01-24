@@ -2,8 +2,8 @@
 #include "Frate/Dependency.hpp"
 #include "Frate/Project/Mode.hpp"
 #include "Frate/Project/ProjectPrompt.hpp"
-#include "Frate/Project/TemplateConfig.hpp"
-#include "Frate/Project/TemplateMeta.hpp"
+#include "Frate/Template/Config.hpp"
+#include "Frate/Template/Meta.hpp"
 #include <Frate/Package.hpp>
 #include <Frate/RemoteServer.hpp>
 #include <filesystem>
@@ -13,12 +13,6 @@
 #include <vector>
 
 namespace Frate::Project {
-  class Cache {
-    private:
-    std::string build_command{"cmake --build ."};
-    std::string test_command{"ctest"};
-    std::string run_command{"./bin/"};
-  };
 
   class Config {
 
@@ -42,9 +36,12 @@ namespace Frate::Project {
     std::string compiler{"g++"};
     std::string license{""};
     std::string default_mode{"Release"};
+
+    //Moving to cache
     std::string build_command{"cmake --build ."};
     std::string test_command{"ctest"};
     std::string run_command{"./bin/"};
+
     std::vector<Mode> modes{Mode("Release", {"-O2"}), Mode("Debug", {"-g"}),
                             Mode("Test", {"-g"})};
     std::vector<std::string> authors{};

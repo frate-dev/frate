@@ -6,6 +6,7 @@
 #include "Frate/Command/Actions/Run.hpp"
 #include "Frate/Command/Actions/Update.hpp"
 #include "Frate/Command/Actions/Watch.hpp"
+#include <Frate/Project/Cache.hpp>
 #include "Frate/Project/Config.hpp"
 #include "Frate/Utils/Logging.hpp"
 #include "cxxopts.hpp"
@@ -110,6 +111,10 @@ namespace Frate::Command {
 //     root_commands.push_back(std::make_unique<TargetPackageHandler>(inter));
 // 
 //     TargetPackageHandler add_handler(inter);
+
+    Project::Cache cache(inter->pro);
+
+    cache.generateOverrideChangeHash();
 
     OptionsInit::Main(inter);
     inter->parse();

@@ -1,6 +1,6 @@
 #pragma once
 #include "Frate/Constants.hpp"
-#include "Frate/Project/TemplateIndexEntry.hpp"
+#include "Frate/Template/IndexEntry.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>

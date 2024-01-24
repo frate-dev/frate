@@ -1,13 +1,13 @@
 #include "Frate/Constants.hpp"
-#include "Frate/Project/TemplateIndexEntry.hpp"
-#include "Frate/Project/TemplateMeta.hpp"
+#include "Frate/Template/IndexEntry.hpp"
+#include "Frate/Template/Meta.hpp"
 #include "Frate/System/GitProvider.hpp"
 #include "Frate/Utils/CLIPrompt.hpp"
 #include "Frate/Utils/General.hpp"
 #include "Frate/Utils/Logging.hpp"
 #include <Frate/Frate.hpp>
-#include <Frate/Project/Exceptions.hpp>
-#include <Frate/Project/TemplateManager.hpp>
+#include <Frate/Template/Exceptions.hpp>
+#include <Frate/Template/Manager.hpp>
 #include <Frate/Utils/FileFilter.hpp>
 #include <Frate/Utils/Macros.hpp>
 #include <filesystem>

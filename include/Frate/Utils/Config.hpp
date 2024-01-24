@@ -1,6 +1,6 @@
 #pragma once
 #include "Frate/System/Capabilities.hpp"
-#include <Frate/Project/TemplateManager.hpp>
+#include <Frate/Template/Manager.hpp>
 #include <Frate/RemoteServer.hpp>
 #include <vector>
 

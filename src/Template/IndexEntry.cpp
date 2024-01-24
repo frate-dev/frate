@@ -1,4 +1,4 @@
-#include <Frate/Project/TemplateIndexEntry.hpp>
+#include <Frate/Template/IndexEntry.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>
 
