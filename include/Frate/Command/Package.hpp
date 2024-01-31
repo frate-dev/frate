@@ -1,5 +1,7 @@
 #pragma once
+#include "Frate/CommandHandler.hpp"
 #include "Frate/Dependency.hpp"
+#include "cxxopts.hpp"
 #include <Frate/Interface.hpp>
 #include <Frate/Package.hpp>
 
@@ -56,3 +58,25 @@ namespace Frate::Command::Packages {
   std::pair<bool, Package> getExact(std::string query);
 
 } // namespace Frate::Command::Packages
+
+namespace Frate::Command {
+  class AddPackageHandler : public CommandHandler {
+  public:
+    AddPackageHandler(std::shared_ptr<Interface> inter)
+        : CommandHandler(inter) {
+      // clang-format off
+      this->addOptions({
+          {"l,latest", "latest", cxxopts::value<bool>()->default_value("false")},
+          {"n,name", "name", cxxopts::value<std::string>()},
+          });
+      // clang-format on
+    }
+
+    ~AddPackageHandler() override = default;
+
+    void run() override;
+    void registerOptions() override;
+    void checkInput() override;
+  };
+
+} // namespace Frate::Command

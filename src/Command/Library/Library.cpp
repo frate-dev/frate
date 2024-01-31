@@ -9,6 +9,7 @@ namespace Frate::Command::Library {
       ("command", "Command to run", cxxopts::value<std::string>())
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())
       ("lib", "lib", cxxopts::value<std::vector<std::string>>());
+
     // clang-format on
     return inter->parse();
     return true;

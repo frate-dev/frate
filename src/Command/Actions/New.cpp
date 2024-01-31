@@ -54,7 +54,11 @@ namespace Frate::Command::New {
       current_template = inter->templates->getLatest(inter->pro->type);
     }
 
-    std::filesystem::create_directories(inter->pro->path / "override");
+    try{
+      std::filesystem::create_directories(inter->pro->path / "override");
+    }catch(const std::exception &e){
+      Utils::error << "Error creating override directory: " << e.what() << std::endl;
+    }
 
     inter->pro->current_template = current_template;
 

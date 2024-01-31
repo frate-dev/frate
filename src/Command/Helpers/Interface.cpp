@@ -112,9 +112,10 @@ namespace Frate::Command {
 // 
 //     TargetPackageHandler add_handler(inter);
 
-    Project::Cache cache(inter->pro);
-
-    cache.generateOverrideChangeHash();
+    //TODO Future optimization
+//     Project::Cache cache(inter->pro);
+// 
+//     cache.generateOverrideChangeHash();
 
     OptionsInit::Main(inter);
     inter->parse();
