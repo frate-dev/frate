@@ -30,6 +30,6 @@ namespace Frate::Command {
     bool addCallback(sol::state &lua);
     friend void from_json(const json &json_obj, Package &package);
     friend void to_json(json &json_obj, const Package &package);
-    Package(){};
+    Package()= default;
   };
 } // namespace Frate::Command

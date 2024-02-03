@@ -41,7 +41,7 @@ namespace Frate::Command::UvWatch {
   bool watch(std::shared_ptr<Interface> inter) {
     options(inter);
     inter->pro->load();
-    inter->pro->current_template.refresh(inter->pro);
+    inter->pro->current_template.refresh(inter->pro, inter->local);
 
     System::UVDirectoryWatcher uv_watcher;
     uv_watcher.watch(inter->pro->path / inter->pro->src_dir,

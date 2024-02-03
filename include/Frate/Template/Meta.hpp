@@ -1,5 +1,6 @@
 #pragma once
 #include "Frate/Constants.hpp"
+#include "Frate/Project/Local.hpp"
 #include "Frate/Template/IndexEntry.hpp"
 #include <nlohmann/json.hpp>
 #include <string>
@@ -39,7 +40,7 @@ namespace Frate::Project {
      * files
      * @param config the project config to render the template into
      */
-    void render(std::shared_ptr<Config> config);
+    void render(std::shared_ptr<Config> config,std::shared_ptr<Local> local);
 
     void install_cpm(std::shared_ptr<Config> config);
 
@@ -64,13 +65,13 @@ namespace Frate::Project {
      * WARNING this will overwrite everything in the project path
      * @param config the project config to build the template into
      */
-    void build(std::shared_ptr<Config> config);
+    void build(std::shared_ptr<Config> config,std::shared_ptr<Local> local);
     /*
      * Refreshes the template by rendering the CMakeLists.txt into the
      project
      * @param config the project config to refresh the template into
      */
-    void refresh(std::shared_ptr<Config> config);
+    void refresh(std::shared_ptr<Config> config,std::shared_ptr<Local> local);
 
     // Getters
 

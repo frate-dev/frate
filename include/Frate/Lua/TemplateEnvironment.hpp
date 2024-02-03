@@ -31,6 +31,7 @@ namespace Frate::Lua {
     std::unordered_map<std::string, std::string> init_scripts;
     std::unordered_map<std::string, std::string> post_scripts;
     std::shared_ptr<Project::Config> pro;
+    std::shared_ptr<Project::Local> local;
 
     void register_user_types();
     void register_frate_api();
@@ -43,8 +44,8 @@ namespace Frate::Lua {
      * @param pro: The project config
      * @throws LuaException: If there is an error while registering the project
      */
-    TemplateEnvironment(std::shared_ptr<Project::Config> pro)
-        : pro(pro) {
+    TemplateEnvironment(std::shared_ptr<Project::Config> pro, std::shared_ptr<Project::Local> local)
+        : pro(pro),  local(local) {
 
       lua = std::make_shared<sol::state>();
 
@@ -67,12 +68,14 @@ namespace Frate::Lua {
 
       try {
         Utils::verbose << "Registering user types" << std::endl;
+
         register_user_types();
 
       } catch (std::exception &e) {
         Utils::error << e.what() << std::endl;
         throw TemplateEnvironmentException("Error registering user types");
       }
+
     };
 
     ~TemplateEnvironment() = default;

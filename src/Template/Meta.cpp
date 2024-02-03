@@ -52,7 +52,7 @@ namespace Frate::Project {
     return os_stream;
   }
 
-  void TemplateMeta::build(std::shared_ptr<Config> config) {
+  void TemplateMeta::build(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
 
     Utils::verbose << "Building template from template at: " << install_path
                    << std::endl;
@@ -102,10 +102,10 @@ namespace Frate::Project {
 
     Utils::info << "Template built" << std::endl;
     install_cpm(config);
-    render(config);
+    render(config,local);
   }
 
-  void TemplateMeta::refresh(std::shared_ptr<Config> config) {
+  void TemplateMeta::refresh(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
 
     std::filesystem::path override_path = config->path / "override";
 
@@ -135,7 +135,7 @@ namespace Frate::Project {
       file_map[relative_path.string()] = file;
     }
 
-    render(config);
+    render(config,local);
   }
 
   void TemplateMeta::load_scripts() {
@@ -244,10 +244,10 @@ namespace Frate::Project {
     cpm_file << cpm;
   }
 
-  void TemplateMeta::render(std::shared_ptr<Config> config) {
+  void TemplateMeta::render(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
     Utils::info << "Rendering template" << std::endl;
     Utils::verbose << *this << std::endl;
-    this->env = std::make_shared<Lua::TemplateEnvironment>(config);
+    this->env = std::make_shared<Lua::TemplateEnvironment>(config,local);
 
     if (!scripts_loaded) {
 

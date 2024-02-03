@@ -1,11 +1,9 @@
 // LUCAS PAY ATTENTION TO IF THE HEADER IS .hpp OR .h
-#include <format>
 #ifdef TEST
 #include <Frate/Test/Test.hpp>
 #include <catch2/catch_session.hpp>
 #else
 #include <Frate/Interface.hpp>
-#include <openssl/md5.h>
 #endif
 
 int main(int argc, char **argv) {
@@ -31,6 +29,7 @@ int main(int argc, char **argv) {
 
   // TODO: Get some path checking in this bitch
   using namespace Frate::Command;
+
 
   Interface inter_ptr(argc, argv);
   auto inter = std::make_shared<Interface>(inter_ptr);

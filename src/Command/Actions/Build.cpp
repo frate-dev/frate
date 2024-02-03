@@ -33,7 +33,7 @@ namespace Frate::Command::Build {
     }
 
     inter->pro->load();
-    inter->pro->current_template.refresh(inter->pro);
+    inter->pro->current_template.refresh(inter->pro, inter->local);
 
 
     Utils::info << "Building project with: " << std::endl;

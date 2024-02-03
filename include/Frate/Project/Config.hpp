@@ -7,6 +7,7 @@
 #include <Frate/Package.hpp>
 #include <Frate/RemoteServer.hpp>
 #include <filesystem>
+#include <Frate/Project/Local.hpp>
 #include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>
@@ -14,7 +15,7 @@
 
 namespace Frate::Project {
 
-  class Config {
+  class Config : public std::enable_shared_from_this<Config> {
 
   public:
     Config() = default;
@@ -23,9 +24,9 @@ namespace Frate::Project {
     TemplateMeta current_template;
     std::vector<std::filesystem::path> template_files;
     std::vector<std::filesystem::path> script_files;
-    std::string name;
-    std::string description;
-    std::string type{""};
+    std::string name{"default"};
+    std::string description{"this is an application"};
+    std::string type{"default-executable"};
     std::filesystem::path path;
     std::string git{"null"};
     std::string homepage{"null"};
@@ -37,10 +38,14 @@ namespace Frate::Project {
     std::string license{""};
     std::string default_mode{"Release"};
 
-    //Moving to cache
+    //Moving to local
+    [[deprecated("Use Local::build_command")]]
     std::string build_command{"cmake --build ."};
+    [[deprecated("Use Local::test_command")]]
     std::string test_command{"ctest"};
+    [[deprecated("Use Local::run_command")]]
     std::string run_command{"./bin/"};
+
 
     std::vector<Mode> modes{Mode("Release", {"-O2"}), Mode("Debug", {"-g"}),
                             Mode("Test", {"-g"})};

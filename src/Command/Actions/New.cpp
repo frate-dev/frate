@@ -62,7 +62,7 @@ namespace Frate::Command::New {
 
     inter->pro->current_template = current_template;
 
-    inter->pro->current_template.build(inter->pro);
+    inter->pro->current_template.build(inter->pro, inter->local);
 
     inter->pro->loaded_json = true;
 
@@ -72,7 +72,7 @@ namespace Frate::Command::New {
   }
 
   bool refresh(std::shared_ptr<Command::Interface> inter) {
-    inter->pro->current_template.refresh(inter->pro);
+    inter->pro->current_template.refresh(inter->pro, inter->local);
     return true;
   }
 

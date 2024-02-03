@@ -1,3 +1,4 @@
+#include "Frate/Project/Local.hpp"
 #include <Frate/Lua/Exceptions.hpp>
 #include <Frate/Lua/LuaAPI.hpp>
 #include <Frate/Lua/TemplateEnvironment.hpp>
@@ -20,6 +21,26 @@ namespace Frate::Lua {
                                                std::string script_text) {
     post_scripts[name] = script_text;
   };
+
+  void TemplateEnvironment::runInitScripts(){
+    for(auto &script : init_scripts){
+      auto result = lua->script(script.second);
+      if (!result.valid()) {
+        throw LuaException(result.get<sol::error>().what());
+      }
+    }
+
+  }
+
+  void TemplateEnvironment::runPostScripts(){
+    for(auto &script : post_scripts){
+      auto result = lua->script(script.second);
+      if (!result.valid()) {
+        throw LuaException(result.get<sol::error>().what());
+      }
+    }
+  }
+
 
   void TemplateEnvironment::templateFile(std::filesystem::path input_file,
                                          std::filesystem::path output_file) {
@@ -134,6 +155,8 @@ namespace Frate::Lua {
   void TemplateEnvironment::register_user_types() {
 
     lua->set("project", pro);
+    lua->set("plocal", local);
+
     // clang-format off
     lua->new_usertype<Command::Package>("Package",
         "new",
@@ -223,8 +246,8 @@ namespace Frate::Lua {
         &Project::Config::git,
         "cmake_version",
         &Project::Config::cmake_version,
-        "build_command",
-        &Project::Config::build_command,
+        //"build_command",
+        //&Project::Config::build_command,
         "build_dir",
         &Project::Config::build_dir,
         "src_dir",
@@ -257,6 +280,29 @@ namespace Frate::Lua {
         "getfloat",
         &Project::ProjectPrompt::get<float>);
 
+    lua->new_usertype<Project::Local>(
+        "Local",
+        "new",
+        sol::no_constructor,
+        "get_build_command",
+        &Project::Local::getBuildCommand,
+        "get_test_command",
+        &Project::Local::getTestCommand,
+        "get_run_command",
+        &Project::Local::getRunCommand,
+        "get_requested_jobs",
+        &Project::Local::getRequestedJobs,
+        "get_max_jobs",
+        &Project::Local::getMaxJobs,
+        "get_override_change_hash",
+        &Project::Local::getOverrideChangeHash,
+        "set_build_command",
+        &Project::Local::setBuildCommand,
+        "set_test_command",
+        &Project::Local::setTestCommand,
+        "set_run_command",
+        &Project::Local::setRunCommand
+      );
   }
 
 } // namespace Frate::Lua

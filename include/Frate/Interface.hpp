@@ -39,6 +39,7 @@ namespace Frate::Command {
     std::vector<Handler> commands{};
     std::shared_ptr<Config::ConfigManager> config;
     std::shared_ptr<Project::TemplateManager> templates;
+    std::shared_ptr<Project::Local> local;
     char **argv;
     int argc;
     bool confirm_all{false};

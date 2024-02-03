@@ -4,6 +4,7 @@
 #include <Frate/Project/ProjectPrompt.hpp>
 
 namespace Frate::Lua {
+  [[deprecated("Use the template environment instead")]]
   bool registerProject(sol::state &lua, std::shared_ptr<Project::Config> pro) {
 
     lua.set("project", pro);
@@ -121,14 +122,15 @@ namespace Frate::Lua {
         &Project::ProjectPrompt::value,
         "default",
         &Project::ProjectPrompt::default_value,
-        "getstr",
+        "get_str",
         &Project::ProjectPrompt::get<std::string>,
-        "getint",
+        "get_int",
         &Project::ProjectPrompt::get<int>,
-        "getbool",
+        "get_bool",
         &Project::ProjectPrompt::get<bool>,
-        "getfloat",
+        "get_float",
         &Project::ProjectPrompt::get<float>);
+
 
     // clang-format on
     return true;

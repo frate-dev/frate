@@ -6,7 +6,7 @@
 #include "Frate/Command/Actions/Run.hpp"
 #include "Frate/Command/Actions/Update.hpp"
 #include "Frate/Command/Actions/Watch.hpp"
-#include <Frate/Project/Cache.hpp>
+#include <Frate/Project/Local.hpp>
 #include "Frate/Project/Config.hpp"
 #include "Frate/Utils/Logging.hpp"
 #include "cxxopts.hpp"
@@ -69,7 +69,9 @@ namespace Frate::Command {
     this->argc = argc;
     this->argv = argv;
     this->pro = std::make_shared<Project::Config>();
+    this->local = std::make_shared<Project::Local>(this->pro);
 #ifdef DEBUG
+    //Setting the path to ./build so that we can test the build process
     std::cout << "DEBUG MODE ENABLED\n";
     pro->path = std::filesystem::current_path() / "build";
 #else
@@ -88,6 +90,8 @@ namespace Frate::Command {
     config = std::make_shared<Config::ConfigManager>();
 
     config->load();
+    local->load();
+
 
     if (!std::filesystem::exists(Constants::INSTALLED_TEMPLATE_PATH)) {
       std::filesystem::create_directories(Constants::INSTALLED_TEMPLATE_PATH);
@@ -233,6 +237,7 @@ namespace Frate::Command {
             inter->pro->save();
           }
           inter->config->save();
+          inter->local->save();
           inter->templates->save();
           return true;
         }

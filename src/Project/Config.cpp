@@ -9,6 +9,7 @@
 #include <nlohmann/json_fwd.hpp>
 
 namespace Frate::Project {
+  
 
   bool Config::save() {
 
@@ -50,6 +51,32 @@ namespace Frate::Project {
     return true;
   }
 
+  bool Project::Config::load() {
+    using nlohmann::json;
+    std::fstream file;
+    std::string file_name = Constants::PROJECT_CONFIG_NAME;
+
+    Utils::info << "Loading: " << (this->path / file_name) << std::endl;
+
+    if (!std::filesystem::exists(this->path / file_name)) {
+      return false;
+    }
+
+    try {
+      file.open(this->path / file_name);
+      std::filesystem::path current_path = this->path;
+      json j = json::parse(file);
+      Project::Config temp = j;
+      *this = temp;
+      this->path = current_path;
+    } catch (std::exception &e) {
+      Utils::debug(e.what());
+      return false;
+    }
+    // Used to prevent overwriting the project file
+    loaded_json = true;
+    return true;
+  }
 
   void Project::Config::fromTemplate(TemplateConfig &temp) {
     this->src_dir = temp.src_dir;
@@ -121,30 +148,4 @@ namespace Frate::Project {
     TO_JSON_FIELD(pro, bugs);
   }
 
-  bool Project::Config::load() {
-    using nlohmann::json;
-    std::fstream file;
-    std::string file_name = Constants::PROJECT_CONFIG_NAME;
-
-    Utils::info << "Loading: " << (this->path / file_name) << std::endl;
-
-    if (!std::filesystem::exists(this->path / file_name)) {
-      return false;
-    }
-
-    try {
-      file.open(this->path / file_name);
-      std::filesystem::path current_path = this->path;
-      json j = json::parse(file);
-      Project::Config temp = j;
-      *this = temp;
-      this->path = current_path;
-    } catch (std::exception &e) {
-      Utils::debug(e.what());
-      return false;
-    }
-    // Used to prevent overwriting the project file
-    loaded_json = true;
-    return true;
-  }
 } // namespace Frate::Project

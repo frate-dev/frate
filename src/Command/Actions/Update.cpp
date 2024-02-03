@@ -18,12 +18,16 @@ namespace Frate::Command::Update {
   }
 
   std::vector<Handler> handlers(std::shared_ptr<Interface> inter) {
-    return {Handler{.aliases = {"index"},
-                    .docs = "Update package index",
-                    .callback = [](std::shared_ptr<Interface> inter) {
-                      (void)inter;
-                      return updateIndex();
-                    }}};
+    return {
+      Handler{
+        .aliases = {"index"},
+        .docs = "Update package index",
+        .callback = [](std::shared_ptr<Interface> inter) {
+          (void)inter;
+          return updateIndex();
+        }
+      }
+    };
   }
 
   bool run(std::shared_ptr<Interface> inter) {
