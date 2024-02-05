@@ -227,11 +227,11 @@ namespace Frate::Project {
     }
   }
 
-  TemplateMeta TemplateManager::getLatest(std::string &name) {
+  TemplateMeta TemplateManager::getLatest(std::string &git_url) {
     load_index();
 
     for (TemplateIndexEntry template_info : index) {
-      if (template_info.getName() == name) {
+      if (template_info.getGit() == git_url) {
 
         if (!is_installed(template_info)) {
           install(template_info);
@@ -241,7 +241,7 @@ namespace Frate::Project {
       }
     }
 
-    throw TemplateNotFoundInIndex("Template " + name + " not found in index");
+    throw TemplateNotFoundInIndex("Template " + git_url + " not found in index");
   }
 
   TemplateMeta TemplateManager::promptList(){
@@ -320,11 +320,8 @@ namespace Frate::Project {
     try {
 
       git.setBranch(branch)
-        .clone(template_info.getGit())
-        .checkout(selected_hash)
-        .setRemote(true)
-        .setInit(true)
-        .submoduleUpdate();
+        .setRecurseSubmodules(true)
+        .clone(template_info.getGit());
 
     } catch (std::exception &e) {
 

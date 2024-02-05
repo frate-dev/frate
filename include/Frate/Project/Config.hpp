@@ -26,7 +26,7 @@ namespace Frate::Project {
     std::vector<std::filesystem::path> script_files;
     std::string name{"default"};
     std::string description{"this is an application"};
-    std::string type{"default-executable"};
+    std::string type{"https://github.com/frate-templates/default-executable.git"};
     std::filesystem::path path;
     std::string git{"null"};
     std::string homepage{"null"};

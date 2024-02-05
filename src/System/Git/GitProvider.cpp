@@ -241,8 +241,11 @@ namespace Frate::System {
       flags += " --remote ";
     }
 
-    Utils::CmdOutput out = Utils::hSystemWithOutput(
-        work_dir_cmd() + "git submodule update" + flags);
+    std::string cmd = work_dir_cmd() + "git submodule update" + flags;
+
+    Utils::verbose << "Running: " << cmd << std::endl;
+
+    Utils::CmdOutput out = Utils::hSystemWithOutput(cmd);
     this->raw_result = out.std_out;
     this->raw_error = out.std_err;
 

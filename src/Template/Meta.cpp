@@ -35,6 +35,8 @@ namespace Frate::Project {
     FROM_JSON_FIELD(temp, description);
     FROM_JSON_FIELD(temp, hash);
     FROM_JSON_FIELD(temp, git);
+
+    temp.install_path = Constants::INSTALLED_TEMPLATE_PATH / temp.name / temp.hash;
   }
 
   void to_json(nlohmann::json &json_obj, const TemplateMeta &temp) {
@@ -101,6 +103,7 @@ namespace Frate::Project {
     config->fromTemplate(template_config);
 
     Utils::info << "Template built" << std::endl;
+
     install_cpm(config);
     render(config,local);
   }
@@ -109,7 +112,10 @@ namespace Frate::Project {
 
     std::filesystem::path override_path = config->path / "override";
 
+
     Utils::FileFilter template_filter(install_path);
+
+
     template_filter.addDirs(
         {"scripts", "__init__", "__post__", "cmake_includes"});
     template_filter.addFiles({"CMakeLists.txt"});
@@ -218,7 +224,7 @@ namespace Frate::Project {
       try{
         value = prompt.get<std::string>();
       }catch(std::exception &e){
-        throw TemplatePromptFailed("Error while getting prompt value");
+        throw TemplatePromptException("Error while getting prompt value");
       }
       config->prompts[key].value = value;
     }

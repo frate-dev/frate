@@ -26,7 +26,7 @@ namespace Frate::Lua {
     for(auto &script : init_scripts){
       auto result = lua->script(script.second);
       if (!result.valid()) {
-        throw LuaException(result.get<sol::error>().what());
+        throw LuaException("Failed to run init script: " + script.first + result.get<sol::error>().what());
       }
     }
 
@@ -36,7 +36,7 @@ namespace Frate::Lua {
     for(auto &script : post_scripts){
       auto result = lua->script(script.second);
       if (!result.valid()) {
-        throw LuaException(result.get<sol::error>().what());
+        throw LuaException("Failed to run post script: " + script.first + result.get<sol::error>().what());
       }
     }
   }
@@ -46,7 +46,7 @@ namespace Frate::Lua {
                                          std::filesystem::path output_file) {
     Utils::verbose << "Templating file: " << input_file << std::endl;
     if(!std::filesystem::exists(input_file)){
-      throw LuaException("Input file does not exist");
+      throw LuaException("Input file does not exist: " + input_file.string());
     }
 
     if(!std::filesystem::exists(output_file.parent_path())){
@@ -54,7 +54,7 @@ namespace Frate::Lua {
     }
 
     if(pro == nullptr){
-      throw LuaException("Project is null while templating file");
+      throw LuaException("Project is null while templating file: " + input_file.string() + " to " + output_file.string());
     }
 
     try {
@@ -67,7 +67,7 @@ namespace Frate::Lua {
     } catch (std::exception &e) {
 
       Utils::error << e.what() << std::endl;
-      throw LuaException("Error templating file");
+      throw LuaException("Error templating file: " + input_file.string() + " to " + output_file.string());
 
     }
   }
@@ -117,7 +117,7 @@ namespace Frate::Lua {
   TemplateEnvironment::register_inja_function(std::string name,
                                               std::string lua_script_text) {
     // Creating lua and project state so that we can pass them to the callback
-
+    Utils::verbose << "Registering inja function: " << name << std::endl;
     const auto script_callback =
         [lua_script_text, lua_state = this->lua,
          pro_config = this->pro](inja::Arguments &input_args) {

@@ -51,9 +51,15 @@ namespace Frate::Project {
         : TemplateException(message) {}
   };
 
-  class TemplatePromptFailed : public TemplateException {
+  class TemplatePromptException : public TemplateException {
   public:
-    TemplatePromptFailed(const std::string &message)
+    TemplatePromptException(const std::string &message)
+        : TemplateException(message) {}
+  };
+
+  class TemplateRenderException : public TemplateException {
+  public:
+    TemplateRenderException(const std::string &message)
         : TemplateException(message) {}
   };
 

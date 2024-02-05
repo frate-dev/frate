@@ -57,11 +57,11 @@ namespace Frate::Project {
     /*
      * Install the local latest based on the latest hash in the index is
      * installed
-     * If there is no templates installed for the name specified name then it will
+     * If there is no templates installed for the git url specified name then it will
      * install that template
-     * @param name the name of the template to install
+     * @param git url of the template to install
      */
-    TemplateMeta getLatest(std::string &name);
+    TemplateMeta getLatest(std::string &git_url);
     TemplateMeta get(std::string &name,std::string &hash);
     TemplateMeta promptList();
     /*

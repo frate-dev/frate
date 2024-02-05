@@ -38,6 +38,7 @@ namespace Frate::Utils {
       }
     }
     for (path &curr_path : filter_dirs) {
+
       if (check_path.string().find(root_path.string() + "/" +
                                    curr_path.string()) != std::string::npos) {
         return true;
