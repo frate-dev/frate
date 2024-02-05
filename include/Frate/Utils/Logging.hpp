@@ -5,7 +5,6 @@
 
 namespace Frate::Utils {
   extern bool verbose_mode;
-
   class Error {
   public:
     template <typename T> Error &operator<<(const T &data) {

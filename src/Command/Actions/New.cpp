@@ -7,7 +7,7 @@
 #include <Frate/Wizards.hpp>
 #include <cxxopts.hpp>
 #include <filesystem>
-#include <inja.hpp>
+#include <inja/inja.hpp>
 #include <string>
 
 namespace Frate::Command::New {

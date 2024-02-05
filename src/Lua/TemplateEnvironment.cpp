@@ -25,11 +25,12 @@ namespace Frate::Lua {
   void TemplateEnvironment::runInitScripts(){
     for(auto &script : init_scripts){
       auto result = lua->script(script.second);
+      std::cout << "Running init script: " << script.second << std::endl;
+      std::cout << "Result: " << result.get<std::string>() << std::endl;
       if (!result.valid()) {
         throw LuaException("Failed to run init script: " + script.first + result.get<sol::error>().what());
       }
     }
-
   }
 
   void TemplateEnvironment::runPostScripts(){

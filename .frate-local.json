@@ -1,0 +1,6 @@
+{
+  "build_command": "cmake -build .",
+  "override_change_hash": "",
+  "run_command": "./bin/",
+  "test_command": "ctest"
+}
