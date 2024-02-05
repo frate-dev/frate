@@ -1,7 +1,7 @@
 #include <Frate/Command.hpp>
 #include <Frate/Generators.hpp>
 #include <Frate/Lua/LuaAPI.hpp>
-#include <inja.hpp>
+#include <inja/inja.hpp>
 #include <sol/sol.hpp>
 
 /*

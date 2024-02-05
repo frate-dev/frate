@@ -22,10 +22,10 @@ namespace Frate::Command {
     std::string license;
     std::string owner;
     std::string owner_type;
-    int stars;
-    int forks;
-    int open_issues;
-    int watchers;
+    int stars{};
+    int forks{};
+    int open_issues{};
+    int watchers{};
     // int score;
     bool addCallback(sol::state &lua);
     friend void from_json(const json &json_obj, Package &package);

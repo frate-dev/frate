@@ -1,6 +1,6 @@
 #pragma once
 #include "Frate/Project/Config.hpp"
-#include "inja.hpp"
+#include <inja/inja.hpp>
 #include <filesystem>
 #include <nlohmann/json.hpp>
 #include <sol/forward.hpp>

@@ -3,7 +3,7 @@
 #include "Frate/Project/Config.hpp"
 #include "Frate/Utils/General.hpp"
 #include <Frate/Lua/Utils.hpp>
-#include "inja.hpp"
+#include <inja/inja.hpp>
 #include <Frate/Constants.hpp>
 #include <Frate/Project/ProjectPrompt.hpp>
 #include <Frate/Utils/Logging.hpp>

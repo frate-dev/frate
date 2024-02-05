@@ -3,7 +3,7 @@
 #include <Frate/Project/Config.hpp>
 #include <Frate/Template/Meta.hpp>
 #include <Frate/Utils/CLIPrompt.hpp>
-#include <inja.hpp>
+#include <inja/inja.hpp>
 #include <vector>
 
 namespace Frate::Generators {

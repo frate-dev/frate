@@ -79,7 +79,7 @@ endif()
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
-include (cmake/CPM.cmake)
+include(cmake/CPM.cmake)
 
 
 CPMAddPackage(
@@ -106,8 +106,6 @@ CPMAddPackage(
   "BUILD_STATIC_LIBS ON"
   "JSON_BuildTests OFF"
   "JSON_Diagnostics ON"
-
-
 )
 
 CPMAddPackage(
@@ -153,6 +151,15 @@ CPMAddPackage(
   GIT_TAG v3.3.1
 )
 
+CPMAddPackage(
+  NAME inja 
+  GIT_REPOSITORY https://github.com/pantor/inja  
+  GIT_TAG v3.4.0 
+  OPTIONS
+    "INJA_USE_EMBEDDED_JSON OFF"
+    "BUILD_TESTING OFF" 
+    "BUILD_BENCHMARK OFF"
+)
 
 
 
@@ -165,6 +172,7 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR}
 
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/_deps/inja-src/single_include)
 set(HEADER_DIR ${CMAKE_SOURCE_DIR}/include)
 
 message("Sources: ${SOURCES}")
@@ -209,11 +217,12 @@ target_link_options(${PROJECT_NAME} PRIVATE   -static-libgcc -static-libstdc++)
 #target_link_libraries(${PROJECT_NAME} PRIVATE -static-libgcc -static-libstdc++)
 target_link_libraries(${PROJECT_NAME} PRIVATE libcurl)
 target_link_libraries(${PROJECT_NAME} PRIVATE cxxopts)
-target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json)
+target_link_libraries(${PROJECT_NAME} PUBLIC nlohmann_json)
 target_link_libraries(${PROJECT_NAME} PRIVATE uv)
 target_link_libraries(${PROJECT_NAME} PRIVATE termcolor)
 target_link_libraries(${PROJECT_NAME} PRIVATE lua)
 target_link_libraries(${PROJECT_NAME} PRIVATE sol2::sol2)
+target_link_libraries(${PROJECT_NAME} PRIVATE inja)
 
 set(SOURCE_DIR src)
 set(BUILD_DIR build)

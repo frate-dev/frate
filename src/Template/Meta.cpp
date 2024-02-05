@@ -290,12 +290,12 @@ namespace Frate::Project {
               std::filesystem::copy_options::recursive |
                   std::filesystem::copy_options::overwrite_existing);
         }
+
       }
     }
     
     // Generate a list of all files that are templates
     for (auto [relative_path, file_path] : file_map) {
-
       if (file_path.extension() == ".inja") {
         Utils::verbose << "Rendering template: " << file_path << std::endl;
         std::string output_file = config->path / relative_path;

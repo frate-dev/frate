@@ -1,7 +1,7 @@
 #include <Frate/Command/AvailableTriples.hpp>
 #include <Frate/Interface.hpp>
 #include <Frate/Utils/General.hpp>
-#include <inja.hpp>
+#include <inja/inja.hpp>
 #include <nlohmann/json.hpp>
 #include <string>
 
