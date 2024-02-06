@@ -3,7 +3,7 @@
 #include "Frate/Project/Mode.hpp"
 #include "Frate/Project/ProjectPrompt.hpp"
 #include "Frate/Template/Config.hpp"
-#include "Frate/Template/Meta.hpp"
+#include "Frate/Template/Renderer.hpp"
 #include <Frate/Package.hpp>
 #include <Frate/RemoteServer.hpp>
 #include <filesystem>

@@ -1,7 +1,7 @@
 #pragma once
 #include <Frate/Interface.hpp>
 #include <Frate/Project/Config.hpp>
-#include <Frate/Template/Meta.hpp>
+#include <Frate/Template/Renderer.hpp>
 #include <Frate/Utils/CLIPrompt.hpp>
 #include <inja/inja.hpp>
 #include <vector>

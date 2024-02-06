@@ -3,7 +3,7 @@
 #include "Frate/Utils/General.hpp"
 #include <Frate/Project/Config.hpp>
 #include <Frate/Template/Exceptions.hpp>
-#include <Frate/Template/Meta.hpp>
+#include <Frate/Template/Renderer.hpp>
 #include <Frate/Utils/FileFilter.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>
@@ -118,7 +118,7 @@ namespace Frate::Project {
 
     template_filter.addDirs(
         {"scripts", "__init__", "__post__", "cmake_includes"});
-    template_filter.addFiles({"CMakeLists.txt"});
+    template_filter.addFiles({"CMakeLists.txt.inja"});
 
     auto install_path_files = template_filter.filterIn();
 
@@ -131,7 +131,7 @@ namespace Frate::Project {
     Utils::FileFilter override_filter(override_path);
     override_filter.addDirs(
         {"scripts", "__init__", "__post__", "cmake_includes"});
-    override_filter.addFiles({"CMakeLists.txt"});
+    override_filter.addFiles({"CMakeLists.txt.inja"});
 
     auto override_path_files = override_filter.filterIn();
 

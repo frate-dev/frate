@@ -1,6 +1,6 @@
 #include "Frate/Constants.hpp"
 #include "Frate/Template/IndexEntry.hpp"
-#include "Frate/Template/Meta.hpp"
+#include "Frate/Template/Renderer.hpp"
 #include "Frate/System/GitProvider.hpp"
 #include "Frate/Utils/CLIPrompt.hpp"
 #include "Frate/Utils/General.hpp"
