@@ -15,22 +15,22 @@
 namespace Frate::Project {
   using std::filesystem::directory_entry;
 
-  TemplateMeta::TemplateMeta(const nlohmann::json &json_obj): install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash) {
+  TemplateRenderer::TemplateRenderer(const nlohmann::json &json_obj): install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash) {
     Utils::verbose << "Creating template meta from json with contents: "
                    << json_obj << std::endl;
     from_json(json_obj, *this);
   }
 
-  TemplateMeta::TemplateMeta(): install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash) {
+  TemplateRenderer::TemplateRenderer(): install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash) {
   }
 
-  TemplateMeta::TemplateMeta(TemplateIndexEntry &entry)
+  TemplateRenderer::TemplateRenderer(TemplateIndexEntry &entry)
       : name(entry.getName()), description(entry.getDescription()),
         hash(entry.getBranchHash(Constants::TEMPLATE_BRANCH)), git(entry.getGit()),
         install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name /
                      this->hash) {}
 
-  void from_json(const nlohmann::json &json_obj, TemplateMeta &temp) {
+  void from_json(const nlohmann::json &json_obj, TemplateRenderer &temp) {
     FROM_JSON_FIELD(temp, name);
     FROM_JSON_FIELD(temp, description);
     FROM_JSON_FIELD(temp, hash);
@@ -39,14 +39,14 @@ namespace Frate::Project {
     temp.install_path = Constants::INSTALLED_TEMPLATE_PATH / temp.name / temp.hash;
   }
 
-  void to_json(nlohmann::json &json_obj, const TemplateMeta &temp) {
+  void to_json(nlohmann::json &json_obj, const TemplateRenderer &temp) {
     TO_JSON_FIELD(temp, name);
     TO_JSON_FIELD(temp, description);
     TO_JSON_FIELD(temp, hash);
     TO_JSON_FIELD(temp, git);
   }
 
-  std::ostream &operator<<(std::ostream &os_stream, const TemplateMeta &temp) {
+  std::ostream &operator<<(std::ostream &os_stream, const TemplateRenderer &temp) {
     os_stream << "Name: " << temp.name << std::endl;
     os_stream << "Description: " << temp.description << std::endl;
     os_stream << "Hash: " << temp.hash << std::endl;
@@ -54,7 +54,7 @@ namespace Frate::Project {
     return os_stream;
   }
 
-  void TemplateMeta::build(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
+  void TemplateRenderer::build(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
 
     Utils::verbose << "Building template from template at: " << install_path
                    << std::endl;
@@ -108,7 +108,7 @@ namespace Frate::Project {
     render(config,local);
   }
 
-  void TemplateMeta::refresh(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
+  void TemplateRenderer::refresh(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
 
     std::filesystem::path override_path = config->path / "override";
 
@@ -144,7 +144,7 @@ namespace Frate::Project {
     render(config,local);
   }
 
-  void TemplateMeta::load_scripts() {
+  void TemplateRenderer::load_scripts() {
     if (file_map.empty()) {
       throw TemplateFileMapEmpty("File map is empty");
     }
@@ -206,7 +206,7 @@ namespace Frate::Project {
     scripts_loaded = true;
   }
 
-  void TemplateMeta::run_prompts(std::shared_ptr<Config> config){
+  void TemplateRenderer::run_prompts(std::shared_ptr<Config> config){
     for (auto [key, tmpl_prompt] : config->prompts) {
       Utils::CLI::Prompt prompt(tmpl_prompt.text, tmpl_prompt.default_value);
       if (tmpl_prompt.type == "bool") {
@@ -230,7 +230,7 @@ namespace Frate::Project {
     }
 
   }
-  void TemplateMeta::install_cpm(std::shared_ptr<Config> config) {
+  void TemplateRenderer::install_cpm(std::shared_ptr<Config> config) {
     std::string cpm;
 
     cpm = Utils::fetchText("https://raw.githubusercontent.com/cpm-cmake/"
@@ -250,7 +250,7 @@ namespace Frate::Project {
     cpm_file << cpm;
   }
 
-  void TemplateMeta::render(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
+  void TemplateRenderer::render(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
     Utils::info << "Rendering template" << std::endl;
     Utils::verbose << *this << std::endl;
     this->env = std::make_shared<Lua::TemplateEnvironment>(config,local);

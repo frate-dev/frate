@@ -44,7 +44,7 @@ namespace Frate::Command::New {
   bool create(std::shared_ptr<Command::Interface> inter) {
     Utils::info << "Creating Project" << std::endl;
 
-    Project::TemplateMeta current_template;
+    Project::TemplateRenderer current_template;
 
     inter->templates->installAll();
     

@@ -112,7 +112,7 @@ namespace Frate::Project {
     return is_installed(entry.getName(), branch);
   }
 
-  Project::TemplateMeta &TemplateManager::find_template(const std::string &name,
+  Project::TemplateRenderer &TemplateManager::find_template(const std::string &name,
                                                         std::string &hash) {
     if (!is_installed(name, hash)) {
       throw TemplateNotInstalled("Template not installed");
@@ -168,7 +168,7 @@ namespace Frate::Project {
   }
 
   std::unordered_map<std::string,
-                     std::unordered_map<std::string, Project::TemplateMeta>> &
+                     std::unordered_map<std::string, Project::TemplateRenderer>> &
   TemplateManager::getInstalled() {
     return installed;
   }
@@ -227,7 +227,7 @@ namespace Frate::Project {
     }
   }
 
-  TemplateMeta TemplateManager::getLatest(std::string &git_url) {
+  TemplateRenderer TemplateManager::getLatest(std::string &git_url) {
     load_index();
 
     for (TemplateIndexEntry template_info : index) {
@@ -244,7 +244,7 @@ namespace Frate::Project {
     throw TemplateNotFoundInIndex("Template " + git_url + " not found in index");
   }
 
-  TemplateMeta TemplateManager::promptList(){
+  TemplateRenderer TemplateManager::promptList(){
 
     load_index();
 
@@ -270,7 +270,7 @@ namespace Frate::Project {
     }
     throw TemplateNotFoundInIndex("Template " + template_name + " not found in index");
   };
-  TemplateMeta TemplateManager::get(std::string &name, std::string &hash) {
+  TemplateRenderer TemplateManager::get(std::string &name, std::string &hash) {
 
     load_index();
     for (TemplateIndexEntry template_info : index) {
@@ -290,7 +290,7 @@ namespace Frate::Project {
     throw TemplateNotFoundInIndex("Template " + name + " not found in index");
   }
 
-  TemplateMeta TemplateManager::install(TemplateIndexEntry &template_info) {
+  TemplateRenderer TemplateManager::install(TemplateIndexEntry &template_info) {
     Utils::info << "Installing template: " << template_info.getName() << " on branch: " << branch << std::endl;
 
 

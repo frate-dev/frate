@@ -21,7 +21,7 @@ namespace Frate::Project {
     Config() = default;
     bool loaded_json{false};
     std::filesystem::path template_path;
-    TemplateMeta current_template;
+    TemplateRenderer current_template;
     std::vector<std::filesystem::path> template_files;
     std::vector<std::filesystem::path> script_files;
     std::string name{"default"};
@@ -40,7 +40,7 @@ namespace Frate::Project {
 
     //Moving to local
     [[deprecated("Use Local::build_command")]]
-    std::string build_command{"cmake --build ."};
+    std::string build_command{"cmake"};
     [[deprecated("Use Local::test_command")]]
     std::string test_command{"ctest"};
     [[deprecated("Use Local::run_command")]]

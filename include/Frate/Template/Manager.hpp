@@ -12,7 +12,7 @@ namespace Frate::Project {
     std::string branch;
 
     std::unordered_map<std::string,
-                       std::unordered_map<std::string, TemplateMeta>>
+                       std::unordered_map<std::string, TemplateRenderer>>
         installed;
 
     bool index_loaded = false;
@@ -26,7 +26,7 @@ namespace Frate::Project {
      * @param hash the hash of the template if it is installed
      * @return true if the template is installed
      */
-    Project::TemplateMeta &find_template(const std::string &name,
+    Project::TemplateRenderer &find_template(const std::string &name,
                                          std::string &hash);
     /*
      * Checks if a template specifed is installed
@@ -53,7 +53,7 @@ namespace Frate::Project {
     /*
      * Installs a template based on the local index, if hash is not provided then it will defult to the latest hash
      */
-    TemplateMeta install(TemplateIndexEntry &entry);
+    TemplateRenderer install(TemplateIndexEntry &entry);
     /*
      * Install the local latest based on the latest hash in the index is
      * installed
@@ -61,9 +61,9 @@ namespace Frate::Project {
      * install that template
      * @param git url of the template to install
      */
-    TemplateMeta getLatest(std::string &git_url);
-    TemplateMeta get(std::string &name,std::string &hash);
-    TemplateMeta promptList();
+    TemplateRenderer getLatest(std::string &git_url);
+    TemplateRenderer get(std::string &name,std::string &hash);
+    TemplateRenderer promptList();
     /*
      * Uninstalls a template
      * @param name the name of the template to uninstall
@@ -96,7 +96,7 @@ namespace Frate::Project {
      * @return a vector of TemplateMeta objects
      */
     std::unordered_map<std::string,
-                       std::unordered_map<std::string, TemplateMeta>> &
+                       std::unordered_map<std::string, TemplateRenderer>> &
     getInstalled();
     /*
      * Grabs the current index from the the github repo, if called more than

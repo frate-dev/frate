@@ -12,7 +12,7 @@ namespace Frate::Lua {
 namespace Frate::Project {
   class Config;
 
-  class TemplateMeta {
+  class TemplateRenderer {
   private:
     std::string name;
     std::string description;
@@ -52,13 +52,13 @@ namespace Frate::Project {
     void run_prompts(std::shared_ptr<Config> config);
 
   public:
-    TemplateMeta();
-    TemplateMeta(const nlohmann::json &json_obj);
-    TemplateMeta(TemplateIndexEntry &entry);
-    friend void from_json(const nlohmann::json &json_obj, TemplateMeta &temp);
-    friend void to_json(nlohmann::json &json_obj, const TemplateMeta &temp);
+    TemplateRenderer();
+    TemplateRenderer(const nlohmann::json &json_obj);
+    TemplateRenderer(TemplateIndexEntry &entry);
+    friend void from_json(const nlohmann::json &json_obj, TemplateRenderer &temp);
+    friend void to_json(nlohmann::json &json_obj, const TemplateRenderer &temp);
     friend std::ostream &operator<<(std::ostream &os_stream,
-                                    const TemplateMeta &temp);
+                                    const TemplateRenderer &temp);
     /*
      * Builds the template into the the project path
      * and transfers the template config to the project config

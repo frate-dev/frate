@@ -13,7 +13,6 @@ namespace Frate::Command::Run {
 
   bool run(std::shared_ptr<Interface> inter) {
     options(inter);
-    // inter->loadProjectJson();
     inter->pro->load();
     inter->pro->current_template.refresh(inter->pro, inter->local);
     std::cout << "Running project: " << inter->pro->name << std::endl;
