@@ -1,5 +1,6 @@
 #include <Frate/Command.hpp>
 #include <Frate/Command/Actions/Update.hpp>
+#include <Frate/Command/TemplateIndex.hpp>
 
 namespace Frate::Command::Update {
 
@@ -26,6 +27,11 @@ namespace Frate::Command::Update {
           (void)inter;
           return updateIndex();
         }
+      },
+      Handler{
+        .aliases = {"template-index", "tindex"},
+        .docs = "Update template index",
+        .callback = &TemplateIndex::update,
       }
     };
   }
