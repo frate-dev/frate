@@ -25,7 +25,9 @@ namespace Frate::Project {
     std::string &getHead() { return head; }
 
     std::string &getGit() { return git; }
-
+    /*
+     * Returns the head hash of the branch
+     */
     std::string &getBranchHash(const std::string &branch) {
       return branches[branch];
     }

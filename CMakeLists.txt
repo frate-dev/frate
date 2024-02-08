@@ -81,6 +81,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(cmake/CPM.cmake)
 
+set(GIT_SHALLOW 1)
+
 
 CPMAddPackage(
   NAME termcolor

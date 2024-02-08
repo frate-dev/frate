@@ -36,6 +36,11 @@ namespace Frate::Project {
      * @return true if the template is installed
      */
     bool is_installed(const std::string &name, std::string &hash);
+    /*
+     * Works similar to the other is_installed but will assume the branch of the TEMPLATE_BRANCH
+     * @param template instance
+     * @return true if the template is installed
+     */
     bool is_installed(TemplateIndexEntry &entry);
     /*
      * Moves downloaded template to the installpath specified

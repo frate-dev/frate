@@ -91,12 +91,14 @@ namespace Frate::Project {
         Constants::INSTALLED_TEMPLATE_PATH / name / hash;
 
     if (!installed.contains(name)) {
-      Utils::verbose << "Template not installed in config" << std::endl;
+      Utils::verbose << "Template not installed in config, could not find key: " << name << std::endl;
       return false;
     }
 
+    Utils::verbose << nlohmann::json(installed[name]).dump(2) << std::endl;
+
     if (!installed[name].contains(hash)) {
-      Utils::verbose << "Template not installed in config" << std::endl;
+      Utils::verbose << "Template not installed in config, could not find key " << name << "->" << hash << std::endl;
       return false;
     }
 
@@ -109,7 +111,7 @@ namespace Frate::Project {
     return true;
   }
   bool TemplateManager::is_installed(TemplateIndexEntry &entry){
-    return is_installed(entry.getName(), branch);
+    return is_installed(entry.getName(), entry.getBranchHash(Constants::TEMPLATE_BRANCH));
   }
 
   Project::TemplateRenderer &TemplateManager::find_template(const std::string &name,
