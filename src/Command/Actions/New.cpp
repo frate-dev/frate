@@ -51,7 +51,7 @@ namespace Frate::Command::New {
     if(inter->pro->type.empty()){
       current_template = inter->templates->promptList();
     }else{
-      current_template = inter->templates->getLatest(inter->pro->type);
+      current_template = inter->templates->installLatest(inter->pro->type);
     }
 
     try{

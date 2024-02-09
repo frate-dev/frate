@@ -1,12 +1,10 @@
 #include "Frate/Command/Library.hpp"
-#include "Frate/Generators.hpp"
-#include "Frate/Project/Config.hpp"
-#include "Frate/Utils/General.hpp"
 #include <Frate/Command/Actions/Remove.hpp>
 #include <Frate/Command/Author.hpp>
 #include <Frate/Command/Flags.hpp>
 #include <Frate/Command/Modes.hpp>
 #include <Frate/Command/Package.hpp>
+#include <Frate/Command/Template.hpp>
 
 namespace Frate::Command::Remove {
 
@@ -19,7 +17,8 @@ namespace Frate::Command::Remove {
       ("m,mode","make changes to compile mode",cxxopts::value<std::string>())
       ("subcommand", "Subcommand to run", cxxopts::value<std::string>())
       ("h,help", "Print usage")
-      ("args","Arguments to pass to subcommand",cxxopts::value<std::vector<std::string>>());
+      ("args","Arguments to pass to subcommand",cxxopts::value<std::vector<std::string>>())
+      ("a,all","Remove all",cxxopts::value<bool>());
     // clang-format on
     return inter->parse();
   }
@@ -31,7 +30,8 @@ namespace Frate::Command::Remove {
   }
 
   std::vector<Handler> handlers(std::shared_ptr<Interface> inter) {
-    return {{
+    return {
+            {
                 .aliases = {"packages", "p", "package"},
                 .flags = {"-l,--latest", "-m,--mode", "-t,--target"},
                 .positional_args = {"package_name"},
@@ -64,7 +64,15 @@ namespace Frate::Command::Remove {
                 .docs = "Remove an author from the project",
                 .callback = &Author::remove,
                 .unlimited_args = true,
-            }};
+            },
+            {
+              .aliases = {"template"},
+              .flags = {"-a,--all"},
+              .positional_args = {"template_name"},
+              .docs = "Remove a template from the project",
+              .callback = &Template::remove
+            }
+      };
   }
 
   bool run(std::shared_ptr<Interface> inter) {

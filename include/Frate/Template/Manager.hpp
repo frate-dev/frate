@@ -66,14 +66,15 @@ namespace Frate::Project {
      * install that template
      * @param git url of the template to install
      */
-    TemplateRenderer getLatest(std::string &git_url);
+    TemplateRenderer installLatest(std::string &git_url);
+    TemplateRenderer uninstallAll(std::string &name);
     TemplateRenderer get(std::string &name,std::string &hash);
     TemplateRenderer promptList();
     /*
      * Uninstalls a template
      * @param name the name of the template to uninstall
      */
-    void uninstall(std::string &name);
+    void uninstall(std::string &name,std::string &hash);
     /*
      * Updates to the latest version of the template
      * @param name the name of the template to update
@@ -84,8 +85,10 @@ namespace Frate::Project {
 
     void installAll();
 
+    void deleteAll();
+
     /*
-     * Creates a tempalte in a tmp path and then returns the path that rendering
+     * Creates a template in a tmp path and then returns the path that rendering
      * is supposed to happen in
      * @param override_path the path to override the template path with
      * @param name the name of the template to create

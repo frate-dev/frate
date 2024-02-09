@@ -32,7 +32,7 @@ namespace Frate::Command::Update {
         .aliases = {"template-index", "tindex"},
         .docs = "Update template index",
         .callback = &TemplateIndex::update,
-      }
+      },
     };
   }
 
