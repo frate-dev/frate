@@ -140,6 +140,7 @@ namespace Frate::Project {
         ".gitattributes",
     });
 
+
     std::vector<std::filesystem::path> files_to_copy = filter.filterOut();
 
     for (std::filesystem::path tmp_filtered_path : files_to_copy) {

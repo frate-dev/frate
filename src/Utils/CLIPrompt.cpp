@@ -182,9 +182,9 @@ namespace Frate::Utils::CLI {
 
     char c;
     std::string completion;
-    int completion_index = 0;
+    size_t completion_index = 0;
     while (true) {
-      if (visible_options.size() > 0) {
+      if (!visible_options.empty()) {
         visible_options.clear();
       }
       for (std::string &option : options) {
@@ -229,7 +229,7 @@ namespace Frate::Utils::CLI {
           }
           else {
             completion_index++;
-            if (completion_index > visible_options.size()) {
+            if (completion_index >= visible_options.size()) {
               completion_index = 0;
             }
             completion = visible_options[completion_index];
