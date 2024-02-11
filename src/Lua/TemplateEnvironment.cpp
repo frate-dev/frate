@@ -24,21 +24,30 @@ namespace Frate::Lua {
 
   void TemplateEnvironment::runInitScripts(){
     for(auto &script : init_scripts){
+      lua->set("project", pro);
+      lua->set("plocal", local);
+      Utils::verbose << "Build command: " << local->getBuildCommand() << std::endl;
       auto result = lua->script(script.second);
-      std::cout << "Running init script: " << script.second << std::endl;
-      std::cout << "Result: " << result.get<std::string>() << std::endl;
       if (!result.valid()) {
         throw LuaException("Failed to run init script: " + script.first + result.get<sol::error>().what());
       }
+      *pro = lua->get<Project::Config>("project");
+      *local = lua->get<Project::Local>("plocal");
+      // *local = lua->get<Project::Local>("plocal");
+      Utils::verbose << "Build command: " << local->getBuildCommand() << std::endl;
     }
   }
 
   void TemplateEnvironment::runPostScripts(){
     for(auto &script : post_scripts){
+      lua->set("project", pro);
+      lua->set("plocal", local);
       auto result = lua->script(script.second);
       if (!result.valid()) {
         throw LuaException("Failed to run post script: " + script.first + result.get<sol::error>().what());
       }
+      *pro = lua->get<Project::Config>("project");
+      *local = lua->get<Project::Local>("plocal");
     }
   }
 
@@ -156,7 +165,7 @@ namespace Frate::Lua {
   void TemplateEnvironment::register_user_types() {
 
     lua->set("project", pro);
-    lua->set("plocal", local);
+    //lua->set("plocal", local);
 
     // clang-format off
     lua->new_usertype<Command::Package>("Package",
@@ -280,30 +289,21 @@ namespace Frate::Lua {
         &Project::ProjectPrompt::get<bool>,
         "getfloat",
         &Project::ProjectPrompt::get<float>);
-
-    lua->new_usertype<Project::Local>(
-        "Local",
-        "new",
-        sol::no_constructor,
-        "get_build_command",
-        &Project::Local::getBuildCommand,
-        "get_test_command",
-        &Project::Local::getTestCommand,
-        "get_run_command",
-        &Project::Local::getRunCommand,
-        "get_requested_jobs",
-        &Project::Local::getRequestedJobs,
-        "get_max_jobs",
-        &Project::Local::getMaxJobs,
-        "get_override_change_hash",
-        &Project::Local::getOverrideChangeHash,
-        "set_build_command",
-        &Project::Local::setBuildCommand,
-        "set_test_command",
-        &Project::Local::setTestCommand,
-        "set_run_command",
-        &Project::Local::setRunCommand
-      );
+    lua->new_usertype<Project::Local>("Local");
+    lua->set_function("get_build_command",&Project::Local::getBuildCommand);
+    lua->set_function("get_test_command",&Project::Local::getTestCommand);
+    lua->set_function("get_run_command",&Project::Local::getRunCommand);
+    lua->set_function("get_requested_jobs",&Project::Local::getRequestedJobs);
+    lua->set_function("get_max_jobs",&Project::Local::getMaxJobs);
+    lua->set_function("get_override_change_hash",&Project::Local::getOverrideChangeHash);
+    lua->set_function("set_build_command",&Project::Local::setBuildCommand);
+    lua->set_function("set_test_command",&Project::Local::setTestCommand);
+    lua->set_function("set_run_command",&Project::Local::setRunCommand);
+    lua->set_function("get_build_mode",&Project::Local::getBuildMode);
+    lua->set_function("set_build_mode",&Project::Local::setBuildMode);
+    lua->set_function("get_current_mode",&Project::Local::setBuildMode);
+    lua->set_function("get_project_path",&Project::Local::getProjectPath);
+    // clang-format on
   }
 
 } // namespace Frate::Lua

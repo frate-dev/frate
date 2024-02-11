@@ -33,7 +33,6 @@ namespace Frate::Command::Build {
     }
 
     inter->pro->load();
-    inter->pro->current_template.refresh(inter->pro, inter->local);
 
 
     Utils::info << "Building project with: " << std::endl;
@@ -42,27 +41,14 @@ namespace Frate::Command::Build {
     Utils::info << "Jobs: " << jobs << std::endl;
     // TODO: Handle different targets
 
-    for (Project::Mode &curr_mode : inter->pro->modes) {
-      if (curr_mode.name == mode) {
-        std::string workdir_cmd = "cd " + inter->pro->path.string();
-        Utils::replaceKey(inter->pro->build_command, "\n", ";");
-        std::string full_build_cmd = inter->pro->build_command;
-        if (Utils::hSystem(workdir_cmd + ";" + full_build_cmd) != 0) {
-          Utils::error << "Build failed" << std::endl;
-          return false;
-        }
-        else {
-          Utils::info << "Build success" << std::endl;
-          return true;
-        }
-      }
-    }
+    inter->local->setBuildMode(mode == "" ? inter->pro->default_mode : mode);
+    inter->local->setRequestedJobs(jobs);
 
-    std::string workdir_cmd = "cd " + inter->pro->path.string();
-    Utils::replaceKey(inter->pro->build_command, "\n", ";");
-    std::string full_build_cmd = workdir_cmd + ";" + inter->pro->build_command;
+    inter->pro->current_template.refresh(inter->pro, inter->local);
 
-    if (Utils::hSystem(full_build_cmd) != 0) {
+    Utils::verbose << "Build command" << inter->local->getBuildCommand() << std::endl;
+
+    if (Utils::hSystem(inter->local->getBuildCommand()) != 0) {
       Utils::error << "Build failed" << std::endl;
       return false;
     }

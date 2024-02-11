@@ -309,6 +309,7 @@ namespace Frate::Project {
       }
     }
 
+    env->runInitScripts();
     // Generate a list of all files that are templates
     for (auto [relative_path, file_path] : file_map) {
       if (file_path.extension() == ".inja") {
@@ -323,10 +324,10 @@ namespace Frate::Project {
           throw Lua::LuaException(
               "Project config is null before templating file");
         }
-
         env->templateFile(file_path, output_file);
       }
     }
+    env->runPostScripts();
   }
 
 } // namespace Frate::Project

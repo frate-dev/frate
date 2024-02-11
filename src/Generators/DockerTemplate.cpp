@@ -21,25 +21,26 @@
 
 namespace Frate::Generators::DockerTemplate {
   bool create(std::shared_ptr<Command::Interface> inter) {
-    inja::Environment env;
-    sol::state lua;
-    Lua::registerAPI(lua);
-
-    if (!Lua::registerProject(lua, inter->pro)) {
-      Utils::debug("Error while registering project");
-      return false;
-    }
-
-    if (!Lua::registerProjectScripts(
-            env, lua, inter->pro->path / "templates/scripts", inter->pro)) {
-      Utils::debug("Error while registering project scripts");
-      return false;
-    }
-    return true;
-  }
-
-  bool remove(std::shared_ptr<Command::Interface> inter) {
-    (void)inter;
-    return true;
-  }
+//     inja::Environment env;
+//     sol::state lua;
+//     Lua::registerAPI(lua);
+// 
+//     if (!Lua::registerProject(lua, inter->pro)) {
+//       Utils::debug("Error while registering project");
+//       return false;
+//     }
+// 
+//     if (!Lua::registerProjectScripts(
+//             env, lua, inter->pro->path / "templates/scripts", inter->pro)) {
+//       Utils::debug("Error while registering project scripts");
+//       return false;
+//     }
+//     return true;
+//   }
+// 
+//   bool remove(std::shared_ptr<Command::Interface> inter) {
+//     (void)inter;
+//     return true;
+//   }
+   }
 } // namespace Frate::Generators::DockerTemplate

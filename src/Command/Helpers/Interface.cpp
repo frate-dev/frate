@@ -69,7 +69,6 @@ namespace Frate::Command {
     this->argc = argc;
     this->argv = argv;
     this->pro = std::make_shared<Project::Config>();
-    this->local = std::make_shared<Project::Local>(this->pro);
 #ifdef DEBUG
     //Setting the path to ./build so that we can test the build process
     std::cout << "DEBUG MODE ENABLED\n";
@@ -90,6 +89,8 @@ namespace Frate::Command {
     config = std::make_shared<Config::ConfigManager>();
 
     config->load();
+
+    this->local = std::make_shared<Project::Local>(this->pro);
     local->load();
 
 
@@ -104,6 +105,10 @@ namespace Frate::Command {
       Utils::error << "Error loading installed templates: " << e.what()
                    << std::endl;
     }
+
+    Utils::verbose << local->getBuildCommand() << std::endl;
+    Utils::verbose << local->getTestCommand() << std::endl;
+    Utils::verbose << local->getRunCommand() << std::endl;
   }
 
   bool execute(std::shared_ptr<Interface> inter) {
