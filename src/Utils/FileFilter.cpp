@@ -24,6 +24,9 @@ namespace Frate::Utils {
   }
 
   bool FileFilter::is_valid(const std::filesystem::path &check_path) {
+    if(!check_path.has_filename()){
+      return false;
+    }
     if (!std::filesystem::exists(check_path)) {
       throw FileFilterException("Check path does not exist: " + check_path.string());
     }

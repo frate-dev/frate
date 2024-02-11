@@ -4,10 +4,10 @@
 #include <Frate/Project/Config.hpp>
 #include <Frate/Template/Exceptions.hpp>
 #include <Frate/Template/Renderer.hpp>
+#include <Frate/Utils/CLIPrompt.hpp>
 #include <Frate/Utils/FileFilter.hpp>
 #include <Frate/Utils/Logging.hpp>
 #include <Frate/Utils/Macros.hpp>
-#include <Frate/Utils/CLIPrompt.hpp>
 #include <filesystem>
 #include <fstream>
 #include <sol/stack.hpp>
@@ -15,20 +15,23 @@
 namespace Frate::Project {
   using std::filesystem::directory_entry;
 
-  TemplateRenderer::TemplateRenderer(const nlohmann::json &json_obj): install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash) {
+  TemplateRenderer::TemplateRenderer(const nlohmann::json &json_obj)
+      : install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name /
+                     this->hash) {
     Utils::verbose << "Creating template meta from json with contents: "
                    << json_obj << std::endl;
     from_json(json_obj, *this);
   }
 
-  TemplateRenderer::TemplateRenderer(): install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name / this->hash) {
-  }
+  TemplateRenderer::TemplateRenderer()
+      : install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name /
+                     this->hash) {}
 
   TemplateRenderer::TemplateRenderer(TemplateIndexEntry &entry)
       : name(entry.getName()), description(entry.getDescription()),
-        hash(entry.getBranchHash(Constants::TEMPLATE_BRANCH)), git(entry.getGit()),
-        install_path(Constants::INSTALLED_TEMPLATE_PATH / this->name /
-                     this->hash) {}
+        hash(entry.getBranchHash(Constants::TEMPLATE_BRANCH)),
+        git(entry.getGit()), install_path(Constants::INSTALLED_TEMPLATE_PATH /
+                                          this->name / this->hash) {}
 
   void from_json(const nlohmann::json &json_obj, TemplateRenderer &temp) {
     FROM_JSON_FIELD(temp, name);
@@ -36,7 +39,8 @@ namespace Frate::Project {
     FROM_JSON_FIELD(temp, hash);
     FROM_JSON_FIELD(temp, git);
 
-    temp.install_path = Constants::INSTALLED_TEMPLATE_PATH / temp.name / temp.hash;
+    temp.install_path =
+        Constants::INSTALLED_TEMPLATE_PATH / temp.name / temp.hash;
   }
 
   void to_json(nlohmann::json &json_obj, const TemplateRenderer &temp) {
@@ -46,7 +50,8 @@ namespace Frate::Project {
     TO_JSON_FIELD(temp, git);
   }
 
-  std::ostream &operator<<(std::ostream &os_stream, const TemplateRenderer &temp) {
+  std::ostream &operator<<(std::ostream &os_stream,
+                           const TemplateRenderer &temp) {
     os_stream << "Name: " << temp.name << std::endl;
     os_stream << "Description: " << temp.description << std::endl;
     os_stream << "Hash: " << temp.hash << std::endl;
@@ -54,7 +59,8 @@ namespace Frate::Project {
     return os_stream;
   }
 
-  void TemplateRenderer::build(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
+  void TemplateRenderer::build(std::shared_ptr<Config> config,
+                               std::shared_ptr<Local> local) {
 
     Utils::verbose << "Building template from template at: " << install_path
                    << std::endl;
@@ -105,16 +111,15 @@ namespace Frate::Project {
     Utils::info << "Template built" << std::endl;
 
     install_cpm(config);
-    render(config,local);
+    render(config, local);
   }
 
-  void TemplateRenderer::refresh(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
+  void TemplateRenderer::refresh(std::shared_ptr<Config> config,
+                                 std::shared_ptr<Local> local) {
 
     std::filesystem::path override_path = config->path / "override";
 
-
     Utils::FileFilter template_filter(install_path);
-
 
     template_filter.addDirs(
         {"scripts", "__init__", "__post__", "cmake_includes"});
@@ -141,7 +146,7 @@ namespace Frate::Project {
       file_map[relative_path.string()] = file;
     }
 
-    render(config,local);
+    render(config, local);
   }
 
   void TemplateRenderer::load_scripts() {
@@ -206,7 +211,7 @@ namespace Frate::Project {
     scripts_loaded = true;
   }
 
-  void TemplateRenderer::run_prompts(std::shared_ptr<Config> config){
+  void TemplateRenderer::run_prompts(std::shared_ptr<Config> config) {
     for (auto [key, tmpl_prompt] : config->prompts) {
       Utils::CLI::Prompt prompt(tmpl_prompt.text, tmpl_prompt.default_value);
       if (tmpl_prompt.type == "bool") {
@@ -221,15 +226,15 @@ namespace Frate::Project {
 
       prompt.run();
       auto value = prompt.get<std::string>();
-      try{
+      try {
         value = prompt.get<std::string>();
-      }catch(std::exception &e){
+      } catch (std::exception &e) {
         throw TemplatePromptException("Error while getting prompt value");
       }
       config->prompts[key].value = value;
     }
-
   }
+
   void TemplateRenderer::install_cpm(std::shared_ptr<Config> config) {
     std::string cpm;
 
@@ -250,10 +255,11 @@ namespace Frate::Project {
     cpm_file << cpm;
   }
 
-  void TemplateRenderer::render(std::shared_ptr<Config> config, std::shared_ptr<Local> local) {
+  void TemplateRenderer::render(std::shared_ptr<Config> config,
+                                std::shared_ptr<Local> local) {
     Utils::info << "Rendering template" << std::endl;
     Utils::verbose << *this << std::endl;
-    this->env = std::make_shared<Lua::TemplateEnvironment>(config,local);
+    this->env = std::make_shared<Lua::TemplateEnvironment>(config, local);
 
     if (!scripts_loaded) {
 
@@ -275,7 +281,7 @@ namespace Frate::Project {
 
     non_template_filter.addExtensions({".lua", ".inja"});
     non_template_filter.addDirs(
-        {"scripts", "__init__", "__post__", "cmake_includes"});
+        {"scripts", "__init__", "__post__", "cmake_includes", "src"});
     non_template_filter.addFiles({"template.json"});
 
     all_other_files = non_template_filter.filterOut();
@@ -283,10 +289,14 @@ namespace Frate::Project {
     for (auto &file : all_other_files) {
       // Finds the relative path i nthe original file map and copies it to the
       // output directory
+      Utils::verbose << "Copying other file: " << file << " to "
+                     << config->path /
+                            std::filesystem::relative(file, install_path)
+                     << std::endl;
       for (auto [relative_path, file_path] : file_map) {
         if (file_path == file) {
           std::filesystem::path output_file = config->path / relative_path;
-          Utils::verbose << "Copying file: " << file_path << " to "
+          Utils::verbose << "Copying other file: " << file_path << " to "
                          << output_file << std::endl;
           if (!std::filesystem::exists(output_file.parent_path())) {
             std::filesystem::create_directories(output_file.parent_path());
@@ -296,10 +306,9 @@ namespace Frate::Project {
               std::filesystem::copy_options::recursive |
                   std::filesystem::copy_options::overwrite_existing);
         }
-
       }
     }
-    
+
     // Generate a list of all files that are templates
     for (auto [relative_path, file_path] : file_map) {
       if (file_path.extension() == ".inja") {
@@ -307,6 +316,8 @@ namespace Frate::Project {
         std::string output_file = config->path / relative_path;
 
         output_file = output_file.substr(0, output_file.find(".inja"));
+
+        Utils::verbose << "Output file: " << output_file << std::endl;
 
         if (env->getProjectConfig() == nullptr) {
           throw Lua::LuaException(
