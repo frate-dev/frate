@@ -9,7 +9,6 @@
 #include <nlohmann/json_fwd.hpp>
 
 namespace Frate::Project {
-  
 
   bool Config::save() {
 
@@ -37,7 +36,8 @@ namespace Frate::Project {
     }
     json new_json = *this;
 
-    Utils::info << "Writing to file: " << this->path / file_name << std::endl;
+    Utils::verbose << "Writing to file: " << this->path / file_name
+                   << std::endl;
 
     try {
       file.open(this->path / file_name);
