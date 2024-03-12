@@ -3,7 +3,12 @@
 #include <Frate/Utils/CLIPrompt.hpp>
 #include <Frate/Utils/CLIColors.hpp>
 #include <Frate/Utils/CLIExceptions.hpp>
+#if __LINUX___
 #include <termio.h>
+#endif
+#if __APPLE__
+#include <sys/ioctl.h>
+#endif
 #include <termios.h>
 #include <unistd.h>
 #include <sstream>

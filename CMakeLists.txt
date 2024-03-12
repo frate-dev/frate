@@ -25,6 +25,14 @@ if(GIT_FOUND)
 endif()
 message("${BRANCH}")
 
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  message(STATUS "Darwin specific RPATH configuration")
+  set(CMAKE_MACOSX_RPATH TRUE)
+  set(CMAKE_SKIP_BUILD_RPATH FALSE)
+  set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
+  list(APPEND CMAKE_BUILD_RPATH ${PROJECT_BINARY_DIR}/lib)
+endif()
+
 set(BUILD_SHARED_LIBS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -80,6 +88,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 include(cmake/CPM.cmake)
+include_directories(${CMAKE_SOURCE_DIR}/include /usr/local/include)
 
 set(GIT_SHALLOW 1)
 
@@ -215,12 +224,12 @@ else()
   message("Default mode")
 endif()
 
-target_link_options(${PROJECT_NAME} PRIVATE   -static-libgcc -static-libstdc++)
+target_link_options(${PROJECT_NAME} PRIVATE    -static-libstdc++)
 #target_link_libraries(${PROJECT_NAME} PRIVATE -static-libgcc -static-libstdc++)
 target_link_libraries(${PROJECT_NAME} PRIVATE libcurl)
 target_link_libraries(${PROJECT_NAME} PRIVATE cxxopts)
 target_link_libraries(${PROJECT_NAME} PUBLIC nlohmann_json)
-target_link_libraries(${PROJECT_NAME} PRIVATE uv)
+target_link_libraries(${PROJECT_NAME} PUBLIC uv)
 target_link_libraries(${PROJECT_NAME} PRIVATE termcolor)
 target_link_libraries(${PROJECT_NAME} PRIVATE lua)
 target_link_libraries(${PROJECT_NAME} PRIVATE sol2::sol2)

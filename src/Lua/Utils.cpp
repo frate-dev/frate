@@ -42,11 +42,12 @@ namespace Frate::Lua {
           out_table.add(value.get<bool>());
         }
         else if (value.is_null()) {
-          out_table.add(sol::nil);
+
+          out_table.add(sol::lua_nil);
         }
         else {
 
-          out_table.add(sol::nil);
+          out_table.add(sol::lua_nil);
         }
       }
     }
@@ -81,11 +82,11 @@ namespace Frate::Lua {
         }
         else if (value.is_null()) {
 
-          out_table[key] = sol::nil;
+          out_table[key] = sol::lua_nil;
         }
         else {
 
-          out_table[key] = sol::nil;
+          out_table[key] = sol::lua_nil;
         }
       }
     }
@@ -130,12 +131,10 @@ namespace Frate::Lua {
 
         out_json[key.as<std::string>()] = value.as<bool>();
       }
-      else if (value.is<sol::nil_t>()) {
-
+      else if (value.is<sol::lua_nil_t>()) {
         out_json[key.as<std::string>()] = nullptr;
       }
       else {
-
         out_json[key.as<std::string>()] = nullptr;
       }
     }

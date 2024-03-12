@@ -11,12 +11,13 @@ namespace Frate::Constants {
   const std::string BUILD_OS = "windows32";
 #elif _WIN64
   const std::string BUILD_OS = "windows64";
-#elif __APPLE__ const std::string BUILD_OS = "macos";
+#elif __APPLE__ 
+  const std::string BUILD_OS = "macos";
 #else
   const std::string BUILD_OS = "unknown";
 #endif
 
-  constexpr const std::string NAME = "frate";
+  const std::string NAME = "frate";
   const std::string DESCRIPTION =
       "CLI utility for managing your project, a modern touch for C/C++";
   const std::string PROJECT_URL = "https://github.com/frate-dev/frate";
